@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Data", "Bumbo.Data\Bumbo.Data.csproj", "{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
