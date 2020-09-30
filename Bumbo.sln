@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Data", "Bumbo.Data\Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
