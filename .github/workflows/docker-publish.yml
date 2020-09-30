@@ -27,7 +27,6 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run tests
-        working-directory: Bumbo.Web
         run: docker build . --file Dockerfile
 
   # Push image to GitHub Packages.
@@ -43,7 +42,6 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        working-directory: Bumbo.Web
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
       - name: Log into GitHub Container Registry
