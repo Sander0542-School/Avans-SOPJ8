@@ -16,6 +16,6 @@ jobs:
     name: WIP Check
     steps:
     - name: WIP Check
-      uses: tim-actions/wip-check@v1.0.0
-      with:
-        labels: '["work-in-progress"]'
+      uses: ParanoidBeing/action-wip-blocker@v0.1.1
+      env:
+          BLOCK_LIST: "WIP|work in progress"
