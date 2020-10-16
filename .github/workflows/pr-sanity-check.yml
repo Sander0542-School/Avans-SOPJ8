@@ -18,4 +18,4 @@ jobs:
     - name: WIP Check
       uses: tim-actions/wip-check@v1.0.0
       with:
-        labels: '["work in progress"]'
+        labels: '["work-in-progress"]'
