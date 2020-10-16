@@ -15,9 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     name: WIP Check
     steps:
-    - name: Setup build caching to improve performance
-      uses: satackey/action-docker-layer-caching@v0.0.8
-
     - name: WIP Check
       uses: ParanoidBeing/action-wip-blocker@v0.1.1
       env:
