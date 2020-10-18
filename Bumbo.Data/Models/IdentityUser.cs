@@ -50,5 +50,7 @@ namespace Bumbo.Data.Models
         
         
         public List<UserAvailability> UserAvailabilities { get; set; }
+        
+        public List<UserAdditionalWork> UserAdditionalWorks { get; set; }
     }
 }

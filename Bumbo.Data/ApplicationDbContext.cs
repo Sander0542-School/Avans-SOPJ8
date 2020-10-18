@@ -20,6 +20,8 @@ namespace Bumbo.Data
         }
         
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
+        
+        public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +31,12 @@ namespace Bumbo.Data
             {
                 b.HasKey(availability => new {availability.UserId, availability.Day});
             });
+
+            builder.Entity<UserAdditionalWork>(b =>
+            {
+                b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
+            });
+
             builder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("Users");
