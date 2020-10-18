@@ -19,6 +19,8 @@ namespace Bumbo.Data
             
         }
         
+        public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
+        
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
         
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
