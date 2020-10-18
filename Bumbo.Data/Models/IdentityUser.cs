@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -46,5 +47,8 @@ namespace Bumbo.Data.Models
         [StringLength(7, MinimumLength = 1)]
         [RegularExpression(@"^[1-9][0-9]{0,4}[a-z]{0,2}$")]
         public string HouseNumber { get; set; }
+        
+        
+        public List<UserAvailability> UserAvailabilities { get; set; }
     }
 }

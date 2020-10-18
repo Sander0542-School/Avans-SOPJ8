@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,17 @@ namespace Bumbo.Data
         {
             
         }
+        
+        public DbSet<UserAvailability> UserAvailabilities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<UserAvailability>(b =>
+            {
+                b.HasKey(availability => new {availability.UserId, availability.Day});
+            });
             builder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("Users");
