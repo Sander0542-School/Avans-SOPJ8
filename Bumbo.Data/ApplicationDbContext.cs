@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using IdentityUser = Bumbo.Data.Models.IdentityUser;
 
 namespace Bumbo.Data
@@ -53,6 +56,21 @@ namespace Bumbo.Data
             {
                 b.ToTable("UserRoles");
             });
+        }
+    }
+
+    public class DbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.json")
+                .Build();
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var connectionString = configuration.GetConnectionString("DatabaseConnection");
+            builder.UseSqlServer(connectionString);
+            return new ApplicationDbContext(builder.Options);
         }
     }
 }
