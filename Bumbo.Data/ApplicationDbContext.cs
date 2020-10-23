@@ -75,6 +75,15 @@ namespace Bumbo.Data
             {
                 b.ToTable("UserRoles");
             });
+
+            #region Branches
+
+            builder.Entity<Branch>(b =>
+            {
+                
+            });
+
+            #endregion
         }
     }
 

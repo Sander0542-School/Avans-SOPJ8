@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
 
@@ -17,5 +18,10 @@ namespace Bumbo.Data.Models
         [RegularExpression(@"^[1-9][0-9]{0,4}[a-z]{0,2}$")]
         [Required]
         public string HouseNumber { get; set; }
+        
+        
+        public List<Forecast> Prognoses { get; set; }
+        
+        public List<BranchForecastStandard> ForecastStandards { get; set; }
     }
 }
