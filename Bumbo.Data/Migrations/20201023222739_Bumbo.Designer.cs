@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201023221504_Bumbo")]
+    [Migration("20201023222739_Bumbo")]
     partial class Bumbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -468,7 +468,7 @@ namespace Bumbo.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
-                        .WithMany()
+                        .WithMany("Shifts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

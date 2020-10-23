@@ -466,7 +466,7 @@ namespace Bumbo.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
-                        .WithMany()
+                        .WithMany("Shifts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

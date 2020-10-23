@@ -54,5 +54,7 @@ namespace Bumbo.Data.Models
         public List<UserAdditionalWork> UserAdditionalWorks { get; set; }
         
         public List<ClockSystemTag> ClockSystemTags { get; set; }
+        
+        public List<Shift> Shifts { get; set; }
     }
 }
