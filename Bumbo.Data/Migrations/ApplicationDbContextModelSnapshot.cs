@@ -443,7 +443,7 @@ namespace Bumbo.Data.Migrations
             modelBuilder.Entity("Bumbo.Data.Models.Forecast", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.Branch", "Branch")
-                        .WithMany("Prognoses")
+                        .WithMany("Forecasts")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
