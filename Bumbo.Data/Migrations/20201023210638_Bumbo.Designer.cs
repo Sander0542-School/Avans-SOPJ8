@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201023153322_Bumbo")]
+    [Migration("20201023210638_Bumbo")]
     partial class Bumbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
