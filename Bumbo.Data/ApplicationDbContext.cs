@@ -23,6 +23,10 @@ namespace Bumbo.Data
         
         public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
         
+        public DbSet<Shift> Shifts { get; set; }
+        
+        public DbSet<WorkedShift> WorkedShifts { get; set; }
+        
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
         
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
@@ -31,16 +35,8 @@ namespace Bumbo.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserAvailability>(b =>
-            {
-                b.HasKey(availability => new {availability.UserId, availability.Day});
-            });
-
-            builder.Entity<UserAdditionalWork>(b =>
-            {
-                b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
-            });
-
+            #region Identity
+            
             builder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("Users");
@@ -75,12 +71,74 @@ namespace Bumbo.Data
             {
                 b.ToTable("UserRoles");
             });
+            
+            #endregion
+
+            #region Users
+
+            builder.Entity<UserAdditionalWork>(b =>
+            {
+                b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
+            });
+            
+            builder.Entity<UserAvailability>(b =>
+            {
+                b.HasKey(availability => new {availability.UserId, availability.Day});
+            });
+
+            #endregion
 
             #region Branches
 
             builder.Entity<Branch>(b =>
             {
                 
+            });
+
+            #endregion
+
+            #region Shifts
+
+            builder.Entity<Shift>(b =>
+            {
+                
+            });
+
+            builder.Entity<WorkedShift>(b =>
+            {
+                b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
+            });
+
+            #endregion
+
+            #region Forecast
+            
+            builder.Entity<Forecast>(b =>
+            {
+                b.HasKey(forecast => new {forecast.BranchId, forecast.Date, forecast.Department});
+            });
+
+            builder.Entity<ForecastStandard>(b =>
+            {
+                
+            });
+
+            builder.Entity<BranchForecastStandard>(b =>
+            {
+                b.HasKey(branchForecastStandard => new {branchForecastStandard.BranchId, branchForecastStandard.Activity});
+
+                b.HasOne(branchForecastStandard => branchForecastStandard.ForecastStandard)
+                    .WithMany(forecastStandard => forecastStandard.BranchForecastStandards)
+                    /* .HasForeignKey(branchForecastStandard => branchForecastStandard.Activity)*/;
+            });
+
+            #endregion
+
+            #region ClockSystem
+
+            builder.Entity<ClockSystemTag>(b =>
+            {
+
             });
 
             #endregion
