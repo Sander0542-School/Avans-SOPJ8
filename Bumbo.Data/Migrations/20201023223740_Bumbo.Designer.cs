@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201023222739_Bumbo")]
+    [Migration("20201023223740_Bumbo")]
     partial class Bumbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -269,16 +269,11 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ShiftId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ShiftId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Sick")
                         .ValueGeneratedOnAdd()
@@ -288,10 +283,7 @@ namespace Bumbo.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShiftId")
-                        .IsUnique();
+                    b.HasKey("ShiftId");
 
                     b.ToTable("WorkedShifts");
                 });

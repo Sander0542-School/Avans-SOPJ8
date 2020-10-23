@@ -169,8 +169,6 @@ namespace Bumbo.Data.Migrations
                 name: "WorkedShifts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ShiftId = table.Column<int>(nullable: false),
                     Sick = table.Column<bool>(nullable: false, defaultValue: false),
                     StartTime = table.Column<DateTime>(nullable: false),
@@ -178,7 +176,7 @@ namespace Bumbo.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkedShifts", x => x.Id);
+                    table.PrimaryKey("PK_WorkedShifts", x => x.ShiftId);
                     table.ForeignKey(
                         name: "FK_WorkedShifts_Shifts_ShiftId",
                         column: x => x.ShiftId,
@@ -206,12 +204,6 @@ namespace Bumbo.Data.Migrations
                 name: "IX_Shifts_UserId",
                 table: "Shifts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkedShifts_ShiftId",
-                table: "WorkedShifts",
-                column: "ShiftId",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
