@@ -5,8 +5,6 @@ namespace Bumbo.Data.Models
 {
     public class WorkedShift : BaseEntity
     {
-        public int UserId { get; set; }
-        
         public int ShiftId { get; set; }
         
         public bool Sick { get; set; }
@@ -15,8 +13,6 @@ namespace Bumbo.Data.Models
 
         public DateTime? EndTime { get; set; }
 
-
-        public IdentityUser User { get; set; }
         
         public Shift Shift { get; set; }
     }
