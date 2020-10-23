@@ -460,7 +460,7 @@ namespace Bumbo.Data.Migrations
             modelBuilder.Entity("Bumbo.Data.Models.Shift", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.Branch", "Branch")
-                        .WithMany()
+                        .WithMany("Shifts")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

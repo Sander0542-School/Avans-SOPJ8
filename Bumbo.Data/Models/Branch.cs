@@ -23,5 +23,7 @@ namespace Bumbo.Data.Models
         public List<Forecast> Prognoses { get; set; }
         
         public List<BranchForecastStandard> ForecastStandards { get; set; }
+        
+        public List<Shift> Shifts { get; set; }
     }
 }
