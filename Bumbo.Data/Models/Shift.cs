@@ -21,6 +21,6 @@ namespace Bumbo.Data.Models
         
         public Branch Branch { get; set; }
         
-        public WorkedShift Schedule { get; set; }
+        public WorkedShift WorkedShift { get; set; }
     }
 }

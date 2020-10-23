@@ -7,7 +7,7 @@ namespace Bumbo.Data.Models
     {
         public int UserId { get; set; }
         
-        public int ScheduleId { get; set; }
+        public int ShiftId { get; set; }
         
         public bool Sick { get; set; }
 
