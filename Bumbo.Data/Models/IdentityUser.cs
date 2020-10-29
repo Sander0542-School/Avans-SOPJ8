@@ -49,12 +49,12 @@ namespace Bumbo.Data.Models
         public string HouseNumber { get; set; }
         
         
-        public List<UserAvailability> UserAvailabilities { get; set; }
+        public IList<UserAvailability> UserAvailabilities { get; set; }
         
-        public List<UserAdditionalWork> UserAdditionalWorks { get; set; }
+        public IList<UserAdditionalWork> UserAdditionalWorks { get; set; }
         
-        public List<ClockSystemTag> ClockSystemTags { get; set; }
+        public IList<ClockSystemTag> ClockSystemTags { get; set; }
         
-        public List<Shift> Shifts { get; set; }
+        public IList<Shift> Shifts { get; set; }
     }
 }
