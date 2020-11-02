@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using IdentityUser = Bumbo.Data.Models.IdentityUser;
 
 namespace Bumbo.Data
@@ -14,11 +18,25 @@ namespace Bumbo.Data
         {
             
         }
+        
+        public DbSet<Branch> Branches { get; set; }
+        
+        public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
+        
+        public DbSet<Shift> Shifts { get; set; }
+        
+        public DbSet<WorkedShift> WorkedShifts { get; set; }
+        
+        public DbSet<UserAvailability> UserAvailabilities { get; set; }
+        
+        public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            #region Identity
+            
             builder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("Users");
@@ -53,6 +71,92 @@ namespace Bumbo.Data
             {
                 b.ToTable("UserRoles");
             });
+            
+            #endregion
+
+            #region Users
+
+            builder.Entity<UserAdditionalWork>(b =>
+            {
+                b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
+            });
+            
+            builder.Entity<UserAvailability>(b =>
+            {
+                b.HasKey(availability => new {availability.UserId, availability.Day});
+            });
+
+            #endregion
+
+            #region Branches
+
+            builder.Entity<Branch>(b =>
+            {
+                
+            });
+
+            #endregion
+
+            #region Shifts
+
+            builder.Entity<Shift>(b =>
+            {
+                
+            });
+
+            builder.Entity<WorkedShift>(b =>
+            {
+                b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
+            });
+
+            #endregion
+
+            #region Forecast
+            
+            builder.Entity<Forecast>(b =>
+            {
+                b.HasKey(forecast => new {forecast.BranchId, forecast.Date, forecast.Department});
+            });
+
+            builder.Entity<ForecastStandard>(b =>
+            {
+                
+            });
+
+            builder.Entity<BranchForecastStandard>(b =>
+            {
+                b.HasKey(branchForecastStandard => new {branchForecastStandard.BranchId, branchForecastStandard.Activity});
+
+                b.HasOne(branchForecastStandard => branchForecastStandard.ForecastStandard)
+                    .WithMany(forecastStandard => forecastStandard.BranchForecastStandards)
+                    /* .HasForeignKey(branchForecastStandard => branchForecastStandard.Activity)*/;
+            });
+
+            #endregion
+
+            #region ClockSystem
+
+            builder.Entity<ClockSystemTag>(b =>
+            {
+
+            });
+
+            #endregion
+        }
+    }
+
+    public class DbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.json")
+                .Build();
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var connectionString = configuration.GetConnectionString("DatabaseConnection");
+            builder.UseSqlServer(connectionString);
+            return new ApplicationDbContext(builder.Options);
         }
     }
 }
