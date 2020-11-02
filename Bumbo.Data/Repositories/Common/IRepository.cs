@@ -12,7 +12,7 @@ namespace Bumbo.Data.Repositories.Common
         Task<TEntity> Get(params Expression<Func<TEntity, bool>>[] predicates);
         Task<List<TEntity>> GetAll(params Expression<Func<TEntity, bool>>[] predicates);
         Task<TEntity> Update(TEntity entity);
-        Task<TEntity> Remove(params Expression<Func<TEntity, bool>>[] predicates);
+        Task<List<TEntity>> Remove(params Expression<Func<TEntity, bool>>[] predicates);
         Task<TEntity> Remove(TEntity model);
     }
 }

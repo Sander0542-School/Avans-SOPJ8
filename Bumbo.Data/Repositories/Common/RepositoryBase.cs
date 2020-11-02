@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bumbo.Data.Repositories.Common
 {
-    public abstract class RepositoryBase<TEntity> : RepositoryBase<TEntity, ApplicationDbContext> 
+    public abstract class RepositoryBase<TEntity> : RepositoryBase<TEntity, ApplicationDbContext>
         where TEntity : class, IEntity
     {
         public RepositoryBase(ApplicationDbContext context) : base(context)
@@ -37,21 +37,9 @@ namespace Bumbo.Data.Repositories.Common
         public async Task<TEntity> Add(TEntity entity)
         {
             await DbSet.AddAsync(entity);
-            return entity;
-        }
 
-        public async Task<TEntity> Remove(params Expression<Func<TEntity, bool>>[] predicates)
-        {
-            var entity = await Get(predicates);
-            if (entity == null) return null;
-
-            return await Remove(entity);
-        }
-
-        public async Task<TEntity> Remove(TEntity entity)
-        {
-            Context.Entry(entity).State = EntityState.Deleted;
-            return entity;
+            var changed = await Context.SaveChangesAsync();
+            return changed > 0 ? entity : null;
         }
 
         public async Task<TEntity> Get(params Expression<Func<TEntity, bool>>[] predicates)
@@ -75,8 +63,43 @@ namespace Bumbo.Data.Repositories.Common
         public async Task<TEntity> Update(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
-            
-            return entity;
+
+            var changed = await Context.SaveChangesAsync();
+            return changed > 0 ? entity : null;
+        }
+        public virtual async Task<List<TEntity>> Remove(params Expression<Func<TEntity, bool>>[] predicates)
+        {
+            var entities = await GetAll(predicates);
+
+            await using var transaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                Context.RemoveRange(entities);
+                int deleted = await Context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                if (deleted == entities.Count)
+                {
+                    return entities;
+                }
+
+                await transaction.RollbackAsync();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return null;
+        }
+
+        public async Task<TEntity> Remove(TEntity entity)
+        {
+            Context.Remove(entity);
+
+            var changed = await Context.SaveChangesAsync();
+            return changed > 0 ? entity : null;
         }
     }
 }
