@@ -20,10 +20,10 @@ namespace Bumbo.Data.Models
         public string HouseNumber { get; set; }
         
         
-        public List<Forecast> Forecasts { get; set; }
+        public IList<Forecast> Forecasts { get; set; }
         
-        public List<BranchForecastStandard> ForecastStandards { get; set; }
+        public IList<BranchForecastStandard> ForecastStandards { get; set; }
         
-        public List<Shift> Shifts { get; set; }
+        public IList<Shift> Shifts { get; set; }
     }
 }
