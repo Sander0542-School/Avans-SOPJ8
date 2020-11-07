@@ -27,7 +27,7 @@ namespace Bumbo.Data.Fakers
             FinishWith((f, o) =>
             {
                 var hasher = new PasswordHasher<IdentityUser>();
-                o.PasswordHash = hasher.HashPassword(o, f.Internet.Password());
+                o.PasswordHash = hasher.HashPassword(o, "Pass1234!");
             });
         }
     }
