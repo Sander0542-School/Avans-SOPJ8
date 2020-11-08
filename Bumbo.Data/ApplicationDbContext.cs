@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Bumbo.Data.Fakers;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -34,12 +35,16 @@ namespace Bumbo.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            
+            FakeData.Init(500, 10);
 
             #region Identity
             
             builder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("Users");
+                
+                b.HasData(FakeData.Users);
             });
 
             builder.Entity<IdentityUserClaim<int>>(b =>
@@ -79,11 +84,15 @@ namespace Bumbo.Data
             builder.Entity<UserAdditionalWork>(b =>
             {
                 b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
+                
+                b.HasData(FakeData.UserAdditionalWorks);
             });
             
             builder.Entity<UserAvailability>(b =>
             {
                 b.HasKey(availability => new {availability.UserId, availability.Day});
+                
+                b.HasData(FakeData.UserAvailabilities);
             });
 
             #endregion
@@ -92,7 +101,7 @@ namespace Bumbo.Data
 
             builder.Entity<Branch>(b =>
             {
-                
+                b.HasData(FakeData.Branches);
             });
 
             #endregion
@@ -101,12 +110,14 @@ namespace Bumbo.Data
 
             builder.Entity<Shift>(b =>
             {
-                
+                b.HasData(FakeData.Shifts);
             });
 
             builder.Entity<WorkedShift>(b =>
             {
                 b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
+                
+                b.HasData(FakeData.WorkedShifts);
             });
 
             #endregion
@@ -116,11 +127,13 @@ namespace Bumbo.Data
             builder.Entity<Forecast>(b =>
             {
                 b.HasKey(forecast => new {forecast.BranchId, forecast.Date, forecast.Department});
+                
+                b.HasData(FakeData.Forecasts);
             });
 
             builder.Entity<ForecastStandard>(b =>
             {
-                
+                b.HasData(FakeData.ForecastStandards);
             });
 
             builder.Entity<BranchForecastStandard>(b =>
@@ -130,6 +143,8 @@ namespace Bumbo.Data
                 b.HasOne(branchForecastStandard => branchForecastStandard.ForecastStandard)
                     .WithMany(forecastStandard => forecastStandard.BranchForecastStandards)
                     /* .HasForeignKey(branchForecastStandard => branchForecastStandard.Activity)*/;
+                
+                b.HasData(FakeData.BranchForecastStandards);
             });
 
             #endregion
@@ -138,7 +153,7 @@ namespace Bumbo.Data
 
             builder.Entity<ClockSystemTag>(b =>
             {
-
+                b.HasData(FakeData.ClockSystemTags);
             });
 
             #endregion
