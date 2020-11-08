@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models
 {
-    public class Forecast
+    public class Forecast : IEntity
     {
         public int BranchId { get; set; }
 
