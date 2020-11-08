@@ -11,7 +11,7 @@ namespace Bumbo.Data.Repositories.Common
     public abstract class RepositoryBase<TEntity> : RepositoryBase<TEntity, ApplicationDbContext>
         where TEntity : class, IEntity
     {
-        public RepositoryBase(ApplicationDbContext context) : base(context)
+        protected RepositoryBase(ApplicationDbContext context) : base(context)
         {
         }
     }
@@ -23,7 +23,7 @@ namespace Bumbo.Data.Repositories.Common
         protected readonly TContext Context;
         protected readonly DbSet<TEntity> DbSet;
 
-        public RepositoryBase(TContext context)
+        protected RepositoryBase(TContext context)
         {
             Context = context;
             DbSet = context.Set<TEntity>();
