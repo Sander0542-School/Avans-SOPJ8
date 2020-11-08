@@ -1,12 +1,3 @@
----
-name: Web feature
-about: Create a request to improve the web part of the Bumbo tool
-title: ''
-labels: enhancement
-assignees: ''
-
----
-
 ## Description
 A clear and concise description of what the request adds to the tool.
 
