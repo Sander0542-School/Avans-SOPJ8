@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class ClockSystemTagRepository : RepositoryBase<ClockSystemTag>
     {
-        protected ClockSystemTagRepository(ApplicationDbContext context) : base(context)
+        public ClockSystemTagRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

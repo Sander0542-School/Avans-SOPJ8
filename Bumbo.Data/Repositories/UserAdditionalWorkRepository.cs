@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class UserAdditionalWorkRepository : RepositoryBase<UserAdditionalWork>
     {
-        protected UserAdditionalWorkRepository(ApplicationDbContext context) : base(context)
+        public UserAdditionalWorkRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class ShiftRepository : RepositoryBase<Shift>
     {
-        protected ShiftRepository(ApplicationDbContext context) : base(context)
+        public ShiftRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

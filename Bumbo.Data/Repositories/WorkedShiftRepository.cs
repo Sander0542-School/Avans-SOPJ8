@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class WorkedShiftRepository : RepositoryBase<WorkedShift>
     {
-        protected WorkedShiftRepository(ApplicationDbContext context) : base(context)
+        public WorkedShiftRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

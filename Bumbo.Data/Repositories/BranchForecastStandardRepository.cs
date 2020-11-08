@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class BranchForecastStandardRepository : RepositoryBase<BranchForecastStandard>
     {
-        protected BranchForecastStandardRepository(ApplicationDbContext context) : base(context)
+        public BranchForecastStandardRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

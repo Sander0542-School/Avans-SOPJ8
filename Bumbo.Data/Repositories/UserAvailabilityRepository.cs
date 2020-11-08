@@ -5,7 +5,7 @@ namespace Bumbo.Data.Repositories
 {
     public class UserAvailabilityRepository : RepositoryBase<UserAvailability>
     {
-        protected UserAvailabilityRepository(ApplicationDbContext context) : base(context)
+        public UserAvailabilityRepository(ApplicationDbContext context) : base(context)
         {
         }
     }
