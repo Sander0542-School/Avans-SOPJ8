@@ -22,10 +22,10 @@ namespace Bumbo.Data
         public DbSet<Branch> Branches { get; set; }
         
         public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
+
+        public DbSet<WorkedShift> WorkedShifts { get; set; }
         
         public DbSet<Shift> Shifts { get; set; }
-        
-        public DbSet<WorkedShift> WorkedShifts { get; set; }
         
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
         
