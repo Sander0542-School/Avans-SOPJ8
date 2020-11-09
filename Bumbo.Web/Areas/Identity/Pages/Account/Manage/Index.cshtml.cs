@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Bumbo.Data.Models.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -58,12 +59,14 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             public DateTime Birthday { get; set; }
             
             [Required]
-            [RegularExpression(@"^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$")]
+            [DataType(DataType.Text)]
+            [ZipCode]
             [Display(Name = "Zip Code")]
             public string ZipCode { get; set; }
             
             [Required]
-            [RegularExpression(@"^[1-9][0-9]{0,4}[a-z]{0,2}$")]
+            [DataType(DataType.Text)]
+            [BuildingNumber]
             [Display(Name = "House number")]
             public string HouseNumber { get; set; }
         }
