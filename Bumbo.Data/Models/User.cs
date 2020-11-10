@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Data.Models
 {
-    public class IdentityUser : Microsoft.AspNetCore.Identity.IdentityUser<int>, IEntity
+    public class User : IdentityUser<int>, IEntity
     {
         /// <summary>
         /// Gets or sets the first name for this user.
