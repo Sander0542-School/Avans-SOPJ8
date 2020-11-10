@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Models
 {
-    public class ForecastStandard
+    public class ForecastStandard : IEntity
     {
         [Key]
         public string Activity { get; set; }
