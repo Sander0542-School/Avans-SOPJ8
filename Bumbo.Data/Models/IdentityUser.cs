@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models.Common;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Data.Models
 {
-    public class IdentityUser : Microsoft.AspNetCore.Identity.IdentityUser<int>
+    public class IdentityUser : Microsoft.AspNetCore.Identity.IdentityUser<int>, IEntity
     {
         /// <summary>
         /// Gets or sets the first name for this user.

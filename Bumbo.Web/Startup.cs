@@ -30,6 +30,8 @@ namespace Bumbo.Web
             services.AddDbContext<ApplicationDbContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.ConfigureRepositoryWrapper();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
