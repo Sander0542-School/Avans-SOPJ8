@@ -32,6 +32,8 @@ namespace Bumbo.Web
 
             services.ConfigureRepositoryWrapper();
 
+            services.AddConfig(Configuration);
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

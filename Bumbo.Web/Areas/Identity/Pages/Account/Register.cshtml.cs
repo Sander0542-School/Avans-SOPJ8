@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Bumbo.Data.Models.Validators;
+using Bumbo.Web.Models.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using IdentityUser = Bumbo.Data.Models.IdentityUser;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account
@@ -25,17 +28,20 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly BumboOptions _bumboOptions;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IOptions<BumboOptions> bumboOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _bumboOptions = bumboOptions.Value;
         }
 
         [BindProperty]
@@ -62,33 +68,33 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Middle name")]
             public string MiddleName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Date)]
             [Display(Name = "Birthday")]
             public DateTime Birthday { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [ZipCode]
             [Display(Name = "Zip Code")]
             public string ZipCode { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [BuildingNumber]
@@ -96,14 +102,20 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
             public string HouseNumber { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (!_bumboOptions.RegistrationEnabled) return RedirectToPage("Login");
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (!_bumboOptions.RegistrationEnabled) return RedirectToPage("Login");
+
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
