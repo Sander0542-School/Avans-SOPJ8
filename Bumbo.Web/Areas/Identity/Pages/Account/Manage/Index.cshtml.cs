@@ -37,33 +37,33 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Middle name")]
             public string MiddleName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
-            
+
             [Required]
             [DataType(DataType.Date)]
             [Display(Name = "Birthday")]
             public DateTime Birthday { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [ZipCode]
             [Display(Name = "Zip Code")]
             public string ZipCode { get; set; }
-            
+
             [Required]
             [DataType(DataType.Text)]
             [BuildingNumber]
@@ -126,36 +126,13 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
-            if (Input.FirstName != user.FirstName)
-            {
-                user.FirstName = Input.FirstName;
-            }
-
-            if (Input.MiddleName != user.MiddleName)
-            {
-                user.MiddleName = Input.MiddleName;
-            }
-
-            if (Input.LastName != user.LastName)
-            {
-                user.LastName = Input.LastName;
-            }
-
-            if (Input.Birthday != user.Birthday)
-            {
-                user.Birthday = Input.Birthday;
-            }
-
-            if (Input.ZipCode != user.ZipCode)
-            {
-                user.ZipCode = Input.ZipCode;
-            }
-
-            if (Input.HouseNumber != user.HouseNumber)
-            {
-                user.HouseNumber = Input.HouseNumber;
-            }
+            
+            user.FirstName = Input.FirstName;
+            user.MiddleName = Input.MiddleName;
+            user.LastName = Input.LastName;
+            user.Birthday = Input.Birthday;
+            user.ZipCode = Input.ZipCode;
+            user.HouseNumber = Input.HouseNumber;
 
             await _userManager.UpdateAsync(user);
 
