@@ -1,6 +1,8 @@
+using Bumbo.Data.Models.Common;
+
 namespace Bumbo.Data.Models
 {
-    public class BranchForecastStandard
+    public class BranchForecastStandard : IEntity
     {
         public int BranchId { get; set; }
         

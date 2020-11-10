@@ -1,9 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Models
 {
-    public class UserAvailability
+    public class UserAvailability : IEntity
     {
         public int UserId { get; set; }
 
