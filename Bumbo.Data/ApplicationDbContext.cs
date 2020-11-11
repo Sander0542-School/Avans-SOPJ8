@@ -9,11 +9,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using IdentityUser = Bumbo.Data.Models.IdentityUser;
 
 namespace Bumbo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -40,7 +39,7 @@ namespace Bumbo.Data
 
             #region Identity
             
-            builder.Entity<IdentityUser>(b =>
+            builder.Entity<User>(b =>
             {
                 b.ToTable("Users");
                 

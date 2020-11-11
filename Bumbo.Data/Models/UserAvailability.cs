@@ -16,6 +16,6 @@ namespace Bumbo.Data.Models
         public TimeSpan EndTime { get; set; }
 
 
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
     }
 }
