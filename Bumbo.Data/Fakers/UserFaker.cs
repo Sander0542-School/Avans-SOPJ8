@@ -1,10 +1,10 @@
 using Bogus;
+using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using IdentityUser = Bumbo.Data.Models.IdentityUser;
 
 namespace Bumbo.Data.Fakers
 {
-    public class UserFaker : Faker<IdentityUser>
+    public class UserFaker : Faker<User>
     {
         public UserFaker() : base("nl")
         {
@@ -26,7 +26,7 @@ namespace Bumbo.Data.Fakers
 
             FinishWith((f, o) =>
             {
-                var hasher = new PasswordHasher<IdentityUser>();
+                var hasher = new PasswordHasher<User>();
                 o.PasswordHash = hasher.HashPassword(o, "Pass1234!");
             });
         }

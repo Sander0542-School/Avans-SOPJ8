@@ -17,7 +17,7 @@ namespace Bumbo.Data.Fakers
         public static List<Shift> Shifts = new List<Shift>();
         public static List<UserAdditionalWork> UserAdditionalWorks = new List<UserAdditionalWork>();
         public static List<UserAvailability> UserAvailabilities = new List<UserAvailability>();
-        public static List<IdentityUser> Users = new List<IdentityUser>();
+        public static List<User> Users = new List<User>();
         public static List<WorkedShift> WorkedShifts = new List<WorkedShift>();
 
         public static void Init(int userCount, int branchCount)
@@ -66,7 +66,7 @@ namespace Bumbo.Data.Fakers
             Branches = branchFaker.Generate(branchCount);
 
             var userFaker = new UserFaker()
-                .CustomInstantiator(f => new IdentityUser {Id = ++userId})
+                .CustomInstantiator(f => new User {Id = ++userId})
                 .RuleFor(o => o.UserAvailabilities, f =>
                 {
                     List<int> days = new List<int> {1, 2, 3, 4, 5, 6, 7};
