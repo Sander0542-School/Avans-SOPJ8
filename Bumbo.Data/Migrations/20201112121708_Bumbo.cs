@@ -7,6 +7,15 @@ namespace Bumbo.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "ZipCode",
+                table: "Users",
+                maxLength: 7,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(7)",
+                oldMaxLength: 7);
+
             migrationBuilder.CreateTable(
                 name: "Branches",
                 columns: table => new
@@ -234,6 +243,16 @@ namespace Bumbo.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Branches");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "ZipCode",
+                table: "Users",
+                type: "nvarchar(7)",
+                maxLength: 7,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 7,
+                oldNullable: true);
         }
     }
 }

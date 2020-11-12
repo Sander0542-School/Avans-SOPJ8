@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201023225217_Bumbo")]
+    [Migration("20201112121708_Bumbo")]
     partial class Bumbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,38 @@ namespace Bumbo.Data.Migrations
                     b.ToTable("ForecastStandard");
                 });
 
-            modelBuilder.Entity("Bumbo.Data.Models.IdentityUser", b =>
+            modelBuilder.Entity("Bumbo.Data.Models.Shift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("Bumbo.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,7 +215,6 @@ namespace Bumbo.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(7)")
                         .HasMaxLength(7);
 
@@ -199,37 +229,6 @@ namespace Bumbo.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Bumbo.Data.Models.Shift", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Department")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Shifts");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.UserAdditionalWork", b =>
@@ -435,7 +434,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.ClockSystemTag", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
+                    b.HasOne("Bumbo.Data.Models.User", "User")
                         .WithMany("ClockSystemTags")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -459,7 +458,7 @@ namespace Bumbo.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
+                    b.HasOne("Bumbo.Data.Models.User", "User")
                         .WithMany("Shifts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,7 +467,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.UserAdditionalWork", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
+                    b.HasOne("Bumbo.Data.Models.User", "User")
                         .WithMany("UserAdditionalWorks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -477,7 +476,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.UserAvailability", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", "User")
+                    b.HasOne("Bumbo.Data.Models.User", "User")
                         .WithMany("UserAvailabilities")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -504,7 +503,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", null)
+                    b.HasOne("Bumbo.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -513,7 +512,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", null)
+                    b.HasOne("Bumbo.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -528,7 +527,7 @@ namespace Bumbo.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", null)
+                    b.HasOne("Bumbo.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -537,7 +536,7 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Bumbo.Data.Models.IdentityUser", null)
+                    b.HasOne("Bumbo.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
