@@ -170,6 +170,7 @@ namespace Bumbo.Data
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DatabaseConnection");
             builder.UseSqlServer(connectionString);
+            builder.EnableSensitiveDataLogging();
             return new ApplicationDbContext(builder.Options);
         }
     }

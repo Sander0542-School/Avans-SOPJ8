@@ -33,10 +33,10 @@ namespace Bumbo.Data.Fakers
                 .RuleFor(o => o.ForecastStandards, (f, o) =>
                 {
                     var forecastStandards = new Stack<ForecastStandard>(f.PickRandom(ForecastStandards, 10));
-                    
+
                     BranchForecastStandards.AddRange(new BranchForecastStandardFaker()
+                        .CustomInstantiator(f2 => new BranchForecastStandard {Activity = forecastStandards.Pop().Activity})
                         .RuleFor(o2 => o2.BranchId, branchId)
-                        .RuleFor(o2 => o2.Activity, forecastStandards.Pop().Activity)
                         .Generate(10)
                     );
 
@@ -126,9 +126,9 @@ namespace Bumbo.Data.Fakers
                     foreach (var shift in shifts)
                     {
                         if (shift.EndTime > new DateTime(2020, 12, 31)) break;
-                        
+
                         Shifts.Add(shift);
-                        
+
                         WorkedShifts.Add(new WorkedShift
                         {
                             ShiftId = shift.Id,
