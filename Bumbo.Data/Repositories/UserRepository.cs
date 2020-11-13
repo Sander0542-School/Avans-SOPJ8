@@ -22,7 +22,7 @@ namespace Bumbo.Data.Repositories
                 .Include(user => user.Shifts
                     .Where(shift => departments.Contains(shift.Department))
                     .Where(shift => shift.StartTime >= ISOWeek.ToDateTime(year, week, DayOfWeek.Monday))
-                    .Where(shift => shift.StartTime < ISOWeek.ToDateTime(year, week + 1, DayOfWeek.Monday))
+                    .Where(shift => shift.StartTime < ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(7))
                 )
                 .Include(user => user.UserAvailabilities)
                 .Include(user => user.UserAdditionalWorks)
