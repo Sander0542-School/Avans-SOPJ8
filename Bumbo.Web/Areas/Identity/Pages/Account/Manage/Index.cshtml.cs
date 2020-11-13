@@ -43,7 +43,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Middle name")]
             public string MiddleName { get; set; }
