@@ -1,0 +1,53 @@
+@using System.Globalization
+@model DepartmentViewModel
+
+@{
+    ViewBag.Title = "Afdelingsrooster";
+}
+
+<h2>Afdelingsrooster</h2>
+<h3>Week @Model.Week  @Model.Year</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Medewerker</th>
+        <th>KPU</th>
+
+        @foreach (var day in Model.DaysOfWeek)
+        {
+            <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
+        }
+
+        <th>Totaal</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var employeeShift in Model.EmployeeShifts)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => employeeShift.Name)</td>
+            <td>@Html.DisplayFor(model => employeeShift.Kpu)</td>
+
+            @foreach (var day in Model.DaysOfWeek)
+            {
+                <td>
+                    @foreach (var shift in employeeShift.Shifts.Where(shift => shift.StartTime.DayOfWeek == day))
+                    {
+                        <span>
+                            @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => shift.BreakTime)
+                        </span>
+                    }
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(model => employeeShift.PlannedTime) / @Html.DisplayFor(model => employeeShift.MaxHours)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
