@@ -29,31 +29,38 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var users = await _wrapper.User.GetUsersAndShifts(branchId, year, week, department);
-
-            return View(new DepartmentViewModel
+            try
             {
-                Year = year,
-                Week = week,
+                var users = await _wrapper.User.GetUsersAndShifts(branchId, year, week, department);
 
-                Branch = branch,
-
-                EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
+                return View(new DepartmentViewModel
                 {
-                    Name = $"{user.FirstName} {(String.IsNullOrWhiteSpace(user.MiddleName) ? "" : user.MiddleName.Concat(" "))}{user.LastName}",
+                    Year = year,
+                    Week = week,
 
-                    Contract = "TODO", //TODO
-                    MaxHours = new TimeSpan(40, 0, 0), //TODO
+                    Branch = branch,
 
-                    Kpu = 12.80, //TODO
-
-                    Shifts = user.Shifts.Select(shift => new DepartmentViewModel.Shift
+                    EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
                     {
-                        StartTime = shift.StartTime,
-                        EndTime = shift.EndTime
+                        Name = $"{user.FirstName} {(String.IsNullOrWhiteSpace(user.MiddleName) ? "" : user.MiddleName.Concat(" "))}{user.LastName}",
+
+                        Contract = "TODO", //TODO
+                        MaxHours = new TimeSpan(40, 0, 0), //TODO
+
+                        Kpu = 12.80, //TODO
+
+                        Shifts = user.Shifts.Select(shift => new DepartmentViewModel.Shift
+                        {
+                            StartTime = shift.StartTime,
+                            EndTime = shift.EndTime
+                        }).ToList()
                     }).ToList()
-                }).ToList()
-            });
+                });
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return NotFound();
+            }
         }
     }
 }
