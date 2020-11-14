@@ -6,13 +6,13 @@
 }
 
 <h2>Afdelingsrooster</h2>
-<h3>Week @Model.Week  @Model.Year</h3>
+<h3>Week @Model.Week @Model.Year</h3>
 
 <table class="table table-bordered table-striped">
-    <thead>
+    <thead class="text-center">
     <tr>
-        <th>Medewerker</th>
-        <th>KPU</th>
+        <th class="text-left">Medewerker</th>
+        <th class="text-left">KPU</th>
 
         @foreach (var day in Model.DaysOfWeek)
         {
