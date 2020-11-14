@@ -31,7 +31,7 @@ namespace Bumbo.Web.Controllers
 
             try
             {
-                var users = await _wrapper.User.GetUsersAndShifts(branchId, year, week, department);
+                var users = await _wrapper.User.GetUsersAndShifts(branch, year, week, department);
 
                 return View(new DepartmentViewModel
                 {
