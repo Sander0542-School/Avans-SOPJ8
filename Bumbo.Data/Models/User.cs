@@ -47,6 +47,8 @@ namespace Bumbo.Data.Models
         public string HouseNumber { get; set; }
         
         
+        public IList<UserContract> Contracts { get; set; }
+        
         public IList<UserAvailability> UserAvailabilities { get; set; }
         
         public IList<UserAdditionalWork> UserAdditionalWorks { get; set; }
