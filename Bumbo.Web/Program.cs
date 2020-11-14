@@ -18,6 +18,14 @@ namespace Bumbo.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseSentry();
+                })
+                .ConfigureLogging(logBuilder =>
+                {
+                    logBuilder.AddSentry();
+                });
     }
 }
