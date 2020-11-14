@@ -45,7 +45,13 @@
             }
 
             <td>
-                @Html.DisplayFor(model => employeeShift.PlannedTime) / @Html.DisplayFor(model => employeeShift.MaxHours)
+                <span class="@(employeeShift.PlannedTime > employeeShift.MaxHours ? "text-danger" : "")">
+                    @String.Format("{0:00}:{1:00}", employeeShift.PlannedTime.TotalHours, employeeShift.PlannedTime.Minutes)
+                </span>
+                <span> / </span>
+                <span>
+                    @String.Format("{0:00}:{1:00}", employeeShift.MaxHours.TotalHours, employeeShift.MaxHours.Minutes)
+                </span>
             </td>
         </tr>
     }
