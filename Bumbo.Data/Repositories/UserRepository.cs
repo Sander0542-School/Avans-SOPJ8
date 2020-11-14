@@ -16,13 +16,13 @@ namespace Bumbo.Data.Repositories
         {
         }
 
-        public async Task<List<User>> GetUsersAndShifts(int branchId, int year, int week, params Department[] departments)
+        public async Task<List<User>> GetUsersAndShifts(int branchId, int year, int week, Department department)
         {
             var startTime = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
             
             return await Context.Users
                 .Include(user => user.Shifts
-                    .Where(shift => departments.Contains(shift.Department))
+                    .Where(shift => shift.Department == department)
                     .Where(shift => shift.StartTime >= startTime)
                     .Where(shift => shift.StartTime < startTime.AddDays(7))
                 )
