@@ -32,6 +32,7 @@ namespace Bumbo.Data.Repositories
                 .Include(user => user.Branches
                     .Where(userBranch => userBranch.BranchId == branch.Id)
                 )
+                .AsSplitQuery()
                 .ToListAsync();
         }
     }
