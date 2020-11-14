@@ -54,5 +54,7 @@ namespace Bumbo.Data.Models
         public IList<ClockSystemTag> ClockSystemTags { get; set; }
         
         public IList<Shift> Shifts { get; set; }
+        
+        public IList<UserBranch> Branches { get; set; }
     }
 }

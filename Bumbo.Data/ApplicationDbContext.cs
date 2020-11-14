@@ -84,6 +84,11 @@ namespace Bumbo.Data
             {
                 b.HasKey(availability => new {availability.UserId, availability.Day});
             });
+            
+            builder.Entity<UserBranch>(b =>
+            {
+                b.HasKey(userBranch => new {userBranch.UserId, userBranch.BranchId, userBranch.Department});
+            });
 
             #endregion
 
