@@ -39,7 +39,7 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan MaxHours { get; set; }
             
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan PlannedTime => new TimeSpan(0, (int) Shifts.Sum(shift => shift.WorkingTime.TotalMinutes), 0);
+            public TimeSpan PlannedTime => new TimeSpan(Shifts.Sum(shift => shift.WorkingTime.Ticks));
 
             public List<Shift> Shifts { get; set; }
         }
