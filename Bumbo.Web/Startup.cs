@@ -32,7 +32,11 @@ namespace Bumbo.Web
                     .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
             );
             services
-                .AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddDefaultIdentity<User>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<BumboUserClaimsPrincipalFactory>();
 
