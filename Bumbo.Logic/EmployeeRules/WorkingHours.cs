@@ -17,7 +17,10 @@ namespace Bumbo.Logic.EmployeeRules
 
             var beginOfWeek = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
 
-            var shifts = user.Shifts.Where(shift => shift.StartTime >= beginOfWeek).Where(shift => shift.StartTime < beginOfWeek.AddDays(7)).ToList();
+            var shifts = user.Shifts
+                .Where(shift => shift.StartTime >= beginOfWeek)
+                .Where(shift => shift.StartTime < beginOfWeek.AddDays(7))
+                .ToList();
 
             var totalDuration = new TimeSpan(shifts
                 .Select(shift => (shift.EndTime - shift.StartTime))
