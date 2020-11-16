@@ -15,7 +15,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bumbo.Data\Bumbo.Data.csproj" />
-      <ProjectReference Include="..\Bumbo.Logic\Bumbo.Logic.csproj" />
     </ItemGroup>
 
 </Project>
