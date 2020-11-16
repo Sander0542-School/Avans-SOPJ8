@@ -7,6 +7,8 @@ using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Data.Repositories;
+using Bumbo.Logic.EmployeeRules;
+using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,17 +44,23 @@ namespace Bumbo.Web.Controllers
 
                     EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
                     {
-                        Name = $"{user.FirstName} {(String.IsNullOrWhiteSpace(user.MiddleName) ? "" : user.MiddleName.Concat(" "))}{user.LastName}",
+                        Name = UserUtil.GetFullName(user),
+                        Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
 
-                        Contract = "TODO", //TODO
-                        MaxHours = new TimeSpan(40, 0, 0), //TODO
+                        MaxHours = WorkingHours.MaxHoursPerWeek(user, year, week),
 
-                        Kpu = 12.80, //TODO
+                        Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
 
-                        Shifts = user.Shifts.Select(shift => new DepartmentViewModel.Shift
+                        Shifts = user.Shifts.Select(shift =>
                         {
-                            StartTime = shift.StartTime,
-                            EndTime = shift.EndTime
+                            var notifications = WorkingHours.ValidateWeek(user, year, week);
+
+                            return new DepartmentViewModel.Shift
+                            {
+                                StartTime = shift.StartTime,
+                                EndTime = shift.EndTime,
+                                Notifications = notifications.Where(pair => pair.Key.Id == shift.Id).Select(pair => pair.Value)
+                            };
                         }).ToList()
                     }).ToList()
                 });
