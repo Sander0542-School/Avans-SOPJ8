@@ -37,10 +37,10 @@ namespace Bumbo.Logic.EmployeeRules
                 var notifications = new List<string>();
 
                 if (tooManyHours)
-                    notifications.Add($"Deze medewerker mag niet meer dan {maxWeekHours:hh\\:mm} uur per week werken");
+                    notifications.Add($"Deze medewerker mag niet meer dan {maxWeekHours:hh\\:mm} uur per week werken.");
 
                 if (tooManyDays)
-                    notifications.Add($"Deze medewerker mag niet meer dan {maxDays} dagen per week werken");
+                    notifications.Add($"Deze medewerker mag niet meer dan {maxDays} dagen per week werken.");
 
                 notifications.AddRange(ValidateShift(user, shift));
 
@@ -61,15 +61,15 @@ namespace Bumbo.Logic.EmployeeRules
             var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.StartTime.DayOfWeek);
 
             if (age < 16 && shift.EndTime.TimeOfDay > new TimeSpan(19, 0, 0))
-                notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken");
+                notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken.");
 
             if (shiftDuration > maxHours)
-                notifications.Add($"Deze medewerker mag deze dag niet meer dan {maxHours:hh\\:mm} uur werken");
+                notifications.Add($"Deze medewerker mag deze dag niet meer dan {maxHours:hh\\:mm} uur werken.");
 
             if (availability == null)
-                notifications.Add("Deze medewerker wil deze dag niet werken");
+                notifications.Add("Deze medewerker wil deze dag niet werken.");
             else if (!ShiftBetweenAvailableTime(shift, availability))
-                notifications.Add($"Deze medewerker wil deze dag tussen {availability.StartTime:hh\\:mm} en {availability.EndTime:hh\\:mm} werken");
+                notifications.Add($"Deze medewerker wil deze dag tussen {availability.StartTime:hh\\:mm} en {availability.EndTime:hh\\:mm} werken.");
 
             return notifications;
         }
