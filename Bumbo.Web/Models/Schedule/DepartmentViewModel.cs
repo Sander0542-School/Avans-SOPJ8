@@ -64,7 +64,7 @@ namespace Bumbo.Web.Models.Schedule
             public DateTime EndTime { get; set; }
             
             [DisplayName("Meldingen")]
-            public IEnumerable<List<string>> Notifications { get; set; }
+            public IEnumerable<string> Notifications { get; set; }
 
             [DisplayName("Pauzeduur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]

@@ -59,7 +59,7 @@ namespace Bumbo.Web.Controllers
                             {
                                 StartTime = shift.StartTime,
                                 EndTime = shift.EndTime,
-                                Notifications = notifications.Where(pair => pair.Key.Id == shift.Id).Select(pair => pair.Value)
+                                Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
                             };
                         }).ToList()
                     }).ToList()

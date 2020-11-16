@@ -13,7 +13,7 @@ namespace Bumbo.Logic.EmployeeRules
         {
             ValidateUserProperties(user);
 
-            var wrongShifts = new Dictionary<Shift, List<string>>();
+            var shiftNotifications = new Dictionary<Shift, List<string>>();
 
             var beginOfWeek = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
 
@@ -44,11 +44,10 @@ namespace Bumbo.Logic.EmployeeRules
 
                 notifications.AddRange(ValidateShift(user, shift));
 
-                if (notifications.Count > 0)
-                    wrongShifts.Add(shift, notifications);
+                shiftNotifications.Add(shift, notifications);
             }
 
-            return wrongShifts;
+            return shiftNotifications;
         }
 
         public static IEnumerable<string> ValidateShift(User user, Shift shift)
