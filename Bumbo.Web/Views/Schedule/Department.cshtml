@@ -11,8 +11,8 @@
 <table class="table table-bordered table-striped">
     <thead class="text-center">
     <tr>
-        <th class="text-left">Medewerker</th>
-        <th class="text-left">KPU</th>
+        <th class="text-left">@Html.DisplayNameFor(model => model.EmployeeShifts.FirstOrDefault().Name)</th>
+        <th class="text-left">@Html.DisplayNameFor(model => model.EmployeeShifts.FirstOrDefault().Scale)</th>
 
         @foreach (var day in Model.DaysOfWeek)
         {
@@ -26,8 +26,16 @@
     @foreach (var employeeShift in Model.EmployeeShifts)
     {
         <tr>
-            <td>@Html.DisplayFor(model => employeeShift.Name)</td>
-            <td>@Html.DisplayFor(model => employeeShift.Kpu)</td>
+            <td>
+                @if (employeeShift.Shifts.Any(shift => shift.Notifications.Any()))
+                {
+                    <span>!!</span>
+                }
+                @Html.DisplayFor(model => employeeShift.Name)
+                <br/>
+                @Html.DisplayFor(model => employeeShift.Contract)
+            </td>
+            <td>@Html.DisplayFor(model => employeeShift.Scale)</td>
 
             @foreach (var day in Model.DaysOfWeek)
             {
