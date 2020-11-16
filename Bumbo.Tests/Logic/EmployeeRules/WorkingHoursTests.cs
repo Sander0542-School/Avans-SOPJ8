@@ -404,7 +404,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(18, 0, 0),
                     }
@@ -433,7 +433,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(18, 0, 0),
                     }
@@ -462,7 +462,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(18, 0, 0),
                     }
@@ -491,7 +491,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(19, 0, 0),
                     }
@@ -520,7 +520,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
                         EndTime = new TimeSpan(19, 0, 0),
                     }
@@ -549,7 +549,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(21, 0, 0),
                     }
@@ -578,7 +578,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
                         EndTime = new TimeSpan(21, 0, 0),
                     }
@@ -607,7 +607,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
                         EndTime = new TimeSpan(19, 0, 0),
                     }
@@ -636,7 +636,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
                         EndTime = new TimeSpan(21, 0, 0),
                     }
@@ -665,7 +665,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(7, 0, 0),
                         EndTime = new TimeSpan(23, 0, 0),
                     }
@@ -694,7 +694,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAvailability
                     {
-                        Day = date.Day,
+                        Day = date.DayOfWeek,
                         StartTime = new TimeSpan(7, 0, 0),
                         EndTime = new TimeSpan(23, 0, 0),
                     }

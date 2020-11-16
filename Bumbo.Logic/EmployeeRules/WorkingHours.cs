@@ -59,7 +59,7 @@ namespace Bumbo.Logic.EmployeeRules
             var shiftDuration = shift.EndTime - shift.StartTime;
             var maxHours = MaxHoursPerDay(user, shift.StartTime.Day);
 
-            var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.StartTime.Day);
+            var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.StartTime.DayOfWeek);
 
             if (age < 16 && shift.EndTime.TimeOfDay > new TimeSpan(19, 0, 0))
                 notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken");
