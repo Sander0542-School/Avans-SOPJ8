@@ -5,8 +5,20 @@
     ViewBag.Title = "Afdelingsrooster";
 }
 
-<h2>Afdelingsrooster</h2>
-<h3>Week @Model.Week @Model.Year</h3>
+<div class="row">
+    <div class="col-2">
+        <h4>
+            @Html.DisplayFor(model => model.Week)
+            <span class="font-weight-normal">
+                @Html.DisplayFor(model => model.Year)
+            </span>
+        </h4>
+    </div>
+    <div class="col">
+        <h5>@ViewBag.Title</h5>
+    </div>
+
+</div>
 
 <table class="table table-bordered table-striped">
     <thead class="text-center">

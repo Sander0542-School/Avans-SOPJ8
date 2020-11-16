@@ -13,6 +13,7 @@ namespace Bumbo.Web.Models.Schedule
         public int Year { get; set; }
         
         [DisplayName("Week")]
+        [DisplayFormat(DataFormatString = "Week {0}")]
         public int Week { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
