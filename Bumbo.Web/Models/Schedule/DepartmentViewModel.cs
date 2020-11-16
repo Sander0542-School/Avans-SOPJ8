@@ -56,11 +56,11 @@ namespace Bumbo.Web.Models.Schedule
         public class Shift
         {
             [DisplayName("Starttijd")]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
             public DateTime StartTime { get; set; }
             
             [DisplayName("Eindtijd")]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
             public DateTime EndTime { get; set; }
             
             [DisplayName("Meldingen")]
