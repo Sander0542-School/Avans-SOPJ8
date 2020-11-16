@@ -39,32 +39,69 @@
     {
         <tr>
             <td>
-                @if (employeeShift.Shifts.Any(shift => shift.Notifications.Any()))
-                {
-                    <span>!!</span>
-                }
-                @Html.DisplayFor(model => employeeShift.Name)
-                <br/>
-                @Html.DisplayFor(model => employeeShift.Contract)
+                <span class="fa-stack fa-sm align-super">
+                    @if (employeeShift.Shifts.Any(shift => shift.Notifications.Any()))
+                    {
+                        <i class="fa fa-stack-2x fa-square text-warning"></i>
+                        <i class="fa fa-stack-1x fa-exclamation text-white"></i>
+                    }
+                </span>
+                <span class="d-inline-block">
+                    @Html.DisplayFor(model => employeeShift.Name)
+                    <br/>
+                    <span class="text-secondary">
+                        @Html.DisplayFor(model => employeeShift.Contract)
+                    </span>
+                </span>
+                <span class="align-super float-right">
+                    <i class="fa fa-angle-down"></i>
+                </span>
             </td>
-            <td>@Html.DisplayFor(model => employeeShift.Scale)</td>
+            <td class="align-middle">@Html.DisplayFor(model => employeeShift.Scale)</td>
 
             @foreach (var day in Model.DaysOfWeek)
             {
-                <td>
+                <td class="align-middle">
                     @foreach (var shift in employeeShift.Shifts.Where(shift => shift.StartTime.DayOfWeek == day))
                     {
                         <span>
+                            @if (shift.Notifications.Any())
+                            {
+                                <span class="fa-stack fa-sm"
+                                      data-toggle="tooltip"
+                                      data-placement="bottom"
+                                      data-html="true"
+                                      title="<ul class='list-unstyled'>@foreach (var notification in shift.Notifications) {<li>@notification</li>}</ul>">
+
+                                    <i class="fa fa-stack-2x fa-square text-warning"></i>
+                                    <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="fa-stack fa-sm">
+                                    <i class="fa fa-stack-2x fa-square"></i>
+                                    <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                </span>
+                            }
                             @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
                         </span>
-                        <span>
-                            @Html.DisplayFor(model => shift.BreakTime)
-                        </span>
+                        @if (shift.BreakTime.Ticks > 0)
+                        {
+                            <br/>
+                            <span>
+                                <span class="fa-stack fa-sm">
+                                    <i class="fa fa-stack-2x fa-square"></i>
+                                    <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                </span>
+                                @Html.DisplayFor(model => shift.BreakTime)
+                            </span>
+                        }
                     }
                 </td>
             }
 
-            <td>
+            <td class="align-middle">
                 <span class="@(employeeShift.PlannedTime > employeeShift.MaxHours ? "text-danger" : "")">
                     @($"{employeeShift.PlannedTime.TotalHours:00}:{employeeShift.PlannedTime.Minutes:00}")
                 </span>
