@@ -46,11 +46,11 @@
 
             <td>
                 <span class="@(employeeShift.PlannedTime > employeeShift.MaxHours ? "text-danger" : "")">
-                    @String.Format("{0:00}:{1:00}", employeeShift.PlannedTime.TotalHours, employeeShift.PlannedTime.Minutes)
+                    @($"{employeeShift.PlannedTime.TotalHours:00}:{employeeShift.PlannedTime.Minutes:00}")
                 </span>
                 <span> / </span>
                 <span>
-                    @String.Format("{0:00}:{1:00}", employeeShift.MaxHours.TotalHours, employeeShift.MaxHours.Minutes)
+                    @($"{employeeShift.MaxHours.TotalHours:00}:{employeeShift.MaxHours.Minutes:00}")
                 </span>
             </td>
         </tr>
