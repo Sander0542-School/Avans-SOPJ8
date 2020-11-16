@@ -75,6 +75,11 @@ namespace Bumbo.Data
 
             #region Users
 
+            builder.Entity<UserContract>(b =>
+            {
+                b.ToTable("Contracts");
+            });
+
             builder.Entity<UserAdditionalWork>(b =>
             {
                 b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
