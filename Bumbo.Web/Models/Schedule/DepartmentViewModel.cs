@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Bumbo.Data.Models;
@@ -8,7 +9,10 @@ namespace Bumbo.Web.Models.Schedule
 {
     public class DepartmentViewModel
     {
+        [DisplayName("Jaar")]
         public int Year { get; set; }
+        
+        [DisplayName("Week")]
         public int Week { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
@@ -28,16 +32,20 @@ namespace Bumbo.Web.Models.Schedule
 
         public class EmployeeShift
         {
+            [DisplayName("Naam")]
             public string Name { get; set; }
             
+            [DisplayName("Contract")]
             public string Contract { get; set; }
             
-            [DisplayFormat(DataFormatString = "{0:C}")]
-            public double Kpu { get; set; }
+            [DisplayName("Schaal")]
+            public int Scale { get; set; }
             
+            [DisplayName("Maximale uren")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan MaxHours { get; set; }
             
+            [DisplayName("Ingeplande tijd")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan PlannedTime => new TimeSpan(Shifts.Sum(shift => shift.WorkingTime.Ticks));
 
@@ -46,12 +54,18 @@ namespace Bumbo.Web.Models.Schedule
 
         public class Shift
         {
+            [DisplayName("Starttijd")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public DateTime StartTime { get; set; }
             
+            [DisplayName("Eindtijd")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public DateTime EndTime { get; set; }
+            
+            [DisplayName("Meldingen")]
+            public IEnumerable<List<string>> Notifications { get; set; }
 
+            [DisplayName("Pauzeduur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan BreakTime
             {
@@ -71,9 +85,11 @@ namespace Bumbo.Web.Models.Schedule
                 }
             }
 
+            [DisplayName("Werkduur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan WorkingTime => TotalTime.Subtract(BreakTime);
             
+            [DisplayName("Totale duur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
