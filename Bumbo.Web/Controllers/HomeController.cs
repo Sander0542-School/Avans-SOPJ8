@@ -20,6 +20,8 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Index()
         {
+            throw new Exception(DateTime.Now.ToString("yyyy-M-d dddd HH:mm:ss"));
+            
             return View();
         }
 
