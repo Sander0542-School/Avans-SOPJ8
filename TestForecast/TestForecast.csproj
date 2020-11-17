@@ -2,7 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bumbo.Data\Bumbo.Data.csproj" />
+    <ProjectReference Include="..\Bumbo.Logic\Bumbo.Logic.csproj" />
+  </ItemGroup>
 
 </Project>
