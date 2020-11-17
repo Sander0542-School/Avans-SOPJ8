@@ -9,12 +9,12 @@ namespace Bumbo.Logic.EmployeeRules
         {
             var minutes = 0;
 
-            if (shiftDuration.TotalMinutes > 270) // 4.5 hours
+            if (shiftDuration.TotalMinutes >= 270) // 4.5 hours
             {
                 minutes = 30;
             }
 
-            if (shiftDuration.TotalMinutes > 480) // 8 hours
+            if (shiftDuration.TotalMinutes >= 480) // 8 hours
             {
                 minutes = 60;
             }
