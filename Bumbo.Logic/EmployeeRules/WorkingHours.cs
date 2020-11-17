@@ -7,7 +7,7 @@ using Bumbo.Logic.Utils;
 
 namespace Bumbo.Logic.EmployeeRules
 {
-    public class WorkingHours
+    public static class WorkingHours
     {
         public static Dictionary<Shift, List<string>> ValidateWeek(User user, int year, int week)
         {
