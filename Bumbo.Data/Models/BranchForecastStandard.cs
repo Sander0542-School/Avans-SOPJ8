@@ -9,6 +9,7 @@ namespace Bumbo.Data.Models
         
         public ForecastActivity Activity { get; set; }
         
+        /// <inheritdoc cref="ForecastStandard.Value"/>
         public int Value { get; set; }
         
         
