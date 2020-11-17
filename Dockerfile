@@ -7,11 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY [".git/"]
 COPY ["Bumbo.Web/Bumbo.Web.csproj", "Bumbo.Web/"]
 COPY ["Bumbo.Data/Bumbo.Data.csproj", "Bumbo.Data/"]
 RUN dotnet restore "Bumbo.Web/Bumbo.Web.csproj"
 COPY . .
+COPY [".git/", ".git/"]
 WORKDIR "/src/Bumbo.Web"
 RUN dotnet build "Bumbo.Web.csproj" -c Release -o /app/build
 
