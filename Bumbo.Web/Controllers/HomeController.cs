@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception(DateTime.Now.ToString("yyyy-M-d dddd HH:mm:ss"));
+            throw new DataException(DateTime.Now.ToString("yyyy-M-d dddd HH:mm:ss"));
             
             return View();
         }
