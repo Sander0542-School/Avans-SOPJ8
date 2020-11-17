@@ -1,12 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Data", "Bumbo.Data\Bumbo.Data.csproj", "{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Data", "Bumbo.Data\Bumbo.Data.csproj", "{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Logic", "Bumbo.Logic\Bumbo.Logic.csproj", "{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Logic", "Bumbo.Logic\Bumbo.Logic.csproj", "{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestForecast", "TestForecast\TestForecast.csproj", "{C5DC0278-5F43-46AE-8145-B15A69981F16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,15 @@ Global
 		{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5DC0278-5F43-46AE-8145-B15A69981F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5DC0278-5F43-46AE-8145-B15A69981F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5DC0278-5F43-46AE-8145-B15A69981F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5DC0278-5F43-46AE-8145-B15A69981F16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BB79280-47E1-4A78-9146-E14D35BD4F28}
 	EndGlobalSection
 EndGlobal
