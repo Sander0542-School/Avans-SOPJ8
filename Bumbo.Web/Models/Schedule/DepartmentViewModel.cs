@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Bumbo.Data.Models;
+using Bumbo.Logic.EmployeeRules;
 
 namespace Bumbo.Web.Models.Schedule
 {
@@ -68,23 +69,7 @@ namespace Bumbo.Web.Models.Schedule
 
             [DisplayName("Pauzeduur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan BreakTime
-            {
-                get
-                {
-                    if (TotalTime.TotalMinutes > 480)
-                    {
-                        return new TimeSpan(0, 60, 0);
-                    }
-
-                    if (TotalTime.TotalMinutes > 270)
-                    {
-                        return new TimeSpan(0, 30, 0);
-                    }
-
-                    return new TimeSpan(0, 0, 0);
-                }
-            }
+            public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
             [DisplayName("Werkduur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
