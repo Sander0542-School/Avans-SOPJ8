@@ -27,5 +27,7 @@ namespace Bumbo.Data.Models
         public IList<Shift> Shifts { get; set; }
         
         public IList<UserBranch> Users { get; set; }
+        
+        public IList<BranchManager> Managers { get; set; }
     }
 }

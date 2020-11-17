@@ -104,6 +104,13 @@ namespace Bumbo.Data
                 
             });
 
+            builder.Entity<BranchManager>(b =>
+            {
+                b.HasKey(branchManager => new {branchManager.UserId, branchManager.BranchId});
+                
+                b.ToTable("BranchManagers");
+            });
+
             #endregion
 
             #region Shifts
