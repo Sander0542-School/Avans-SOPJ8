@@ -9,7 +9,7 @@ namespace Bumbo.Data.Models
         
         public ForecastActivity Activity { get; set; }
         
-        public string Value { get; set; }
+        public int Value { get; set; }
         
         
         public Branch Branch { get; set; }

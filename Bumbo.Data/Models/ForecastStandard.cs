@@ -10,7 +10,7 @@ namespace Bumbo.Data.Models
         [Key]
         public ForecastActivity Activity { get; set; }
         
-        public string Value { get; set; }
+        public int Value { get; set; }
         
         
         public IList<BranchForecastStandard> BranchForecastStandards { get; set; }
