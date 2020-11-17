@@ -47,6 +47,8 @@ namespace Bumbo.Data.Models
         public string HouseNumber { get; set; }
         
         
+        public IList<UserContract> Contracts { get; set; }
+        
         public IList<UserAvailability> UserAvailabilities { get; set; }
         
         public IList<UserAdditionalWork> UserAdditionalWorks { get; set; }
@@ -54,5 +56,9 @@ namespace Bumbo.Data.Models
         public IList<ClockSystemTag> ClockSystemTags { get; set; }
         
         public IList<Shift> Shifts { get; set; }
+        
+        public IList<UserBranch> Branches { get; set; }
+        
+        public IList<BranchManager> ManagerBranches { get; set; }
     }
 }

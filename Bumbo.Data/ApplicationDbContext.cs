@@ -80,6 +80,11 @@ namespace Bumbo.Data
 
             #region Users
 
+            builder.Entity<UserContract>(b =>
+            {
+                b.ToTable("Contracts");
+            });
+
             builder.Entity<UserAdditionalWork>(b =>
             {
                 b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
@@ -93,6 +98,11 @@ namespace Bumbo.Data
                 
                 b.HasData(FakeData.UserAvailabilities);
             });
+            
+            builder.Entity<UserBranch>(b =>
+            {
+                b.HasKey(userBranch => new {userBranch.UserId, userBranch.BranchId, userBranch.Department});
+            });
 
             #endregion
 
@@ -101,6 +111,13 @@ namespace Bumbo.Data
             builder.Entity<Branch>(b =>
             {
                 b.HasData(FakeData.Branches);
+            });
+
+            builder.Entity<BranchManager>(b =>
+            {
+                b.HasKey(branchManager => new {branchManager.UserId, branchManager.BranchId});
+                
+                b.ToTable("BranchManagers");
             });
 
             #endregion

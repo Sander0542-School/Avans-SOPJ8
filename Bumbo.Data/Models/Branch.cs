@@ -25,5 +25,9 @@ namespace Bumbo.Data.Models
         public IList<BranchForecastStandard> ForecastStandards { get; set; }
         
         public IList<Shift> Shifts { get; set; }
+        
+        public IList<UserBranch> Users { get; set; }
+        
+        public IList<BranchManager> Managers { get; set; }
     }
 }

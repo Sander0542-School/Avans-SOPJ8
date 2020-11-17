@@ -4,14 +4,16 @@ using Bumbo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201114151048_AddContractsToUser")]
+    partial class AddContractsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,21 +63,6 @@ namespace Bumbo.Data.Migrations
                     b.HasIndex("Activity");
 
                     b.ToTable("BranchForecastStandard");
-                });
-
-            modelBuilder.Entity("Bumbo.Data.Models.BranchManager", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "BranchId");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("BranchManagers");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.ClockSystemTag", b =>
@@ -496,25 +483,6 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("ForecastStandard");
                 });
 
-            modelBuilder.Entity("Bumbo.Data.Models.BranchManager", b =>
-                {
-                    b.HasOne("Bumbo.Data.Models.Branch", "Branch")
-                        .WithMany("Managers")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bumbo.Data.Models.User", "User")
-                        .WithMany("ManagerBranches")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Bumbo.Data.Models.ClockSystemTag", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.User", "User")
@@ -676,8 +644,6 @@ namespace Bumbo.Data.Migrations
 
                     b.Navigation("ForecastStandards");
 
-                    b.Navigation("Managers");
-
                     b.Navigation("Shifts");
 
                     b.Navigation("Users");
@@ -700,8 +666,6 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("ClockSystemTags");
 
                     b.Navigation("Contracts");
-
-                    b.Navigation("ManagerBranches");
 
                     b.Navigation("Shifts");
 
