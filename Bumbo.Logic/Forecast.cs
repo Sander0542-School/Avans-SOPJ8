@@ -23,7 +23,7 @@ namespace Bumbo.Logic
             throw new System.NotImplementedException();
         }
 
-        public int AmountOfPeopleExpected()
+        public int NumberOfCustomersExpected()
         {
             throw new System.NotImplementedException();
         }
