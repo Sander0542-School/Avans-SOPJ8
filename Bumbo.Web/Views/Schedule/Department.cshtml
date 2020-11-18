@@ -136,8 +136,11 @@
                 </div>
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input asp-for="Input.ShiftId" class="form-control" hidden/>
-                    <input asp-for="Input.UserId" class="form-control" hidden/>
+                    <input asp-for="Input.ShiftId" hidden/>
+                    <input asp-for="Input.UserId" hidden/>
+                    
+                    <input asp-for="Year" hidden/>
+                    <input asp-for="Week" hidden/>
 
                     <div class="form-group">
                         <label asp-for="Input.UserName"></label>
