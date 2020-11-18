@@ -85,3 +85,11 @@ body {
 .fa-sm {
   font-size:0.63em;
 }
+
+/* Font Awesome
+-------------------------------------------------- */
+@media print {
+    @page {size: landscape}
+    
+    
+}
