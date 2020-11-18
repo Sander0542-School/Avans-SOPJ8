@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("Branches/{branchId}/{controller}/{year}/{week}/{action=Index}")]
+    [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class ScheduleController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -24,7 +24,7 @@ namespace Bumbo.Web.Controllers
             _wrapper = wrapper;
         }
 
-        [Route("{department}")]
+        [Route("{year}/{week}/{department}")]
         public async Task<IActionResult> Department(int branchId, int year, int week, Department department)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -39,11 +39,14 @@ namespace Bumbo.Web.Controllers
                 {
                     Year = year,
                     Week = week,
+                    
+                    Department = department,
 
                     Branch = branch,
 
                     EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
                     {
+                        UserId = user.Id,
                         Name = UserUtil.GetFullName(user),
                         Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
 
@@ -57,6 +60,7 @@ namespace Bumbo.Web.Controllers
 
                             return new DepartmentViewModel.Shift
                             {
+                                Id = shift.Id,
                                 StartTime = shift.StartTime,
                                 EndTime = shift.EndTime,
                                 Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
