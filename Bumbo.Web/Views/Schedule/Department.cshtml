@@ -62,9 +62,11 @@
 
             @foreach (var day in Model.DaysOfWeek)
             {
-                <td class="align-middle">
-                    @foreach (var shift in employeeShift.Shifts.Where(shift => shift.StartTime.DayOfWeek == day))
-                    {
+                @if (employeeShift.Shifts.Any(shift => shift.StartTime.DayOfWeek == day))
+                {
+                    var shift = employeeShift.Shifts.First(shift => shift.StartTime.DayOfWeek == day);
+
+                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{shift.StartTime:yyyy-MM-dd}', '{shift.StartTime:HH\\:mm}', '{shift.EndTime:HH\\:mm}'"))">
                         <span>
                             @if (shift.Notifications.Any())
                             {
@@ -86,20 +88,26 @@
                                 </span>
                             }
                             @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
-                        </span>
-                        @if (shift.BreakTime.Ticks > 0)
-                        {
-                            <br/>
-                            <span>
-                                <span class="fa-stack fa-sm">
-                                    <i class="fa fa-stack-2x fa-square"></i>
-                                    <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                            @if (shift.BreakTime.Ticks > 0)
+                            {
+                                <br/>
+                                <span>
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fa fa-stack-2x fa-square"></i>
+                                        <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                    </span>
+                                    @Html.DisplayFor(model => shift.BreakTime)
                                 </span>
-                                @Html.DisplayFor(model => shift.BreakTime)
-                            </span>
-                        }
-                    }
-                </td>
+                            }
+                        </span>
+                    </td>
+                }
+                else
+                {
+                    <td class="c-pointer" onclick="shiftModal(@($"'', {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','',''"))">
+
+                    </td>
+                }
             }
 
             <td class="align-middle">
