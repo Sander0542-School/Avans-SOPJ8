@@ -28,7 +28,7 @@ namespace Bumbo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options
                     .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
