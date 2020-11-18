@@ -76,6 +76,10 @@ body {
   vertical-align: super;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
 /* Font Awesome
 -------------------------------------------------- */
 .fa-sm {
