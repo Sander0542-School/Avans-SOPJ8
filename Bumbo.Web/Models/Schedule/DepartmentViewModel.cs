@@ -22,6 +22,8 @@ namespace Bumbo.Web.Models.Schedule
         [DisplayName("Afdeling")]
         public Department Department { get; set; }
 
+        public InputShift Input { get; set; }
+
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
         public Branch Branch { get; set; }
@@ -87,6 +89,33 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayName("Totale duur")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
+        }
+
+        public class InputShift
+        {
+            public int? ShiftId { get; set; }
+
+            public int UserId { get; set; }
+
+            [DisplayName("Medewerker")]
+            public string UserName { get; set; }
+
+            [DisplayName("Afdeling")]
+            public Department Department { get; set; }
+
+            [DisplayName("Datum")]
+            [DataType(DataType.Date)]
+            public DateTime Date { get; set; }
+
+            [DisplayName("Starttijd")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan StartTime { get; set; }
+
+            [DisplayName("Eindtijd")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan EndTime { get; set; }
         }
     }
 }
