@@ -1,10 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Data", "Bumbo.Data\Bumbo.Data.csproj", "{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Data", "Bumbo.Data\Bumbo.Data.csproj", "{CFB7355E-85A3-4D4E-9709-25AD8B8815DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Web", "Bumbo.Web\Bumbo.Web.csproj", "{3E6781A5-6C44-4F8B-A1A6-38C01BABB61D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumbo.Tests.Integration", "Bumbo.Tests.Integration\Bumbo.Tests.Integration.csproj", "{5F2F9575-E102-45DC-A6C9-BCC5657939DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,15 @@ Global
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2F9575-E102-45DC-A6C9-BCC5657939DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2F9575-E102-45DC-A6C9-BCC5657939DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2F9575-E102-45DC-A6C9-BCC5657939DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2F9575-E102-45DC-A6C9-BCC5657939DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A04F3255-0784-43B8-B461-1CD836359BB6}
 	EndGlobalSection
 EndGlobal
