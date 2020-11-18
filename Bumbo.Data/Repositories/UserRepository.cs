@@ -20,14 +20,11 @@ namespace Bumbo.Data.Repositories
         {
             var startTime = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
 
-            var users = await Context.Set<UserBranch>()
-                .Where(userBranch => userBranch.BranchId == branch.Id)
-                .Where(userBranch => userBranch.Department == department)
-                .Select(userBranch => userBranch.UserId)
-                .ToListAsync();
-
             return await Context.Users
-                .Where(user => users.Contains(user.Id))
+                .Where(user => user.Branches.Any(userBranch => userBranch.BranchId == branch.Id))
+                .Where(user => user.Branches.Any(userBranch => userBranch.Department == department))
+                .Where(user => user.Contracts.Any(contract => contract.StartDate < startTime))
+                .Where(user => user.Contracts.Any(contract => contract.EndDate >= startTime))
                 .Include(user => user.Shifts
                     .Where(shift => shift.BranchId == branch.Id)
                     .Where(shift => shift.Department == department)
