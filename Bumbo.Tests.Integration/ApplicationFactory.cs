@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+// Based on: https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0#customize-webapplicationfactory
 namespace Bumbo.Tests.Integration
 {
     public class ApplicationFactory<TStartup>
@@ -17,12 +18,15 @@ namespace Bumbo.Tests.Integration
         {
             builder.ConfigureServices(services =>
             {
+
+                // Remove normal dbContext
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType ==
                          typeof(DbContextOptions<ApplicationDbContext>));
 
                 services.Remove(descriptor);
 
+                // Setup in memory database
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
