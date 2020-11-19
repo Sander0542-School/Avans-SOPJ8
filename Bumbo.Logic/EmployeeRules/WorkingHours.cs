@@ -18,8 +18,8 @@ namespace Bumbo.Logic.EmployeeRules
             var beginOfWeek = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
 
             var shifts = user.Shifts
-                .Where(shift => shift.StartTime >= beginOfWeek)
-                .Where(shift => shift.StartTime < beginOfWeek.AddDays(7))
+                .Where(shift => shift.Date >= beginOfWeek)
+                .Where(shift => shift.Date < beginOfWeek.AddDays(7))
                 .ToList();
 
             var totalDuration = new TimeSpan(shifts
@@ -30,7 +30,7 @@ namespace Bumbo.Logic.EmployeeRules
             var tooManyHours = totalDuration > maxWeekHours;
 
             var maxDays = MaxDayPerAWeek(user);
-            var tooManyDays = shifts.Select(shift => shift.StartTime.Day).Distinct().Count() > maxDays;
+            var tooManyDays = shifts.Select(shift => shift.Date.DayOfWeek).Distinct().Count() > maxDays;
 
             foreach (var shift in shifts)
             {
@@ -56,11 +56,11 @@ namespace Bumbo.Logic.EmployeeRules
 
             var age = UserUtil.GetAge(user);
             var shiftDuration = shift.EndTime - shift.StartTime;
-            var maxHours = MaxHoursPerDay(user, shift.StartTime.Day);
+            var maxHours = MaxHoursPerDay(user, shift.Date.DayOfWeek);
 
-            var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.StartTime.DayOfWeek);
+            var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.Date.DayOfWeek);
 
-            if (age < 16 && shift.EndTime.TimeOfDay > new TimeSpan(19, 0, 0))
+            if (age < 16 && shift.EndTime > new TimeSpan(19, 0, 0))
                 notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken.");
 
             if (shiftDuration > maxHours)
@@ -76,9 +76,9 @@ namespace Bumbo.Logic.EmployeeRules
 
         public static bool ShiftBetweenAvailableTime(Shift shift, UserAvailability availability)
         {
-            if (shift.StartTime.TimeOfDay < availability.StartTime)
+            if (shift.StartTime < availability.StartTime)
                 return false;
-            if (shift.EndTime.TimeOfDay > availability.EndTime)
+            if (shift.EndTime > availability.EndTime)
                 return false;
 
             return true;
@@ -102,7 +102,7 @@ namespace Bumbo.Logic.EmployeeRules
             return new TimeSpan(maxHours, 0, 0);
         }
 
-        public static TimeSpan MaxHoursPerDay(User user, int day)
+        public static TimeSpan MaxHoursPerDay(User user, DayOfWeek day)
         {
             var age = UserUtil.GetAge(user);
 
