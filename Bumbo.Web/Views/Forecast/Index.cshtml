@@ -1,25 +1,26 @@
-﻿@model IEnumerable<Bumbo.Data.Models.Forecast>
+﻿@model Bumbo.Web.Models.Forecast.ForecastViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Prognose voor: @Model.Branch.Name</h1>
+<h4>Jaar: @Model.Year Week: @Model.WeekNr</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-branchId="@Model.Branch.Id">Create New</a>
 </p>
 <table class="table">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Branch.Name)
+            @Html.DisplayNameFor(model => model.Forecasts.First().Department)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Department)
+            @Html.DisplayNameFor(model => model.Forecasts.First().Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WorkingHours)
+            @Html.DisplayNameFor(model => model.Forecasts.First().WorkingHours)
         </th>
 
 
@@ -27,13 +28,13 @@
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Forecasts) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Branch.Name)
+            @Html.DisplayFor(modelItem => item.Department)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Department)
+            @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.WorkingHours)
