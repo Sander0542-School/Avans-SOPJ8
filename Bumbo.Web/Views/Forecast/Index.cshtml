@@ -2,50 +2,85 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var partialRouteData = new Dictionary<string, string>()
+    {
+        {
+            "branchId",
+            @Model.Branch.Id.ToString()
+        },
+        {
+            "year",
+            @Model.Year.ToString()
+        }
+    };
+
+    Model.resetRouteValues.Add("branchId", Model.Branch.Id.ToString());
+}
+
+@section Styles {
+    <style type="text/css">
+        .forecast-week-navigation {
+            display: flex;
+            align-items: center;
+        }
+        .forecast-week-navigation > * {
+            margin-right: 1em;
+        }
+    </style>
 }
 
 <h1>Prognose voor: @Model.Branch.Name</h1>
-<h4>Jaar: @Model.Year Week: @Model.WeekNr</h4>
+
+<div class="forecast-week-navigation">
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr-1)">Vorige week</a>
+    
+    <a asp-action="Index" asp-all-route-data="@Model.resetRouteValues">Huidige week</a>
+
+    <strong>Jaar: @Model.Year Week: @Model.WeekNr</strong>
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr+1)">Volgende week</a>
+</div>
 
 <p>
     <a asp-action="Create" asp-route-branchId="@Model.Branch.Id">Create New</a>
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Forecasts.First().Department)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Forecasts.First().Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Forecasts.First().WorkingHours)
-        </th>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.First().Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.First().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.First().WorkingHours)
+            </th>
 
 
-        <th></th>
-    </tr>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Forecasts) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkingHours)
-        </td>
+        @foreach (var item in Model.Forecasts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkingHours)
+                </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-            @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
-        </td>
-    </tr>
-}
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -26,23 +26,34 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Forecast
-        [Route("{year=0}/{weekNr=0}")]
-        public async Task<IActionResult> Index(int branchId, int year, int weekNr)
+        [Route("{year}/{weekNr}")]
+        [Route("")]
+        public async Task<IActionResult> Index(int branchId, int year = -1, int weekNr = -1)
         {
             viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
             var redirect = false;
 
-            if (year == 0)
+            if (year == -1)
             {
                 redirect = true;
                 year = DateTime.Now.Year;
             }
 
-            if (weekNr <= 0 || weekNr > 52)
+            if (weekNr == -1)
             {
                 redirect = true;
                 weekNr = DateLogic.GetWeekNumber(DateTime.Now);
+            } else if (weekNr <= 0)
+            {
+                redirect = true;
+                weekNr = 52;
+                year -= 1;
+            } else if (weekNr > 52)
+            {
+                redirect = true;
+                weekNr = 1;
+                year += 1;
             }
 
             if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
