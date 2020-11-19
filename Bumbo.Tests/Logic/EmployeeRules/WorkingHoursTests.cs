@@ -65,12 +65,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 16, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 18, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -83,12 +85,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 14, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 18, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(14, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -101,12 +105,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 16, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 20, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -119,12 +125,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 15, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 18, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(15, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -137,12 +145,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 16, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 19, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -155,12 +165,14 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var shift = new Shift
             {
-                StartTime = new DateTime(2020, 1, 1, 14, 0, 0),
-                EndTime = new DateTime(2020, 1, 1, 20, 0, 0)
+                Date = new DateTime(2020, 1, 1),
+                StartTime = new TimeSpan(14, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0)
             };
 
             var availability = new UserAvailability
             {
+                Day = shift.Date.DayOfWeek,
                 StartTime = new TimeSpan(15, 0, 0),
                 EndTime = new TimeSpan(19, 0, 0)
             };
@@ -235,7 +247,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age15_ExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -256,7 +268,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age15_NoExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -270,7 +282,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age17_ExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -291,7 +303,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age17_NoExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -305,7 +317,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age30_ExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -326,7 +338,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         [Test]
         public void TestMaxHoursPerDay_Age30_NoExtraWork_Right()
         {
-            var day = 1;
+            var day = DayOfWeek.Monday;
 
             var user = new User
             {
@@ -385,8 +397,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(16),
-                EndTime = date.AddHours(18),
+                Date = date,
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -414,8 +427,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(13),
-                EndTime = date.AddHours(16),
+                Date = date,
+                StartTime = new TimeSpan(13, 0, 0),
+                EndTime = new TimeSpan(16, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -443,8 +457,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(16),
-                EndTime = date.AddHours(19),
+                Date = date,
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -472,8 +487,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(13),
-                EndTime = date.AddHours(19),
+                Date = date,
+                StartTime = new TimeSpan(13, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -501,8 +517,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(16),
-                EndTime = date.AddHours(19),
+                Date = date,
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0),
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -530,8 +547,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(9),
-                EndTime = date.AddHours(18),
+                Date = date,
+                StartTime = new TimeSpan(9, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -559,8 +577,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(18),
-                EndTime = date.AddHours(20),
+                Date = date,
+                StartTime = new TimeSpan(18, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -588,8 +607,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(10),
-                EndTime = date.AddHours(20),
+                Date = date,
+                StartTime = new TimeSpan(10, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(2));
@@ -617,8 +637,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(16),
-                EndTime = date.AddHours(19),
+                Date = date,
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0),
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -646,8 +667,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(8),
-                EndTime = date.AddHours(21),
+                Date = date,
+                StartTime = new TimeSpan(8, 0, 0),
+                EndTime = new TimeSpan(21, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -675,8 +697,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(12),
-                EndTime = date.AddHours(18),
+                Date = date,
+                StartTime = new TimeSpan(12, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0),
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -704,8 +727,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var shift = new Shift
             {
-                StartTime = date.AddHours(8),
-                EndTime = date.AddHours(22),
+                Date = date,
+                StartTime = new TimeSpan(8, 0, 0),
+                EndTime = new TimeSpan(22, 0, 0),
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
