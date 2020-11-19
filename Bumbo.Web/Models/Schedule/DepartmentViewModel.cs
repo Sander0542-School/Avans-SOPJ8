@@ -22,7 +22,7 @@ namespace Bumbo.Web.Models.Schedule
         [DisplayName("Afdeling")]
         public Department Department { get; set; }
 
-        public InputShift Input { get; set; }
+        public Input.Shift InputShift { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
@@ -42,7 +42,7 @@ namespace Bumbo.Web.Models.Schedule
         public class EmployeeShift
         {
             public int UserId { get; set; }
-            
+
             [DisplayName("Naam")]
             public string Name { get; set; }
 
@@ -66,11 +66,11 @@ namespace Bumbo.Web.Models.Schedule
         public class Shift
         {
             public int Id { get; set; }
-            
+
             [DisplayName("Datum")]
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
             public DateTime Date { get; set; }
-            
+
             [DisplayName("Starttijd")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
@@ -95,31 +95,34 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
 
-        public class InputShift
+        public class Input
         {
-            public int? ShiftId { get; set; }
+            public class Shift
+            {
+                public int? ShiftId { get; set; }
 
-            public int UserId { get; set; }
+                public int UserId { get; set; }
 
-            [DisplayName("Medewerker")]
-            public string UserName { get; set; }
+                [DisplayName("Medewerker")]
+                public string UserName { get; set; }
 
-            [DisplayName("Afdeling")]
-            public Department Department { get; set; }
+                [DisplayName("Afdeling")]
+                public Department Department { get; set; }
 
-            [DisplayName("Datum")]
-            [DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+                [DisplayName("Datum")]
+                [DataType(DataType.Date)]
+                public DateTime Date { get; set; }
 
-            [DisplayName("Starttijd")]
-            [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan StartTime { get; set; }
+                [DisplayName("Starttijd")]
+                [DataType(DataType.Time)]
+                [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+                public TimeSpan StartTime { get; set; }
 
-            [DisplayName("Eindtijd")]
-            [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan EndTime { get; set; }
+                [DisplayName("Eindtijd")]
+                [DataType(DataType.Time)]
+                [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+                public TimeSpan EndTime { get; set; }
+            }
         }
     }
 }

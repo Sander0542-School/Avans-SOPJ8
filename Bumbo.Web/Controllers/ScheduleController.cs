@@ -80,7 +80,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.Input.Department});
+                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
             }
             
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -89,7 +89,7 @@ namespace Bumbo.Web.Controllers
 
             var shift = await _wrapper.Shift.Get(
                 shift1 => shift1.BranchId == branch.Id,
-                shift1 => shift1.Id == viewModel.Input.ShiftId);
+                shift1 => shift1.Id == viewModel.InputShift.ShiftId);
 
             bool success;
 
@@ -98,29 +98,29 @@ namespace Bumbo.Web.Controllers
                 shift = new Shift
                 {
                     BranchId = branch.Id,
-                    UserId = viewModel.Input.UserId,
-                    Department = viewModel.Input.Department,
-                    Date = viewModel.Input.Date,
-                    StartTime = viewModel.Input.StartTime,
-                    EndTime = viewModel.Input.EndTime
+                    UserId = viewModel.InputShift.UserId,
+                    Department = viewModel.InputShift.Department,
+                    Date = viewModel.InputShift.Date,
+                    StartTime = viewModel.InputShift.StartTime,
+                    EndTime = viewModel.InputShift.EndTime
                 };
 
                 success = await _wrapper.Shift.Add(shift) != null;
             }
             else
             {
-                shift.StartTime = viewModel.Input.StartTime;
-                shift.EndTime = viewModel.Input.EndTime;
+                shift.StartTime = viewModel.InputShift.StartTime;
+                shift.EndTime = viewModel.InputShift.EndTime;
                 
                 success = await _wrapper.Shift.Update(shift) != null;
             }
 
             if (!success)
             {
-                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.Input.Department});
+                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
             }
 
-            return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.Input.Department});
+            return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
         }
     }
 }
