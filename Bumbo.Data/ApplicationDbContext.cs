@@ -117,7 +117,7 @@ namespace Bumbo.Data
 
             builder.Entity<Shift>(b =>
             {
-                
+                b.HasIndex(shift => new {shift.UserId, shift.BranchId, shift.Department, shift.Date}).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
