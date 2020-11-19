@@ -125,6 +125,13 @@ namespace Bumbo.Data
                 b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
             });
 
+            builder.Entity<WeekSchedule>(b =>
+            {
+                b.HasKey(weekSchedule => new {weekSchedule.Year, weekSchedule.Week});
+
+                b.ToTable("WeekSchedules");
+            });
+
             #endregion
 
             #region Forecast
