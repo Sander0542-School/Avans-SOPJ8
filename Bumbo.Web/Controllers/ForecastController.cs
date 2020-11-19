@@ -25,15 +25,19 @@ namespace Bumbo.Web.Controllers
             viewModel = new ForecastViewModel();
         }
 
-        // GET: Forecast
+        /// <summary>
+        /// Creates the default view for viewing forecasts for 1 week
+        /// </summary>
+        /// <param name="branchId">Id of the branch</param>
+        /// <param name="year">The year of the forecast</param>
+        /// <param name="weekNr">The year's week for the forecast</param>
+        /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
         [Route("{year}/{weekNr}")]
         [Route("")]
         public async Task<IActionResult> Index(int branchId, int year = -1, int weekNr = -1)
         {
-            viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
-
+            // Check for default values
             var redirect = false;
-
             if (year == -1)
             {
                 redirect = true;
@@ -44,7 +48,9 @@ namespace Bumbo.Web.Controllers
             {
                 redirect = true;
                 weekNr = DateLogic.GetWeekNumber(DateTime.Now);
-            } else if (weekNr <= 0)
+            } 
+            // Check if week is not in current year
+            else if (weekNr <= 0)
             {
                 redirect = true;
                 weekNr = 52;
@@ -58,7 +64,12 @@ namespace Bumbo.Web.Controllers
 
             if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
 
+            // Define viewmodel variables
+            viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+            
             var requestedDate = DateLogic.DateFromWeekNumber(DateTime.Now.Year, weekNr);
+
+            // Todo: check if this method can be optimized so the where function can run on the database's end instead of the server's
             viewModel.Forecasts =  _wrapper.Forecast.GetAll(f => f.BranchId == branchId).Result
                 .Where(f => DateLogic.DateIsInSameWeek(f.Date, requestedDate));
 
