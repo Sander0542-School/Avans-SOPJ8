@@ -1,13 +1,17 @@
 ﻿using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Bumbo.Web.Models.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using static Bumbo.Web.Models.Users.DetailsViewModel;
 
 namespace Bumbo.Web.Controllers
 {
@@ -15,10 +19,12 @@ namespace Bumbo.Web.Controllers
     {
         private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
         //private readonly RepositoryWrapper _wrapper;
 
-        public UsersController(RepositoryWrapper wrapper, UserManager<User> usermanager)
+        public UsersController(RepositoryWrapper wrapper, UserManager<User> usermanager, IEmailSender emailSender)
         {
+            _emailSender = emailSender;
             _userManager = usermanager;
             _wrapper = wrapper;
         }
@@ -28,27 +34,8 @@ namespace Bumbo.Web.Controllers
         {
             var users = await _wrapper.User.GetAll();
 
-
             return View(users);
         }
-
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _wrapper.User.Get(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -58,11 +45,12 @@ namespace Bumbo.Web.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateUserViewModel model)
+        public async Task<IActionResult> Create(CreateViewModel model)
         {
+
+
             if (ModelState.IsValid)
             {
-
                 var user = new User
                 {
                     Email = model.Email,
@@ -77,10 +65,38 @@ namespace Bumbo.Web.Controllers
 
                 };
                 var result = await _userManager.CreateAsync(user);
-                //await _wrapper.User.Add(user);
-                return RedirectToAction(nameof(Index));
+                if (result.Succeeded)
+                {
+                    
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ResetPassword",
+                        pageHandler: null,
+                        values: new { area = "Identity", code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(
+                        model.Email,
+                        "Reset Password",
+                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    return RedirectToAction("Index");
+
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            return View(model);
+
+            return View();
+
+            //await _wrapper.User.Add(user);
+            //return RedirectToAction(nameof(Index));
+
+
         }
 
         // GET: Users/Edit/5
@@ -94,68 +110,68 @@ namespace Bumbo.Web.Controllers
             var user = await _wrapper.User.Get(user => user.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
 
-            var UserDetail = new EditUserViewModel
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                MiddleName = user.MiddleName,
-                LastName = user.LastName,
-                ZipCode = user.ZipCode,
-                HouseNumber = user.HouseNumber,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+            EditViewModel userModel = CreateUserModel(user, branchesList);
 
-                UserBranches = user.Branches,
-                Contracts = user.Contracts,
-                Branches = branchesList
-
-
-            };
+            
             if (user == null)
             {
                 return NotFound();
             }
-            return View(UserDetail);
+            return View(userModel);
         }
 
-       
+
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditUserViewModel model)
+        public async Task<IActionResult> Edit(int id, EditViewModel model)
         {
 
-            if (id != model.Id)
+            var user = await _wrapper.User.Get(user => user.Id == id);
+            List<SelectListItem> branchesList = await GetBranchList();
+
+
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                if (id != model.Id)
+                {
+                    return NotFound();
+                }
+
+                // Update it with the values from the view model
+                user.FirstName = model.FirstName;
+                user.MiddleName = model.MiddleName;
+                user.LastName = model.LastName;
+                user.ZipCode = model.ZipCode;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                user.HouseNumber = model.HouseNumber;
+
+                // Apply the changes if any to the db
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    EditViewModel userModel = CreateUserModel(user, branchesList);
+                    return View(userModel);
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
-            // Get the existing student from the db
-            var user =  await _wrapper.User.Get(user => user.Id == id);
-
-            // Update it with the values from the view model
-            user.FirstName = model.FirstName;
-            user.MiddleName = model.MiddleName;
-            user.LastName = model.LastName;
-            user.ZipCode = model.ZipCode;
-            user.Email = model.Email;
-            user.PhoneNumber = model.PhoneNumber;
-            user.HouseNumber = model.HouseNumber;
-
-            // Apply the changes if any to the db
-            await _userManager.UpdateAsync(user);
-
-
-            //TODO fix dit
             model.UserBranches = user.Branches;
             model.Contracts = user.Contracts;
-
-
+            model.Branches = branchesList;
 
             return View(model);
+
+
         }
 
         // GET: Users/Delete/5
@@ -205,13 +221,31 @@ namespace Bumbo.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDepartment(int id, Department department, int branch)
+        public async Task<IActionResult> EditDepartment(int? id, EditViewModel model)
         {
-            
 
+            var branch = model.InputBranchDepartment.BranchId;
 
+            //var branch = model.InputBranchDepartment.Branch;
+            var department = model.InputBranchDepartment.Department;
+
+            if (id == null)
+            {
+                return NotFound();
+            }
             // Get the existing student from the db
             var user = await _wrapper.User.Get(user => user.Id == id);
+            List<SelectListItem> branchesList = await GetBranchList();
+
+            EditViewModel userModel = CreateUserModel(user, branchesList);
+
+            //if (department == null || branch == null)
+            //{
+            //    ModelState.AddModelError(string.Empty, error.Description);
+
+            //}
+
+            
 
 
             UserBranch userBranch2 = user.Branches.Where(b => b.BranchId == branch).Where(b => b.Department == department).FirstOrDefault();
@@ -238,15 +272,15 @@ namespace Bumbo.Web.Controllers
 
             await _wrapper.User.Update(user);
 
-            List<SelectListItem> branchesList = await GetBranchList();
+           
 
-            EditUserViewModel userModel = CreateUserModel(user, branchesList);
+            //return View("Edit", userModel);
 
-            return View("Edit", userModel);
+            return RedirectToAction("Edit", new{userModel.Id});
 
-            
+
         }
-       
+
 
         public async Task<IActionResult> DeleteBranchUser(int? id, int? branchId)
         {
@@ -272,10 +306,74 @@ namespace Bumbo.Web.Controllers
             }
 
             List<SelectListItem> branchesList = await GetBranchList();
-            EditUserViewModel userModel = CreateUserModel(user, branchesList);
+            EditViewModel userModel = CreateUserModel(user, branchesList);
 
-            return View("Edit", userModel);
+            
+            return RedirectToAction("Edit", new { userModel.Id });
         }
+
+        // GET: Users/Create/Contract/1
+        public async Task<IActionResult> CreateContractAsync(int id)
+        {
+            User user = await _wrapper.User.Get(u => u.Id == id);
+            var viewModel = new ContractViewModel
+            {
+                UserId = user.Id,
+
+
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Users/Create/Contract
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateContract(ContractViewModel model)
+        {
+
+            User user = await _wrapper.User.Get(u => u.Id == model.UserId);
+
+            if (ModelState.IsValid)
+            {
+                var contract = new UserContract
+                {
+                    UserId = model.UserId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Function = model.Function,
+                    Scale = model.Scale,
+                    User = model.User
+
+
+                };
+                user.Contracts.Add(contract);
+                var result = await _wrapper.User.Update(user);
+                //var result = await _userManager.UpdateAsync(user);
+                //if (result.Succeeded)
+                //{
+
+                   
+
+                    return RedirectToAction("Edit", new { user.Id });
+
+                //}
+
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
+            }
+
+            return View();
+
+            //await _wrapper.User.Add(user);
+            //return RedirectToAction(nameof(Index));
+
+
+        }
+
+
 
         private async Task<List<SelectListItem>> GetBranchList()
         {
@@ -291,9 +389,9 @@ namespace Bumbo.Web.Controllers
             return branchesList;
         }
 
-        static EditUserViewModel CreateUserModel(User user, List<SelectListItem> branchesList)
+        static EditViewModel CreateUserModel(User user, List<SelectListItem> branchesList)
         {
-            return new EditUserViewModel
+            return new EditViewModel
             {
                 PhoneNumber = user.PhoneNumber,
                 Id = user.Id,
@@ -308,9 +406,6 @@ namespace Bumbo.Web.Controllers
                 UserBranches = user.Branches,
                 Contracts = user.Contracts,
                 Branches = branchesList
-
-
-
             };
         }
 

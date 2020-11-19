@@ -1,4 +1,4 @@
-﻿@model Bumbo.Web.Models.Users.DetailsViewModel.EditUserViewModel
+﻿@model Bumbo.Web.Models.Users.EditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -17,6 +17,7 @@
             </div>
             <div class="card-body">
                 <form asp-action="Edit">
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
@@ -75,36 +76,39 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="p-2">Huidige Contract</div>
-                        <div class="ml-auto p-2"><a asp-action="Edit" asp-route-id="@Model.Id">Toevoegen</a></div>
+                        <div class="p-2">Contracten</div>
+                        <div class="ml-auto p-2"><a asp-action="CreateContract" asp-route-id="@Model.Id"><i class="fa fa-plus"></i></a></div>
                     </div>
 
                 </div>
                 <div class="card-body">
                     @foreach (var contract in Model.Contracts)
                     {
-                        <dl class="row">
-                            <dt class="col-sm-5">
-                                Startdatum
-                            </dt>
-                            <dd class="col-sm-7">
-                                @contract.StartDate.ToShortDateString()
-                            </dd>
+                    <dl class="row">
+                        <dt class="col-sm-5">
+                            Startdatum
+                        </dt>
+                        <dd class="col-sm-7">
+                            @contract.StartDate.ToShortDateString()
+                        </dd>
+                        <dd class="col-sm-7">
+                            @contract.EndDate.ToShortDateString()
+                        </dd>
 
-                            <dt class="col-sm-5">
-                                CAO
-                            </dt>
-                            <dd class="col-sm-7">
-                                @contract.Scale
-                            </dd>
+                        <dt class="col-sm-5">
+                            CAO
+                        </dt>
+                        <dd class="col-sm-7">
+                            @contract.Scale
+                        </dd>
 
-                            <dt class="col-sm-5">
-                                ContractType
-                            </dt>
-                            <dd class="col-sm-7">
-                                @contract.Function
-                            </dd>
-                        </dl>
+                        <dt class="col-sm-5">
+                            ContractType
+                        </dt>
+                        <dd class="col-sm-7">
+                            @contract.Function
+                        </dd>
+                    </dl>
                     }
                 </div>
             </div>
@@ -121,23 +125,17 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="EditDepartment" method="post">
-                        <input type="hidden" asp-for="Id" />
+                        
                         <div class="checkboxContainer">
-                            @*@foreach (var item in Enum.GetValues(typeof(Bumbo.Data.Models.Enums.Department)))
-                            {
-                                <label class="checkbox">
-                                    <input type="checkbox" name="Department" class="appliesOnField" id="@item" value="@item" /> @item
-                                </label>
-                            }*@
-
+                           
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>
-                                            Filiaal
+                                            @Html.DisplayNameFor(model => model.InputBranchDepartment.BranchId)
                                         </th>
                                         <th>
-                                            Afdeling
+                                            @Html.DisplayNameFor(model => model.InputBranchDepartment.Department)
                                         </th>
                                         <th></th>
 
@@ -148,36 +146,37 @@
                                 <tbody>
                                     @foreach (var item in Model.UserBranches)
                                     {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Branch.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Department)
-                                        </td>
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Branch.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Department)
+                                            </td>
 
-                                        <td>
+                                            <td>
 
-                                            <a asp-action="DeleteBranchUser"  asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">Delete</a>
-                                        </td>
-                                    </tr>
+                                                <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">Delete</a>
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
 
                             <div class="form-group">
-                                <label asp-for="UserBranches" class="control-label"></label>
-                                <select name="Department" asp-items="Html.GetEnumSelectList<Bumbo.Data.Models.Enums.Department>()" class="form-control">
+                                <label asp-for="InputBranchDepartment.Department" class="control-label"></label>
+                                <select  asp-for="InputBranchDepartment.Department" asp-items="Html.GetEnumSelectList<Bumbo.Data.Models.Enums.Department>()" class="form-control">
                                     <option selected="selected" value="">Selecteer Afdeling</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="Branches" class="control-label"></label>
-                                <select name="Branch" asp-items="Model.Branches" class="form-control">
+                                <label asp-for="InputBranchDepartment.BranchId" class="control-label"></label>
+                                <select  asp-for="InputBranchDepartment.BranchId" asp-items="Model.Branches" class="form-control">
                                     <option selected="selected" value="">Selecteer filiaal</option>
                                 </select>
                             </div>
+                            <input type="hidden" asp-for="Id" />
                             <div class="col-md-12">
                                 <button class="btn btn-primary" type="submit">Opslaan</button>
                             </div>
