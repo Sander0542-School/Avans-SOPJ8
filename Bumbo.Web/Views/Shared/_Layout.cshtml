@@ -31,6 +31,13 @@
         </div>
     </nav>
 </header>
+
+@if (ViewData["AlertMessage"] != null)
+{
+    <div class="container">
+        <partial name="_AlertPartial" model='ViewData["AlertMessage"]'/>
+    </div>
+}
 <div class="@(ViewData["ContainerType"] ?? "container")">
     <main role="main" class="pb-3">
         @RenderBody()
