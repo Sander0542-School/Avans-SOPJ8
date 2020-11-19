@@ -31,6 +31,11 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+
             try
             {
                 var users = await _wrapper.User.GetUsersAndShifts(branch, year, week, department);
@@ -39,7 +44,7 @@ namespace Bumbo.Web.Controllers
                 {
                     Year = year,
                     Week = week,
-                    
+
                     Department = department,
 
                     Branch = branch,
@@ -76,51 +81,133 @@ namespace Bumbo.Web.Controllers
             }
         }
 
+        [HttpPost]
         public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
-            }
-            
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
 
-            var shift = await _wrapper.Shift.Get(
-                shift1 => shift1.BranchId == branch.Id,
-                shift1 => shift1.Id == viewModel.InputShift.ShiftId);
+            var alertMessage = "Danger:De dienst kon niet worden opgeslagen.";
 
-            bool success;
-
-            if (shift == null)
+            if (ModelState.IsValid)
             {
-                shift = new Shift
+                var shift = await _wrapper.Shift.Get(
+                    shift1 => shift1.BranchId == branch.Id,
+                    shift1 => shift1.Id == viewModel.InputShift.ShiftId);
+
+                bool success;
+
+                if (shift == null)
                 {
-                    BranchId = branch.Id,
-                    UserId = viewModel.InputShift.UserId,
-                    Department = viewModel.InputShift.Department,
-                    Date = viewModel.InputShift.Date,
-                    StartTime = viewModel.InputShift.StartTime,
-                    EndTime = viewModel.InputShift.EndTime
-                };
+                    shift = new Shift
+                    {
+                        Department = viewModel.Department,
+                        BranchId = branch.Id,
+                        UserId = viewModel.InputShift.UserId,
+                        Date = viewModel.InputShift.Date,
+                        StartTime = viewModel.InputShift.StartTime,
+                        EndTime = viewModel.InputShift.EndTime
+                    };
 
-                success = await _wrapper.Shift.Add(shift) != null;
+                    success = await _wrapper.Shift.Add(shift) != null;
+                }
+                else
+                {
+                    shift.StartTime = viewModel.InputShift.StartTime;
+                    shift.EndTime = viewModel.InputShift.EndTime;
+
+                    success = await _wrapper.Shift.Update(shift) != null;
+                }
+
+                if (success)
+                {
+                    alertMessage = "Success:De dienst is succesvol opgeslagen.";
+                }
             }
-            else
+
+            TempData["alertMessage"] = alertMessage;
+
+            return RedirectToAction(nameof(Department), new
             {
-                shift.StartTime = viewModel.InputShift.StartTime;
-                shift.EndTime = viewModel.InputShift.EndTime;
-                
-                success = await _wrapper.Shift.Update(shift) != null;
-            }
+                branchId,
+                year = viewModel.Year,
+                week = viewModel.Week,
+                department = viewModel.Department,
+            });
+        }
 
-            if (!success)
+        [HttpPost]
+        public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel viewModel)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
+                var startDateTarget = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, DayOfWeek.Monday);
+                var targetShifts = await _wrapper.Shift.GetAll(
+                    shift => shift.BranchId == branch.Id,
+                    shift => shift.Department == viewModel.Department,
+                    shift => shift.Date >= startDateTarget,
+                    shift => shift.Date < startDateTarget.AddDays(7)
+                );
+
+                if (targetShifts.Any())
+                {
+                    TempData["alertMessage"] = "Danger:De gekozen week bevat al diensten.";
+
+                    return RedirectToAction(nameof(Department), new
+                    {
+                        branchId,
+                        year = viewModel.InputCopyWeek.Year,
+                        week = viewModel.InputCopyWeek.Week,
+                        department = viewModel.Department
+                    });
+                }
+
+                var startDate = ISOWeek.ToDateTime(viewModel.Year, viewModel.Week, DayOfWeek.Monday);
+                var shifts = await _wrapper.Shift.GetAll(
+                    shift => shift.BranchId == branch.Id,
+                    shift => shift.Department == viewModel.Department,
+                    shift => shift.Date >= startDate,
+                    shift => shift.Date < startDate.AddDays(7)
+                );
+
+                var newShifts = shifts.Select(shift => new Shift
+                {
+                    BranchId = shift.BranchId,
+                    Department = shift.Department,
+                    UserId = shift.UserId,
+                    Date = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, shift.Date.DayOfWeek),
+                    StartTime = shift.StartTime,
+                    EndTime = shift.EndTime
+                }).ToArray();
+
+                if (await _wrapper.Shift.AddRange(newShifts) != null)
+                {
+                    TempData["alertMessage"] = "Success:De week is succesvol gekopieerd";
+
+                    return RedirectToAction(nameof(Department), new
+                    {
+                        branchId,
+                        year = viewModel.InputCopyWeek.Year,
+                        week = viewModel.InputCopyWeek.Week,
+                        department = viewModel.Department
+                    });
+                }
             }
 
-            return RedirectToAction("Department", new {branchId, year = viewModel.Year, week = viewModel.Week, department = viewModel.InputShift.Department});
+            TempData["alertMessage"] = "Danger:De week kon niet worden gekopieerd";
+
+            return RedirectToAction(nameof(Department), new
+            {
+                branchId,
+                year = viewModel.Year,
+                week = viewModel.Week,
+                department = viewModel.Department
+            });
         }
     }
 }

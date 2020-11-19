@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
@@ -23,6 +24,8 @@ namespace Bumbo.Web.Models.Schedule
         public Department Department { get; set; }
 
         public Input.Shift InputShift { get; set; }
+        
+        public Input.CopyWeek InputCopyWeek { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
@@ -106,9 +109,6 @@ namespace Bumbo.Web.Models.Schedule
                 [DisplayName("Medewerker")]
                 public string UserName { get; set; }
 
-                [DisplayName("Afdeling")]
-                public Department Department { get; set; }
-
                 [DisplayName("Datum")]
                 [DataType(DataType.Date)]
                 public DateTime Date { get; set; }
@@ -122,6 +122,20 @@ namespace Bumbo.Web.Models.Schedule
                 [DataType(DataType.Time)]
                 [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
                 public TimeSpan EndTime { get; set; }
+            }
+            
+            public class CopyWeek
+            {
+                [DisplayName("Jaar")]
+                public int Year { get; set; }
+                
+                [DisplayName("Week")]
+                public int Week { get; set; }
+
+                [DisplayName("Datum")]
+                [DataType(DataType.Date)]
+                [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+                public DateTime Date => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
             }
         }
     }
