@@ -92,7 +92,7 @@ namespace TestForecast
         }
         public decimal GetWorkHoursStockClerk(decimal metersOfShelves, decimal expectedNumberOfColi)
         {
-            return _minutesPerColiUnloading + WorkHoursFacingShelves(metersOfShelves) + WorkHoursStockingColi(expectedNumberOfColi);
+            return WorkHoursUnloading(expectedNumberOfColi) + WorkHoursFacingShelves(metersOfShelves) + WorkHoursStockingColi(expectedNumberOfColi);
         }
 
 
@@ -101,8 +101,7 @@ namespace TestForecast
         /// </summary>
         /// <param name="expectedNumberOfColi">Number of coli that is expected</param>
         /// <returns>Number of hours required to unload all the coli</returns>
-        public double WorkHoursUnloading(double expectedNumberOfColi) =>
-            Math.Round(expectedNumberOfColi * _minutesPerColiUnloading / 60, RoundingFactor);
+        public decimal WorkHoursUnloading(decimal expectedNumberOfColi) => expectedNumberOfColi * _minutesPerColiUnloading / 60;
 
         /// <summary>
         /// Calculates the amount of working hours for the cash registers for a specific date
