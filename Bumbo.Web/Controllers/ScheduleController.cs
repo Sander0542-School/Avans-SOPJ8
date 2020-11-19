@@ -61,6 +61,7 @@ namespace Bumbo.Web.Controllers
                             return new DepartmentViewModel.Shift
                             {
                                 Id = shift.Id,
+                                Date = shift.Date,
                                 StartTime = shift.StartTime,
                                 EndTime = shift.EndTime,
                                 Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
@@ -99,16 +100,17 @@ namespace Bumbo.Web.Controllers
                     BranchId = branch.Id,
                     UserId = viewModel.Input.UserId,
                     Department = viewModel.Input.Department,
-                    StartTime = viewModel.Input.Date.AddTicks(viewModel.Input.StartTime.Ticks),
-                    EndTime = viewModel.Input.Date.AddTicks(viewModel.Input.EndTime.Ticks)
+                    Date = viewModel.Input.Date,
+                    StartTime = viewModel.Input.StartTime,
+                    EndTime = viewModel.Input.EndTime
                 };
 
                 success = await _wrapper.Shift.Add(shift) != null;
             }
             else
             {
-                shift.StartTime = viewModel.Input.Date.AddTicks(viewModel.Input.StartTime.Ticks);
-                shift.EndTime = viewModel.Input.Date.AddTicks(viewModel.Input.EndTime.Ticks);
+                shift.StartTime = viewModel.Input.StartTime;
+                shift.EndTime = viewModel.Input.EndTime;
                 
                 success = await _wrapper.Shift.Update(shift) != null;
             }

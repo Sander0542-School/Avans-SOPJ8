@@ -67,13 +67,17 @@ namespace Bumbo.Web.Models.Schedule
         {
             public int Id { get; set; }
             
+            [DisplayName("Datum")]
+            [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+            public DateTime Date { get; set; }
+            
             [DisplayName("Starttijd")]
-            [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
-            public DateTime StartTime { get; set; }
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan StartTime { get; set; }
 
             [DisplayName("Eindtijd")]
-            [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
-            public DateTime EndTime { get; set; }
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan EndTime { get; set; }
 
             [DisplayName("Meldingen")]
             public IEnumerable<string> Notifications { get; set; }

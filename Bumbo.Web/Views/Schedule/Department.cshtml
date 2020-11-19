@@ -20,6 +20,7 @@
     </div>
     <div class="col-4 d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">Print</button>
+        <button class="btn btn-secondary">Rooster kopiëren</button>
     </div>
 
 </div>
@@ -65,11 +66,11 @@
 
             @foreach (var day in Model.DaysOfWeek)
             {
-                @if (employeeShift.Shifts.Any(shift => shift.StartTime.DayOfWeek == day))
+                @if (employeeShift.Shifts.Any(shift => shift.Date.DayOfWeek == day))
                 {
-                    var shift = employeeShift.Shifts.First(shift => shift.StartTime.DayOfWeek == day);
+                    var shift = employeeShift.Shifts.First(shift1 => shift1.Date.DayOfWeek == day);
 
-                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{shift.StartTime:yyyy-MM-dd}', '{shift.StartTime:HH\\:mm}', '{shift.EndTime:HH\\:mm}'"))">
+                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}'"))">
                         <span>
                             @if (shift.Notifications.Any())
                             {
