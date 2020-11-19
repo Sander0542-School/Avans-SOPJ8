@@ -97,6 +97,14 @@ namespace TestForecast
 
 
         /// <summary>
+        /// Calculates the number of hours which is required for the amount of coli that is expected.
+        /// </summary>
+        /// <param name="expectedNumberOfColi">Number of coli that is expected</param>
+        /// <returns>Number of hours required to unload all the coli</returns>
+        public double WorkHoursUnloading(double expectedNumberOfColi) =>
+            Math.Round(expectedNumberOfColi * _minutesPerColiUnloading / 60, RoundingFactor);
+
+        /// <summary>
         /// Calculates the amount of working hours for the cash registers for a specific date
         /// </summary>
         /// <param name="numberOfCustomersExpected">Number of expected customers for a given day</param>
