@@ -14,8 +14,7 @@ namespace Bumbo.Data.Models
         public Department Department { get; set; }
 
         [Column(TypeName = "decimal(5, 2)")]
-        public double WorkingHours { get; set; }
-
+        public decimal WorkingHours { get; set; }
 
         public Branch Branch { get; set; }
     }
