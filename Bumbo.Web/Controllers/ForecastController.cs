@@ -169,24 +169,5 @@ namespace Bumbo.Web.Controllers
                 department
             });
         }
-
-
-        // public virtual IActionResult Delete(int id)
-        // {
-        //     var model = _repository.Get(id);
-        //     if (model == null) return NotFound();
-        //
-        //     return View(model);
-        // }
-        //
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public virtual IActionResult DeleteConfirmed(int id)
-        // {
-        //     var model = _repository.Get(id);
-        //     _repository.Delete(model);
-        //     _repository.Save();
-        //     return RedirectToAction(nameof(Index));
-        // }
     }
 }

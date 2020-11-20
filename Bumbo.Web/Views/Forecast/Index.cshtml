@@ -83,11 +83,36 @@
                     @* @Html.DisplayFor(modelItem => item.WorkingHours) *@
                     @($"{TimeSpan.FromHours((double) item.WorkingHours).TotalHours:00}:{TimeSpan.FromHours((double) item.WorkingHours).Minutes:00}")
                 </td>
+                
+                @{
+                    var itemRouteData = new Dictionary<string, string>()
+                    {
+                        {
+                            "branchId",
+                            @Model.Branch.Id.ToString()
+                        },
+                        {
+                            "department",
+                            @item.Department.ToString()
+                        },
+                        {
+                            "year",
+                            @Model.Year.ToString()
+                        },
+                        {
+                            "weekNr",
+                            @Model.WeekNr.ToString()
+                        },
+                        {
+                            "dayOfWeek",
+                            @item.Date.DayOfWeek.ToString()
+                        }
+                    };
+                }
 
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                    <a asp-action="Edit" asp-all-route-data="itemRouteData">Edit</a>
+                    @*@Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
                 </td>
             </tr>
         }
