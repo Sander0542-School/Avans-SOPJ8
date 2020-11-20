@@ -51,7 +51,7 @@ namespace Bumbo.Web.Controllers
                 _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                 {
                     Day = Convert.ToInt32(item.Key),
-                    Hours = item.Value != null ? 0 : item.Value,
+                    Hours = item.Value ?? 0,
                     UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
                 });
 
@@ -59,7 +59,7 @@ namespace Bumbo.Web.Controllers
                 _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
                 {
                     Day = Convert.ToInt32(item.Key),
-                    Hours = item.Value != null ? 0 : item.Value,
+                    Hours = item.Value ?? 0,
                     UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
                 });
             }
