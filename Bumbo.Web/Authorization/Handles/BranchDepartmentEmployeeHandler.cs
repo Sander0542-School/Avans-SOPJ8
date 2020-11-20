@@ -21,7 +21,7 @@ namespace Bumbo.Web.Authorization.Handles
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, BranchDepartmentEmployeeRequirement requirement)
         {
             var branchId = _httpContextAccessor.HttpContext?.GetRouteValue("branchId")?.ToString() ?? "0";
-            var department = Enum.Parse<Department>(_httpContextAccessor.HttpContext?.GetRouteValue("department")?.ToString() ?? "0");
+            var department = Enum.Parse<Department>(_httpContextAccessor.HttpContext?.GetRouteValue("department")?.ToString() ?? "0", true);
 
             if (context.User.HasClaim("BranchDepartment", $"{branchId}.{department}"))
             {
