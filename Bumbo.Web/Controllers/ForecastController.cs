@@ -17,12 +17,12 @@ namespace Bumbo.Web.Controllers
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
-        private ForecastViewModel viewModel;
+        private readonly ForecastViewModel _viewModel;
 
         public ForecastController(RepositoryWrapper wrapper)
         {
             _wrapper = wrapper;
-            viewModel = new ForecastViewModel();
+            _viewModel = new ForecastViewModel();
         }
 
         /// <summary>
@@ -65,18 +65,18 @@ namespace Bumbo.Web.Controllers
             if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
 
             // Define viewmodel variables
-            viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+            _viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             
             var requestedDate = DateLogic.DateFromWeekNumber(DateTime.Now.Year, weekNr);
 
             // Todo: check if this method can be optimized so the where function can run on the database's end instead of the server's
-            viewModel.Forecasts =  _wrapper.Forecast.GetAll(f => f.BranchId == branchId).Result
+            _viewModel.Forecasts =  _wrapper.Forecast.GetAll(f => f.BranchId == branchId).Result
                 .Where(f => DateLogic.DateIsInSameWeek(f.Date, requestedDate));
 
-            viewModel.WeekNr = weekNr;
-            viewModel.Year = year;
+            _viewModel.WeekNr = weekNr;
+            _viewModel.Year = year;
 
-            return View(viewModel);
+            return View(_viewModel);
         }
 
         // GET: Forecast/Details/5

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201117204005_ForecastActivityEnum")]
+    [Migration("20201120091239_ForecastActivityEnum")]
     partial class ForecastActivityEnum
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,8 +55,8 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("Activity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("BranchId", "Activity");
 
@@ -120,8 +120,8 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("Activity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Activity");
 
