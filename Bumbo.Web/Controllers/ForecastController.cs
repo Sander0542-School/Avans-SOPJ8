@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
@@ -15,7 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("branches/{branchId}/{controller}")]
+    [Route("branches/{branchId}/{controller}/{year=-1}/{weekNr=-1}/{department=null}")]
+    [Route("branches/{branchId}/{controller}/{year=-1}/{weekNr=-1}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -35,10 +32,8 @@ namespace Bumbo.Web.Controllers
         /// <param name="year">The year of the forecast</param>
         /// <param name="weekNr">The year's week for the forecast</param>
         /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
-        [Route("{year}/{weekNr}/{department}")]
-        [Route("{year}/{weekNr}")]
         [Route("")]
-        public async Task<IActionResult> Index(int branchId, Department? department, int year = -1, int weekNr = -1)
+        public async Task<IActionResult> Index(int branchId, Department? department, int year, int weekNr)
         {
             // Check for default values
             var redirect = false;
@@ -52,14 +47,15 @@ namespace Bumbo.Web.Controllers
             {
                 redirect = true;
                 weekNr = DateLogic.GetWeekNumber(DateTime.Now);
-            } 
+            }
             // Check if week is not in current year
             else if (weekNr <= 0)
             {
                 redirect = true;
                 weekNr = 52;
                 year -= 1;
-            } else if (weekNr > 52)
+            }
+            else if (weekNr > 52)
             {
                 redirect = true;
                 weekNr = 1;
@@ -71,9 +67,9 @@ namespace Bumbo.Web.Controllers
             // Define viewmodel variables
             _viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             _viewModel.Department = department;
-            
+
             var firstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday);
-            
+
             _viewModel.Forecasts = await _wrapper.Forecast.GetAll(
                 f => f.BranchId == branchId,
                 f => f.Department == department || department == null,
@@ -87,19 +83,6 @@ namespace Bumbo.Web.Controllers
 
             return View(_viewModel);
         }
-
-        //// GET: Forecast/Details/5
-        //[Route("{year}/{weekNr}/{department}")]
-        //public async Task<IActionResult> Details(int branchId, Department department, int weekNr)
-        //{
-        //    var forecast = await _wrapper.Forecast.Get(m => m.BranchId == branchId && m.Department == department);
-        //    if (forecast == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(forecast);
-        //}
 
         // GET: Forecast/Create
         [Route("create")]
@@ -122,45 +105,72 @@ namespace Bumbo.Web.Controllers
 
             forecast.BranchId = branchId;
             // De return value van forecast is nodig voor de Redirect to action methode.
-            /*var forecast =*/ await _wrapper.Forecast.Add(forecast);
-            
+            /*var forecast =*/
+            await _wrapper.Forecast.Add(forecast);
+
             return RedirectToAction("Index",
-            new {
+            new
+            {
                 branchId = forecast.BranchId,
                 year = forecast.Date.Year,
                 weekNr = DateLogic.GetWeekNumber(forecast.Date)
             });
         }
-        
-        // public virtual IActionResult Edit(int id)
-        // {
-        //     var model = _repository.Get(id);
-        //     if (model == null) return NotFound();
-        //
-        //     return View(model);
-        // }
-        //
-        // [HttpPost]
-        // [ValidateAntiForgeryToken]
-        // public virtual IActionResult Edit(int id, [FromForm] Forecast model)
-        // {
-        //     if (id != model.Id) return NotFound();
-        //     if (!ModelState.IsValid) return View(model);
-        //
-        //     try
-        //     {
-        //         _repository.Update(model);
-        //         _repository.Save();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!ModelExists(model.Id)) return NotFound();
-        //
-        //         throw;
-        //     }
-        //     return RedirectToAction(nameof(Index));
-        // }
-        //
+
+        [Route("{dayOfWeek}/edit")]
+        public virtual async  Task<IActionResult> Edit(int branchId, Department? department, int year, int weekNr, DayOfWeek dayOfWeek)
+        {
+            if (department == null) return NotFound();
+
+            var date = ISOWeek.ToDateTime(year, weekNr, dayOfWeek);
+
+            var model = await _wrapper.Forecast.Get(
+                f => f.Department == department,
+                f => f.Date == date,
+                f => f.BranchId == branchId
+            );
+
+            if (model == null) return NotFound();
+
+            return View(model);
+        }
+
+        [Route("{dayOfWeek}/edit")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> Edit(int branchId, Department department, int year, int weekNr, DayOfWeek dayOfWeek, [FromForm] decimal WorkingHours)
+        {
+            var date = ISOWeek.ToDateTime(year, weekNr, dayOfWeek);
+
+            var model = new Forecast()
+            {
+                BranchId = branchId,
+                Department = department,
+                Date = date,
+                WorkingHours = WorkingHours,
+            };
+
+            try
+            {
+                await _wrapper.Forecast.Update(model);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (await _wrapper.Forecast.Get(f => f.Equals(model)) == null) return NotFound();
+
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index),
+            new {
+                branchId,
+                year,
+                weekNr,
+                department
+            });
+        }
+
+
         // public virtual IActionResult Delete(int id)
         // {
         //     var model = _repository.Get(id);
