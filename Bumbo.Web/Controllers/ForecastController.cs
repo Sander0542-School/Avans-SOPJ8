@@ -107,10 +107,13 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("create")]
-        public async Task<IActionResult> Create([Bind("BranchId,Date,Department,WorkingHours")] Forecast forecast)
+        public async Task<IActionResult> Create(int branchId, [Bind("Date,Department,WorkingHours")] Forecast forecast)
         {
             if (!ModelState.IsValid) return RedirectToAction();
-            await _wrapper.Forecast.Add(forecast);
+
+            forecast.BranchId = branchId;
+            // De return value van forecast is nodig voor de Redirect to action methode.
+            /*var forecast =*/ await _wrapper.Forecast.Add(forecast);
             
             return RedirectToAction("Index",
             new {
