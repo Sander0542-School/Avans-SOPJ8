@@ -73,15 +73,22 @@ namespace Bumbo.Web.Controllers
                             };
                         }).ToList()
                     }).ToList(),
-                    
+
                     InputShift = new DepartmentViewModel.InputShiftModel
                     {
                         Year = year,
                         Week = week,
                         Department = department
                     },
-                    
+
                     InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel
+                    {
+                        Year = year,
+                        Week = week,
+                        Department = department
+                    },
+
+                    InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel
                     {
                         Year = year,
                         Week = week,
@@ -152,33 +159,33 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel viewModel)
+        public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel copyWeekModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
-            
-            TempData["alertMessage"] = "Danger:De week kon niet worden gekopieerd";
+
+            TempData["alertMessage"] = "Danger:Het rooster kon niet worden gekopieerd.";
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var startDateTarget = ISOWeek.ToDateTime(viewModel.TargetYear, viewModel.TargetWeek, DayOfWeek.Monday);
+                    var startDateTarget = ISOWeek.ToDateTime(copyWeekModel.TargetYear, copyWeekModel.TargetWeek, DayOfWeek.Monday);
 
                     var targetShifts = await _wrapper.Shift.GetAll(
                         shift => shift.BranchId == branch.Id,
-                        shift => shift.Department == viewModel.Department,
+                        shift => shift.Department == copyWeekModel.Department,
                         shift => shift.Date >= startDateTarget,
                         shift => shift.Date < startDateTarget.AddDays(7)
                     );
 
                     if (!targetShifts.Any())
                     {
-                        var startDate = ISOWeek.ToDateTime(viewModel.Year, viewModel.Week, DayOfWeek.Monday);
+                        var startDate = ISOWeek.ToDateTime(copyWeekModel.Year, copyWeekModel.Week, DayOfWeek.Monday);
                         var shifts = await _wrapper.Shift.GetAll(
                             shift => shift.BranchId == branch.Id,
-                            shift => shift.Department == viewModel.Department,
+                            shift => shift.Department == copyWeekModel.Department,
                             shift => shift.Date >= startDate,
                             shift => shift.Date < startDate.AddDays(7)
                         );
@@ -188,27 +195,27 @@ namespace Bumbo.Web.Controllers
                             BranchId = shift.BranchId,
                             Department = shift.Department,
                             UserId = shift.UserId,
-                            Date = ISOWeek.ToDateTime(viewModel.TargetYear, viewModel.TargetWeek, shift.Date.DayOfWeek),
+                            Date = ISOWeek.ToDateTime(copyWeekModel.TargetYear, copyWeekModel.TargetWeek, shift.Date.DayOfWeek),
                             StartTime = shift.StartTime,
                             EndTime = shift.EndTime
                         }).ToArray();
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = "Success:De week is succesvol gekopieerd";
+                            TempData["alertMessage"] = $"Success:Het rooster is succesvol gekopieerd naar week {copyWeekModel.TargetWeek} van {copyWeekModel.TargetYear}.";
 
                             return RedirectToAction(nameof(Department), new
                             {
                                 branchId,
-                                year = viewModel.TargetYear,
-                                week = viewModel.TargetWeek,
-                                department = viewModel.Department
+                                year = copyWeekModel.TargetYear,
+                                week = copyWeekModel.TargetWeek,
+                                department = copyWeekModel.Department
                             });
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = "Danger:De gekozen week bevat al diensten.";
+                        TempData["alertMessage"] = "Danger:Het rooster in de gekozen week bevat al diensten.";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
@@ -220,9 +227,66 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction(nameof(Department), new
             {
                 branchId,
-                year = viewModel.Year,
-                week = viewModel.Week,
-                department = viewModel.Department
+                year = copyWeekModel.Year,
+                week = copyWeekModel.Week,
+                department = copyWeekModel.Department
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveSchedule(int branchId, DepartmentViewModel.InputApproveScheduleModel approveScheduleModel)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            TempData["alertMessage"] = "Danger:Het rooster kon niet worden goedgekeurd.";
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var startDate = ISOWeek.ToDateTime(approveScheduleModel.Year, approveScheduleModel.Week, DayOfWeek.Monday);
+                    var shifts = await _wrapper.Shift.GetAll(
+                        shift => shift.BranchId == branch.Id,
+                        shift => shift.Department == approveScheduleModel.Department,
+                        shift => shift.Date >= startDate,
+                        shift => shift.Date < startDate.AddDays(7)
+                    );
+
+                    if (shifts.Any())
+                    {
+                        var weekSchedule = new WeekSchedule
+                        {
+                            BranchId = branch.Id,
+                            Year = approveScheduleModel.Year,
+                            Week = approveScheduleModel.Week,
+                            Department = approveScheduleModel.Department,
+                            Confirmed = true
+                        };
+
+                        if (await _wrapper.WeekSchedule.Add(weekSchedule) != null)
+                        {
+                            TempData["alertMessage"] = "Success:Het rooster is succesvol goedgekeurd";
+                        }
+                    }
+                    else
+                    {
+                        TempData["alertMessage"] = "Danger:Het rooster bevat geen diensten";
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    TempData["alertMessage"] = "Danger:De gekozen week bestaat niet.";
+                }
+            }
+
+            return RedirectToAction(nameof(Department), new
+            {
+                branchId,
+                year = approveScheduleModel.Year,
+                week = approveScheduleModel.Week,
+                department = approveScheduleModel.Department
             });
         }
     }

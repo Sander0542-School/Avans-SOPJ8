@@ -7,7 +7,6 @@ using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.EmployeeRules;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bumbo.Web.Models.Schedule
 {
@@ -26,6 +25,8 @@ namespace Bumbo.Web.Models.Schedule
         public InputShiftModel InputShift { get; set; }
 
         public InputCopyWeekModel InputCopyWeek { get; set; }
+
+        public InputApproveScheduleModel InputApproveSchedule { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
@@ -98,20 +99,8 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
 
-        public class InputShiftModel
+        public class InputShiftModel : InputDateDepartmentModel
         {
-            [DisplayName("Jaar")]
-            [Required]
-            public int Year { get; set; }
-
-            [DisplayName("Week")]
-            [Required]
-            public int Week { get; set; }
-
-            [DisplayName("Afdeling")]
-            [Required]
-            public Department Department { get; set; }
-
             public int? ShiftId { get; set; }
 
             [Required]
@@ -139,7 +128,25 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan EndTime { get; set; }
         }
 
-        public class InputCopyWeekModel
+        public class InputCopyWeekModel : InputDateDepartmentModel
+        {
+            [DisplayName("Jaar")]
+            public int TargetYear { get; set; }
+
+            [DisplayName("Week")]
+            public int TargetWeek { get; set; }
+
+            [DisplayName("Datum")]
+            [DataType(DataType.Date)]
+            [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+            public DateTime TargetDate => ISOWeek.ToDateTime(TargetYear, TargetWeek, DayOfWeek.Monday);
+        }
+
+        public class InputApproveScheduleModel : InputDateDepartmentModel
+        {
+        }
+
+        public abstract class InputDateDepartmentModel
         {
             [DisplayName("Jaar")]
             [Required]
@@ -152,17 +159,6 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayName("Afdeling")]
             [Required]
             public Department Department { get; set; }
-
-            [DisplayName("Jaar")]
-            public int TargetYear { get; set; }
-
-            [DisplayName("Week")]
-            public int TargetWeek { get; set; }
-
-            [DisplayName("Datum")]
-            [DataType(DataType.Date)]
-            [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-            public DateTime TargetDate => ISOWeek.ToDateTime(TargetYear, TargetWeek, DayOfWeek.Monday);
         }
     }
 }
