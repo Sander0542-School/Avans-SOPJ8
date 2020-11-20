@@ -1,7 +1,8 @@
 ﻿@page
 @model RegisterModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = @localizer["Register"];
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -9,7 +10,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
+            <h4>@localizer["CreateAccount"]</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -18,46 +19,46 @@
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Password"></label>
+                <label asp-for="Input.Password">@localizer["Password"]</label>
                 <input asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label asp-for="Input.ConfirmPassword">@localizer["ConfirmPassword"]</label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
+                <label asp-for="Input.FirstName">@localizer["FirstName"]</label>
                 <input asp-for="Input.FirstName" class="form-control" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.MiddleName"></label>
+                <label asp-for="Input.MiddleName">@localizer["MiddleName"]</label>
                 <input asp-for="Input.MiddleName" class="form-control" />
                 <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.LastName"></label>
+                <label asp-for="Input.LastName">@localizer["LastName"]</label>
                 <input asp-for="Input.LastName" class="form-control" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Birthday"></label>
+                <label asp-for="Input.Birthday">@localizer["Birthday"]</label>
                 <input asp-for="Input.Birthday" class="form-control" />
                 <span asp-validation-for="Input.Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ZipCode"></label>
+                <label asp-for="Input.ZipCode">@localizer["ZipCode"]</label>
                 <input asp-for="Input.ZipCode" class="form-control" />
                 <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.HouseNumber"></label>
+                <label asp-for="Input.HouseNumber">@localizer["HouseNumber"]</label>
                 <input asp-for="Input.HouseNumber" class="form-control" />
                 <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">@localizer["Register"]</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
