@@ -74,14 +74,14 @@ namespace Bumbo.Web.Controllers
                         }).ToList()
                     }).ToList(),
                     
-                    InputShift = new DepartmentViewModel.Input.InputShiftModel
+                    InputShift = new DepartmentViewModel.InputShiftModel
                     {
                         Year = year,
                         Week = week,
                         Department = department
                     },
                     
-                    InputCopyWeek = new DepartmentViewModel.Input.InputCopyWeekModel
+                    InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel
                     {
                         Year = year,
                         Week = week,
@@ -96,7 +96,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel.Input.InputShiftModel shiftModel)
+        public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel.InputShiftModel shiftModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
@@ -152,7 +152,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.Input.InputCopyWeekModel viewModel)
+        public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel viewModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 

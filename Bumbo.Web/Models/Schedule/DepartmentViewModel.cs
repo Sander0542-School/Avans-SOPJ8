@@ -23,9 +23,9 @@ namespace Bumbo.Web.Models.Schedule
         [DisplayName("Afdeling")]
         public Department Department { get; set; }
 
-        public Input.InputShiftModel InputShift { get; set; }
-        
-        public Input.InputCopyWeekModel InputCopyWeek { get; set; }
+        public InputShiftModel InputShift { get; set; }
+
+        public InputCopyWeekModel InputCopyWeek { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
@@ -98,74 +98,71 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
 
-        public class Input
+        public class InputShiftModel
         {
-            public class InputShiftModel
-            {
-                [DisplayName("Jaar")]
-                [Required]
-                public int Year { get; set; }
-                
-                [DisplayName("Week")]
-                [Required]
-                public int Week { get; set; }
-                
-                [DisplayName("Afdeling")]
-                [Required]
-                public Department Department { get; set; }
-                
-                public int? ShiftId { get; set; }
+            [DisplayName("Jaar")]
+            [Required]
+            public int Year { get; set; }
 
-                [Required]
-                public int UserId { get; set; }
+            [DisplayName("Week")]
+            [Required]
+            public int Week { get; set; }
 
-                [DisplayName("Medewerker")]
-                [Required]
-                public string UserName { get; set; }
+            [DisplayName("Afdeling")]
+            [Required]
+            public Department Department { get; set; }
 
-                [DisplayName("Datum")]
-                [DataType(DataType.Date)]
-                [Required]
-                public DateTime Date { get; set; }
+            public int? ShiftId { get; set; }
 
-                [DisplayName("Starttijd")]
-                [DataType(DataType.Time)]
-                [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-                [Required]
-                public TimeSpan StartTime { get; set; }
+            [Required]
+            public int UserId { get; set; }
 
-                [DisplayName("Eindtijd")]
-                [DataType(DataType.Time)]
-                [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-                [Required]
-                public TimeSpan EndTime { get; set; }
-            }
-            
-            public class InputCopyWeekModel
-            {
-                [DisplayName("Jaar")]
-                [Required]
-                public int Year { get; set; }
-                
-                [DisplayName("Week")]
-                [Required]
-                public int Week { get; set; }
-                
-                [DisplayName("Afdeling")]
-                [Required]
-                public Department Department { get; set; }
-                
-                [DisplayName("Jaar")]
-                public int TargetYear { get; set; }
-                
-                [DisplayName("Week")]
-                public int TargetWeek { get; set; }
+            [DisplayName("Medewerker")]
+            [Required]
+            public string UserName { get; set; }
 
-                [DisplayName("Datum")]
-                [DataType(DataType.Date)]
-                [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-                public DateTime TargetDate => ISOWeek.ToDateTime(TargetYear, TargetWeek, DayOfWeek.Monday);
-            }
+            [DisplayName("Datum")]
+            [DataType(DataType.Date)]
+            [Required]
+            public DateTime Date { get; set; }
+
+            [DisplayName("Starttijd")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [Required]
+            public TimeSpan StartTime { get; set; }
+
+            [DisplayName("Eindtijd")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [Required]
+            public TimeSpan EndTime { get; set; }
+        }
+
+        public class InputCopyWeekModel
+        {
+            [DisplayName("Jaar")]
+            [Required]
+            public int Year { get; set; }
+
+            [DisplayName("Week")]
+            [Required]
+            public int Week { get; set; }
+
+            [DisplayName("Afdeling")]
+            [Required]
+            public Department Department { get; set; }
+
+            [DisplayName("Jaar")]
+            public int TargetYear { get; set; }
+
+            [DisplayName("Week")]
+            public int TargetWeek { get; set; }
+
+            [DisplayName("Datum")]
+            [DataType(DataType.Date)]
+            [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+            public DateTime TargetDate => ISOWeek.ToDateTime(TargetYear, TargetWeek, DayOfWeek.Monday);
         }
     }
 }
