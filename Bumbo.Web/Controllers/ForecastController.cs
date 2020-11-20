@@ -109,13 +109,15 @@ namespace Bumbo.Web.Controllers
         [Route("create")]
         public async Task<IActionResult> Create([Bind("BranchId,Date,Department,WorkingHours")] Forecast forecast)
         {
-            if (ModelState.IsValid)
-            {
-                await _wrapper.Forecast.Add(forecast);
-                return RedirectToAction(nameof(Index));
-            }
-            //ViewData["BranchId"] = new SelectList(_wrapper.Branches, "Id", "HouseNumber", forecast.BranchId);
-            return View(forecast);
+            if (!ModelState.IsValid) return RedirectToAction();
+            await _wrapper.Forecast.Add(forecast);
+            
+            return RedirectToAction("Index",
+            new {
+                branchId = forecast.BranchId,
+                year = forecast.Date.Year,
+                weekNr = DateLogic.GetWeekNumber(forecast.Date)
+            });
         }
     }
 }
