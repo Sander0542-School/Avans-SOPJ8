@@ -7,11 +7,15 @@
     {
         {
             "branchId",
-            @Model.Branch.Id.ToString()
+            Model.Branch.Id.ToString()
         },
         {
             "year",
-            @Model.Year.ToString()
+            Model.Year.ToString()
+        },
+        {
+            "department",
+            Model.Department.ToString()
         }
     };
 
@@ -31,14 +35,19 @@
 }
 
 <h1>Prognose voor: @Model.Branch.Name</h1>
+@if (@Model.Department != null)
+{
+    <h5>Afdeling: @Model.Department</h5>
+}
 
 <div class="forecast-week-navigation">
-    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr-1)">Vorige week</a>
-    
+    <strong>Jaar: @Model.Year Week: @Model.WeekNr</strong>
+
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr - 1)"><i class="fa fas fa-arrow-left"></i></a>
+
     <a asp-action="Index" asp-all-route-data="@Model.resetRouteValues">Huidige week</a>
 
-    <strong>Jaar: @Model.Year Week: @Model.WeekNr</strong>
-    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr+1)">Volgende week</a>
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-weekNr="@(Model.WeekNr + 1)"><i class="fa fas fa-arrow-right"></i></a>
 </div>
 
 <p>
@@ -66,7 +75,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department)
+                    <a asp-action="Index" asp-route-department="@item.Department">
+                        @Html.DisplayFor(modelItem => item.Department)
+
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
@@ -75,11 +87,35 @@
                     @* @Html.DisplayFor(modelItem => item.WorkingHours) *@
                     @($"{TimeSpan.FromHours((double) item.WorkingHours).TotalHours:00}:{TimeSpan.FromHours((double) item.WorkingHours).Minutes:00}")
                 </td>
+                
+                @{
+                    var itemRouteData = new Dictionary<string, string>()
+                    {
+                        {
+                            "branchId",
+                            @Model.Branch.Id.ToString()
+                        },
+                        {
+                            "department",
+                            @item.Department.ToString()
+                        },
+                        {
+                            "year",
+                            @Model.Year.ToString()
+                        },
+                        {
+                            "weekNr",
+                            @Model.WeekNr.ToString()
+                        },
+                        {
+                            "dayOfWeek",
+                            @item.Date.DayOfWeek.ToString()
+                        }
+                    };
+                }
 
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                    <a asp-action="Edit" asp-all-route-data="itemRouteData">Edit</a>
                 </td>
             </tr>
         }
