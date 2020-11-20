@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Microsoft.AspNetCore.Mvc;
 
-namespace TestForecast
+namespace Bumbo.Logic.Forecast
 {
     public class ForecastLogic
     {
