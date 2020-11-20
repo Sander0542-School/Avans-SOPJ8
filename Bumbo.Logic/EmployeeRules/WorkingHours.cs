@@ -113,7 +113,7 @@ namespace Bumbo.Logic.EmployeeRules
 
                 if (age < 16) maxHours = 8;
 
-                return new TimeSpan(0, (int) ((otherWorkHours > maxHours ? 0 : maxHours - otherWorkHours) * 60), 0);
+                return TimeSpan.FromHours(otherWorkHours > maxHours ? 0 : maxHours - otherWorkHours);
             }
 
             return new TimeSpan(12, 0, 0);
