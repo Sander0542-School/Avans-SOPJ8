@@ -100,7 +100,7 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string status)
         {
             if (id == null)
             {
@@ -110,9 +110,16 @@ namespace Bumbo.Web.Controllers
             var user = await _wrapper.User.Get(user => user.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
 
+           
+
             EditViewModel userModel = CreateUserModel(user, branchesList);
 
-            
+            if (status != null)
+            {
+                userModel.StatusMessage = status;
+
+            }
+
             if (user == null)
             {
                 return NotFound();
@@ -132,7 +139,9 @@ namespace Bumbo.Web.Controllers
 
             var user = await _wrapper.User.Get(user => user.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
-
+            model.UserBranches = user.Branches;
+            model.Contracts = user.Contracts;
+            model.Branches = branchesList;
 
             if (ModelState.IsValid)
             {
@@ -141,13 +150,25 @@ namespace Bumbo.Web.Controllers
                     return NotFound();
                 }
 
+
+                var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+                if (model.PhoneNumber != phoneNumber)
+                {
+                    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+                    if (!setPhoneResult.Succeeded)
+                    {
+                        model.StatusMessage = "Unexpected error when trying to set phone number.";
+                        return View(model);
+                    }
+                }
+
                 // Update it with the values from the view model
                 user.FirstName = model.FirstName;
                 user.MiddleName = model.MiddleName;
                 user.LastName = model.LastName;
                 user.ZipCode = model.ZipCode;
                 user.Email = model.Email;
-                user.PhoneNumber = model.PhoneNumber;
+                //user.PhoneNumber = model.PhoneNumber;
                 user.HouseNumber = model.HouseNumber;
 
                 // Apply the changes if any to the db
@@ -165,9 +186,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            model.UserBranches = user.Branches;
-            model.Contracts = user.Contracts;
-            model.Branches = branchesList;
+            
 
             return View(model);
 
@@ -231,6 +250,7 @@ namespace Bumbo.Web.Controllers
 
             if (id == null)
             {
+                
                 return NotFound();
             }
             // Get the existing student from the db
@@ -239,22 +259,17 @@ namespace Bumbo.Web.Controllers
 
             EditViewModel userModel = CreateUserModel(user, branchesList);
 
-            //if (department == null || branch == null)
-            //{
-            //    ModelState.AddModelError(string.Empty, error.Description);
-
-            //}
-
-            
-
-
+           
             UserBranch userBranch2 = user.Branches.Where(b => b.BranchId == branch).Where(b => b.Department == department).FirstOrDefault();
 
             if (userBranch2 != null)
             {
                 if (userBranch2.Department == department)
                 {
-                    return NotFound();
+                    string statusMessage = "Error employee of this branch already works in this department";
+                    
+
+                    return RedirectToAction("Edit", new { id = userModel.Id, status = statusMessage });
                 }
             }
 

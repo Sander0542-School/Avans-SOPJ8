@@ -17,10 +17,12 @@ namespace Bumbo.Web.Models.Users
             public int UserId { get; set; }
 
             [Required]
+            [DataType(DataType.Date)]
             [Display(Name = "StartDate")]
             public DateTime StartDate { get; set; }
 
             [Required]
+            [DataType(DataType.Date)]
             [Display(Name = "EndDate")]
             public DateTime EndDate { get; set; }
 
