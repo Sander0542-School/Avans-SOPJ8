@@ -70,7 +70,7 @@
                 {
                     var shift = employeeShift.Shifts.First(shift1 => shift1.Date.DayOfWeek == day);
 
-                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}'"))">
+                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}'"))">
                         <span>
                             @if (shift.Notifications.Any())
                             {
@@ -108,7 +108,7 @@
                 }
                 else
                 {
-                    <td class="c-pointer" onclick="shiftModal(@($"'', {employeeShift.UserId}, '{employeeShift.Name}', '{Model.Department}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','',''"))">
+                    <td class="c-pointer" onclick="shiftModal(@($"'', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','',''"))">
 
                     </td>
                 }
