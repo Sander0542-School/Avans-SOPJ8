@@ -94,9 +94,10 @@ namespace Bumbo.Web.Controllers
 
         // GET: Forecast/Create
         [Route("create")]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int branchId)
         {
-            ViewData["BranchId"] = new SelectList(await _wrapper.Branch.GetAll(), "Id", "Name");
+            ViewData["BranchId"] = branchId;
+            // ViewData["BranchId"] = new SelectList(await _wrapper.Branch.GetAll(), "Id", "Name");
             return View();
         }
 
