@@ -20,11 +20,7 @@ namespace Bumbo.Web.Models.Forecast
 
             for (var i = 0; i < DaysInForecast; i++)
             {
-                ForecastInputs.Add(new ForecastInput()
-                {
-                    MetersOfShelves = i,
-                    ExpectedNumberOfColi = i,
-                });
+                ForecastInputs.Add(new ForecastInput());
             }
         }
         
