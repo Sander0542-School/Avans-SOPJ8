@@ -1,38 +1,99 @@
 ﻿@using Bumbo.Data.Models.Enums
-@model Bumbo.Data.Models.Forecast
+@using System.Collections
+@model Bumbo.Web.Models.Forecast.StockclerkViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+    <h1>Create</h1>
 
-<h4>Forecast</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="Department" class="control-label"></label>
-                <select asp-for="Department" asp-items="Html.GetEnumSelectList<Department>()" class="form-control"></select>
-                <span asp-validation-for="Department" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkingHours" class="control-label"></label>
-                <input asp-for="WorkingHours" class="form-control" />
-                <span asp-validation-for="WorkingHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Forecast</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op maandag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op dinsdag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op woensdag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op donderdag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op vrijdag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op zaterdag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op zondag</label>
+                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op maandag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op dinsdag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op woensdag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op donderdag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op vrijdag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op zaterdag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op zondag</label>
+                    <input asp-for="MetersOfShelves" class="form-control" />
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index" asp-route-branchId="@ViewData["branchId"]">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index" asp-route-branchId="@ViewData["branchId"]">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

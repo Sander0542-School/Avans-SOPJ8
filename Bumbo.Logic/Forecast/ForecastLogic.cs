@@ -55,29 +55,34 @@ namespace Bumbo.Logic.Forecast
 
         public ForecastLogic(List<BranchForecastStandard> forecastStandards)
         {
-            foreach (var f in forecastStandards)
-            {
-                switch (f.Activity)
-                {
-                    case ForecastActivity.UNLOAD_COLI:
-                        _minutesPerColiUnloading = f.Value;
-                        break;
-                    case ForecastActivity.STOCK_SHELVES:
-                        _minutesPerColiStockShelves = f.Value;
-                        break;
-                    case ForecastActivity.CASHIER:
-                        _customersPerHourCashRegister = f.Value;
-                        break;
-                    case ForecastActivity.PRODUCE_DEPARTMENT:
-                        _customersPerHourProduceDepartment = f.Value;
-                        break;
-                    case ForecastActivity.FACE_SHELVES:
-                        _secondsPerMeterFacing = f.Value;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(forecastStandards), "ForecastLogic encountered an unknown enum value. Did you add a new enum to ForecastActivity?");
-                }
-            }
+            //foreach (var f in forecastStandards)
+            //{
+                //switch (f.Activity)
+                //{
+                //    case ForecastActivity.UNLOAD_COLI:
+                //        _minutesPerColiUnloading = f.Value;
+                //        break;
+                //    case ForecastActivity.STOCK_SHELVES:
+                //        _minutesPerColiStockShelves = f.Value;
+                //        break;
+                //    case ForecastActivity.CASHIER:
+                //        _customersPerHourCashRegister = f.Value;
+                //        break;
+                //    case ForecastActivity.PRODUCE_DEPARTMENT:
+                //        _customersPerHourProduceDepartment = f.Value;
+                //        break;
+                //    case ForecastActivity.FACE_SHELVES:
+                //        _secondsPerMeterFacing = f.Value;
+                //        break;
+                //    default:
+                //        throw new ArgumentOutOfRangeException(nameof(forecastStandards), "ForecastLogic encountered an unknown enum value. Did you add a new enum to ForecastActivity?");
+                //}
+                _minutesPerColiUnloading = 10;
+                _minutesPerColiStockShelves = 10;
+                _customersPerHourCashRegister = 10;
+                _customersPerHourProduceDepartment = 10;
+                _secondsPerMeterFacing = 10;
+            //}
         }
 
         public decimal GetWorkHoursCashRegister(DateTime date)
