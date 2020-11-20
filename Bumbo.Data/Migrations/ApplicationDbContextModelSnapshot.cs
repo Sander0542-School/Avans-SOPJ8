@@ -332,16 +332,22 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
                 {
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.Property<int>("Week")
                         .HasColumnType("int");
 
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Confirmed")
                         .HasColumnType("bit");
 
-                    b.HasKey("Year", "Week");
+                    b.HasKey("BranchId", "Year", "Week", "Department");
 
                     b.ToTable("WeekSchedules");
                 });
@@ -628,6 +634,17 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
+                {
+                    b.HasOne("Bumbo.Data.Models.Branch", "Branch")
+                        .WithMany("WeekSchedules")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.Shift", "Shift")
@@ -701,6 +718,8 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("Shifts");
 
                     b.Navigation("Users");
+
+                    b.Navigation("WeekSchedules");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>

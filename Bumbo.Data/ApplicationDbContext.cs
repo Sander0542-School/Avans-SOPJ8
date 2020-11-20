@@ -127,7 +127,7 @@ namespace Bumbo.Data
 
             builder.Entity<WeekSchedule>(b =>
             {
-                b.HasKey(weekSchedule => new {weekSchedule.Year, weekSchedule.Week});
+                b.HasKey(weekSchedule => new {weekSchedule.BranchId, weekSchedule.Year, weekSchedule.Week, weekSchedule.Department});
 
                 b.ToTable("WeekSchedules");
             });
