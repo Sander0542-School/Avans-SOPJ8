@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
@@ -9,6 +10,7 @@ using Bumbo.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Bumbo.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Web.Controllers
 {
@@ -33,16 +35,34 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit()
         {
-            var dictionary = Request.Form.ToDictionary(input => input.Value.ToString());
-            List<String> startTimes = dictionary.ElementAt(0).Key.Split(',').ToList();
-            List<String> endTimes = dictionary.ElementAt(1).Key.Split(',').ToList();
-
-            for (int i = 0; i < startTimes.Count; i++)
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
             {
-                Console.WriteLine("Shift: " + startTimes[i] + " - " + endTimes[i] + " on " + (i + 1));
+                return RedirectToAction("Index");
             }
+            
+            var inputs = Request.Form.Where(val => val.Key != "__RequestVerificationToken").ToArray();
 
-            // _wrapper.UserAdditionalWork.Add(entity);
+            foreach (var item in inputs)
+            {
+                Console.WriteLine("Hours: " + item.Value + " on " + item.Key + " for user " +
+                                  User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                // if record with userID and Day not present
+                _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                {
+                    Day = Convert.ToInt32(item.Key),
+                    Hours = item.Value != null ? 0 : item.Value,
+                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                });
+
+                // else
+                _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
+                {
+                    Day = Convert.ToInt32(item.Key),
+                    Hours = item.Value != null ? 0 : item.Value,
+                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                });
+            }
 
             return RedirectToAction("Index");
         }
