@@ -10,6 +10,7 @@ using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
+using TestForecast;
 
 namespace Bumbo.Web.Controllers
 {
@@ -93,10 +94,12 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Forecast/Create
-        [Route("create")]
-        public async Task<IActionResult> Create(int branchId)
+        [Route("{year}/{weekNr}/create")]
+        public async Task<IActionResult> Create(int branchId, int year, int weekNr)
         {
             ViewData["BranchId"] = branchId;
+            ForecastLogic forecastLogic = new ForecastLogic(await _wrapper.BranchForecastStandard.GetAll(f=> f.Branch.Id == branchId));
+            
             // ViewData["BranchId"] = new SelectList(await _wrapper.Branch.GetAll(), "Id", "Name");
             return View();
         }
