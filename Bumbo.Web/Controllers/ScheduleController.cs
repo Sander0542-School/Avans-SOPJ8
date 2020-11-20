@@ -143,63 +143,65 @@ namespace Bumbo.Web.Controllers
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
+            
+            TempData["alertMessage"] = "Danger:De week kon niet worden gekopieerd";
 
             if (ModelState.IsValid)
             {
-                var startDateTarget = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, DayOfWeek.Monday);
-                var targetShifts = await _wrapper.Shift.GetAll(
-                    shift => shift.BranchId == branch.Id,
-                    shift => shift.Department == viewModel.Department,
-                    shift => shift.Date >= startDateTarget,
-                    shift => shift.Date < startDateTarget.AddDays(7)
-                );
-
-                if (targetShifts.Any())
+                try
                 {
-                    TempData["alertMessage"] = "Danger:De gekozen week bevat al diensten.";
+                    var startDateTarget = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, DayOfWeek.Monday);
 
-                    return RedirectToAction(nameof(Department), new
+                    var targetShifts = await _wrapper.Shift.GetAll(
+                        shift => shift.BranchId == branch.Id,
+                        shift => shift.Department == viewModel.Department,
+                        shift => shift.Date >= startDateTarget,
+                        shift => shift.Date < startDateTarget.AddDays(7)
+                    );
+
+                    if (!targetShifts.Any())
                     {
-                        branchId,
-                        year = viewModel.InputCopyWeek.Year,
-                        week = viewModel.InputCopyWeek.Week,
-                        department = viewModel.Department
-                    });
+                        var startDate = ISOWeek.ToDateTime(viewModel.Year, viewModel.Week, DayOfWeek.Monday);
+                        var shifts = await _wrapper.Shift.GetAll(
+                            shift => shift.BranchId == branch.Id,
+                            shift => shift.Department == viewModel.Department,
+                            shift => shift.Date >= startDate,
+                            shift => shift.Date < startDate.AddDays(7)
+                        );
+
+                        var newShifts = shifts.Select(shift => new Shift
+                        {
+                            BranchId = shift.BranchId,
+                            Department = shift.Department,
+                            UserId = shift.UserId,
+                            Date = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, shift.Date.DayOfWeek),
+                            StartTime = shift.StartTime,
+                            EndTime = shift.EndTime
+                        }).ToArray();
+
+                        if (await _wrapper.Shift.AddRange(newShifts) != null)
+                        {
+                            TempData["alertMessage"] = "Success:De week is succesvol gekopieerd";
+
+                            return RedirectToAction(nameof(Department), new
+                            {
+                                branchId,
+                                year = viewModel.InputCopyWeek.Year,
+                                week = viewModel.InputCopyWeek.Week,
+                                department = viewModel.Department
+                            });
+                        }
+                    }
+                    else
+                    {
+                        TempData["alertMessage"] = "Danger:De gekozen week bevat al diensten.";
+                    }
                 }
-
-                var startDate = ISOWeek.ToDateTime(viewModel.Year, viewModel.Week, DayOfWeek.Monday);
-                var shifts = await _wrapper.Shift.GetAll(
-                    shift => shift.BranchId == branch.Id,
-                    shift => shift.Department == viewModel.Department,
-                    shift => shift.Date >= startDate,
-                    shift => shift.Date < startDate.AddDays(7)
-                );
-
-                var newShifts = shifts.Select(shift => new Shift
+                catch (ArgumentOutOfRangeException)
                 {
-                    BranchId = shift.BranchId,
-                    Department = shift.Department,
-                    UserId = shift.UserId,
-                    Date = ISOWeek.ToDateTime(viewModel.InputCopyWeek.Year, viewModel.InputCopyWeek.Week, shift.Date.DayOfWeek),
-                    StartTime = shift.StartTime,
-                    EndTime = shift.EndTime
-                }).ToArray();
-
-                if (await _wrapper.Shift.AddRange(newShifts) != null)
-                {
-                    TempData["alertMessage"] = "Success:De week is succesvol gekopieerd";
-
-                    return RedirectToAction(nameof(Department), new
-                    {
-                        branchId,
-                        year = viewModel.InputCopyWeek.Year,
-                        week = viewModel.InputCopyWeek.Week,
-                        department = viewModel.Department
-                    });
+                    TempData["alertMessage"] = "Danger:De gekozen week bestaat niet.";
                 }
             }
-
-            TempData["alertMessage"] = "Danger:De week kon niet worden gekopieerd";
 
             return RedirectToAction(nameof(Department), new
             {
