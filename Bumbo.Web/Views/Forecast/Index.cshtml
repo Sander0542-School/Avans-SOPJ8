@@ -72,7 +72,8 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.WorkingHours)
+                    @* @Html.DisplayFor(modelItem => item.WorkingHours) *@
+                    @($"{TimeSpan.FromHours((double) item.WorkingHours).TotalHours:00}:{TimeSpan.FromHours((double) item.WorkingHours).Minutes:00}")
                 </td>
 
                 <td>
