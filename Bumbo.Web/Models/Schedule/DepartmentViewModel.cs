@@ -29,6 +29,8 @@ namespace Bumbo.Web.Models.Schedule
         public InputApproveScheduleModel InputApproveSchedule { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
+        
+        public bool ScheduleApproved { get; set; }
 
         public Branch Branch { get; set; }
 

@@ -48,6 +48,11 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
+                    
+                    ScheduleApproved = branch.WeekSchedules
+                        .Where(schedule => schedule.Year == year)
+                        .Where(schedule => schedule.Week == week)
+                        .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
 
                     EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
                     {

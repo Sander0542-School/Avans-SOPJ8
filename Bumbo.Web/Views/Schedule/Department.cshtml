@@ -16,12 +16,21 @@
         </h4>
     </div>
     <div class="col">
-        <h5>@ViewBag.Title @Html.DisplayFor(model => model.Department)</h5>
+        <h5>
+            @ViewBag.Title @Html.DisplayFor(model => model.Department)
+            @if (Model.ScheduleApproved)
+            {
+                <span class="text-danger font-weight-normal">(Goedgekeurd)</span>
+            }
+        </h5>
     </div>
     <div class="col-4 d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">Print</button>
         <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">Rooster kopiëren</button>
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Rooster goedkeuren</button>
+        @if (!Model.ScheduleApproved)
+        {
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Rooster goedkeuren</button>
+        }
     </div>
 </div>
 
@@ -132,7 +141,10 @@
 
 <partial name="_CopyWeekModal" model="Model.InputCopyWeek"/>
 
-<partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+@if (!Model.ScheduleApproved)
+{
+    <partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
