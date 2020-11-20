@@ -23,9 +23,9 @@ namespace Bumbo.Web.Models.Schedule
         [DisplayName("Afdeling")]
         public Department Department { get; set; }
 
-        public Input.Shift InputShift { get; set; }
+        public Input.InputShiftModel InputShift { get; set; }
         
-        public Input.CopyWeek InputCopyWeek { get; set; }
+        public Input.InputCopyWeekModel InputCopyWeek { get; set; }
 
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
@@ -100,7 +100,7 @@ namespace Bumbo.Web.Models.Schedule
 
         public class Input
         {
-            public class Shift
+            public class InputShiftModel
             {
                 public int? ShiftId { get; set; }
 
@@ -124,7 +124,7 @@ namespace Bumbo.Web.Models.Schedule
                 public TimeSpan EndTime { get; set; }
             }
             
-            public class CopyWeek
+            public class InputCopyWeekModel
             {
                 [DisplayName("Jaar")]
                 public int Year { get; set; }
