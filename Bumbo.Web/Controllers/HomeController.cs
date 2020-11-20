@@ -37,14 +37,13 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CultureManagement(string culture)
+        public IActionResult CultureManagement(string culture, string returnUrl)
         {
-            //TODO: Think about how to check the Culture: via cookies, dropdownlist or database?
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions() { Expires = DateTimeOffset.Now.AddDays((30)) });
+                new CookieOptions() { Expires = DateTimeOffset.Now.AddDays(999) });
 
-            return RedirectToAction(nameof(Index));
+            return LocalRedirect(returnUrl);
         }
     }
 }
