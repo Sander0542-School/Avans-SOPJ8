@@ -7,21 +7,27 @@ namespace Bumbo.Logic.Forecast
     {
         public static bool DateIsInSameWeek(DateTime date1, DateTime date2)
         {
-            if (System.Globalization.DateTimeFormatInfo.CurrentInfo == null) throw new NullReferenceException("Could not access DateTimeFormatInfo.");
-            var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
-            var d1 = date1.Date.AddDays(-1 * (int)cal.GetDayOfWeek(date1));
-            var d2 = date2.Date.AddDays(-1 * (int)cal.GetDayOfWeek(date2));
+            if (date1.Year != date2.Year) return false;
+            return GetWeekNumber(date1) == GetWeekNumber(date2);
+        } 
 
-            return d1 == d2;
-
-        }
-
-        public static int GetWeekNumber(DateTime date)
+        // https://stackoverflow.com/q/11154673/10557332
+        public static int GetWeekNumber(DateTime time)
         {
-            var ci = CultureInfo.CurrentCulture;
-            return ci.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
+            // be the same week# as whatever Thursday, Friday or Saturday are,
+            // and we always get those right
+            var day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+            {
+                time = time.AddDays(3);
+            }
+
+            // Return the week of our adjusted day
+            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
+        
         public static DateTime DateFromWeekNumber(int year, int weekOfYear)
         {
             var jan1 = new DateTime(year, 1, 1);
