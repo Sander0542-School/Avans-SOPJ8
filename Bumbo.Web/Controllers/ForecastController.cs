@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,10 +11,11 @@ using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("{branchId}/{controller}")]
+    [Route("branches/{branchId}/{controller}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -69,9 +71,13 @@ namespace Bumbo.Web.Controllers
             
             var requestedDate = DateLogic.DateFromWeekNumber(DateTime.Now.Year, weekNr);
 
-            // Todo: check if this method can be optimized so the where function can run on the database's end instead of the server's
-            _viewModel.Forecasts =  _wrapper.Forecast.GetAll(f => f.BranchId == branchId).Result
-                .Where(f => DateLogic.DateIsInSameWeek(f.Date, requestedDate));
+            var firstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday);
+            
+            _viewModel.Forecasts = await _wrapper.Forecast.GetAll(
+                f => f.BranchId == branchId,
+                f => f.Date >= firstDayOfWeek,
+                f => f.Date < firstDayOfWeek.AddDays(7)
+            );
 
             _viewModel.WeekNr = weekNr;
             _viewModel.Year = year;
@@ -80,7 +86,7 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Forecast/Details/5
-        [Route("{year=0}/{weekNr=0}/{department}")]
+        [Route("{year}/{weekNr}/{department}")]
         public async Task<IActionResult> Details(int branchId, Department department, int weekNr)
         {
             var forecast = await _wrapper.Forecast.Get(m => m.BranchId == branchId && m.Department == department);
@@ -122,5 +128,52 @@ namespace Bumbo.Web.Controllers
                 weekNr = DateLogic.GetWeekNumber(forecast.Date)
             });
         }
+        
+        // public virtual IActionResult Edit(int id)
+        // {
+        //     var model = _repository.Get(id);
+        //     if (model == null) return NotFound();
+        //
+        //     return View(model);
+        // }
+        //
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
+        // public virtual IActionResult Edit(int id, [FromForm] Forecast model)
+        // {
+        //     if (id != model.Id) return NotFound();
+        //     if (!ModelState.IsValid) return View(model);
+        //
+        //     try
+        //     {
+        //         _repository.Update(model);
+        //         _repository.Save();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!ModelExists(model.Id)) return NotFound();
+        //
+        //         throw;
+        //     }
+        //     return RedirectToAction(nameof(Index));
+        // }
+        //
+        // public virtual IActionResult Delete(int id)
+        // {
+        //     var model = _repository.Get(id);
+        //     if (model == null) return NotFound();
+        //
+        //     return View(model);
+        // }
+        //
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public virtual IActionResult DeleteConfirmed(int id)
+        // {
+        //     var model = _repository.Get(id);
+        //     _repository.Delete(model);
+        //     _repository.Save();
+        //     return RedirectToAction(nameof(Index));
+        // }
     }
 }
