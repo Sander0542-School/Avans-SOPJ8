@@ -18,9 +18,6 @@ namespace Bumbo.Web.Controllers
         private readonly RepositoryWrapper _wrapper;
         private readonly ForecastViewModel _viewModel;
 
-        private static int _daysInWeek = 7;
-        private static int _metersOfShelves = 30;
-
         public ForecastController(RepositoryWrapper wrapper)
         {
             _wrapper = wrapper;
@@ -89,12 +86,15 @@ namespace Bumbo.Web.Controllers
 
         // GET: Forecast/Create
         [Route("create")]
-        public async Task<IActionResult> Create(int branchId)
+        public async Task<IActionResult> Create(int branchId, int year, int weekNr)
         {
-            ViewData["BranchId"] = branchId;
+            var data = new StockclerkViewModel
+            {
+                FirstDayOfWeek = DateLogic.DateFromWeekNumber(year, weekNr),
+                BranchId = branchId
+            };
 
-            // ViewData["BranchId"] = new SelectList(await _wrapper.Branch.GetAll(), "Id", "Name");
-            return View();
+            return View(data);
         }
 
         // POST: Forecast/Create
@@ -103,36 +103,33 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("create")]
-        public async Task<IActionResult> Create(int branchId, int year, int weekNr, [FromForm]StockclerkViewModel stockClerckViewModel)
+        public async Task<IActionResult> Create(int branchId, int year, int weekNr, [FromForm]StockclerkViewModel stockClerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
-            ForecastLogic forecastLogic = new ForecastLogic(await _wrapper.BranchForecastStandard.GetAll(f => f.Branch.Id == branchId));
+            var forecastLogic = new ForecastLogic(await _wrapper.BranchForecastStandard.GetAll(f => f.Branch.Id == branchId));
 
-            var firstDateOfWeek = DateLogic.DateFromWeekNumber(year, weekNr);
-
-            for (int i = 0; i < _daysInWeek; i++)
+            for (var i = 0; i < stockClerkViewModel.DaysInForecast; i++)
             {
-                Forecast forecast = new Forecast();
+                var forecast = new Forecast();
                 forecast.BranchId = branchId;
-                forecast.Date = firstDateOfWeek.Add(new TimeSpan(i, 0, 0, 0));
+                forecast.Date = DateLogic.DateFromWeekNumber(year, weekNr).AddDays(i);
 
                 forecast.Department = Department.KAS;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(firstDateOfWeek.Add(new TimeSpan(i, 0, 0, 0)));
+                forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(forecast.Date);
                 await _wrapper.Forecast.Add(forecast);
 
                 forecast.Department = Department.VER;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursFresh(firstDateOfWeek.Add(new TimeSpan(i, 0, 0, 0)));
+                forecast.WorkingHours = forecastLogic.GetWorkHoursFresh(forecast.Date);
                 await _wrapper.Forecast.Add(forecast);
 
                 forecast.Department = Department.VAK;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockClerckViewModel.MetersOfShelves[i], stockClerckViewModel.ExpectedNumberOfColi[i]);
+                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockClerkViewModel.ForecastInputs[i].MetersOfShelves, stockClerkViewModel.ForecastInputs[i].ExpectedNumberOfColi);
                 await _wrapper.Forecast.Add(forecast);
             }
 
             return RedirectToAction("Index",
-            new
-            {
+            new {
                 branchId,
                 year,
                 weekNr

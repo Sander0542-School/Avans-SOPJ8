@@ -1,99 +1,74 @@
-﻿@using Bumbo.Data.Models.Enums
-@using System.Collections
+﻿@using Bumbo.Web.Models.Forecast
 @model Bumbo.Web.Models.Forecast.StockclerkViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-    <h1>Create</h1>
+@section Styles
+{
+    <style type="text/css">
+        #forecast-create-container {
+            display: flex;
+        }
+        #forecast-create-container > * {
+            padding: 0 1.5em;
+        }
+        .forecast-submit {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .forecast-submit > * {
+            margin-left: 2em;
+        }
+    </style>
+}
 
-    <h4>Forecast</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op maandag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op dinsdag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op woensdag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op donderdag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op vrijdag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op zaterdag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op zondag</label>
-                    <input asp-for="ExpectedNumberOfColi" class="form-control" />
-                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op maandag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op dinsdag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op woensdag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op donderdag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op vrijdag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op zaterdag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op zondag</label>
-                    <input asp-for="MetersOfShelves" class="form-control" />
-                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+<h1>Create</h1>
+
+<h4>Prognose vanaf @Model.FirstDayOfWeek</h4>
+<hr/>
+<form asp-action="Create">
+    <div id="forecast-create-container">
+        <div class="row">
+            <div class="form-group">
+                <strong>Dag</strong>
+            </div>
+            <div class="form-group">
+                <strong>Aantal verwachte coli</strong>
+            </div>
+            <div class="form-group">
+                <strong>Aantal meters te spiegelen</strong>
+            </div>
         </div>
-    </div>
+        @for (var i = 0; i < @Model.DaysInForecast; i++)
+        {
+            <div class="row">
+                <div>
+                    <h5>@Model.FirstDayOfWeek.AddDays(i).DayOfWeek</h5>
+                </div>
+                <div class="form-group">
+                    @* <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op @day</label> *@
+                    <input asp-for="@Model.ForecastInputs[i].ExpectedNumberOfColi" class="form-control"/>
+                    <span asp-validation-for="@Model.ForecastInputs[i].ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
 
-    <div>
-        <a asp-action="Index" asp-route-branchId="@ViewData["branchId"]">Back to List</a>
+                <div class="form-group">
+                    @* <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op @day</label> *@
+                    <input asp-for="@Model.ForecastInputs[i].MetersOfShelves" class="form-control"/>
+                    <span asp-validation-for="@Model.ForecastInputs[i].MetersOfShelves" class="text-danger"></span>
+                </div>
+            </div>
+        }
     </div>
+    <div class="form-group forecast-submit">
+        <a asp-action="Index" asp-route-branchId="@Model.BranchId">Back to List</a>
+        <input type="submit" value="Create" class="btn btn-primary"/>
+    </div>
+</form>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
