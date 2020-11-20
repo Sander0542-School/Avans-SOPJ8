@@ -12,6 +12,12 @@ namespace Bumbo.Web
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ManagerOnly", policy => policy.RequireClaim("Manager"));
+            });
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace Bumbo.Web.Models.Users
 {
     public class CreateViewModel
     {
+            [TempData]
+            public string StatusMessage { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
