@@ -1,4 +1,8 @@
-﻿@model Bumbo.Web.Models.Users.EditViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> LocOptions
+
+@model Bumbo.Web.Models.Users.EditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,7 +14,7 @@
 <hr />
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
-    
+
     <div class="col-6">
         <div class="card">
             <div class="card-header">
@@ -195,10 +199,10 @@
 </div>
 
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

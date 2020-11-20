@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,19 +22,19 @@ namespace Bumbo.Web.Controllers
         private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<UsersController> _localizer;
 
-        public UsersController(RepositoryWrapper wrapper, UserManager<User> usermanager, IEmailSender emailSender)
+        public UsersController(RepositoryWrapper wrapper, UserManager<User> usermanager, IEmailSender emailSender, IStringLocalizer<UsersController> localizer)
         {
             _emailSender = emailSender;
             _userManager = usermanager;
             _wrapper = wrapper;
+            _localizer = localizer;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            //bool v = User.HasClaim("Manager");
-            
             var users = await _wrapper.User.GetAll();
             return View(users);
         }
