@@ -1,6 +1,5 @@
 ﻿using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
 using Bumbo.Web.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +21,6 @@ namespace Bumbo.Web.Controllers
         private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
-        //private readonly RepositoryWrapper _wrapper;
 
         public UsersController(RepositoryWrapper wrapper, UserManager<User> usermanager, IEmailSender emailSender)
         {
@@ -129,14 +127,11 @@ namespace Bumbo.Web.Controllers
             {
                 return NotFound();
             }
+
             return View(userModel);
         }
 
-
-
         // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditViewModel model)
@@ -234,8 +229,6 @@ namespace Bumbo.Web.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDepartment(int? id, EditViewModel model)
@@ -249,7 +242,6 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            // Get the existing student from the db
             var user = await _wrapper.User.Get(user => user.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
 
@@ -279,7 +271,6 @@ namespace Bumbo.Web.Controllers
 
             return RedirectToAction("Edit", new{userModel.Id});
         }
-
 
         public async Task<IActionResult> DeleteBranchUser(int? id, int? branchId)
         {
@@ -343,10 +334,7 @@ namespace Bumbo.Web.Controllers
             }
 
             return View();
-
         }
-
-
 
         private async Task<List<SelectListItem>> GetBranchList()
         {

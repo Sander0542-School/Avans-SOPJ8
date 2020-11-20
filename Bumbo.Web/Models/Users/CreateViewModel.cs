@@ -20,7 +20,6 @@ namespace Bumbo.Web.Models.Users
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
