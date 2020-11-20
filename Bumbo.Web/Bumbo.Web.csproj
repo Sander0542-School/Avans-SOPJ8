@@ -18,4 +18,8 @@
       <ProjectReference Include="..\Bumbo.Logic\Bumbo.Logic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
+    </ItemGroup>
+
 </Project>
