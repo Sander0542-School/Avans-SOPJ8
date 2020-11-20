@@ -17,6 +17,6 @@ namespace Bumbo.Logic.Utils
             return age;
         }
 
-        public static string GetFullName(User user) => $"{user.FirstName} {(String.IsNullOrWhiteSpace(user.MiddleName) ? "" : user.MiddleName.Concat(" "))}{user.LastName}";
+        public static string GetFullName(User user) => $"{user.FirstName} {(String.IsNullOrWhiteSpace(user.MiddleName) ? "" : user.MiddleName + " ")}{user.LastName}";
     }
 }
