@@ -22,18 +22,29 @@ namespace Bumbo.Web
         {
             var identity = await base.GenerateClaimsAsync(identityUser);
 
-            var branches = await _dbContext.Set<UserBranch>()
+            var userBranches = await _dbContext.Set<UserBranch>()
                 .Where(userBranch => userBranch.UserId == identityUser.Id)
+                .ToListAsync();
+            
+            var managerBranches = await _dbContext.Set<BranchManager>()
+                .Where(branchManager => branchManager.UserId == identityUser.Id)
+                .Select(branchManager => branchManager.BranchId)
+                .Distinct()
                 .ToListAsync();
 
             identity.AddClaims(
-                branches.Select(branch => new Claim("BranchDepartment", $"{branch.BranchId}.{branch.Department}"))
+                userBranches.Select(branch => new Claim("BranchDepartment", $"{branch.BranchId}.{branch.Department}"))
             );
 
             identity.AddClaims(
-                branches
+                managerBranches.Select(branchId => new Claim("Manager", branchId.ToString(), ClaimValueTypes.Integer))
+            );
+
+            identity.AddClaims(
+                userBranches
                     .Select(branch => branch.BranchId)
                     .Distinct()
+                    .Concat(managerBranches)
                     .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer)
                     )
             );

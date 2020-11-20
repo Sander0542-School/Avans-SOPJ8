@@ -104,6 +104,13 @@ namespace Bumbo.Data
                 
             });
 
+            builder.Entity<BranchManager>(b =>
+            {
+                b.HasKey(branchManager => new {branchManager.UserId, branchManager.BranchId});
+                
+                b.ToTable("BranchManagers");
+            });
+
             #endregion
 
             #region Shifts
@@ -160,7 +167,7 @@ namespace Bumbo.Data
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.json")
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.Development.json")
                 .Build();
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DatabaseConnection");
