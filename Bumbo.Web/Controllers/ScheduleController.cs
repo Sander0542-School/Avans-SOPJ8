@@ -10,10 +10,12 @@ using Bumbo.Data.Repositories;
 using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bumbo.Web.Controllers
 {
+    [Authorize(Policy = "BranchManager")]
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class ScheduleController : Controller
     {
