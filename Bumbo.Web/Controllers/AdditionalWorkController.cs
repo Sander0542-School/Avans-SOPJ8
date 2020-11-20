@@ -47,21 +47,31 @@ namespace Bumbo.Web.Controllers
                 Console.WriteLine("Hours: " + item.Value + " on " + item.Key + " for user " +
                                   User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                // if record with userID and Day not present
-                _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
-                {
-                    Day = Convert.ToInt32(item.Key),
-                    Hours = item.Value ?? 0,
-                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                });
+                var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
+                    workday.Day == Convert.ToInt32(item.Key), workday => workday.UserId ==
+                    Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
-                // else
-                _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
+                int hours = item.Value != "" ? Convert.ToInt32(item.Value) : 0;
+         
+                
+                if (presentUserWork == null)
                 {
-                    Day = Convert.ToInt32(item.Key),
-                    Hours = item.Value ?? 0,
-                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                });
+                    _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                    {
+                        Day = Convert.ToInt32(item.Key),
+                        Hours = hours,
+                        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    });
+                }
+                else
+                {
+                    _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
+                    {
+                        Day = Convert.ToInt32(item.Key),
+                        Hours = hours,
+                        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    });
+                }
             }
 
             return RedirectToAction("Index");
