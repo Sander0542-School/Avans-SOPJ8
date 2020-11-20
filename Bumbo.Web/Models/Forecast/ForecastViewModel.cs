@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
-using Microsoft.VisualBasic;
 
 namespace Bumbo.Web.Models.Forecast
 {
     public class ForecastViewModel
     {
         public Branch Branch;
+        public Department ?Department;
         public int Year;
         public int WeekNr;
         public IEnumerable<Data.Models.Forecast> Forecasts;

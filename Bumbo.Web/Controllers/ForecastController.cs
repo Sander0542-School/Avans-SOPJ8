@@ -31,12 +31,14 @@ namespace Bumbo.Web.Controllers
         /// Creates the default view for viewing forecasts for 1 week
         /// </summary>
         /// <param name="branchId">Id of the branch</param>
+        /// <param name="department">Filter on department</param>
         /// <param name="year">The year of the forecast</param>
         /// <param name="weekNr">The year's week for the forecast</param>
         /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
+        [Route("{year}/{weekNr}/{department}")]
         [Route("{year}/{weekNr}")]
         [Route("")]
-        public async Task<IActionResult> Index(int branchId, int year = -1, int weekNr = -1)
+        public async Task<IActionResult> Index(int branchId, Department? department, int year = -1, int weekNr = -1)
         {
             // Check for default values
             var redirect = false;
@@ -68,13 +70,14 @@ namespace Bumbo.Web.Controllers
 
             // Define viewmodel variables
             _viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+            _viewModel.Department = department;
             
-            var requestedDate = DateLogic.DateFromWeekNumber(DateTime.Now.Year, weekNr);
-
             var firstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday);
             
             _viewModel.Forecasts = await _wrapper.Forecast.GetAll(
                 f => f.BranchId == branchId,
+                f => f.Department == department || department == null,
+                // Week filter
                 f => f.Date >= firstDayOfWeek,
                 f => f.Date < firstDayOfWeek.AddDays(7)
             );
@@ -85,18 +88,18 @@ namespace Bumbo.Web.Controllers
             return View(_viewModel);
         }
 
-        // GET: Forecast/Details/5
-        [Route("{year}/{weekNr}/{department}")]
-        public async Task<IActionResult> Details(int branchId, Department department, int weekNr)
-        {
-            var forecast = await _wrapper.Forecast.Get(m => m.BranchId == branchId && m.Department == department);
-            if (forecast == null)
-            {
-                return NotFound();
-            }
+        //// GET: Forecast/Details/5
+        //[Route("{year}/{weekNr}/{department}")]
+        //public async Task<IActionResult> Details(int branchId, Department department, int weekNr)
+        //{
+        //    var forecast = await _wrapper.Forecast.Get(m => m.BranchId == branchId && m.Department == department);
+        //    if (forecast == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(forecast);
-        }
+        //    return View(forecast);
+        //}
 
         // GET: Forecast/Create
         [Route("create")]
