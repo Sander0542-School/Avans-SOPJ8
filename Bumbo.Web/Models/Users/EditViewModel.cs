@@ -73,7 +73,7 @@ namespace Bumbo.Web.Models.Users
 
                     [Required]
                     [DataType(DataType.Text)]
-                    [Display(Name = "Branch" )]
+                    [Display(Name = "Branch")]
                     public int BranchId { get; set; }
 
                     [Required]
