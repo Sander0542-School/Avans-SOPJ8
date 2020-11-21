@@ -47,7 +47,7 @@ namespace Bumbo.Web
                     .Concat(managerBranches)
                     .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer)
                     )
-            ); 
+            );
 
             return identity;
         }
