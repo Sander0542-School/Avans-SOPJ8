@@ -4,8 +4,10 @@
         Layout = (string) parentLayout;
     }
     else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    {    
+        // String interpolation seems to suppress this error.
+        // Given that this page does exist but is not present in the folder structure it could work as workaround for removing the warning.
+        Layout = $"/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
 
@@ -25,5 +27,5 @@
 </div>
 
 @section Scripts {
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 }
