@@ -14,7 +14,6 @@ namespace Bumbo.Data.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context)
         {
-          
         }
 
         protected override IQueryable<User> GetQueryBase()

@@ -15,7 +15,6 @@ namespace Bumbo.Web
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
-
         }
 
         public static void AddPolicies(this IServiceCollection services)
@@ -23,7 +22,7 @@ namespace Bumbo.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
-                
+
                 options.AddPolicy("BranchManager", policy => policy.Requirements.Add(new BranchManagerRequirement()));
                 options.AddPolicy("BranchEmployee", policy => policy.Requirements.Add(new BranchEmployeeRequirement()));
                 options.AddPolicy("BranchDepartmentEmployee", policy => policy.Requirements.Add(new BranchDepartmentEmployeeRequirement()));
