@@ -49,6 +49,7 @@ namespace Bumbo.Web
             services.ConfigureRepositoryWrapper();
 
             services.AddConfig(Configuration);
+            
             services.AddPolicies();
 
             // Localization configuration
