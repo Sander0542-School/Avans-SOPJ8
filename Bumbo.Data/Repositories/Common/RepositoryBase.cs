@@ -42,6 +42,31 @@ namespace Bumbo.Data.Repositories.Common
             return changed > 0 ? entity : null;
         }
 
+        public async Task<List<TEntity>> AddRange(params TEntity[] entities)
+        {
+            await using var transaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                await Context.AddRangeAsync(entities);
+                int added = await Context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                if (added == entities.Length)
+                {
+                    return entities.ToList();
+                }
+
+                await transaction.RollbackAsync();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return null;
+        }
+
         public async Task<TEntity> Get(params Expression<Func<TEntity, bool>>[] predicates)
         {
             return await predicates

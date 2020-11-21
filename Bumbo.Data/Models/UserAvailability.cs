@@ -9,7 +9,7 @@ namespace Bumbo.Data.Models
         public int UserId { get; set; }
 
         [Range(1, 7)]
-        public int Day { get; set; }
+        public DayOfWeek Day { get; set; }
 
         public TimeSpan StartTime { get; set; }
 

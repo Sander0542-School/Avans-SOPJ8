@@ -29,5 +29,7 @@ namespace Bumbo.Data.Models
         public IList<UserBranch> Users { get; set; }
         
         public IList<BranchManager> Managers { get; set; }
+        
+        public IList<WeekSchedule> WeekSchedules { get; set; }
     }
 }
