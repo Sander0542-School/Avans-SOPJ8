@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Web", "Bumbo.Web\Bumb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Tests", "Bumbo.Tests\Bumbo.Tests.csproj", "{5418349A-1FDF-484E-BE61-BD1F9272B263}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Bumbo.Tests.Cypress", "Bumbo.Tests.Cypress\Bumbo.Tests.Cypress.njsproj", "{C45463C8-A5A9-49F5-BBF6-6D5C46406A9A}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Bumbo.Tests.Cypress", "Bumbo.Tests.Cypress\Bumbo.Tests.Cypress.njsproj", "{FA66FF0A-9805-4360-8316-9A08B0438163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5418349A-1FDF-484E-BE61-BD1F9272B263}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C45463C8-A5A9-49F5-BBF6-6D5C46406A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C45463C8-A5A9-49F5-BBF6-6D5C46406A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C45463C8-A5A9-49F5-BBF6-6D5C46406A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C45463C8-A5A9-49F5-BBF6-6D5C46406A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA66FF0A-9805-4360-8316-9A08B0438163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA66FF0A-9805-4360-8316-9A08B0438163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA66FF0A-9805-4360-8316-9A08B0438163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA66FF0A-9805-4360-8316-9A08B0438163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
