@@ -47,7 +47,8 @@ namespace Bumbo.Web.Controllers
                 Console.WriteLine("Hours: " + item.Value + " on " + item.Key + " for user " +
                                   User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
+                //Await
+                var presentUserWork = _wrapper.UserAdditionalWork.Get(workday =>
                     workday.Day == Convert.ToInt32(item.Key), workday => workday.UserId ==
                     Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
