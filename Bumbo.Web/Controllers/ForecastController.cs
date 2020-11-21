@@ -48,20 +48,18 @@ namespace Bumbo.Web.Controllers
                 redirect = true;
                 weekNr = DateLogic.GetWeekNumber(DateTime.Now);
             }
-            // Check if week is not in current year
-            else if (weekNr <= 0)
-            {
-                redirect = true;
-                weekNr = 52;
-                year -= 1;
-            }
-            else if (weekNr > 52)
-            {
-                redirect = true;
-                weekNr = 1;
-                year += 1;
-            }
 
+            // Check if date is valid
+            try
+            {
+                DateLogic.DateFromWeekNumber(year.Value, weekNr.Value);
+            }
+            catch (Exception)
+            {
+                //return RedirectToAction("Index", new {branchId});
+                return NotFound();
+            }
+            
             if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
 
 

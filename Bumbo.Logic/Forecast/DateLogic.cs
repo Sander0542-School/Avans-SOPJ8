@@ -30,6 +30,8 @@ namespace Bumbo.Logic.Forecast
         
         public static DateTime DateFromWeekNumber(int year, int weekOfYear)
         {
+            if(weekOfYear <= 0) throw new ArgumentException("Week cannot be negative or zero", nameof(weekOfYear));
+
             var jan1 = new DateTime(year, 1, 1);
             var daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
 
@@ -49,10 +51,12 @@ namespace Bumbo.Logic.Forecast
 
             // Using the first Thursday as starting week ensures that we are starting in the right year
             // then we add number of weeks multiplied with days
-            var result = firstThursday.AddDays(weekNum * 7);
-
             // Subtract 3 days from Thursday to get Monday, which is the first weekday in ISO8601
-            return result.AddDays(-3);
+            var result = firstThursday.AddDays(weekNum * 7 - 3);
+
+            if (result.Year != year) throw new ArgumentException("Week number lies in next year", nameof(year));
+
+            return result;
         }
 
     }

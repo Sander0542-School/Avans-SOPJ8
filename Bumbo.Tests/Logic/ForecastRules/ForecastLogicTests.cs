@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using NUnit.Framework;
 
-namespace Bumbo.Tests.ForecastRules
+namespace Bumbo.Tests.Logic.ForecastRules
 {
     public class ForecastLogicTests
     {
