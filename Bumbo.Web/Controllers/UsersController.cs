@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "Manager")]
     public class UsersController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
