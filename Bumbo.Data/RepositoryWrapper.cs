@@ -13,6 +13,7 @@ namespace Bumbo.Data
         private ShiftRepository _shift;
         private UserAdditionalWorkRepository _userAdditionalWork;
         private UserAvailabilityRepository _userAvailability;
+        private WeekScheduleRepository _weekSchedule;
         private WorkedShiftRepository _workedShift;
         private BranchForecastStandardRepository _branchForecastStandard;
 
@@ -23,6 +24,7 @@ namespace Bumbo.Data
         public ShiftRepository Shift => _shift ??= new ShiftRepository(_repositoryContext);
         public UserAdditionalWorkRepository UserAdditionalWork => _userAdditionalWork ??= new UserAdditionalWorkRepository(_repositoryContext);
         public UserAvailabilityRepository UserAvailability => _userAvailability ??= new UserAvailabilityRepository(_repositoryContext);
+        public WeekScheduleRepository WeekSchedule => _weekSchedule ??= new WeekScheduleRepository(_repositoryContext);
         public WorkedShiftRepository WorkedShift => _workedShift ??= new WorkedShiftRepository(_repositoryContext);
         public BranchForecastStandardRepository BranchForecastStandard => _branchForecastStandard ??= new BranchForecastStandardRepository(_repositoryContext);
 

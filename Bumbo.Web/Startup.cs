@@ -45,6 +45,8 @@ namespace Bumbo.Web
             services.ConfigureRepositoryWrapper();
 
             services.AddConfig(Configuration);
+            
+            services.AddPolicies();
 
             // Localization configuration
             // Could add more cultures later like german 

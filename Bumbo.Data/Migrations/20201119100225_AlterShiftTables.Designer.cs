@@ -4,14 +4,16 @@ using Bumbo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201119100225_AlterShiftTables")]
+    partial class AlterShiftTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,11 +52,11 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Activity")
-                        .HasColumnType("int");
+                    b.Property<string>("Activity")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BranchId", "Activity");
 
@@ -115,11 +117,11 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>
                 {
-                    b.Property<int>("Activity")
-                        .HasColumnType("int");
+                    b.Property<string>("Activity")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Activity");
 
@@ -328,28 +330,6 @@ namespace Bumbo.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Contracts");
-                });
-
-            modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
-                {
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Week")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Department")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("bit");
-
-                    b.HasKey("BranchId", "Year", "Week", "Department");
-
-                    b.ToTable("WeekSchedules");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
@@ -634,17 +614,6 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
-                {
-                    b.HasOne("Bumbo.Data.Models.Branch", "Branch")
-                        .WithMany("WeekSchedules")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.Shift", "Shift")
@@ -718,8 +687,6 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("Shifts");
 
                     b.Navigation("Users");
-
-                    b.Navigation("WeekSchedules");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>

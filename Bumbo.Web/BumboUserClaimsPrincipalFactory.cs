@@ -43,10 +43,9 @@ namespace Bumbo.Web
             identity.AddClaims(
                 userBranches
                     .Select(branch => branch.BranchId)
-                    .Distinct()
                     .Concat(managerBranches)
-                    .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer)
-                    )
+                    .Distinct()
+                    .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             );
 
             return identity;
