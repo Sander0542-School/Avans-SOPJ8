@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("branches/{branchId}/forecasts/{year=-1}/{weekNr=-1}/{department=null}")]
-    [Route("branches/{branchId}/forecasts/{year=-1}/{weekNr=-1}")]
+    [Route("branches/{branchId}/forecasts/{year?}/{weekNr}/{department=null}")]
+    [Route("branches/{branchId}/forecasts/{year?}/{weekNr?}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -33,17 +33,17 @@ namespace Bumbo.Web.Controllers
         /// <param name="weekNr">The year's week for the forecast</param>
         /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
         [Route("")]
-        public async Task<IActionResult> Index(int branchId, Department? department, int year, int weekNr)
+        public async Task<IActionResult> Index(int branchId, Department? department, int? year, int? weekNr)
         {
             // Check for default values
             var redirect = false;
-            if (year == -1)
+            if (!year.HasValue)
             {
                 redirect = true;
                 year = DateTime.Now.Year;
             }
 
-            if (weekNr == -1)
+            if (!weekNr.HasValue)
             {
                 redirect = true;
                 weekNr = DateLogic.GetWeekNumber(DateTime.Now);
@@ -64,11 +64,12 @@ namespace Bumbo.Web.Controllers
 
             if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
 
+
             // Define viewmodel variables
             _viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             _viewModel.Department = department;
 
-            var firstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday);
+            var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
 
             _viewModel.Forecasts = await _wrapper.Forecast.GetAll(
                 f => f.BranchId == branchId,
@@ -78,8 +79,8 @@ namespace Bumbo.Web.Controllers
                 f => f.Date < firstDayOfWeek.AddDays(7)
             );
 
-            _viewModel.WeekNr = weekNr;
-            _viewModel.Year = year;
+            _viewModel.WeekNr = weekNr.Value;
+            _viewModel.Year = year.Value;
 
             return View(_viewModel);
         }
