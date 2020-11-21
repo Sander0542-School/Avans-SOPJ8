@@ -11,17 +11,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("branches/{branchId}/forecasts/{year?}/{weekNr}/{department=null}")]
+    [Route("branches/{branchId}/forecasts/{year?}/{weekNr?}/{department?}")]
     [Route("branches/{branchId}/forecasts/{year?}/{weekNr?}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
-        private readonly ForecastViewModel _viewModel;
 
         public ForecastController(RepositoryWrapper wrapper)
         {
             _wrapper = wrapper;
-            _viewModel = new ForecastViewModel();
         }
 
         /// <summary>
@@ -35,6 +33,8 @@ namespace Bumbo.Web.Controllers
         [Route("")]
         public async Task<IActionResult> Index(int branchId, Department? department, int? year, int? weekNr)
         {
+            var viewModel = new ForecastViewModel();
+
             // Check for default values
             var redirect = false;
             if (!year.HasValue)
@@ -66,12 +66,12 @@ namespace Bumbo.Web.Controllers
 
 
             // Define viewmodel variables
-            _viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
-            _viewModel.Department = department;
+            viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+            viewModel.Department = department;
 
             var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
 
-            _viewModel.Forecasts = await _wrapper.Forecast.GetAll(
+            viewModel.Forecasts = await _wrapper.Forecast.GetAll(
                 f => f.BranchId == branchId,
                 f => f.Department == department || department == null,
                 // Week filter
@@ -79,10 +79,10 @@ namespace Bumbo.Web.Controllers
                 f => f.Date < firstDayOfWeek.AddDays(7)
             );
 
-            _viewModel.WeekNr = weekNr.Value;
-            _viewModel.Year = year.Value;
+            viewModel.WeekNr = weekNr.Value;
+            viewModel.Year = year.Value;
 
-            return View(_viewModel);
+            return View(viewModel);
         }
 
         // GET: Forecast/Create
