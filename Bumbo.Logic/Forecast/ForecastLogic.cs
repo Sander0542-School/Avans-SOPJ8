@@ -139,7 +139,7 @@ namespace Bumbo.Logic.Forecast
                 DayOfWeek.Thursday => (int) (_numberOfCustomersExpected * 1.05),
                 DayOfWeek.Friday => (int) (_numberOfCustomersExpected * 1.10),
                 DayOfWeek.Saturday => (int) (_numberOfCustomersExpected * 1.0),
-                _ => (int) (_numberOfCustomersExpected * 0.90)
+                _ => (int) (_numberOfCustomersExpected * 0.90) // It sure would be nice if Sunday always was the default value
             };
 
             // TODO: haal mensen eraf of voeg mensen toe op basis van het weer
