@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("branches/{branchId}/{controller}/{year=-1}/{weekNr=-1}/{department=null}")]
-    [Route("branches/{branchId}/{controller}/{year=-1}/{weekNr=-1}")]
+    [Route("branches/{branchId}/forecasts/{year=-1}/{weekNr=-1}/{department=null}")]
+    [Route("branches/{branchId}/forecasts/{year=-1}/{weekNr=-1}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
