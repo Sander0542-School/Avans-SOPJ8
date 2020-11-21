@@ -45,8 +45,7 @@ namespace Bumbo.Web
                     .Select(branch => branch.BranchId)
                     .Distinct()
                     .Concat(managerBranches)
-                    .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer)
-                    )
+                    .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             ); 
 
             return identity;
