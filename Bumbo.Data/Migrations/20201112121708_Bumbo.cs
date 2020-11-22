@@ -105,7 +105,7 @@ namespace Bumbo.Data.Migrations
                 columns: table => new
                 {
                     BranchId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false, type:"Date"),
                     Department = table.Column<int>(nullable: false),
                     WorkingHours = table.Column<decimal>(type: "decimal(5, 2)", nullable: false)
                 },

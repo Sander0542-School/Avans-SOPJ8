@@ -1,0 +1,129 @@
+﻿@using Bumbo.Logic.Forecast
+@using System.Globalization
+@model Bumbo.Web.Models.Forecast.ForecastViewModel
+
+@{
+    ViewData["Title"] = "Index";
+
+    var partialRouteData = new Dictionary<string, string>()
+    {
+        {
+            "branchId",
+            Model.Branch.Id.ToString()
+        },
+        {
+            "year",
+            Model.Year.ToString()
+        },
+        {
+            "department",
+            Model.Department.ToString()
+        }
+    };
+
+    Model.ResetRouteValues.Add("branchId", Model.Branch.Id.ToString());
+
+    // Get current week date 
+
+    var nextWeek = ISOWeek.ToDateTime(Model.Year, Model.WeekNr, DayOfWeek.Monday).AddDays(7);
+    var previousWeek = ISOWeek.ToDateTime(Model.Year, Model.WeekNr, DayOfWeek.Monday).AddDays(-7);
+}
+
+@section Styles {
+    <style type="text/css">
+        .forecast-week-navigation {
+            display: flex;
+            align-items: center;
+        }
+        .forecast-week-navigation > * {
+            margin-right: 1em;
+        }
+    </style>
+}
+
+<h1>Prognose voor: @Model.Branch.Name</h1>
+@if (@Model.Department != null)
+{
+    <h5>Afdeling: @Model.Department</h5>
+}
+
+<div class="forecast-week-navigation">
+    <strong>Jaar: @Model.Year Week: @Model.WeekNr</strong>
+
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(previousWeek.Year)" asp-route-weekNr="@(ISOWeek.GetWeekOfYear(previousWeek))"><i class="fa fas fa-arrow-left"></i></a>
+
+    <a asp-action="Index" asp-all-route-data="@Model.ResetRouteValues">Huidige week</a>
+
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(nextWeek.Year)" asp-route-weekNr="@(ISOWeek.GetWeekOfYear(nextWeek))"><i class="fa fas fa-arrow-right"></i></a>
+</div>
+
+<p>
+    <a asp-action="Create" asp-all-route-data="partialRouteData" asp-route-weekNr="@Model.WeekNr">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.FirstOrDefault().Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.FirstOrDefault().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forecasts.FirstOrDefault().WorkingHours)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Forecasts)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Index" asp-route-department="@item.Department">
+                        @Html.DisplayFor(modelItem => item.Department)
+
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @TimeSpan.FromHours((double)item.WorkingHours).ToString(@"hh\:mm")
+                </td>
+                
+                @{
+                    var itemRouteData = new Dictionary<string, string>()
+                    {
+                        {
+                            "branchId",
+                            @Model.Branch.Id.ToString()
+                        },
+                        {
+                            "department",
+                            @item.Department.ToString()
+                        },
+                        {
+                            "year",
+                            @Model.Year.ToString()
+                        },
+                        {
+                            "weekNr",
+                            @Model.WeekNr.ToString()
+                        },
+                        {
+                            "dayOfWeek",
+                            @item.Date.DayOfWeek.ToString()
+                        }
+                    };
+                }
+
+                <td>
+                    <a asp-action="Edit" asp-all-route-data="itemRouteData">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

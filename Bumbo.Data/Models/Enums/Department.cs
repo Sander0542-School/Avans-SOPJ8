@@ -5,6 +5,5 @@ namespace Bumbo.Data.Models.Enums
         KAS,
         VER,
         VAK,
-        SER
     }
 }
