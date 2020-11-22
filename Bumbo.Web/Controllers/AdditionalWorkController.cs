@@ -47,32 +47,32 @@ namespace Bumbo.Web.Controllers
                 Console.WriteLine("Hours: " + item.Value + " on " + item.Key + " for user " +
                                   User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                //Await
-                var presentUserWork = _wrapper.UserAdditionalWork.Get(workday =>
-                    workday.Day == Convert.ToInt32(item.Key), workday => workday.UserId ==
-                    Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                //TODO: Calculate start- endtime
+                //var presentUserWork = _wrapper.UserAdditionalWork.Get(workday =>
+                //    workday.Day == Convert.ToInt32(item.Key), workday => workday.UserId ==
+                //    Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
-                int hours = item.Value != "" ? Convert.ToInt32(item.Value) : 0;
+                //int hours = item.Value != "" ? Convert.ToInt32(item.Value) : 0;
          
                 
-                if (presentUserWork == null)
-                {
-                    _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
-                    {
-                        Day = Convert.ToInt32(item.Key),
-                        Hours = hours,
-                        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                    });
-                }
-                else
-                {
-                    _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
-                    {
-                        Day = Convert.ToInt32(item.Key),
-                        Hours = hours,
-                        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                    });
-                }
+                //if (presentUserWork == null)
+                //{
+                //    _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                //    {
+                //        Day = Convert.ToInt32(item.Key),
+                //        Hours = hours,
+                //        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                //    });
+                //}
+                //else
+                //{
+                //    _wrapper.UserAdditionalWork.Update(new UserAdditionalWork
+                //    {
+                //        Day = Convert.ToInt32(item.Key),
+                //        Hours = hours,
+                //        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                //    });
+                //}
             }
 
             return RedirectToAction("Index");

@@ -256,8 +256,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day,
-                        Hours = 3
+                        Day = day
+                        //Hours = 3
                     }
                 }
             };
@@ -291,8 +291,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day,
-                        Hours = 5
+                        Day = day
+                        //Hours = 5
                     }
                 }
             };
@@ -326,8 +326,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day,
-                        Hours = 8
+                        Day = day
+                        //Hours = 8
                     }
                 }
             };
