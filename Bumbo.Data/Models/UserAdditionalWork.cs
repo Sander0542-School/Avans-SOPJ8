@@ -10,8 +10,9 @@ namespace Bumbo.Data.Models
 
         public DayOfWeek Day { get; set; }
 
-        [Range(0, 24)]
-        public double Hours { get; set; }
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
 
 
         public User User { get; set; }
