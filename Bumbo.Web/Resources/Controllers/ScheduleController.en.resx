@@ -21,7 +21,7 @@
         <value>The schedule could not be saved.</value>
     </data>
     <data name="ScheduleCopied" xml:space="preserve">
-        <value>The schedule is successfully copied to week {0} of {1}.</value>
+        <value>The schedule was successfully copied to week {0} of {1}.</value>
     </data>
     <data name="ScheduleNotEmpty" xml:space="preserve">
         <value>The selected schedule already contains shifts.</value>
