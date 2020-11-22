@@ -50,11 +50,11 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Activity")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Activity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("BranchId", "Activity");
 
@@ -115,11 +115,11 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>
                 {
-                    b.Property<string>("Activity")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Activity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Activity");
 
