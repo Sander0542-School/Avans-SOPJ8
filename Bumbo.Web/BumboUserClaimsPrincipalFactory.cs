@@ -25,7 +25,7 @@ namespace Bumbo.Web
             var userBranches = await _dbContext.Set<UserBranch>()
                 .Where(userBranch => userBranch.UserId == identityUser.Id)
                 .ToListAsync();
-            
+
             var managerBranches = await _dbContext.Set<BranchManager>()
                 .Where(branchManager => branchManager.UserId == identityUser.Id)
                 .Select(branchManager => branchManager.BranchId)
