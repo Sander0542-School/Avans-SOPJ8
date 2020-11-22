@@ -1,4 +1,5 @@
 ﻿@using Bumbo.Logic.Forecast
+@using System.Globalization
 @model Bumbo.Web.Models.Forecast.ForecastViewModel
 
 @{
@@ -20,12 +21,12 @@
         }
     };
 
-    Model.resetRouteValues.Add("branchId", Model.Branch.Id.ToString());
+    Model.ResetRouteValues.Add("branchId", Model.Branch.Id.ToString());
 
     // Get current week date 
 
-    var nextWeek = DateLogic.DateFromWeekNumber(@Model.Year, @Model.WeekNr).AddDays(7);
-    var previousWeek = DateLogic.DateFromWeekNumber(@Model.Year, @Model.WeekNr).AddDays(-7);
+    var nextWeek = ISOWeek.ToDateTime(Model.Year, Model.WeekNr, DayOfWeek.Monday).AddDays(7);
+    var previousWeek = ISOWeek.ToDateTime(Model.Year, Model.WeekNr, DayOfWeek.Monday).AddDays(-7);
 }
 
 @section Styles {
@@ -49,11 +50,11 @@
 <div class="forecast-week-navigation">
     <strong>Jaar: @Model.Year Week: @Model.WeekNr</strong>
 
-    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(previousWeek.Year)" asp-route-weekNr="@(DateLogic.GetWeekNumber(previousWeek))"><i class="fa fas fa-arrow-left"></i></a>
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(previousWeek.Year)" asp-route-weekNr="@(ISOWeek.GetWeekOfYear(previousWeek))"><i class="fa fas fa-arrow-left"></i></a>
 
-    <a asp-action="Index" asp-all-route-data="@Model.resetRouteValues">Huidige week</a>
+    <a asp-action="Index" asp-all-route-data="@Model.ResetRouteValues">Huidige week</a>
 
-    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(nextWeek.Year)" asp-route-weekNr="@(DateLogic.GetWeekNumber(nextWeek))"><i class="fa fas fa-arrow-right"></i></a>
+    <a asp-action="Index" asp-all-route-data="partialRouteData" asp-route-year="@(nextWeek.Year)" asp-route-weekNr="@(ISOWeek.GetWeekOfYear(nextWeek))"><i class="fa fas fa-arrow-right"></i></a>
 </div>
 
 <p>

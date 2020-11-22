@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
@@ -46,13 +48,13 @@ namespace Bumbo.Web.Controllers
             if (!weekNr.HasValue)
             {
                 redirect = true;
-                weekNr = DateLogic.GetWeekNumber(DateTime.Now);
+                weekNr = ISOWeek.GetWeekOfYear(DateTime.Now);
             }
 
             // Check if date is valid
             try
             {
-                DateLogic.DateFromWeekNumber(year.Value, weekNr.Value);
+                ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
             }
             catch (Exception)
             {
@@ -87,12 +89,13 @@ namespace Bumbo.Web.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(int branchId, int year, int weekNr)
         {
-            var data = new StockclerkViewModel
+            var data = new StockclerkViewModel()
             {
-                FirstDayOfWeek = DateLogic.DateFromWeekNumber(year, weekNr),
-                BranchId = branchId
+                FirstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday),
+                BranchId = branchId,
+                DaysInForecast = 7
             };
-
+        
             return View(data);
         }
 
@@ -102,17 +105,17 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("create")]
-        public async Task<IActionResult> Create(int branchId, int year, int weekNr, [FromForm]StockclerkViewModel stockClerkViewModel)
+        public async Task<IActionResult> Create(int branchId, int year, int weekNr, [FromForm]StockclerkViewModel stockclerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
             var forecastLogic = new ForecastLogic(await _wrapper.BranchForecastStandard.GetAll(f => f.Branch.Id == branchId));
 
-            for (var i = 0; i < stockClerkViewModel.DaysInForecast; i++)
+            for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
                 var forecast = new Forecast();
                 forecast.BranchId = branchId;
-                forecast.Date = DateLogic.DateFromWeekNumber(year, weekNr).AddDays(i);
+                forecast.Date = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday).AddDays(i);
 
                 forecast.Department = Department.KAS;
                 forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(forecast.Date);
@@ -123,7 +126,7 @@ namespace Bumbo.Web.Controllers
                 await _wrapper.Forecast.Add(forecast);
 
                 forecast.Department = Department.VAK;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockClerkViewModel.ForecastInputs[i].MetersOfShelves, stockClerkViewModel.ForecastInputs[i].ExpectedNumberOfColi);
+                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i], stockclerkViewModel.ExpectedNumberOfColi[i]);
                 await _wrapper.Forecast.Add(forecast);
             }
 
