@@ -38,13 +38,20 @@
         </div>
     </nav>
 </header>
-<div class="container">
+
+@if (ViewData["AlertMessage"] != null)
+{
+    <div class="container">
+        <partial name="_AlertPartial" model='ViewData["AlertMessage"]'/>
+    </div>
+}
+<div class="@(ViewData["ContainerType"] ?? "container")">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-muted d-print-none">
     <div class="container">
         &copy; 2020 - Bumbo.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>

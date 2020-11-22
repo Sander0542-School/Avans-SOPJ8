@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,10 +17,10 @@ namespace Bumbo.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         //private readonly IStringLocalizer _localizer;
 
-        public HomeController(ILogger<HomeController> logger /**, IStringLocalizer localizer**/)
+        public HomeController(ILogger<HomeController> logger/**, IStringLocalizer localizer **/)
         {
             _logger = logger;
-            //_localizer = localizer;
+            // _localizer = localizer;
         }
 
         public IActionResult Index()
