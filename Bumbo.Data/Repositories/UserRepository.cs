@@ -16,6 +16,13 @@ namespace Bumbo.Data.Repositories
         {
         }
 
+        protected override IQueryable<User> GetQueryBase()
+        {
+            return base.GetQueryBase()
+                .Include(user => user.Contracts)
+                .Include(user => user.Branches);
+        }
+
         public async Task<List<User>> GetUsersAndShifts(Branch branch, int year, int week, Department department)
         {
             var startTime = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
