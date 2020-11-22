@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "lib": ["es6"],
-    "sourceMap": true,
-    "outDir": "./dist/"
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress"]
   },
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "**/*.ts"
   ]
 }
