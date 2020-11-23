@@ -12,6 +12,7 @@ using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
@@ -20,10 +21,12 @@ namespace Bumbo.Web.Controllers
     public class ScheduleController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
+        private readonly IStringLocalizer<ScheduleController> _localizer;
 
-        public ScheduleController(RepositoryWrapper wrapper)
+        public ScheduleController(RepositoryWrapper wrapper, IStringLocalizer<ScheduleController> localizer)
         {
             _wrapper = wrapper;
+            _localizer = localizer;
         }
 
         [Route("{year}/{week}/{department}")]
@@ -116,7 +119,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = "Danger:De dienst kon niet worden opgeslagen.";
+            var alertMessage = $"Danger:{_localizer["ShiftNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -150,7 +153,7 @@ namespace Bumbo.Web.Controllers
 
                 if (success)
                 {
-                    alertMessage = "Success:De dienst is succesvol opgeslagen.";
+                    alertMessage = $"Success:{_localizer["ShiftSaved"]}";
                 }
             }
 
@@ -172,7 +175,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = "Danger:Het rooster kon niet worden gekopieerd.";
+            TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -209,7 +212,7 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = $"Success:Het rooster is succesvol gekopieerd naar week {copyWeekModel.TargetWeek} van {copyWeekModel.TargetYear}.";
+                            TempData["alertMessage"] = $"Success:{_localizer["ScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
                             return RedirectToAction(nameof(Department), new
                             {
@@ -222,12 +225,12 @@ namespace Bumbo.Web.Controllers
                     }
                     else
                     {
-                        TempData["alertMessage"] = "Danger:Het rooster in de gekozen week bevat al diensten.";
+                        TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = "Danger:De gekozen week bestaat niet.";
+                    TempData["alertMessage"] = $"Danger:{_localizer["WeekNotExists"]}";
                 }
             }
 
@@ -247,7 +250,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = "Danger:Het rooster kon niet worden goedgekeurd.";
+            TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -274,17 +277,17 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.WeekSchedule.Add(weekSchedule) != null)
                         {
-                            TempData["alertMessage"] = "Success:Het rooster is succesvol goedgekeurd";
+                            TempData["alertMessage"] = $"Success:{_localizer["ScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = "Danger:Het rooster bevat geen diensten";
+                        TempData["alertMessage"] = $"Success:{_localizer["ScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = "Danger:De gekozen week bestaat niet.";
+                    TempData["alertMessage"] = $"Danger:{_localizer["WeekNotExists"]}";
                 }
             }
 
