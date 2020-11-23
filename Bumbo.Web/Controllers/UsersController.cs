@@ -112,7 +112,7 @@ namespace Bumbo.Web.Controllers
 
             var user = await _wrapper.User.Get(user => user.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
-            EditViewModel userModel = CreateUserModel(user, branchesList);
+            var userModel = CreateUserModel(user, branchesList);
 
             if (status != null)
             {
@@ -124,7 +124,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            return View(new CreateViewModel());
+            return View(userModel);
         }
 
         [HttpPost]
