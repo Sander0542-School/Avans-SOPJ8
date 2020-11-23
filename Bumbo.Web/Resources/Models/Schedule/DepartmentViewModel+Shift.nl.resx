@@ -1,0 +1,35 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Date" xml:space="preserve">
+        <value>Datum</value>
+    </data>
+    <data name="StartTime" xml:space="preserve">
+        <value>Starttijd</value>
+    </data>
+    <data name="EndTime" xml:space="preserve">
+        <value>Eindtijd</value>
+    </data>
+    <data name="Notifications" xml:space="preserve">
+        <value>Meldingen</value>
+    </data>
+    <data name="BreakTime" xml:space="preserve">
+        <value>Pauzeduur</value>
+    </data>
+    <data name="WorkTime" xml:space="preserve">
+        <value>Werkduur</value>
+    </data>
+    <data name="TotalTime" xml:space="preserve">
+        <value>Totale duur</value>
+    </data>
+</root>

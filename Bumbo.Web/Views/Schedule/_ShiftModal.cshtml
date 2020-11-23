@@ -1,11 +1,12 @@
 @model DepartmentViewModel.InputShiftModel
+@inject IViewLocalizer Localizer
 
 <div class="modal fade" id="shiftEditModal" tabindex="-1" role="dialog" aria-labelledby="shiftEditModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form asp-action="SaveShift">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="shiftEditModalLabel">Dienst</h5>
+                    <h5 class="modal-title" id="shiftEditModalLabel">@Localizer["Shift"]</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -42,8 +43,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluit</button>
-                    <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>
