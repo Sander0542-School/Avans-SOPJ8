@@ -1,15 +1,16 @@
 @using System.Globalization
 @model DepartmentViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewBag.Title = "Afdelingsrooster";
+    ViewBag.Title = Localizer["DepartmentSchedule"];
     ViewBag.ContainerType = "container-fluid";
 }
 
 <div class="row">
     <div class="col-2">
         <h4>
-            @Html.DisplayFor(model => model.Week)
+            @Localizer["Week"] @Html.DisplayFor(model => model.Week)
             <span class="font-weight-normal">
                 @Html.DisplayFor(model => model.Year)
             </span>
@@ -20,16 +21,16 @@
             @ViewBag.Title @Html.DisplayFor(model => model.Department)
             @if (Model.ScheduleApproved)
             {
-                <span class="text-danger font-weight-normal">(Goedgekeurd)</span>
+                <span class="text-danger font-weight-normal">(@Localizer["Approved"])</span>
             }
         </h5>
     </div>
     <div class="col-4 d-print-none text-right">
-        <button class="btn btn-secondary" onclick="window.print()">Print</button>
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">Rooster kopiëren</button>
+        <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["CopySchedule"]</button>
         @if (!Model.ScheduleApproved)
         {
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Rooster goedkeuren</button>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["ApproveSchedule"]</button>
         }
     </div>
 </div>
@@ -45,7 +46,7 @@
             <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
         }
 
-        <th>Totaal</th>
+        <th>@Localizer["Total"]</th>
     </tr>
     </thead>
     <tbody>
