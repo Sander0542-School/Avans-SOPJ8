@@ -25,3 +25,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Run Unit Tests
       run: dotnet test --no-restore --verbosity normal
+    - name: Start Website
+      run: ./.github/dotnetrun.sh
+    - name: Install Dependencies & Run Cypress Tests
+      run: |
+        cd ./Bumbo.Tests.Cypress/
+        npm install
+        npx cypress run
