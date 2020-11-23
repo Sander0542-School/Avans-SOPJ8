@@ -46,9 +46,7 @@ namespace Bumbo.Web
                 options =>
                 {
                     if (_isCypressTestEnv)
-                    {
                         options.UseSqlite("Filename=:memory:");
-                    }
                     else
                         options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
                 }
