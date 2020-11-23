@@ -15,7 +15,7 @@
         <value>The shift could not be saved.</value>
     </data>
     <data name="ShiftSaved" xml:space="preserve">
-        <value>The shift is successfully saved.</value>
+        <value>The shift was successfully saved.</value>
     </data>
     <data name="ScheduleNotSaved" xml:space="preserve">
         <value>The schedule could not be saved.</value>
@@ -33,7 +33,7 @@
         <value>The schedule could not be approved.</value>
     </data>
     <data name="ScheduleApproved" xml:space="preserve">
-        <value>The schedule is successfully approved.</value>
+        <value>The schedule was successfully approved.</value>
     </data>
     <data name="ScheduleEmpty" xml:space="preserve">
         <value>The schedule does not contain any shifts.</value>
