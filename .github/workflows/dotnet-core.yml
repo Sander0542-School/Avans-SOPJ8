@@ -27,8 +27,11 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: Start Website
       run: ./.github/dotnetrun.sh
-    - name: Install Dependencies & Run Cypress Tests
+    - name: List dir structure
+      run: du -h --max-depth=2
+    - name: Install npm Dependencies 
       run: |
         cd ./Bumbo.Tests.Cypress/
         npm install
-        npx cypress run
+    - name: Run Cypress Tests
+      run: npx cypress run
