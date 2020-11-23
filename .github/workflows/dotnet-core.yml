@@ -26,6 +26,9 @@ jobs:
     - name: Run Unit Tests
       run: dotnet test --no-restore --verbosity normal
     - name: Start Website
+      env:
+        ENVIRONMENT: Development
+        CypressTest: true
       run: ./.github/dotnetrun.sh
     - name: Install npm Dependencies 
       run: |

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,12 +22,20 @@ namespace Bumbo.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+            _isCypressTestEnv = (Environment.GetEnvironmentVariable("CypressTest") ?? string.Empty).Equals("true");
+
+            // Tests should be run in development mode so that error pages are shown in recordings
+            if (_isCypressTestEnv && env.IsProduction())
+                throw new ArgumentException("Cypress Tests should not run in production.");
+            if(_isCypressTestEnv) 
+                Console.WriteLine("Running in Cypress Test mode");
         }
 
         public IConfiguration Configuration { get; }
+        private readonly bool _isCypressTestEnv;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -34,9 +43,17 @@ namespace Bumbo.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDbContext<ApplicationDbContext>(
-                options => options
-                    .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
+                options =>
+                {
+                    if (_isCypressTestEnv)
+                    {
+                        options.UseSqlite("Filename=:memory:");
+                    }
+                    else
+                        options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
+                }
             );
+
             services
                 .AddDefaultIdentity<User>(options =>
                 {
@@ -74,7 +91,7 @@ namespace Bumbo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -86,6 +103,13 @@ namespace Bumbo.Web
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            if (_isCypressTestEnv)
+            {
+                // Todo: Fix migrations for SQLite InMemory database
+                //context.Database.Migrate();
+                // Todo: Add database seeder method
             }
 
             app.UseHttpsRedirection();
