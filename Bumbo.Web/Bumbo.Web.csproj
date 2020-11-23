@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp5.0</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>53f747b1-759f-48dc-80c2-bbf40f6dfc6e</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>9</LangVersion>
@@ -19,6 +19,38 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bumbo.Data\Bumbo.Data.csproj" />
+      <ProjectReference Include="..\Bumbo.Logic\Bumbo.Logic.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.en.resx">
+        <SubType>Designer</SubType>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.nl.resx">
+        <SubType>Designer</SubType>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel+InputBranchViewModel.en.resx">
+        <SubType>Designer</SubType>
+        <LastGenOutput>EditViewModel.InputBranchViewModel.en.Designer.cs</LastGenOutput>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel+InputBranchViewModel.nl.resx">
+        <SubType>Designer</SubType>
+        <LastGenOutput>EditViewModel.InputBranchViewModel.en.Designer.cs</LastGenOutput>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel.en.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel.nl.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

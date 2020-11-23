@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 
@@ -11,10 +12,13 @@ namespace Bumbo.Data.Models
         public int UserId { get; set; }
         
         public Department Department { get; set; }
+        
+        [Column(TypeName="date")]
+        public DateTime Date { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
 
         public User User { get; set; }

@@ -50,11 +50,11 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Activity")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Activity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("BranchId", "Activity");
 
@@ -115,11 +115,11 @@ namespace Bumbo.Data.Migrations
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>
                 {
-                    b.Property<string>("Activity")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Activity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Activity");
 
@@ -136,14 +136,17 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
+
                     b.Property<int>("Department")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -152,7 +155,8 @@ namespace Bumbo.Data.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "BranchId", "Department", "Date")
+                        .IsUnique();
 
                     b.ToTable("Shifts");
                 });
@@ -326,21 +330,43 @@ namespace Bumbo.Data.Migrations
                     b.ToTable("Contracts");
                 });
 
+            modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
+                {
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Week")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
+                    b.HasKey("BranchId", "Year", "Week", "Department");
+
+                    b.ToTable("WeekSchedules");
+                });
+
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
                 {
                     b.Property<int>("ShiftId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<bool>("Sick")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("ShiftId");
 
@@ -608,6 +634,17 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Bumbo.Data.Models.WeekSchedule", b =>
+                {
+                    b.HasOne("Bumbo.Data.Models.Branch", "Branch")
+                        .WithMany("WeekSchedules")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Bumbo.Data.Models.WorkedShift", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.Shift", "Shift")
@@ -681,6 +718,8 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("Shifts");
 
                     b.Navigation("Users");
+
+                    b.Navigation("WeekSchedules");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.ForecastStandard", b =>
