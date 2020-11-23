@@ -34,4 +34,6 @@ jobs:
         cd ./Bumbo.Tests.Cypress/
         npm install
     - name: Run Cypress Tests
-      run: npx cypress run --config-file ./Bumbo.Tests.Cypress/cypress.json
+      run: |
+        cd ./Bumbo.Tests.Cypress/
+        npx cypress run
