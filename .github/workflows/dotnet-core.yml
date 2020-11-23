@@ -25,8 +25,6 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Run Unit Tests
       run: dotnet test --no-restore --verbosity normal
-    - name: List dir structure
-      run: du -h --max-depth=2
     - name: Start Website
       run: ./.github/dotnetrun.sh
     - name: Install npm Dependencies 
