@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models
 {
@@ -8,7 +9,7 @@ namespace Bumbo.Data.Models
     {
         public int UserId { get; set; }
 
-        public DayOfWeek Day { get; set; }
+        public MondayFirstDayOfWeek Day { get; set; }
 
         public TimeSpan StartTime { get; set; }
 
