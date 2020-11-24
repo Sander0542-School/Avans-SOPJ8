@@ -1,0 +1,41 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ShiftNotSaved" xml:space="preserve">
+        <value>De dienst kon niet worden opgeslagen.</value>
+    </data>
+    <data name="ShiftSaved" xml:space="preserve">
+        <value>De dienst is succesvol opgeslagen.</value>
+    </data>
+    <data name="ScheduleNotSaved" xml:space="preserve">
+        <value>Het rooster kon niet worden gekopieerd.</value>
+    </data>
+    <data name="ScheduleCopied" xml:space="preserve">
+        <value>Het rooster is succesvol gekopieerd naar week {0} van {1}.</value>
+    </data>
+    <data name="ScheduleNotEmpty" xml:space="preserve">
+        <value>Het rooster in de gekozen week bevat al diensten.</value>
+    </data>
+    <data name="WeekNotExists" xml:space="preserve">
+        <value>De gekozen week bestaat niet.</value>
+    </data>
+    <data name="ScheduleNotApproved" xml:space="preserve">
+        <value>Het rooster kon niet worden goedgekeurd.</value>
+    </data>
+    <data name="ScheduleApproved" xml:space="preserve">
+        <value>Het rooster is succesvol goedgekeurd.</value>
+    </data>
+    <data name="ScheduleEmpty" xml:space="preserve">
+        <value>Het rooster bevat geen diensten.</value>
+    </data>
+</root>

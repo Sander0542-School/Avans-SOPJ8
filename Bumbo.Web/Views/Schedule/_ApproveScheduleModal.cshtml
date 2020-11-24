@@ -1,11 +1,12 @@
 @model DepartmentViewModel.InputApproveScheduleModel
+@inject IViewLocalizer Localizer
 
 <div class="modal fade" id="approveScheduleModal" tabindex="-1" role="dialog" aria-labelledby="approveScheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form asp-action="ApproveSchedule">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="approveScheduleModalLabel">Rooster goedkeuren</h5>
+                    <h5 class="modal-title" id="approveScheduleModalLabel">@Localizer["ApproveSchedule"]</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,8 +28,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluit</button>
-                    <button type="submit" class="btn btn-primary">Goedkeuren</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Approve"]</button>
                 </div>
             </form>
         </div>
