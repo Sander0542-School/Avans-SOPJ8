@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,20 +29,26 @@ namespace Bumbo.Web
 
         public IConfiguration Configuration { get; }
         private readonly bool _isTestEnv;
+        private SqliteConnection _sqLiteTestConnection;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            if (_isTestEnv)
+            {
+                Console.WriteLine("Using local SQLite database");
+                _sqLiteTestConnection = new SqliteConnection("Data Source=:memory:;Mode=Memory;Cache=Shared");
+                // This connection ensures the database is not deleted
+                _sqLiteTestConnection.Open();
+            }
+
             services.AddDbContext<ApplicationDbContext>(
                 options =>
                 {
                     if (_isTestEnv)
-                    {
-                        Console.WriteLine("Using local SQLite database");
-                        options.UseSqlite("Filename=:memory:");
-                    }
+                        options.UseSqlite(_sqLiteTestConnection);
                     else
                         options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
                 }
@@ -100,8 +107,7 @@ namespace Bumbo.Web
 
             if (_isTestEnv)
             {
-                // Todo: Fix migrations for SQLite InMemory database
-                //context.Database.Migrate();
+                context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
 
