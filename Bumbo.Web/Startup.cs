@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -25,17 +20,14 @@ namespace Bumbo.Web
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
-            _isCypressTestEnv = (Environment.GetEnvironmentVariable("CypressTest") ?? string.Empty).Equals("true");
+            _isTestEnv = env.IsEnvironment("Testing");
 
-            // Tests should be run in development mode so that error pages are shown in recordings
-            if (_isCypressTestEnv && env.IsProduction())
-                throw new ArgumentException("Cypress Tests should not run in production.");
-            if(_isCypressTestEnv) 
-                Console.WriteLine("Running in Cypress Test mode");
+            if(_isTestEnv) 
+                Console.WriteLine("Running in test mode");
         }
 
         public IConfiguration Configuration { get; }
-        private readonly bool _isCypressTestEnv;
+        private readonly bool _isTestEnv;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,8 +37,11 @@ namespace Bumbo.Web
             services.AddDbContext<ApplicationDbContext>(
                 options =>
                 {
-                    if (_isCypressTestEnv)
+                    if (_isTestEnv)
+                    {
+                        Console.WriteLine("Using local SQLite database");
                         options.UseSqlite("Filename=:memory:");
+                    }
                     else
                         options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
                 }
@@ -91,7 +86,7 @@ namespace Bumbo.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || _isTestEnv)
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
@@ -103,7 +98,7 @@ namespace Bumbo.Web
                 app.UseHsts();
             }
 
-            if (_isCypressTestEnv)
+            if (_isTestEnv)
             {
                 // Todo: Fix migrations for SQLite InMemory database
                 //context.Database.Migrate();
