@@ -1,3 +1,0 @@
-# Bumbo.Tests.Cypress
-
-
