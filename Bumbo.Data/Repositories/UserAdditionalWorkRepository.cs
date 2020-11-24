@@ -12,10 +12,5 @@ namespace Bumbo.Data.Repositories
         public UserAdditionalWorkRepository(ApplicationDbContext context) : base(context)
         {
         }
-
-        public async Task<List<UserAdditionalWork>> GetAllForUser(int userId)
-        {
-            return await base.Context.Set<UserAdditionalWork>().Where(entity => entity.UserId == userId).ToListAsync();
-        }
     }
 }

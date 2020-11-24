@@ -31,7 +31,7 @@ namespace Bumbo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var additionalWorks = await _wrapper.UserAdditionalWork.GetAllForUser(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(entity => entity.UserId == Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return View(new UserAdditionalWorkViewModel()
             {
                 Schedule = additionalWorks
