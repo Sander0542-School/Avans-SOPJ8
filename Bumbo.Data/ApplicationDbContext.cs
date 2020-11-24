@@ -127,6 +127,8 @@ namespace Bumbo.Data
             builder.Entity<Shift>(b =>
             {
                 b.HasData(FakeData.Shifts);
+
+                b.HasIndex(shift => new {shift.UserId, shift.BranchId, shift.Department, shift.Date}).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
@@ -134,6 +136,13 @@ namespace Bumbo.Data
                 b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
                 
                 b.HasData(FakeData.WorkedShifts);
+            });
+
+            builder.Entity<WeekSchedule>(b =>
+            {
+                b.HasKey(weekSchedule => new {weekSchedule.BranchId, weekSchedule.Year, weekSchedule.Week, weekSchedule.Department});
+
+                b.ToTable("WeekSchedules");
             });
 
             #endregion
@@ -182,7 +191,7 @@ namespace Bumbo.Data
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.json")
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.Development.json")
                 .Build();
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DatabaseConnection");
