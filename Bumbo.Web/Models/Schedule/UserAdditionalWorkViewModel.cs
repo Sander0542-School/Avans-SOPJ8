@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace Bumbo.Web.Models.Schedule
@@ -15,6 +16,16 @@ namespace Bumbo.Web.Models.Schedule
 
 		public class InputAdditionalWork : AdditionalWork
 		{
+			public String[] weekdays = new string[]
+			{
+				"Monday",
+				"Tuesday",
+				"Wednesday",
+				"Thursday",
+				"Friday",
+				"Saturday",
+				"Sunday",
+			};
 		}
         
 		public abstract class AdditionalWork
@@ -32,7 +43,5 @@ namespace Bumbo.Web.Models.Schedule
 			[DataType(DataType.Time)]
 			public TimeSpan EndTime { get; set; }
 		}
-
-		
 	}
 }

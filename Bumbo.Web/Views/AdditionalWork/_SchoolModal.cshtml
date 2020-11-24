@@ -17,8 +17,11 @@
 
                     <div class="form-group">
                         <label>Dag</label>
-                        <select asp-for="Day" asp-items="Html.GetEnumSelectList<MondayFirstDayOfWeek>()">
-                            
+                        <select asp-for="Day">
+                            @foreach(Model.weekdays as weekday)
+    {
+        
+    }
                         </select>
                     </div>
                     <div class="form-group">

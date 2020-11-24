@@ -48,7 +48,7 @@ namespace Bumbo.Web.Controllers
 
             var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
             workday.Day == model.Day, workday => workday.UserId ==
-            Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                                                 int.Parse(_userManager.GetUserId(User));
             
             Console.WriteLine(presentUserWork);
 
