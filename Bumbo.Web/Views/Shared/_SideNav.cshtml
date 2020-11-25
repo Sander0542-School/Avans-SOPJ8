@@ -61,7 +61,6 @@
                         {
                             var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == id);
 
-
                             <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
                                 <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
                             </li>
