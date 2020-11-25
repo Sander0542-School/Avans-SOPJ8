@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Bumbo.Web.Models;
@@ -21,6 +18,7 @@ namespace Bumbo.Web.Controllers
     {
         private readonly ILogger<AdditionalWorkController> _logger;
         private readonly RepositoryWrapper _wrapper;
+        private readonly UserManager<User> _userManager;
 
         public AdditionalWorkController(ILogger<AdditionalWorkController> logger, RepositoryWrapper wrapper)
         {
@@ -44,32 +42,29 @@ namespace Bumbo.Web.Controllers
         {
             var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var inputs = Request.Form.Where(val => val.Key != "__RequestVerificationToken").ToArray();
+            var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
+            workday.Day == model.Day, workday => workday.UserId == int.Parse(_userManager.GetUserId(User)));
 
-            // var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            //workday.Day == model.Day, workday => workday.UserId ==
-            //                                     int.Parse(_userManager.GetUserId(User)));
+            Console.WriteLine(presentUserWork);
 
-            // Console.WriteLine(presentUserWork);
+            if (presentUserWork == null)
+            {
+                await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                {
+                    Day = model.Day,
+                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    StartTime = model.StartTime,
+                    EndTime = model.EndTime,
+                });
+            }
+            else
+            {
+                presentUserWork.StartTime = model.StartTime;
+                presentUserWork.EndTime = model.EndTime;
 
-            //if (presentUserWork == null)
-            //{
-            //    await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork 
-            //    {
-            //       // Day = model.Day,
-            //        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-            //        StartTime = model.StartTime,
-            //        EndTime = model.EndTime,
-            //    });
-            //}
-            //else
-            //{
-            //    presentUserWork.StartTime = model.StartTime;
-            //    presentUserWork.EndTime = model.EndTime;
+                bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+            }
 
-            //    bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
-            //}
-        
             return RedirectToAction("Index");
         }
 

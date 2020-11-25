@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Bumbo.Web.Models.Schedule
 {
@@ -16,15 +14,15 @@ namespace Bumbo.Web.Models.Schedule
 
 		public class InputAdditionalWork : AdditionalWork
 		{
-			public String[] weekdays = new string[]
+			public readonly DayOfWeek[] DaysOfWeek =
 			{
-				"Monday",
-				"Tuesday",
-				"Wednesday",
-				"Thursday",
-				"Friday",
-				"Saturday",
-				"Sunday",
+				DayOfWeek.Monday,
+				DayOfWeek.Tuesday,
+				DayOfWeek.Wednesday,
+				DayOfWeek.Thursday,
+				DayOfWeek.Friday,
+				DayOfWeek.Saturday,
+				DayOfWeek.Sunday
 			};
 		}
         
@@ -33,7 +31,7 @@ namespace Bumbo.Web.Models.Schedule
 			public int UserId { get; set; }
 
 			[DisplayName("Dag")]
-			public MondayFirstDayOfWeek Day { get; set; }
+			public DayOfWeek Day { get; set; }
 
 			[DisplayName("Starttijd")]
 			[DataType(DataType.Time)]

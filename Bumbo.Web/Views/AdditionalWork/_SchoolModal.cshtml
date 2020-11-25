@@ -1,5 +1,17 @@
 ﻿@using Bumbo.Data.Models.Enums
 @model UserAdditionalWorkViewModel.InputAdditionalWork;
+@{
+    foreach(var day in Model.DaysOfWeek)
+    {
+        Console.WriteLine("Day: " + day);
+    }
+    IEnumerable<SelectListItem> days = new List<SelectListItem>();
+    days = Model.DaysOfWeek.Select(day => new SelectListItem
+    {
+        Value = day.ToString(),
+        Text = day.ToString(),
+    });
+}
 
 <div class="modal fade" id="schoolModal" tabindex="-1" role="dialog" aria-labelledby="schoolModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -17,21 +29,14 @@
 
                     <div class="form-group">
                         <label>Dag</label>
-                        <select asp-for="Day">
-                            @*@foreach(Model.weekdays as weekday)
-                            {
-        
-                            }*@
-                        </select>
+                        <select asp-for="Day" asp-items="days"></select>
                     </div>
                     <div class="form-group">
                         <label>Begintijd</label>
-                        @*Iets van een tijdselectie*@
                         <input asp-for="StartTime">
                     </div>
                     <div class="form-group">
                         <label>Eindtijd</label>
-                        @*Iets van een tijdselectie*@
                         <input asp-for="EndTime">
                     </div>
                 </div>
