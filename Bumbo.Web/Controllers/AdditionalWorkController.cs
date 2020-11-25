@@ -46,29 +46,29 @@ namespace Bumbo.Web.Controllers
 
             var inputs = Request.Form.Where(val => val.Key != "__RequestVerificationToken").ToArray();
 
-            var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            workday.Day == model.Day, workday => workday.UserId ==
-                                                 int.Parse(_userManager.GetUserId(User));
-            
-            Console.WriteLine(presentUserWork);
+            // var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
+            //workday.Day == model.Day, workday => workday.UserId ==
+            //                                     int.Parse(_userManager.GetUserId(User)));
 
-            if (presentUserWork == null)
-            {
-                await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork 
-                {
-                    Day = model.Day,
-                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                    StartTime = model.StartTime,
-                    EndTime = model.EndTime,
-                });
-            }
-            else
-            {
-                presentUserWork.StartTime = model.StartTime;
-                presentUserWork.EndTime = model.EndTime;
+            // Console.WriteLine(presentUserWork);
 
-                bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
-            }
+            //if (presentUserWork == null)
+            //{
+            //    await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork 
+            //    {
+            //       // Day = model.Day,
+            //        UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+            //        StartTime = model.StartTime,
+            //        EndTime = model.EndTime,
+            //    });
+            //}
+            //else
+            //{
+            //    presentUserWork.StartTime = model.StartTime;
+            //    presentUserWork.EndTime = model.EndTime;
+
+            //    bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+            //}
         
             return RedirectToAction("Index");
         }
