@@ -47,4 +47,7 @@
     <data name="Details" xml:space="preserve">
         <value>Details</value>
     </data>
+    <data name="Forecast" xml:space="preserve">
+        <value>Forecast</value>
+    </data>
 </root>

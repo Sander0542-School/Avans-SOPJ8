@@ -53,6 +53,12 @@
                                         @Localizer["Schedule"]
                                     </a>
                                 </li>
+                                <li class="@Html.IsActive("Forecast", "Index")">
+                                    <a asp-controller="Forecast" asp-action="Index" asp-route-branchId="@branch.Id">
+                                        <i class="fa fa-line-chart mr-3"></i>
+                                        @Localizer["Forecast"]
+                                    </a>
+                                </li>
                             }
                         </ul>
                     </li>
