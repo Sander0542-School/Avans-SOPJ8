@@ -39,9 +39,15 @@
                             @branch.Name
                         </a>
                         <ul class="collapse list-unstyled show" id="branchSubmenu">
+                            <li class="@Html.IsActive("Branches", "Details")">
+                                <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-building-o mr-3"></i>
+                                    @Localizer["Details"]
+                                </a>
+                            </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
                             {
-                                <li>
+                                <li class="@Html.IsActive("Schedule", "Department")">
                                     <a asp-controller="Schedule" asp-action="Department" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-calendar mr-3"></i>
                                         @Localizer["Schedule"]
@@ -104,7 +110,7 @@
                             </a>
                         </li>
                         <li class="@Html.IsActiveArea("Identity", "/Account/Logout")">
-                            <a asp-area="Identity" asp-page="/Account/Logout" onclick="preventDefault();document.getElementById('logoutForm').submit();">
+                            <a asp-area="Identity" asp-page="/Account/Logout" onclick="event.preventDefault();document.getElementById('logoutForm').submit();">
                                 <i class="fa fa-sign-out mr-3"></i>
                                 @Localizer["Logout"]
                             </a>

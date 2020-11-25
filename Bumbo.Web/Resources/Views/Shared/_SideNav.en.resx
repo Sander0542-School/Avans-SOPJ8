@@ -44,4 +44,7 @@
     <data name="Register" xml:space="preserve">
         <value>Register</value>
     </data>
+    <data name="Details" xml:space="preserve">
+        <value>Details</value>
+    </data>
 </root>
