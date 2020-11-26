@@ -256,8 +256,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day
-                        //Hours = 3
+                        Day = day,
+                        StartTime = new TimeSpan(9, 0, 0),
+                        EndTime = new TimeSpan(12, 0, 0),
                     }
                 }
             };
@@ -291,8 +292,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day
-                        //Hours = 5
+                        Day = day,
+                        StartTime = new TimeSpan(9, 0, 0),
+                        EndTime = new TimeSpan(14, 0, 0),
                     }
                 }
             };

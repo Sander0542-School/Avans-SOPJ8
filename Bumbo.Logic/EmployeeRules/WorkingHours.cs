@@ -109,7 +109,7 @@ namespace Bumbo.Logic.EmployeeRules
             if (age < 18)
             {
                 //TODO: Calculate start- endtime
-                var otherWorkHours = /*user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.Hours ?? 0 */ 1;
+                var otherWorkHours = user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.EndTime.Hours - user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.StartTime.Hours ?? 0;
                 var maxHours = 9;
 
                 if (age < 16) maxHours = 8;
