@@ -14,7 +14,7 @@ namespace Bumbo.Web.Models.Schedule
 
 		public class InputAdditionalWork : AdditionalWork
 		{
-			public readonly DayOfWeek[] DaysOfWeek =
+			public static readonly DayOfWeek[] DaysOfWeek =
 			{
 				DayOfWeek.Monday,
 				DayOfWeek.Tuesday,

@@ -20,10 +20,11 @@ namespace Bumbo.Web.Controllers
         private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
 
-        public AdditionalWorkController(ILogger<AdditionalWorkController> logger, RepositoryWrapper wrapper)
+        public AdditionalWorkController(ILogger<AdditionalWorkController> logger, RepositoryWrapper wrapper, UserManager<User> userManager)
         {
             _logger = logger;
             _wrapper = wrapper;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -40,10 +41,11 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel.InputAdditionalWork model)
         {
-            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _userManager.GetUserId(User);
+
 
             var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            workday.Day == model.Day, workday => workday.UserId == int.Parse(_userManager.GetUserId(User)));
+            workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
 
             Console.WriteLine(presentUserWork);
 
@@ -52,7 +54,7 @@ namespace Bumbo.Web.Controllers
                 await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                 {
                     Day = model.Day,
-                    UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    UserId = int.Parse(user),
                     StartTime = model.StartTime,
                     EndTime = model.EndTime,
                 });
