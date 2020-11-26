@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bumbo.Web.Extensions
@@ -27,6 +28,18 @@ namespace Bumbo.Web.Extensions
             IEnumerable<string> acceptedPages = (pages ?? currentPage ?? "").Split(',');
 
             return acceptedAreas.Contains(currentArea) && (acceptedPages.Contains(currentPage) || currentPage == null) ? cssClass : string.Empty;
+        }
+        
+        public static string ConditionalAttr(this IHtmlHelper helper, string name, string value, Func<bool> condition = null)
+        {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            var render = condition?.Invoke() ?? false;
+
+            return render ? $"{name}=\"{HttpUtility.HtmlAttributeEncode(value)}\"" : string.Empty;
         }
     }
 }
