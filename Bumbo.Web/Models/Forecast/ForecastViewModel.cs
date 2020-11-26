@@ -26,7 +26,7 @@ namespace Bumbo.Web.Models.Forecast
         public Department? Department { get; set; }
 
         [Display(Name = "Branch")]
-        public Branch Branch;
+        public Branch Branch { get; set; }
 
         public readonly DayOfWeek[] DaysOfWeek =
         {
