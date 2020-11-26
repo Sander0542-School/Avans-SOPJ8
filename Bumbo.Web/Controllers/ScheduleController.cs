@@ -53,35 +53,38 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-                    
+
                     ScheduleApproved = branch.WeekSchedules
                         .Where(schedule => schedule.Year == year)
                         .Where(schedule => schedule.Week == week)
                         .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
 
-                    EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
+                    EmployeeShifts = users.Select(user =>
                     {
-                        UserId = user.Id,
-                        Name = UserUtil.GetFullName(user),
-                        Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
+                        var notifications = WorkingHours.ValidateWeek(user, year, week);
 
-                        MaxHours = WorkingHours.MaxHoursPerWeek(user, year, week),
-
-                        Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
-
-                        Shifts = user.Shifts.Select(shift =>
+                        return new DepartmentViewModel.EmployeeShift
                         {
-                            var notifications = WorkingHours.ValidateWeek(user, year, week);
+                            UserId = user.Id,
+                            Name = UserUtil.GetFullName(user),
+                            Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
 
-                            return new DepartmentViewModel.Shift
+                            MaxHours = WorkingHours.MaxHoursPerWeek(user, year, week),
+
+                            Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
+
+                            Shifts = user.Shifts.Select(shift =>
                             {
-                                Id = shift.Id,
-                                Date = shift.Date,
-                                StartTime = shift.StartTime,
-                                EndTime = shift.EndTime,
-                                Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
-                            };
-                        }).ToList()
+                                return new DepartmentViewModel.Shift
+                                {
+                                    Id = shift.Id,
+                                    Date = shift.Date,
+                                    StartTime = shift.StartTime,
+                                    EndTime = shift.EndTime,
+                                    Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
+                                };
+                            }).ToList()
+                        };
                     }).ToList(),
 
                     InputShift = new DepartmentViewModel.InputShiftModel
