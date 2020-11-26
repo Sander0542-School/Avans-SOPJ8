@@ -15,7 +15,7 @@ namespace Bumbo.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        //private readonly IStringLocalizer _localizer;
+        private readonly IStringLocalizer _localizer;
 
         public HomeController(ILogger<HomeController> logger/**, IStringLocalizer localizer **/)
         {
