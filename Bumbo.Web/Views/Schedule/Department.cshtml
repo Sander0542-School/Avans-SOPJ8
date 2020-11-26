@@ -8,7 +8,23 @@
 }
 
 <div class="row">
-    <div class="col-2">
+    <div class="col">
+        <div class="d-print-none">
+            <div class="btn-group text-white" role="group" aria-label="Week Navigation">
+                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </div>
+            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+                @Localizer["Today"]
+            </a>
+
+        </div>
+    </div>
+    <div class="col text-center">
         <h4>
             @Localizer["Week"] @Html.DisplayFor(model => model.Week)
             <span class="font-weight-normal">
@@ -16,7 +32,7 @@
             </span>
         </h4>
     </div>
-    <div class="col">
+    <div class="col text-center">
         <h5>
             @ViewBag.Title @Html.DisplayFor(model => model.Department)
             @if (Model.ScheduleApproved)
@@ -34,6 +50,8 @@
         }
     </div>
 </div>
+
+<br/>
 
 <table class="table table-bordered table-striped table-sm">
     <thead class="text-center">
