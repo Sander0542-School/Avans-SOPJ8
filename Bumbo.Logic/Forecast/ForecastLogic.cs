@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Logic.Forecast
@@ -55,7 +56,7 @@ namespace Bumbo.Logic.Forecast
         /// The number of decimals to which returned values will be rounded.
         /// </summary>
         //private static readonly int RoundingFactor = 2;
-        public ForecastLogic(List<BranchForecastStandard> forecastStandards)
+        public ForecastLogic(List<IForecastStandard> forecastStandards)
         {
             foreach (var f in forecastStandards)
             {

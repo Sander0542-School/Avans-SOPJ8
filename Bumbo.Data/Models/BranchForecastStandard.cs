@@ -1,15 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models
 {
-    public class BranchForecastStandard : IEntity
+    public class BranchForecastStandard : IForecastStandard
     {
         public int BranchId { get; set; }
         
         public ForecastActivity Activity { get; set; }
         
-        /// <inheritdoc cref="ForecastStandard.Value"/>
         public int Value { get; set; }
         
         

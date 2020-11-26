@@ -29,9 +29,12 @@ namespace Bumbo.Web.Controllers
             _localizer = localizer;
         }
 
-        [Route("{year}/{week}/{department}")]
-        public async Task<IActionResult> Department(int branchId, int year, int week, Department department)
+        [Route("{department}/{year?}/{week?}")]
+        public async Task<IActionResult> Department(int branchId, Department department, int? year, int? week)
         {
+            year ??= DateTime.Today.Year;
+            week ??= ISOWeek.GetWeekOfYear(DateTime.Today);
+            
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
@@ -43,25 +46,25 @@ namespace Bumbo.Web.Controllers
 
             try
             {
-                var users = await _wrapper.User.GetUsersAndShifts(branch, year, week, department);
+                var users = await _wrapper.User.GetUsersAndShifts(branch, year.Value, week.Value, department);
 
                 return View(new DepartmentViewModel
                 {
-                    Year = year,
-                    Week = week,
+                    Year = year.Value,
+                    Week = week.Value,
 
                     Department = department,
 
                     Branch = branch,
 
                     ScheduleApproved = branch.WeekSchedules
-                        .Where(schedule => schedule.Year == year)
-                        .Where(schedule => schedule.Week == week)
+                        .Where(schedule => schedule.Year == year.Value)
+                        .Where(schedule => schedule.Week == week.Value)
                         .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
 
                     EmployeeShifts = users.Select(user =>
                     {
-                        var notifications = WorkingHours.ValidateWeek(user, year, week);
+                        var notifications = WorkingHours.ValidateWeek(user, year.Value, week.Value);
 
                         return new DepartmentViewModel.EmployeeShift
                         {
@@ -69,7 +72,7 @@ namespace Bumbo.Web.Controllers
                             Name = UserUtil.GetFullName(user),
                             Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
 
-                            MaxHours = WorkingHours.MaxHoursPerWeek(user, year, week),
+                            MaxHours = WorkingHours.MaxHoursPerWeek(user, year.Value, week.Value),
 
                             Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
 
@@ -89,22 +92,22 @@ namespace Bumbo.Web.Controllers
 
                     InputShift = new DepartmentViewModel.InputShiftModel
                     {
-                        Year = year,
-                        Week = week,
+                        Year = year.Value,
+                        Week = week.Value,
                         Department = department
                     },
 
                     InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel
                     {
-                        Year = year,
-                        Week = week,
+                        Year = year.Value,
+                        Week = week.Value,
                         Department = department
                     },
 
                     InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel
                     {
-                        Year = year,
-                        Week = week,
+                        Year = year.Value,
+                        Week = week.Value,
                         Department = department
                     }
                 });
