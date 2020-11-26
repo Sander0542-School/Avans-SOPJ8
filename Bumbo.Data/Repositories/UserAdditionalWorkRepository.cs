@@ -1,4 +1,5 @@
 using Bumbo.Data.Models;
+using Bumbo.Data.Repositories.Common;
 
 namespace Bumbo.Data.Repositories
 {
