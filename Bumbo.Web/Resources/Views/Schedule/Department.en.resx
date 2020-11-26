@@ -32,4 +32,7 @@
     <data name="Week" xml:space="preserve">
         <value>Week</value>
     </data>
+    <data name="Today" xml:space="preserve">
+        <value>Today</value>
+    </data>
 </root>
