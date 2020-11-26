@@ -63,7 +63,7 @@
         }
     </div>
     <div class="form-group forecast-submit">
-        <a asp-action="Index" asp-route-branchId="@Model.BranchId" asp-route-year="@Model.FirstDayOfWeek.Year" asp-route-weekNr="@ISOWeek.GetWeekOfYear(Model.FirstDayOfWeek)">Back to List</a>
+        <a asp-action="Index" asp-route-branchId="@Model.BranchId" asp-route-year="@Model.FirstDayOfWeek.Year" asp-route-week="@ISOWeek.GetWeekOfYear(Model.FirstDayOfWeek)">Back to List</a>
         <input type="submit" class="btn btn-primary"/>
     </div>
 </form>
