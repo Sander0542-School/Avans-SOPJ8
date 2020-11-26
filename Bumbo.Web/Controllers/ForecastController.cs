@@ -41,17 +41,14 @@ namespace Bumbo.Web.Controllers
             var viewModel = new ForecastViewModel();
 
             // Check for default values
-            var redirect = false;
-            if (!year.HasValue)
+            if (!year.HasValue || !week.HasValue)
             {
-                redirect = true;
-                year = DateTime.Now.Year;
-            }
-
-            if (!week.HasValue)
-            {
-                redirect = true;
-                week = ISOWeek.GetWeekOfYear(DateTime.Now);
+                return RedirectToAction(nameof(Index), new
+                {
+                    branchId,
+                    year = year ?? DateTime.Today.Year,
+                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
+                });
             }
 
             // Check if date is valid
@@ -64,9 +61,6 @@ namespace Bumbo.Web.Controllers
                 //return RedirectToAction("Index", new {branchId});
                 return NotFound();
             }
-            
-            if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, week });
-
 
             // Define viewmodel variables
             viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
