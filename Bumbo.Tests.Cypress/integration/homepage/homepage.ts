@@ -1,6 +1,6 @@
 describe("Homepage", () => {
-  it("Has navbar", () => {
+  it("Has sidebar", () => {
     cy.visit("/");
-    cy.get(".navbar-nav").should('exist');
+    cy.get(".sidebar").should('exist');
   })
 })
