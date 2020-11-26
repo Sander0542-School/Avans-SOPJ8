@@ -47,7 +47,7 @@
                             </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
                             {
-                                <li class="@Html.IsActive("Schedule", "Department")">
+                                <li class="@Html.IsActive("Schedule")">
                                     <a asp-controller="Schedule" asp-action="Index" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-calendar mr-3"></i>
                                         @Localizer["Schedule"]

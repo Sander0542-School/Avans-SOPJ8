@@ -35,4 +35,10 @@
     <data name="Today" xml:space="preserve">
         <value>Vandaag</value>
     </data>
+    <data name="All" xml:space="preserve">
+        <value>Alle</value>
+    </data>
+    <data name="Department" xml:space="preserve">
+        <value>Afdeling</value>
+    </data>
 </root>

@@ -35,4 +35,10 @@
     <data name="Today" xml:space="preserve">
         <value>Today</value>
     </data>
+    <data name="All" xml:space="preserve">
+        <value>All</value>
+    </data>
+    <data name="Department" xml:space="preserve">
+        <value>Department</value>
+    </data>
 </root>

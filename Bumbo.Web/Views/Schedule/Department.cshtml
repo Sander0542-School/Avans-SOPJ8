@@ -1,4 +1,5 @@
 @using System.Globalization
+@using Bumbo.Data.Models.Enums
 @model DepartmentViewModel
 @inject IViewLocalizer Localizer
 
@@ -8,43 +9,56 @@
 }
 
 <div class="row">
-    <div class="col">
-        <div class="d-print-none">
-            <div class="btn-group text-white" role="group" aria-label="Week Navigation">
-                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                </a>
-                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </div>
-            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
-                @Localizer["Today"]
-            </a>
-
-        </div>
-    </div>
-    <div class="col text-center">
+    <div class="col-2">
         <h4>
             @Localizer["Week"] @Html.DisplayFor(model => model.Week)
             <span class="font-weight-normal">
                 @Html.DisplayFor(model => model.Year)
             </span>
-        </h4>
-    </div>
-    <div class="col text-center">
-        <h5>
-            @ViewBag.Title @Html.DisplayFor(model => model.Department)
             @if (Model.ScheduleApproved)
             {
-                <span class="text-danger font-weight-normal">(@Localizer["Approved"])</span>
+                <br/>
+                <span style="font-size: 16px" class="text-danger font-weight-normal">(@Localizer["Approved"])</span>
             }
-        </h5>
+        </h4>
     </div>
-    <div class="col-4 d-print-none text-right">
+    <div class="col d-print-none">
+        <div class="btn-group text-white" role="group" aria-label="Week Navigation">
+            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+                @Localizer["Today"]
+            </a>
+            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="btn-group text-white" role="group" aria-label="Select Department">
+            <a class="btn btn-secondary">@Localizer["Department"]</a>
+
+            <div class="btn-group" role="group">
+                <button id="departmentGroup" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : @Localizer["All"])
+                </button>
+                <div class="dropdown-menu" aria-labelledby="departmentGroup">
+                    <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
+                    @foreach (var department in Enum.GetValues<Department>())
+                    {
+                        @if (User.HasClaim("Manager", Model.Branch.Id.ToString()) || User.HasClaim("BranchDepartment", $"{Model.Branch.Id}.{department}"))
+                        {
+                            <a asp-action="Department" asp-route-department="@department" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Html.DisplayFor(model => department)</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
         <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["CopySchedule"]</button>
-        @if (!Model.ScheduleApproved)
+        @if (!Model.ScheduleApproved && Model.Department.HasValue)
         {
             <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["ApproveSchedule"]</button>
         }

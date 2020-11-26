@@ -26,7 +26,7 @@ namespace Bumbo.Web.Models.Schedule
         public int Week { get; set; }
 
         [Display(Name = "Department")]
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
 
         public InputShiftModel InputShift { get; set; }
 
@@ -166,7 +166,7 @@ namespace Bumbo.Web.Models.Schedule
 
             [Display(Name = "Department")]
             [Required]
-            public Department Department { get; set; }
+            public Department? Department { get; set; }
         }
     }
 }

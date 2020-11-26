@@ -29,8 +29,8 @@ namespace Bumbo.Web.Controllers
             _localizer = localizer;
         }
 
-        [Route("{department}/{year?}/{week?}")]
-        public async Task<IActionResult> Department(int branchId, Department department, int? year, int? week)
+        [Route("{year?}/{week?}/{department?}")]
+        public async Task<IActionResult> Department(int branchId, int? year, int? week, Department? department)
         {
             year ??= DateTime.Today.Year;
             week ??= ISOWeek.GetWeekOfYear(DateTime.Today);
@@ -57,10 +57,10 @@ namespace Bumbo.Web.Controllers
 
                     Branch = branch,
 
-                    ScheduleApproved = branch.WeekSchedules
+                    ScheduleApproved = department.HasValue && (branch.WeekSchedules
                         .Where(schedule => schedule.Year == year.Value)
                         .Where(schedule => schedule.Week == week.Value)
-                        .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
+                        .FirstOrDefault(schedule => schedule.Department == department.Value)?.Confirmed ?? false),
 
                     EmployeeShifts = users.Select(user =>
                     {
@@ -140,7 +140,7 @@ namespace Bumbo.Web.Controllers
                 {
                     shift = new Shift
                     {
-                        Department = shiftModel.Department,
+                        Department = shiftModel.Department.Value,
                         BranchId = branch.Id,
                         UserId = shiftModel.UserId,
                         Date = shiftModel.Date,
@@ -280,7 +280,7 @@ namespace Bumbo.Web.Controllers
                             BranchId = branch.Id,
                             Year = approveScheduleModel.Year,
                             Week = approveScheduleModel.Week,
-                            Department = approveScheduleModel.Department,
+                            Department = approveScheduleModel.Department.Value,
                             Confirmed = true
                         };
 
