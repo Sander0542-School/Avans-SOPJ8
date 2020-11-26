@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
@@ -8,26 +9,37 @@ namespace Bumbo.Web.Models.Forecast
 {
     public class ForecastViewModel
     {
-        public Branch Branch;
-        public Department? Department;
-        public int Year;
-        public int WeekNr;
-        public IEnumerable<Data.Models.Forecast> Forecasts;
-        public Dictionary<string, string> ResetRouteValues;
+        private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
-        public ForecastViewModel()
+        public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
+        public int NextYear => _mondayOfWeek.AddDays(7).Year;
+        public int PreviousWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(-7));
+        public int PreviousYear => _mondayOfWeek.AddDays(-7).Year;
+
+        [Display(Name = "Year")]
+        public int Year { get; set; }
+
+        [Display(Name = "Week")]
+        public int Week { get; set; }
+
+        [Display(Name = "Department")]
+        public Department? Department { get; set; }
+
+        [Display(Name = "Branch")]
+        public Branch Branch;
+
+        public readonly DayOfWeek[] DaysOfWeek =
         {
-            ResetRouteValues = new Dictionary<string, string>
-            {
-                {
-                    "weekNr",
-                    ISOWeek.GetWeekOfYear(DateTime.Now).ToString()
-                },
-                {
-                    "year",
-                    DateTime.Now.Year.ToString()
-                }
-            };
-        }
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
+        public IEnumerable<Data.Models.Forecast> Forecasts;
+
     }
 }

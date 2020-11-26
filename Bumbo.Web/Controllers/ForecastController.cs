@@ -84,7 +84,7 @@ namespace Bumbo.Web.Controllers
                 f => f.Date < firstDayOfWeek.AddDays(7)
             );
 
-            viewModel.WeekNr = weekNr.Value;
+            viewModel.Week = weekNr.Value;
             viewModel.Year = year.Value;
 
             return View(viewModel);

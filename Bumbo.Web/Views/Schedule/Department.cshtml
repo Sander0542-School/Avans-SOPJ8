@@ -21,7 +21,6 @@
             <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
                 @Localizer["Today"]
             </a>
-
         </div>
     </div>
     <div class="col text-center">
