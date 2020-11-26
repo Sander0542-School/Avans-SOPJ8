@@ -113,17 +113,16 @@ namespace Bumbo.Web.Controllers
             if (!ModelState.IsValid) return RedirectToAction();
 
             var forecastStandards =
-                await _wrapper.ForecastStandard.GetAll(
+                _wrapper.ForecastStandard.GetAll(
                     f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
-                );
+                ).Result.ToList<IForecastStandard>();
 
-            var branchForecastStandards = await _wrapper.BranchForecastStandard.GetAll(
+            forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
                 bf => bf.BranchId == branchId
-            );
+            ));
             
-            //forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(bf => bf.BranchId == branchId));
             
-            var forecastLogic = new ForecastLogic(/*forecastStandards*/ null);
+            var forecastLogic = new ForecastLogic(forecastStandards);
 
             for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
