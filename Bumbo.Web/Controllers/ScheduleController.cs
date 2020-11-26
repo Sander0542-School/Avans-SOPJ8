@@ -16,7 +16,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "BranchManager")]
+    [Authorize(Policy = "BranchEmployee")]
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class ScheduleController : Controller
     {
@@ -113,6 +113,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel.InputShiftModel shiftModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -169,6 +170,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel copyWeekModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -244,6 +246,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> ApproveSchedule(int branchId, DepartmentViewModel.InputApproveScheduleModel approveScheduleModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
