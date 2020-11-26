@@ -65,7 +65,7 @@
                     var forecast = Model.Forecasts.FirstOrDefault(f => f.Department == department && f.Date.DayOfWeek == day);
                     if (forecast != null)
                     {
-                        <td>@forecast.WorkingHours</td>
+                        <td>@TimeSpan.FromHours((double)forecast.WorkingHours).ToString(@"hh\:mm")</td>
                     }
                     else
                     {
