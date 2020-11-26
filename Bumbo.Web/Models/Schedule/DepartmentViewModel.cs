@@ -12,6 +12,13 @@ namespace Bumbo.Web.Models.Schedule
 {
     public class DepartmentViewModel
     {
+        private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
+
+        public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
+        public int NextYear => _mondayOfWeek.AddDays(7).Year;
+        public int PreviousWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(-7));
+        public int PreviousYear => _mondayOfWeek.AddDays(-7).Year;
+
         [Display(Name = "Year")]
         public int Year { get; set; }
 
