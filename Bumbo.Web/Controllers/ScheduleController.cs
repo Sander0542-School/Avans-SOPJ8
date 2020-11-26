@@ -17,7 +17,7 @@ using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "BranchEmployee")]
-    [Route("Branches/{branchId}/{controller}/{action=Index}")]
+    [Route("Branches/{branchId}/{controller}")]
     public class ScheduleController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -30,11 +30,11 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("{year?}/{week?}/{department?}")]
-        public async Task<IActionResult> Department(int branchId, int? year, int? week, Department? department)
+        public async Task<IActionResult> Index(int branchId, int? year, int? week, Department? department)
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Department), new
+                return RedirectToAction(nameof(Index), new
                 {
                     branchId,
                     year = year ?? DateTime.Today.Year,
@@ -126,6 +126,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("SaveShift")]
         [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel.InputShiftModel shiftModel)
         {
@@ -173,7 +174,7 @@ namespace Bumbo.Web.Controllers
 
             TempData["alertMessage"] = alertMessage;
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Index), new
             {
                 branchId,
                 year = shiftModel.Year,
@@ -183,6 +184,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Copy")]
         [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel copyWeekModel)
         {
@@ -229,7 +231,7 @@ namespace Bumbo.Web.Controllers
                         {
                             TempData["alertMessage"] = $"Success:{_localizer["ScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Department), new
+                            return RedirectToAction(nameof(Index), new
                             {
                                 branchId,
                                 year = copyWeekModel.TargetYear,
@@ -249,7 +251,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Index), new
             {
                 branchId,
                 year = copyWeekModel.Year,
@@ -259,6 +261,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Approve")]
         [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> ApproveSchedule(int branchId, DepartmentViewModel.InputApproveScheduleModel approveScheduleModel)
         {
@@ -307,7 +310,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Index), new
             {
                 branchId,
                 year = approveScheduleModel.Year,

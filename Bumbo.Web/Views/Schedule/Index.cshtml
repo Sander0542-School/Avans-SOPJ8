@@ -6,6 +6,8 @@
 @{
     ViewBag.Title = Localizer["DepartmentSchedule"];
     ViewBag.ContainerType = "container-fluid";
+    
+    var canEdit = User.HasClaim("Manager", Model.Branch.Id.ToString());
 }
 
 <div class="row">
@@ -24,13 +26,13 @@
     </div>
     <div class="col d-print-none">
         <div class="btn-group text-white" role="group" aria-label="Week Navigation">
-            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+            <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
-            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+            <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
                 @Localizer["Today"]
             </a>
-            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+            <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         </div>
@@ -42,12 +44,12 @@
                     @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : @Localizer["All"])
                 </button>
                 <div class="dropdown-menu" aria-labelledby="departmentGroup">
-                    <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
+                    <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
                     @foreach (var department in Enum.GetValues<Department>())
                     {
                         @if (User.HasClaim("Manager", Model.Branch.Id.ToString()) || User.HasClaim("BranchDepartment", $"{Model.Branch.Id}.{department}"))
                         {
-                            <a asp-action="Department" asp-route-department="@department" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Html.DisplayFor(model => department)</a>
+                            <a asp-action="Index" asp-route-department="@department" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Html.DisplayFor(model => department)</a>
                         }
                     }
                 </div>
@@ -86,13 +88,16 @@
     {
         <tr>
             <td>
-                <span class="fa-stack fa-sm align-super">
-                    @if (employeeShift.Shifts.Any(shift => shift.Notifications.Any()))
-                    {
-                        <i class="fa fa-stack-2x fa-square text-warning"></i>
-                        <i class="fa fa-stack-1x fa-exclamation text-white"></i>
-                    }
-                </span>
+                @if (canEdit)
+                {
+                    <span class="fa-stack fa-sm align-super">
+                        @if (employeeShift.Shifts.Any(shift => shift.Notifications.Any()))
+                        {
+                            <i class="fa fa-stack-2x fa-square text-warning"></i>
+                            <i class="fa fa-stack-1x fa-exclamation text-white"></i>
+                        }
+                    </span>
+                }
                 <span class="d-inline-block">
                     @Html.DisplayFor(model => employeeShift.Name)
                     <br/>
@@ -111,17 +116,13 @@
                 @if (employeeShift.Shifts.Any(shift => shift.Date.DayOfWeek == day))
                 {
                     var shift = employeeShift.Shifts.First(shift1 => shift1.Date.DayOfWeek == day);
-                    var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
-                    <td class="align-middle @(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", clickable)>
+                    <td class="align-middle @(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", Model.Department.HasValue && canEdit)>
                         <span>
                             @if (shift.Notifications.Any())
                             {
-                                <span class="fa-stack fa-sm"
-                                      data-toggle="tooltip"
-                                      data-placement="bottom"
-                                      data-html="true"
-                                      title="<ul class='list-unstyled'>@foreach (var notification in shift.Notifications) {<li>@notification</li>}</ul>">
+                                <span class="fa-stack fa-sm" data-toggle="tooltip" data-placement="bottom" data-html="true"
+                                      @Html.ConditionalAttr("title", $"<ul class=\"list-unstyled\">{string.Join("", shift.Notifications.Select(notification => $"<li>{notification}</li>"))}</ul>", canEdit)>
 
                                     <i class="fa fa-stack-2x fa-square text-warning"></i>
                                     <i class="fa fa-stack-1x fa-briefcase text-white"></i>
