@@ -32,8 +32,15 @@ namespace Bumbo.Web.Controllers
         [Route("{year?}/{week?}/{department?}")]
         public async Task<IActionResult> Department(int branchId, int? year, int? week, Department? department)
         {
-            year ??= DateTime.Today.Year;
-            week ??= ISOWeek.GetWeekOfYear(DateTime.Today);
+            if (!year.HasValue || !week.HasValue)
+            {
+                return RedirectToAction(nameof(Department), new
+                {
+                    branchId,
+                    year = year ?? DateTime.Today.Year,
+                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
+                });
+            }
             
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
