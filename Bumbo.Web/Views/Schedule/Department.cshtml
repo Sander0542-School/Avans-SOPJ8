@@ -111,8 +111,9 @@
                 @if (employeeShift.Shifts.Any(shift => shift.Date.DayOfWeek == day))
                 {
                     var shift = employeeShift.Shifts.First(shift1 => shift1.Date.DayOfWeek == day);
+                    var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
-                    <td class="align-middle c-pointer" onclick="shiftModal(@($"{shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}'"))">
+                    <td class="align-middle @(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", clickable)>
                         <span>
                             @if (shift.Notifications.Any())
                             {
@@ -150,7 +151,9 @@
                 }
                 else
                 {
-                    <td class="c-pointer" onclick="shiftModal(@($"'', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','',''"))">
+                    var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
+                    
+                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','')", clickable)>
 
                     </td>
                 }
