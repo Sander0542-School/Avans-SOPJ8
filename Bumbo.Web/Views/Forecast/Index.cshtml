@@ -30,6 +30,23 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </div>
+            
+            <div class="btn-group text-white" role="group" aria-label="Select Department">
+                <a class="btn btn-secondary">@Localizer["Department"]</a>
+
+                <div class="btn-group" role="group">
+                    <button id="departmentGroup" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : Localizer["All"])
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="departmentGroup">
+                        <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
+                        @foreach (var department in Enum.GetValues<Department>())
+                        {
+                            <a asp-action="Index" asp-route-department="@department" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Html.DisplayFor(model => department)</a>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -49,7 +66,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Department department in Enum.GetValues(typeof(Department)))
+        @foreach (Department department in Enum.GetValues<Department>())
         {
             if(Model.Department != null && department != Model.Department)
             {
