@@ -53,7 +53,7 @@ namespace Bumbo.Data.Migrations
                 name: "ForecastStandard",
                 columns: table => new
                 {
-                    Activity = table.Column<string>(nullable: false),
+                    Activity = table.Column<int>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -154,7 +154,7 @@ namespace Bumbo.Data.Migrations
                 columns: table => new
                 {
                     BranchId = table.Column<int>(nullable: false),
-                    Activity = table.Column<string>(nullable: false),
+                    Activity = table.Column<int>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
