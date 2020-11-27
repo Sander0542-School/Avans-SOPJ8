@@ -1,86 +1,97 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bumbo.Data;
-using Bumbo.Data.Models.Enums;
-using Bumbo.Logic.EmployeeRules;
-using Bumbo.Logic.Utils;
-using Bumbo.Web.Models.Schedule;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Bumbo.Data;
+using Bumbo.Data.Models;
 
 namespace Bumbo.Web.Controllers
 {
-    //[Authorize(Policy = "BranchManager")]
-    public class PaycheckController : Controller
+    public class PayCheckController : Controller
     {
-        private readonly RepositoryWrapper _wrapper;
-        private readonly IStringLocalizer<ScheduleController> _localizer;
 
-        public PaycheckController(RepositoryWrapper wrapper, IStringLocalizer<ScheduleController> localizer)
+        private readonly RepositoryWrapper _wrapper;
+
+        public PayCheckController(RepositoryWrapper wrapper)
         {
             _wrapper = wrapper;
-            _localizer = localizer;
         }
-        
-        public async Task<IActionResult> Index(int branchId, int year, int week, Department department)
+
+        // GET: PayCheck
+        public async Task<IActionResult> Index()
         {
-
-            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
-
-            if (branch == null) return NotFound();
-
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
-            try
-            {
-                var users = await _wrapper.User.GetUsersAndShifts(branch, year, week, department);
-
-                return View(new DepartmentViewModel
-                {
-                    Department = department,
-
-                    Branch = branch,
-
-                    ScheduleApproved = branch.WeekSchedules
-                        .Where(schedule => schedule.Year == year)
-                        .Where(schedule => schedule.Week == week)
-                        .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
-
-                    EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
-                    {
-                        UserId = user.Id,
-                        Name = UserUtil.GetFullName(user),
-                        Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
-
-                        MaxHours = WorkingHours.MaxHoursPerWeek(user, year, week),
-
-                        Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
-
-                        Shifts = user.Shifts.Select(shift =>
-                        {
-                            var notifications = WorkingHours.ValidateWeek(user, year, week);
-
-                            return new DepartmentViewModel.Shift
-                            {
-                                Id = shift.Id,
-                                Date = shift.Date,
-                                StartTime = shift.StartTime,
-                                EndTime = shift.EndTime,
-                                Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
-                            };
-                        }).ToList()
-                    }).ToList(),
-                });
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return NotFound();
-            }
+            return View(await _wrapper.User.GetAll());
         }
+
+        //// GET: PayCheck/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var user = await _wrapper.User.Get(U => U.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(user);
+        //}
+
+        //// GET: PayCheck/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var user = await _wrapper.Users.FindAsync(id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(user);
+        //}
+
+        //// POST: PayCheck/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("FirstName,MiddleName,LastName,Birthday,ZipCode,HouseNumber,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
+        //{
+        //    if (id != user.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _wrapper.Update(user);
+        //            await _wrapper.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!UserExists(user.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(user);
+        //}
     }
 }
