@@ -23,7 +23,7 @@ namespace Bumbo.Logic.EmployeeRules
                 .ToList();
 
             var totalDuration = new TimeSpan(shifts
-                .Select(shift => (shift.EndTime - shift.StartTime))
+                .Select(shift => BreakDuration.GetDuration(shift.StartTime, shift.EndTime))
                 .Sum(time => time.Ticks));
 
             var maxWeekHours = MaxHoursPerWeek(user, year, week);
