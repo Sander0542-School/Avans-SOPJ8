@@ -35,9 +35,25 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluit</button>
-                    <button type="submit" class="btn btn-primary">Opslaan</button>
+                    <button type="submit" class="btn btn-primary" disabled="disabled">Opslaan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function checkTimes() {
+        const starttime = document.getElementById('StartTime').value;
+        const endtime = document.getElementById('EndTime').value;
+
+        if (starttime >= endtime || document.getElementById('StartTime').value == '' || document.getElementById('EndTime').value == '') {
+            document.querySelector('button[type=submit]').setAttribute('disabled', 'disabled');
+        } else {
+            document.querySelector('button[type=submit]').removeAttribute('disabled');
+        }
+    }
+
+    document.getElementById('StartTime').addEventListener('change', checkTimes);
+    document.getElementById('EndTime').addEventListener('change', checkTimes);
+</script>

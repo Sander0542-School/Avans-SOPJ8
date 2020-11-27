@@ -9,7 +9,7 @@ namespace Bumbo.Web.Models.Schedule
 {
 	public class UserAdditionalWorkViewModel
 	{
-		public IEnumerable<UserAdditionalWork> Schedule { get; set; }
+		public List<UserAdditionalWork> Schedule { get; set; }
 		public UserAdditionalWork Work { get; set; }
 
 		public class InputAdditionalWork : AdditionalWork

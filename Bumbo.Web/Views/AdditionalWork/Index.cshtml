@@ -22,21 +22,39 @@
 }
 else
 {
-    foreach (UserAdditionalWork additionalWork in Model.Schedule)
+<div class="row mb-2">
+    <div class="col-4">
+        <p class="mb-0 font-weight-bold">Day</p>
+    </div>
+    <div class="col-3">
+        <p class="mb-0 font-weight-bold">Start time</p>
+    </div>
+    <div class="col-3">
+        <p class="mb-0 font-weight-bold">End time</p>
+    </div>
+</div>
+    foreach (DayOfWeek weekday in UserAdditionalWorkViewModel.InputAdditionalWork.DaysOfWeek)
     {
-        <div class="row">
+        <div class="row" data-toggle="modal" data-target="#schoolModal">
             <div class="col-4">
-                <p>@additionalWork.Day</p>
+                <p>@weekday</p>
             </div>
-            <div class="col-3">
-                <p>@additionalWork.StartTime</p>
-            </div>
-            <div class="col-3">
-                <p>@additionalWork.EndTime</p>
-            </div>
-            <div class="col-2">
-                <a class="text-danger" asp-action="Delete" asp-route-day="@additionalWork.Day"><i class="fa fa-trash"></i></a>
-            </div>
+            @if (Model.Schedule.Where(model => model.Day == weekday).FirstOrDefault() != null)
+            {
+                <div class="col-3">
+                    <p>@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault().StartTime</p>
+                </div>
+                <div class="col-3">
+                    <p>@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault().EndTime</p>
+                </div>
+                <div class="col-2">
+                    <a class="text-danger" asp-action="Delete" asp-route-day="@weekday"><i class="fa fa-trash"></i></a>
+                </div>
+            }
+            else
+            {
+                <div class="col-8 mouse-pointer">No timeslots for this day. Click to add</div>
+            }
         </div>
     }
 }

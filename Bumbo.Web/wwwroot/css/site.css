@@ -213,3 +213,7 @@ ul ul a {
         size: landscape
     }
 }
+
+.mouse-pointer {
+    cursor: pointer;
+}
