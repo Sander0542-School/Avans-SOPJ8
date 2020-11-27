@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "BranchEmployee")]
-    [Route("Branches/{branchId}/{controller}")]
+    [Route("Branches/{branchId}/{controller}/{action=Week}")]
     public class ScheduleController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -30,18 +31,18 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("{year?}/{week?}/{department?}")]
-        public async Task<IActionResult> Index(int branchId, int? year, int? week, Department? department)
+        public async Task<IActionResult> Week(int branchId, int? year, int? week, Department? department)
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Index), new
+                return RedirectToAction(nameof(Week), new
                 {
                     branchId,
                     year = year ?? DateTime.Today.Year,
                     week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
                 });
             }
-            
+
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
@@ -53,7 +54,26 @@ namespace Bumbo.Web.Controllers
 
             try
             {
-                var users = await _wrapper.User.GetUsersAndShifts(branch, year.Value, week.Value, department);
+                var departments = GetUserDepartments(User, branchId);
+
+                if (department.HasValue)
+                {
+                    if (departments.Contains(department.Value))
+                    {
+                        departments = new[] {department.Value};
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Week), new
+                        {
+                            branchId,
+                            year,
+                            week
+                        });
+                    }
+                }
+
+                var users = await _wrapper.User.GetUsersAndShifts(branch, year.Value, week.Value, departments);
 
                 return View(new DepartmentViewModel
                 {
@@ -174,7 +194,7 @@ namespace Bumbo.Web.Controllers
 
             TempData["alertMessage"] = alertMessage;
 
-            return RedirectToAction(nameof(Index), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = shiftModel.Year,
@@ -231,7 +251,7 @@ namespace Bumbo.Web.Controllers
                         {
                             TempData["alertMessage"] = $"Success:{_localizer["ScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Index), new
+                            return RedirectToAction(nameof(Week), new
                             {
                                 branchId,
                                 year = copyWeekModel.TargetYear,
@@ -251,7 +271,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = copyWeekModel.Year,
@@ -310,7 +330,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = approveScheduleModel.Year,
@@ -318,5 +338,7 @@ namespace Bumbo.Web.Controllers
                 department = approveScheduleModel.Department
             });
         }
+
+        private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
     }
 }

@@ -41,4 +41,7 @@
     <data name="Department" xml:space="preserve">
         <value>Department</value>
     </data>
+    <data name="ReadOnly" xml:space="preserve">
+        <value>Read Only</value>
+    </data>
 </root>
