@@ -328,8 +328,9 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 {
                     new UserAdditionalWork
                     {
-                        Day = day
-                        //Hours = 8
+                        Day = day,
+                        StartTime = new TimeSpan(8, 0, 0),
+                        EndTime = new TimeSpan(16, 0, 0),
                     }
                 }
             };

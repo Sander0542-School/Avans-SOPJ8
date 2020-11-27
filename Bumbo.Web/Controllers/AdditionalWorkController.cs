@@ -41,20 +41,18 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel.InputAdditionalWork model)
         {
-            var user = _userManager.GetUserId(User);
+            var user = _userManager.GetUserAsync(User).Id;
 
 
             var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
-
-            Console.WriteLine(presentUserWork);
+            workday.Day == model.Day, workday => workday.UserId == user);
 
             if (presentUserWork == null)
             {
                 await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                 {
                     Day = model.Day,
-                    UserId = int.Parse(user),
+                    UserId = user,
                     StartTime = model.StartTime,
                     EndTime = model.EndTime,
                 });
