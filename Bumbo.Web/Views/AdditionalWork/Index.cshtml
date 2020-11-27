@@ -28,11 +28,14 @@ else
             <div class="col-4">
                 <p>@additionalWork.Day</p>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <p>@additionalWork.StartTime</p>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <p>@additionalWork.EndTime</p>
+            </div>
+            <div class="col-2">
+                <a class="text-danger" asp-action="Delete" asp-route-day="@additionalWork.Day"><i class="fa fa-trash"></i></a>
             </div>
         </div>
     }

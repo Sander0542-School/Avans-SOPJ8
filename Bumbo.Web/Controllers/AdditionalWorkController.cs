@@ -68,6 +68,15 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Delete(DayOfWeek day)
+        {
+            var user = _userManager.GetUserAsync(User).Id;
+            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == user);
+            await _wrapper.UserAdditionalWork.Remove(additionalWork);
+
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
