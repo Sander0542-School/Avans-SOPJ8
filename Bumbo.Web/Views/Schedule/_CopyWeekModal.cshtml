@@ -1,11 +1,12 @@
 @model DepartmentViewModel.InputCopyWeekModel
+@inject IViewLocalizer Localizer
 
 <div class="modal fade" id="copyScheduleModal" tabindex="-1" role="dialog" aria-labelledby="copyScheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form asp-action="CopySchedule">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="copyScheduleModalLabel">Rooster kopiëren</h5>
+                    <h5 class="modal-title" id="copyScheduleModalLabel">@Localizer["CopySchedule"]</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -13,7 +14,7 @@
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <h6>Kopiëren van:</h6>
+                    <h6>@Localizer["CopyFrom"]:</h6>
                     <div class="form-group">
                         <label asp-for="Year"></label>
                         <input asp-for="Year" class="form-control" readonly/>
@@ -26,8 +27,8 @@
                         <label asp-for="Department"></label>
                         <input asp-for="Department" class="form-control" readonly/>
                     </div>
-                    
-                    <h6>Kopiëren naar:</h6>
+
+                    <h6>@Localizer["CopyTo"]:</h6>
                     <div class="form-group">
                         <label asp-for="TargetYear"></label>
                         <input asp-for="TargetYear" class="form-control"/>
@@ -40,8 +41,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluit</button>
-                    <button type="submit" class="btn btn-primary">Kopiëren</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Copy"]</button>
                 </div>
             </form>
         </div>

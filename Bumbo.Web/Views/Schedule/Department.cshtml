@@ -1,38 +1,57 @@
 @using System.Globalization
 @model DepartmentViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewBag.Title = "Afdelingsrooster";
+    ViewBag.Title = Localizer["DepartmentSchedule"];
     ViewBag.ContainerType = "container-fluid";
 }
 
 <div class="row">
-    <div class="col-2">
+    <div class="col">
+        <div class="d-print-none">
+            <div class="btn-group text-white" role="group" aria-label="Week Navigation">
+                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+                <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </div>
+            <a asp-action="Department" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+                @Localizer["Today"]
+            </a>
+
+        </div>
+    </div>
+    <div class="col text-center">
         <h4>
-            @Html.DisplayFor(model => model.Week)
+            @Localizer["Week"] @Html.DisplayFor(model => model.Week)
             <span class="font-weight-normal">
                 @Html.DisplayFor(model => model.Year)
             </span>
         </h4>
     </div>
-    <div class="col">
+    <div class="col text-center">
         <h5>
             @ViewBag.Title @Html.DisplayFor(model => model.Department)
             @if (Model.ScheduleApproved)
             {
-                <span class="text-danger font-weight-normal">(Goedgekeurd)</span>
+                <span class="text-danger font-weight-normal">(@Localizer["Approved"])</span>
             }
         </h5>
     </div>
     <div class="col-4 d-print-none text-right">
-        <button class="btn btn-secondary" onclick="window.print()">Print</button>
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">Rooster kopiëren</button>
+        <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["CopySchedule"]</button>
         @if (!Model.ScheduleApproved)
         {
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Rooster goedkeuren</button>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["ApproveSchedule"]</button>
         }
     </div>
 </div>
+
+<br/>
 
 <table class="table table-bordered table-striped table-sm">
     <thead class="text-center">
@@ -45,7 +64,7 @@
             <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
         }
 
-        <th>Totaal</th>
+        <th>@Localizer["Total"]</th>
     </tr>
     </thead>
     <tbody>

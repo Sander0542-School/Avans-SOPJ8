@@ -100,7 +100,7 @@ namespace Bumbo.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<int>("Department")
                         .HasColumnType("int");

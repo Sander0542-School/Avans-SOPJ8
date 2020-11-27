@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using NUnit.Framework;
@@ -11,29 +12,29 @@ namespace Bumbo.Tests.Logic.ForecastRules
         private readonly ForecastLogic _logic;
         public ForecastLogicTests()
         {
-            _logic = new ForecastLogic(new List<BranchForecastStandard>()
+            _logic = new ForecastLogic(new List<IForecastStandard>()
             {
-                new BranchForecastStandard()
+                new ForecastStandard()
                 {
                     Value = 10,
                     Activity = ForecastActivity.STOCK_SHELVES
                 },
-                new BranchForecastStandard()
+                new ForecastStandard()
                 {
                     Value = 10,
                     Activity = ForecastActivity.CASHIER
                 },
-                new BranchForecastStandard()
+                new ForecastStandard()
                 {
                     Value = 10,
                     Activity = ForecastActivity.FACE_SHELVES
                 },
-                new BranchForecastStandard()
+                new ForecastStandard()
                 {
                     Value = 10,
                     Activity = ForecastActivity.PRODUCE_DEPARTMENT
                 },
-                new BranchForecastStandard()
+                new ForecastStandard()
                 {
                     Value = 10,
                     Activity = ForecastActivity.UNLOAD_COLI

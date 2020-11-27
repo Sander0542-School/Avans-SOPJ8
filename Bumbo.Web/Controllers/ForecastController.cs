@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("branches/{branchId}/forecasts/{year?}/{weekNr?}/{department?}")]
-    [Route("branches/{branchId}/forecasts/{year?}/{weekNr?}")]
+    [Authorize(Policy = "BranchManager")]
+    [Route("Branches/{branchId}/{controller}/{year?}/{weekNr?}/{department?}")]
+    [Route("Branches/{branchId}/{controller}/{year?}/{weekNr?}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -67,6 +70,8 @@ namespace Bumbo.Web.Controllers
 
             // Define viewmodel variables
             viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+            if (viewModel.Branch == null) return NotFound();
+
             viewModel.Department = department;
 
             var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
@@ -109,7 +114,17 @@ namespace Bumbo.Web.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
-            var forecastLogic = new ForecastLogic(await _wrapper.BranchForecastStandard.GetAll(f => f.Branch.Id == branchId));
+            var forecastStandards =
+                _wrapper.ForecastStandard.GetAll(
+                    f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
+                ).Result.ToList<IForecastStandard>();
+
+            forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
+                bf => bf.BranchId == branchId
+            ));
+            
+            
+            var forecastLogic = new ForecastLogic(forecastStandards);
 
             for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
