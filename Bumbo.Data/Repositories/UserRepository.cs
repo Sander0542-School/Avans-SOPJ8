@@ -34,7 +34,6 @@ namespace Bumbo.Data.Repositories
                 .Where(user => user.Contracts.Any(contract => contract.EndDate >= startTime))
                 .Include(user => user.Shifts
                     .Where(shift => shift.BranchId == branch.Id)
-                    .Where(shift => departments.Contains(shift.Department))
                     .Where(shift => shift.Date >= startTime)
                     .Where(shift => shift.Date < startTime.AddDays(7))
                 )

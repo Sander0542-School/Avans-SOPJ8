@@ -79,6 +79,9 @@ namespace Bumbo.Web.Models.Schedule
         {
             public int Id { get; set; }
 
+            [DisplayName("Department")]
+            public Department Department { get; set; }
+
             [DisplayName("Date")]
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
             public DateTime Date { get; set; }

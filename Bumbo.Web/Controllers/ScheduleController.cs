@@ -108,6 +108,7 @@ namespace Bumbo.Web.Controllers
                                 return new DepartmentViewModel.Shift
                                 {
                                     Id = shift.Id,
+                                    Department = shift.Department,
                                     Date = shift.Date,
                                     StartTime = shift.StartTime,
                                     EndTime = shift.EndTime,

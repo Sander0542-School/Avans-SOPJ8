@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = Localizer["DepartmentSchedule"];
     ViewBag.ContainerType = "container-fluid";
-    
+
     var canEdit = User.HasClaim("Manager", Model.Branch.Id.ToString());
 }
 
@@ -120,46 +120,66 @@
             {
                 @if (employeeShift.Shifts.Any(shift => shift.Date.DayOfWeek == day))
                 {
-                    var shift = employeeShift.Shifts.First(shift1 => shift1.Date.DayOfWeek == day);
+                    var firstRow = true;
 
-                    <td class="align-middle @(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", Model.Department.HasValue && canEdit)>
-                        <span>
-                            @if (Model.Department.HasValue && canEdit && shift.Notifications.Any())
+                    <td class="align-middle">
+                        @foreach (var shift in employeeShift.Shifts.Where(shift1 => shift1.Date.DayOfWeek == day).Where(shift1 => !Model.Department.HasValue || shift1.Department == Model.Department.Value))
+                        {
+                            @if (!firstRow)
                             {
-                                <span class="fa-stack fa-sm" data-toggle="tooltip" data-placement="bottom" data-html="true"
-                                      @Html.ConditionalAttr("title", $"<ul class=\"list-unstyled\">{string.Join("", shift.Notifications.Select(notification => $"<li>{notification}</li>"))}</ul>")>
+                                <hr style="margin: 0 -.3rem"/>
+                            }
+                            firstRow = false;
 
-                                    <i class="fa fa-stack-2x fa-square text-warning"></i>
-                                    <i class="fa fa-stack-1x fa-briefcase text-white"></i>
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="fa-stack fa-sm">
-                                    <i class="fa fa-stack-2x fa-square"></i>
-                                    <i class="fa fa-stack-1x fa-briefcase text-white"></i>
-                                </span>
-                            }
-                            @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
-                            @if (shift.BreakTime.Ticks > 0)
-                            {
-                                <br/>
-                                <span>
-                                    <span class="fa-stack fa-sm">
-                                        <i class="fa fa-stack-2x fa-square"></i>
-                                        <i class="fa fa-stack-1x fa-coffee text-white"></i>
-                                    </span>
-                                    @Html.DisplayFor(model => shift.BreakTime)
-                                </span>
-                            }
-                        </span>
+                            <div class="@(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", Model.Department.HasValue && canEdit)>
+                                @if (!Model.Department.HasValue)
+                                {
+                                    <div>
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-building text-white"></i>
+                                        </span>
+                                        @Html.DisplayFor(model => shift.Department)
+                                    </div>
+                                }
+                                <div>
+                                    @if (Model.Department.HasValue && canEdit && shift.Notifications.Any())
+                                    {
+                                        <span class="fa-stack fa-sm" data-toggle="tooltip" data-placement="bottom" data-html="true"
+                                              @Html.ConditionalAttr("title", $"<ul class=\"list-unstyled\">{string.Join("", shift.Notifications.Select(notification => $"<li>{notification}</li>"))}</ul>")>
+
+                                            <i class="fa fa-stack-2x fa-square text-warning"></i>
+                                            <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                        </span>
+                                    }
+                                    @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
+                                </div>
+                                @if (shift.BreakTime.Ticks > 0)
+                                {
+                                    <div>
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                        </span>
+                                        @Html.DisplayFor(model => shift.BreakTime)
+                                    </div>
+                                }
+                            </div>
+                        }
                     </td>
                 }
                 else
                 {
                     var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
-                    
-                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick",$"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','')", clickable)>
+
+                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','')", clickable)>
 
                     </td>
                 }
