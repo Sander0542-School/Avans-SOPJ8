@@ -8,7 +8,7 @@
     <div class="col">
         <button class="btn btn-primary" data-toggle="modal" data-target="#schoolModal">
             <i class="fa fa-edit"></i>
-            <span>Edit</span>
+            <span>Add timetable</span>
         </button>
     </div>
 </div>
@@ -16,7 +16,7 @@
 {
     <div class="row">
         <div class="col-md-6">
-            You did not sumbit a school timetable yet..
+            You did not submit a school timetable yet..
         </div>
     </div>
 }
@@ -35,7 +35,7 @@ else
 </div>
     foreach (DayOfWeek weekday in UserAdditionalWorkViewModel.InputAdditionalWork.DaysOfWeek)
     {
-        <div class="row" data-toggle="modal" data-target="#schoolModal">
+        <div class="row mouse-pointer" data-toggle="modal" data-target="#schoolModal">
             <div class="col-4">
                 <p>@weekday</p>
             </div>
@@ -53,7 +53,7 @@ else
             }
             else
             {
-                <div class="col-8 mouse-pointer">No timeslots for this day. Click to add</div>
+                <div class="col-8">No timeslots for this day. Click to add</div>
             }
         </div>
     }
