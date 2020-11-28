@@ -35,7 +35,7 @@ namespace Bumbo.Web.Controllers
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions() { Expires = DateTimeOffset.Now.AddDays(999) });
+                new CookieOptions() {Expires = DateTimeOffset.Now.AddDays(999)});
 
             return LocalRedirect(returnUrl);
         }
