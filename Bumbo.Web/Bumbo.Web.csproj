@@ -7,6 +7,7 @@
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bumbo.Testing' " />
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
@@ -20,6 +21,7 @@
 
     <ItemGroup>
       <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
+      <Folder Include="Resources\Views\AdditionalWork\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -47,6 +49,13 @@
       <EmbeddedResource Update="Resources\Models\Users\EditViewModel.nl.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserAdditionalWorkViewModel.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserAdditionalWorkViewModel.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
-
 </Project>

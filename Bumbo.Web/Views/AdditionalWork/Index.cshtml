@@ -4,14 +4,6 @@
 }
 
 <h4>@ViewData["Title"]</h4>
-<div class="row mb-3">
-    <div class="col">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#schoolModal">
-            <i class="fa fa-edit"></i>
-            <span>Add timetable</span>
-        </button>
-    </div>
-</div>
 @if (Model.Schedule == null)
 {
     <div class="row">
@@ -22,45 +14,38 @@
 }
 else
 {
-<div class="row mb-2">
-    <div class="col-4">
-        <p class="mb-0 font-weight-bold">Day</p>
+    <div class="row mb-2">
+        <div class="col-4">
+            <p class="mb-0 font-weight-bold">Day</p>
+        </div>
+        <div class="col-3">
+            <p class="mb-0 font-weight-bold">Start time</p>
+        </div>
+        <div class="col-3">
+            <p class="mb-0 font-weight-bold">End time</p>
+        </div>
     </div>
-    <div class="col-3">
-        <p class="mb-0 font-weight-bold">Start time</p>
-    </div>
-    <div class="col-3">
-        <p class="mb-0 font-weight-bold">End time</p>
-    </div>
-</div>
     foreach (DayOfWeek weekday in UserAdditionalWorkViewModel.InputAdditionalWork.DaysOfWeek)
     {
-        <div class="row mouse-pointer" data-toggle="modal" data-target="#schoolModal">
+        <div class="row">
             <div class="col-4">
                 <p>@weekday</p>
             </div>
-            @if (Model.Schedule.Where(model => model.Day == weekday).FirstOrDefault() != null)
-            {
-                <div class="col-3">
-                    <p>@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault().StartTime</p>
-                </div>
-                <div class="col-3">
-                    <p>@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault().EndTime</p>
-                </div>
-                <div class="col-2">
+            <div class="col-3">
+                <input asp-for="Work.StartTime" type="time" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime" />
+            </div>
+            <div class="col-3">
+                <input asp-for="Work.EndTime" type="time" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime" />
+            </div>
+            <div class="col-2">
+                @if (Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault() != null)
+                {
                     <a class="text-danger" asp-action="Delete" asp-route-day="@weekday"><i class="fa fa-trash"></i></a>
-                </div>
-            }
-            else
-            {
-                <div class="col-8">No timeslots for this day. Click to add</div>
-            }
+                }
+            </div>
         </div>
     }
 }
-
-
-<partial name="_SchoolModal" model="Model.Work"/>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
