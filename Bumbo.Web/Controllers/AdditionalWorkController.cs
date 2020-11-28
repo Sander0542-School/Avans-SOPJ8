@@ -30,7 +30,7 @@ namespace Bumbo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(entity => entity.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(entity => entity.UserId == int.Parse(_userManager.GetUserId(User)));
             return View(new UserAdditionalWorkViewModel()
             {
                 Schedule = additionalWorks
@@ -41,18 +41,17 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel.InputAdditionalWork model)
         {
-            var user = _userManager.GetUserAsync(User).Id;
-
+            var user = _userManager.GetUserId(User);
 
             var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            workday.Day == model.Day, workday => workday.UserId == user);
+            workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
 
             if (presentUserWork == null)
             {
                 await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                 {
                     Day = model.Day,
-                    UserId = user,
+                    UserId = int.Parse(user),
                     StartTime = model.StartTime,
                     EndTime = model.EndTime,
                 });
