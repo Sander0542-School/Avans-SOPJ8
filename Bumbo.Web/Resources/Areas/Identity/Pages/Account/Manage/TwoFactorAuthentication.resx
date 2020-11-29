@@ -16,10 +16,8 @@
     </data>
     <data name="MessageCanGenerate" xml:space="preserve">
         <value>You can {0}generate a new set of recovery codes{1} before you can log in with a recovery code.</value>
-        <comment>MessageCanGenerate</comment>
     </data>
     <data name="MessageShouldGenerate" xml:space="preserve">
         <value>You should {0}generate a new set of recovery codes{1} before you can log in with a recovery code.</value>
-        <comment>MessageShouldGenerate</comment>
     </data>
 </root>

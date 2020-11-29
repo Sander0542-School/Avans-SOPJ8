@@ -46,10 +46,8 @@
     </data>
     <data name="MessageCanGenerate" xml:space="preserve">
         <value>U kunt {0}een nieuw set herstelcodes genereren{1} voordat u zich kunt aanmelden met een herstelcode.</value>
-        <comment>MessageCanGenerate</comment>
     </data>
     <data name="MessageShouldGenerate" xml:space="preserve">
         <value>U moet {0}een nieuw set herstelcodes genereren{1} voordat u zich kunt aanmelden met een herstelcode.</value>
-        <comment>MessageShouldGenerate</comment>
     </data>
 </root>
