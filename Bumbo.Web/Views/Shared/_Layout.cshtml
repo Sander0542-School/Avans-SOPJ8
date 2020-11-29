@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Bumbo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -28,6 +29,8 @@
             </main>
         </div>
     </div>
+
+    <partial name="_Culture"/>
 
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
