@@ -1,0 +1,26 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Disable two-factor authentication (2FA)" xml:space="preserve">
+        <value>Schakel tweefactorauthenticatie (2FA) uit</value>
+    </data>
+    <data name="This action only disables 2FA." xml:space="preserve">
+        <value>Deze actie schakelt alleen 2FA uit.</value>
+    </data>
+    <data name="Disable 2FA" xml:space="preserve">
+        <value>Schakel 2FA uit</value>
+    </data>
+    <data name="MessageDisable2FA" xml:space="preserve">
+        <value>Als u 2FA uitschakelt, worden de sleutels die worden gebruikt in authenticator-apps niet gewijzigd. Als u de sleutel die in een authenticator-app wordt gebruikt, wilt wijzigen, moet u {0}uw authenticatiesleutels opnieuw instellen{1}.</value>
+    </data>
+</root>
