@@ -1,0 +1,30 @@
+﻿@page
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Html
+@model GenerateRecoveryCodesModel
+@{
+    ViewData["Title"] = Localizer["Generate two-factor authentication (2FA) recovery codes"];
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>@Localizer["Put these codes in a safe place."]</strong>
+    </p>
+    <p>
+        @Localizer["MessageLoseYourAccount"]
+    </p>
+    <p>
+        @Localizer["MessageGenerateNewCodes",
+            new HtmlString("<a asp-page=\"./ResetAuthenticator\">"),
+            new HtmlString("</a>")]
+    </p>
+</div>
+<div>
+    <form method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">@Localizer["Generate Recovery Codes"]</button>
+    </form>
+</div>
