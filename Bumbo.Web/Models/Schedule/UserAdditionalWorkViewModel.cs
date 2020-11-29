@@ -42,13 +42,16 @@ namespace Bumbo.Web.Models.Schedule
 		{
 			public int UserId { get; set; }
 
+			[Required]
 			[Display(Name = "Day")]
 			public DayOfWeek Day { get; set; }
 
+			[Required]
 			[Display(Name = "StartTime")]
 			[DataType(DataType.Time)]
 			public TimeSpan StartTime { get; set; }
 
+			[Required]
 			[Display(Name = "EndTime")]
 			[DataType(DataType.Time)]
 			public TimeSpan EndTime { get; set; }

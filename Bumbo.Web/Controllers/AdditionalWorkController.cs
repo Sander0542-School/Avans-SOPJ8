@@ -41,27 +41,32 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel.InputAdditionalWork model)
         {
-            var user = _userManager.GetUserId(User);
+            if (ModelState.IsValid) {
+                var user = _userManager.GetUserId(User);
 
-            var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-            workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
+                var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
+                workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
 
-            if (presentUserWork == null)
-            {
-                await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                if (presentUserWork == null)
                 {
-                    Day = model.Day,
-                    UserId = int.Parse(user),
-                    StartTime = model.StartTime,
-                    EndTime = model.EndTime,
-                });
-            }
-            else
-            {
-                presentUserWork.StartTime = model.StartTime;
-                presentUserWork.EndTime = model.EndTime;
+                    await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                    {
+                        Day = model.Day,
+                        UserId = int.Parse(user),
+                        StartTime = model.StartTime,
+                        EndTime = model.EndTime,
+                    });
+                }
+                else
+                {
+                    presentUserWork.StartTime = model.StartTime;
+                    presentUserWork.EndTime = model.EndTime;
 
-                bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+                    bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+                }
+            } else
+            {
+                Console.WriteLine("ModelState is not valid");
             }
 
             return RedirectToAction("Index");
@@ -69,8 +74,8 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Delete(DayOfWeek day)
         {
-            var user = _userManager.GetUserAsync(User).Id;
-            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == user);
+            var user = _userManager.GetUserId(User);
+            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == int.Parse(user));
             await _wrapper.UserAdditionalWork.Remove(additionalWork);
 
             return RedirectToAction("Index");
