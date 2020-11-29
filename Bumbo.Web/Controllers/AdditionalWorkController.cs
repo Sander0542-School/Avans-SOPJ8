@@ -38,35 +38,31 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserAdditionalWorkViewModel.InputAdditionalWork model)
+        public async Task<IActionResult> Edit(UserAdditionalWorkViewModel model)
         {
             if (ModelState.IsValid) {
                 var user = _userManager.GetUserId(User);
 
                 var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-                workday.Day == model.Day, workday => workday.UserId == int.Parse(user));
+                workday.Day == model.Work.Day, workday => workday.UserId == int.Parse(user));
 
                 if (presentUserWork == null)
                 {
                     await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                     {
-                        Day = model.Day,
+                        Day = model.Work.Day,
                         UserId = int.Parse(user),
-                        StartTime = model.StartTime,
-                        EndTime = model.EndTime,
+                        StartTime = model.Work.StartTime,
+                        EndTime = model.Work.EndTime,
                     });
                 }
                 else
                 {
-                    presentUserWork.StartTime = model.StartTime;
-                    presentUserWork.EndTime = model.EndTime;
+                    presentUserWork.StartTime = model.Work.StartTime;
+                    presentUserWork.EndTime = model.Work.EndTime;
 
                     bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
                 }
-            } else
-            {
-                Console.WriteLine("ModelState is not valid");
             }
 
             return RedirectToAction("Index");

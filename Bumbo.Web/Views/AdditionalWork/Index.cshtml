@@ -38,9 +38,9 @@ else
                 <input asp-for="Work.EndTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime" />
             </div>
             <div class="col-2">
-                <form asp-action="Edit" class="d-inline-block">
+                <form method="POST" asp-action="Edit" class="d-inline-block">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input asp-for="Work.Day" value="@weekday"/>
+                    <input asp-for="Work.Day" value="@weekday" class="d-none" />
                     <input asp-for="Work.StartTime" type="time" class="d-none" />
                     <input asp-for="Work.EndTime" type="time" class="d-none" />
                     <button type="submit" class="btn btn-link text-success d-none p-0">
@@ -60,9 +60,9 @@ else
     <partial name="_ValidationScriptsPartial" />
 }
 
-<script>function checkTimes(el) {
+<script>
+    function checkTimes(el) {
         const form = el.parentElement.parentElement.lastElementChild.firstElementChild;
-        const day = el.parentElement.parentElement.firstElementChild.firstElementChild.innerText;
         let startEl;
         let endEl;
 
@@ -79,19 +79,12 @@ else
                 form.lastElementChild.previousElementSibling.classList.add("d-none");
             }
         } else {
-            form.children[0].value = day;
             form.children[1].value = startEl.value;
             form.children[2].value = endEl.value;
-
-            var event = new Event('change');
-            form.children[0].dispatchEvent(event);
-            var event = new Event('change');
-            form.children[1].dispatchEvent(event);
-            var event = new Event('change');
-            form.children[2].dispatchEvent(event);
 
             if (form.lastElementChild.previousElementSibling.classList.contains("d-none")) {
                 form.lastElementChild.previousElementSibling.classList.remove("d-none");
             }
         }
-    }</script>
+    }
+</script>
