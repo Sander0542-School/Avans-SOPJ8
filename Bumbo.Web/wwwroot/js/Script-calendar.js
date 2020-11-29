@@ -13,26 +13,36 @@
             week: 'week',  
             day: 'day'  
         },  
+        views: {
+            timelineHours: {
+                type: 'timeline',
+                duration: { hours: 8 },
+                buttonText: 'hours'
+            }
+        },
+        
   
         events: function (start, end, timezone, callback)  
         {  
             $.ajax({  
-                url: '/Home/GetCalendarData',  
+                url: '/Branches/2/Schedule/GetCalendarEvents/2020/48/',  
                 type: "GET",  
                 dataType: "JSON",  
   
                 success: function (result)  
                 {  
+                    
                     var events = [];  
   
                     $.each(result, function (i, data)  
-                    {  
+                    {
                         events.push(  
                        {  
-                           title: data.Title,  
-                           description: data.Desc,  
-                           start: moment(data.Start_Date).format('YYYY-MM-DD'),  
-                           end: moment(data.End_Date).format('YYYY-MM-DD'),  
+                           title: data.title,  
+                           description: data.description,  
+                           start: moment(data.start).format('YYYY-MM-DD'),  
+                           end: moment(data.end).format('YYYY-MM-DD'),
+                           duration: data.duration,
                            backgroundColor: "#9501fc",  
                            borderColor: "#fc0101"  
                        });  
@@ -43,13 +53,14 @@
             });  
         },  
   
-        eventRender: function (event, element)  
-        {  
-            element.qtip(  
-            {  
-                content: event.description  
-            });  
-        },  
+        //eventRender: function (event, element)  
+        //{
+            
+        //    element.qtip(  
+        //    {  
+        //        content: event.description  
+        //    });  
+        //},  
   
         editable: false  
     });  

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Bumbo.Data.Repositories;
 using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
@@ -304,9 +303,37 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("{Personal}/{year?}/{week?}")]
-        public IActionResult Personal(int? year, int? week)
+        public IActionResult Personal()
         {
-            return View();
+            return View(new EventViewModel());
+        }
+
+        [HttpGet]
+        [Route("{GetCalendarEvents}/{year?}/{week?}")]
+        public JsonResult GetCalendarEvents(DateTime start, DateTime end)
+        {
+            var viewModel = new EventViewModel();
+            var events = new List<EventViewModel>();
+            start = DateTime.Today.AddDays(-14);
+            end = DateTime.Today.AddDays(-11);
+
+            for (var i = 1; i <= 2; i++)
+            {
+                events.Add(new EventViewModel()
+                {
+                    id = i,
+                    title = "Event " + i,
+                    start = "2020-11-29T09:00:00",
+                    end = "2020-11-29T11:00:00",
+                    allDay = false
+                });
+
+                start = start.AddDays(7);
+                end = end.AddDays(7);
+            }
+
+
+            return Json(events.ToArray());
         }
     }
 }
