@@ -1,0 +1,55 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Two-factor authentication (2FA)" xml:space="preserve">
+        <value>Twee-factor authenticatie (2FA)</value>
+    </data>
+    <data name="Reset authenticator app" xml:space="preserve">
+        <value>Reset authenticator-app</value>
+    </data>
+    <data name="Setup authenticator app" xml:space="preserve">
+        <value>Stel de authenticator-app in</value>
+    </data>
+    <data name="Add authenticator app" xml:space="preserve">
+        <value>Voeg een authenticator-app toe</value>
+    </data>
+    <data name="Reset recovery codes" xml:space="preserve">
+        <value>Herstelcodes resetten</value>
+    </data>
+    <data name="Disable 2FA" xml:space="preserve">
+        <value>Schakel 2FA uit</value>
+    </data>
+    <data name="Forget this browser" xml:space="preserve">
+        <value>Vergeet deze browser</value>
+    </data>
+    <data name="You have {0} recovery codes left." xml:space="preserve">
+        <value>U heeft nog {0} herstelcodes over.</value>
+    </data>
+    <data name="You have 1 recovery code left." xml:space="preserve">
+        <value>U heeft nog 1 herstelcode over.</value>
+    </data>
+    <data name="You have no recovery codes left." xml:space="preserve">
+        <value>U heeft geen herstelcodes meer.</value>
+    </data>
+    <data name="MessageMustGenerate" xml:space="preserve">
+        <value>U moet {0}een nieuw set herstelcodes genereren{1} voordat u zich kunt aanmelden met een herstelcode.</value>
+    </data>
+    <data name="MessageCanGenerate" xml:space="preserve">
+        <value>U kunt {0}een nieuw set herstelcodes genereren{1} voordat u zich kunt aanmelden met een herstelcode.</value>
+        <comment>MessageCanGenerate</comment>
+    </data>
+    <data name="MessageShouldGenerate" xml:space="preserve">
+        <value>U moet {0}een nieuw set herstelcodes genereren{1} voordat u zich kunt aanmelden met een herstelcode.</value>
+        <comment>MessageShouldGenerate</comment>
+    </data>
+</root>
