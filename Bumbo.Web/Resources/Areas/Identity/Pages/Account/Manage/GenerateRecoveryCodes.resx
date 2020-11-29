@@ -11,7 +11,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="MessageLoseYourAccount" xml:space="preserve">
+    <data name="MessageLoseDevice" xml:space="preserve">
         <value>If you lose your device and don't have the recovery codes you will lose access to your account.</value>
     </data>
     <data name="MessageGenerateNewCodes" xml:space="preserve">

@@ -17,7 +17,7 @@
     <data name="Put these codes in a safe place." xml:space="preserve">
         <value>Bewaar deze codes op een veilige plaats.</value>
     </data>
-    <data name="MessageLoseYourAccount" xml:space="preserve">
+    <data name="MessageLoseDevice" xml:space="preserve">
         <value>Als u uw apparaat verliest en niet over de herstelcodes beschikt, verliest u de toegang tot uw account.</value>
     </data>
     <data name="Generate Recovery Codes" xml:space="preserve">
