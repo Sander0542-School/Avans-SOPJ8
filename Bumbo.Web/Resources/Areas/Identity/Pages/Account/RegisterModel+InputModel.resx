@@ -11,13 +11,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Register" xml:space="preserve">
-        <value>Registreren</value>
-    </data>
-    <data name="Create a new account." xml:space="preserve">
-        <value>Maak een nieuw account aan.</value>
-    </data>
-    <data name="Use another service to register." xml:space="preserve">
-        <value>Gebruik een andere service om u te registreren.</value>
+    <data name="The password and confirmation password do not match." xml:space="preserve">
+        <value />
     </data>
 </root>
