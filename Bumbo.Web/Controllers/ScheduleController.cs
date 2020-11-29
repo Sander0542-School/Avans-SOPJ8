@@ -302,5 +302,11 @@ namespace Bumbo.Web.Controllers
                 department = approveScheduleModel.Department
             });
         }
+
+        [Route("{Personal}/{year?}/{week?}")]
+        public IActionResult Personal(int? year, int? week)
+        {
+            return View();
+        }
     }
 }
