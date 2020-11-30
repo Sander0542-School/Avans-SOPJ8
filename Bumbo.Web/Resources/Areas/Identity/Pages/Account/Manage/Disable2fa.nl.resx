@@ -21,6 +21,6 @@
         <value>Schakel 2FA uit</value>
     </data>
     <data name="MessageDisable2FA" xml:space="preserve">
-        <value>Als u 2FA uitschakelt, worden de sleutels die worden gebruikt in authenticator-apps niet gewijzigd. Als u de sleutel die in een authenticator-app wordt gebruikt, wilt wijzigen, moet u {0}uw authenticatiesleutels opnieuw instellen{1}.</value>
+        <value>Als u 2FA uitschakelt, zullen de sleutels die worden gebruikt in authenticator-apps niet gewijzigd. Als u de sleutel die in een authenticator-app wordt gebruikt, wilt wijzigen, moet u {0}uw authenticatiesleutels opnieuw instellen{1}.</value>
     </data>
 </root>
