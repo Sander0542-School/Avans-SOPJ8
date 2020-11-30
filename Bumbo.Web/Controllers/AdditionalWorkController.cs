@@ -41,17 +41,17 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel model)
         {
             if (ModelState.IsValid) {
-                var user = _userManager.GetUserId(User);
+                int userId = int.Parse(_userManager.GetUserId(User));
 
                 var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-                workday.Day == model.Work.Day, workday => workday.UserId == int.Parse(user));
+                workday.Day == model.Work.Day, workday => workday.UserId == userId);
 
                 if (presentUserWork == null)
                 {
                     await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
                     {
                         Day = model.Work.Day,
-                        UserId = int.Parse(user),
+                        UserId = userId,
                         StartTime = model.Work.StartTime,
                         EndTime = model.Work.EndTime,
                     });
@@ -70,17 +70,11 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Delete(DayOfWeek day)
         {
-            var user = _userManager.GetUserId(User);
-            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == int.Parse(user));
+            int userId = int.Parse(_userManager.GetUserId(User));
+            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == userId);
             await _wrapper.UserAdditionalWork.Remove(additionalWork);
 
             return RedirectToAction("Index");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

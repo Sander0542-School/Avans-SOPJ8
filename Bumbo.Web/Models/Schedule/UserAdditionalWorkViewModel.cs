@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Web.Models.Schedule
 {
