@@ -12,6 +12,6 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="MessageDisabled2FA" xml:space="preserve">
-        <value>2fa has been disabled. You can reenable 2fa when you setup an authenticator app</value>
+        <value>2FA has been disabled. You can reenable 2FA when you setup an authenticator app</value>
     </data>
 </root>
