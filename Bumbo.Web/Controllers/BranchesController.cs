@@ -10,6 +10,7 @@ using Bumbo.Data.Models;
 
 namespace Bumbo.Web.Controllers
 {
+    [Route("Branches/{branchId?}/{action=Index}")]
     public class BranchesController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -26,14 +27,14 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Branches/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? branchId)
         {
-            if (id == null)
+            if (branchId == null)
             {
                 return NotFound();
             }
 
-            var branch = await _wrapper.Branch.Get(b => b.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             if (branch == null)
             {
                 return NotFound();
@@ -64,14 +65,14 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Branches/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? branchId)
         {
-            if (id == null)
+            if (branchId == null)
             {
                 return NotFound();
             }
 
-            var branch = await _wrapper.Branch.Get(b => b.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             if (branch == null)
             {
                 return NotFound();
@@ -84,9 +85,9 @@ namespace Bumbo.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,ZipCode,HouseNumber,Id")] Branch branch)
+        public async Task<IActionResult> Edit(int branchId, [Bind("Name,ZipCode,HouseNumber,Id")] Branch branch)
         {
-            if (id != branch.Id)
+            if (branchId != branch.Id)
             {
                 return NotFound();
             }
@@ -114,14 +115,14 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Branches/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? branchId)
         {
-            if (id == null)
+            if (branchId == null)
             {
                 return NotFound();
             }
 
-            var branch = await _wrapper.Branch.Get(b => b.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             if (branch == null)
             {
                 return NotFound();
@@ -133,9 +134,9 @@ namespace Bumbo.Web.Controllers
         // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int branchId)
         {
-            var branch = await _wrapper.Branch.Get(b => b.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             await _wrapper.Branch.Remove(branch);
             return RedirectToAction(nameof(Index));
         }
