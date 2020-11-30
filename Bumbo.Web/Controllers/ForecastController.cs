@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using ASP;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
@@ -204,6 +205,41 @@ namespace Bumbo.Web.Controllers
                 weekNr,
                 department
             });
+        }
+
+        public async Task<IActionResult> ChangeNorms(int branchId)
+        {
+            var data = new ChangeNormsViewModel{ BranchId = branchId };
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeNormsAsync(ChangeNormsViewModel data)
+        {
+            BranchForecastStandard entity = new BranchForecastStandard();
+
+            entity.Activity = ForecastActivity.CASHIER;
+            entity.Value = data.CashierValue;
+            await _wrapper.BranchForecastStandard.Update(entity);
+
+            entity.Activity = ForecastActivity.FACE_SHELVES;
+            entity.Value = data.FaceShelvesValue;
+            await _wrapper.BranchForecastStandard.Update(entity);
+
+            entity.Activity = ForecastActivity.PRODUCE_DEPARTMENT;
+            entity.Value = data.ProduceDepartmentValue;
+            await _wrapper.BranchForecastStandard.Update(entity);
+
+            entity.Activity = ForecastActivity.STOCK_SHELVES;
+            entity.Value = data.StockShelvesValue;
+            await _wrapper.BranchForecastStandard.Update(entity);
+
+            entity.Activity = ForecastActivity.UNLOAD_COLI;
+            entity.Value = data.UnloadColiValue;
+            await _wrapper.BranchForecastStandard.Update(entity);
+
+            return RedirectToAction("Index");
         }
     }
 }
