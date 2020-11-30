@@ -13,16 +13,16 @@ namespace Bumbo.Web.Models.Schedule
 		public UserAdditionalWork Work { get; set; }
 
 		public ValidationResult Validate(ValidationContext validationContext)
-        {
-			var additionalWork = (UserAdditionalWork)validationContext.ObjectInstance;
+		{
+			var additionalWork = (UserAdditionalWork) validationContext.ObjectInstance;
 
 			if (additionalWork.StartTime > additionalWork.EndTime)
-            {
+			{
 				return new ValidationResult("Starttime must be before endtime");
-            }
+			}
 
 			return ValidationResult.Success;
-        }
+		}
 
 		public class InputAdditionalWork : AdditionalWork
 		{
@@ -37,13 +37,13 @@ namespace Bumbo.Web.Models.Schedule
 				DayOfWeek.Sunday
 			};
 		}
-        
+
 		public abstract class AdditionalWork
 		{
 			public int UserId { get; set; }
 
-			[Required]
-			[Display(Name = "Day")]
+			[Required] 
+			[Display(Name = "Day")] 
 			public DayOfWeek Day { get; set; }
 
 			[Required]
