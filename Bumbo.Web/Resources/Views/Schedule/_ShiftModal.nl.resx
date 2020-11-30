@@ -16,10 +16,8 @@
     </data>
     <data name="Close" xml:space="preserve">
         <value>Sluit</value>
-        <comment>Close</comment>
     </data>
     <data name="Save" xml:space="preserve">
         <value>Opslaan</value>
-        <comment>Save</comment>
     </data>
 </root>

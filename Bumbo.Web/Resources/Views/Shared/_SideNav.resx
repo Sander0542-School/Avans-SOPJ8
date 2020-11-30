@@ -50,4 +50,7 @@
     <data name="Forecast" xml:space="preserve">
         <value>Prognose</value>
     </data>
+    <data name="ChangeLanguage" xml:space="preserve">
+        <value>Verander taal</value>
+    </data>
 </root>
