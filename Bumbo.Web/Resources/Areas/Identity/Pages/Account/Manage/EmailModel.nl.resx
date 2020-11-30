@@ -15,7 +15,7 @@
         <value>Uw email is ongewijzigd.</value>
     </data>
     <data name="MessageConfirmationLinkSent" xml:space="preserve">
-        <value>Bevestigingslink om e-mail te wijzigen is verzonden. Controleer uw e-mail.</value>
+        <value>Bevestigingslink om email te wijzigen is verzonden. Controleer uw email.</value>
     </data>
     <data name="MessageVerificationSent" xml:space="preserve">
         <value>Verificatie email verzonden. Controleer uw e-mail.</value>
