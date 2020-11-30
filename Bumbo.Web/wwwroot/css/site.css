@@ -83,6 +83,123 @@ body {
     cursor: pointer;
 }
 
+/* Sidebar
+-------------------------------------------------- */
+
+.sidebar {
+    width: 270px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #eeeeee;
+    color: #424242;
+    transition: all 0.3s;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sidebar a,
+.sidebar a:hover,
+.sidebar a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar.active {
+    margin-left: -250px;
+}
+
+.sidebar .sidebar-header {
+    padding: 20px 0;
+}
+
+.sidebar ul.components {
+    padding: 0;
+}
+
+.sidebar ul p {
+    color: #424242;
+    padding: 10px;
+}
+
+.sidebar ul li a {
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 1.1em;
+    display: block;
+    margin: 12px 0;
+}
+
+.sidebar ul li a:hover {
+    color: #424242;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.sidebar ul li.active > a {
+    color: #424242;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.sidebar .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: -250px;
+    }
+
+    .sidebar.active {
+        margin-left: 0;
+    }
+}
+
+/* Content
+-------------------------------------------------- */
+.content {
+    width: calc(100% - 250px);
+    padding: 40px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.content.active {
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .content {
+        width: 100%;
+    }
+
+    .content.active {
+        width: calc(100% - 270px);
+    }
+}
+
 /* Font Awesome
 -------------------------------------------------- */
 .fa-sm {
@@ -95,6 +212,4 @@ body {
     @page {
         size: landscape
     }
-    
-
 }

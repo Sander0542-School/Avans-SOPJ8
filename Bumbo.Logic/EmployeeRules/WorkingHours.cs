@@ -23,7 +23,7 @@ namespace Bumbo.Logic.EmployeeRules
                 .ToList();
 
             var totalDuration = new TimeSpan(shifts
-                .Select(shift => (shift.EndTime - shift.StartTime))
+                .Select(shift => shift.EndTime - shift.StartTime - BreakDuration.GetDuration(shift.StartTime, shift.EndTime))
                 .Sum(time => time.Ticks));
 
             var maxWeekHours = MaxHoursPerWeek(user, year, week);
@@ -37,7 +37,7 @@ namespace Bumbo.Logic.EmployeeRules
                 var notifications = new List<string>();
 
                 if (tooManyHours)
-                    notifications.Add($"Deze medewerker mag niet meer dan {maxWeekHours:hh\\:mm} uur per week werken.");
+                    notifications.Add($"Deze medewerker mag niet meer dan {maxWeekHours.TotalHours:00}:{maxWeekHours:mm} uur per week werken.");
 
                 if (tooManyDays)
                     notifications.Add($"Deze medewerker mag niet meer dan {maxDays} dagen per week werken.");

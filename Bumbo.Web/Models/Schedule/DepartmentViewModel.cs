@@ -12,6 +12,13 @@ namespace Bumbo.Web.Models.Schedule
 {
     public class DepartmentViewModel
     {
+        private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
+
+        public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
+        public int NextYear => _mondayOfWeek.AddDays(7).Year;
+        public int PreviousWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(-7));
+        public int PreviousYear => _mondayOfWeek.AddDays(-7).Year;
+
         [Display(Name = "Year")]
         public int Year { get; set; }
 
@@ -19,7 +26,7 @@ namespace Bumbo.Web.Models.Schedule
         public int Week { get; set; }
 
         [Display(Name = "Department")]
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
 
         public InputShiftModel InputShift { get; set; }
 
@@ -71,6 +78,9 @@ namespace Bumbo.Web.Models.Schedule
         public class Shift
         {
             public int Id { get; set; }
+
+            [DisplayName("Department")]
+            public Department Department { get; set; }
 
             [DisplayName("Date")]
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
@@ -159,7 +169,7 @@ namespace Bumbo.Web.Models.Schedule
 
             [Display(Name = "Department")]
             [Required]
-            public Department Department { get; set; }
+            public Department? Department { get; set; }
         }
     }
 }
