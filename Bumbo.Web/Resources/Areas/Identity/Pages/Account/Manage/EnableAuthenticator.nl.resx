@@ -1,0 +1,35 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Configure authenticator app" xml:space="preserve">
+        <value>Configureer de authenticator-app</value>
+    </data>
+    <data name="Verification Code" xml:space="preserve">
+        <value>Verificatie code</value>
+    </data>
+    <data name="Verify" xml:space="preserve">
+        <value>Verifiëren</value>
+    </data>
+    <data name="MessageAfterScan" xml:space="preserve">
+        <value>Nadat u de QR-code heeft gescand of de bovenstaande sleutel heeft ingevoerd, geeft uw app voor twee-factor-authenticatie u een unieke code. Voer de code in het bevestigingsvak hieronder in.</value>
+    </data>
+    <data name="MessageScanOrKey" xml:space="preserve">
+        <value>Scan de QR-code of voer deze sleutel &lt;kbd&gt;{0}&lt;/kbd&gt; in uw twee-factor-authenticatie-app in. Spaties en haken doen er niet toe.</value>
+    </data>
+    <data name="MessageDownloadApp" xml:space="preserve">
+        <value>Download een twee-factor-authenticatie-app zoals Microsoft Authenticator voor {0} en {1} of Google Authenticator voor {2} of {3}.</value>
+    </data>
+    <data name="MessageHowToUse" xml:space="preserve">
+        <value>Doorloop de volgende stappen om een authenticator-app te gebruiken:</value>
+    </data>
+</root>
