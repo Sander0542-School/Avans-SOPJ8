@@ -20,7 +20,7 @@ namespace Bumbo.Web.Authorization.Handles
         {
             var branchId = _httpContextAccessor.HttpContext?.GetRouteValue("branchId")?.ToString() ?? "0";
 
-            if (context.User.HasClaim("Manager", branchId))
+            if (context.User.HasClaim("Branch", branchId))
             {
                 context.Succeed(requirement);
             }
