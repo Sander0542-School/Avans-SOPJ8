@@ -1,0 +1,84 @@
+﻿@model Bumbo.Web.Models.Schedule.EventViewModel
+
+
+<div class="row">
+    <section class="col-md-12 col-md-push-0">
+        @Html.Partial("_CalendarPartial")
+    </section>
+</div>
+
+
+@section Styles{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.print.css" media="print" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" />
+
+
+}
+
+@section Scripts {
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#calendar').fullCalendar({
+            header:
+            {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            buttonText: {
+                today: 'today',
+                month: 'month',
+                week: 'week',
+                day: 'day'
+            },
+            views: {
+                timelineHours: {
+                    type: 'timeline',
+                    duration: { hours: 8 },
+                    buttonText: 'hours'
+                }
+            },
+            events: function (start, end, timezone, callback) {
+                $.ajax({
+                    url: '@Url.RouteUrl(new{ action= "GetCalendarEvents", controller= "PersonalSchedule" })',
+                    type: "GET",
+                    dataType: "JSON",
+                    headers: {
+                        RequestVerificationToken:
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+
+                    success: function (result) {
+
+                        var events = [];
+
+                        $.each(result, function (i, data) {
+                            events.push(
+                                {
+                                    title: data.title,
+                                    description: data.description,
+                                    start: data.start,
+                                    end: data.end,
+                                    duration: data.duration,
+
+                                });
+                        });
+
+                        callback(events);
+                    }
+                });
+            },
+            editable: false
+        });
+    });
+    </script>
+    }
+
