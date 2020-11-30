@@ -2,11 +2,14 @@
 @using Bumbo.Logic.Utils
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Routing
+@using Microsoft.AspNetCore.Authorization
+@using System.Runtime.CompilerServices
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IOptions<BumboOptions> BumboOptions
 @inject IViewLocalizer Localizer
+@inject IAuthorizationService AuthorizationService
 @inject RepositoryWrapper Wrapper
 
 @{
@@ -16,7 +19,7 @@
 <nav class="sidebar d-print-none">
     <div class="p-3 h-100">
         <div class="sidebar-header">
-            <img src="/img/jumbo.png" width="100%" alt="Bumbo"/>
+            <img src="/img/jumbo.png" width="100%" alt="Bumbo" />
         </div>
 
         <ul class="list-unstyled components">
@@ -151,7 +154,10 @@
                 <i class="fa fa-language" aria-hidden="true"></i>
                 @Localizer["ChangeLanguage"]
             </button>
-
+            @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+            {
+                <strong>SUPER USER</strong>
+            }
             <p>&copy; @DateTime.Today.Year - Bumbo</p>
         </div>
     </div>

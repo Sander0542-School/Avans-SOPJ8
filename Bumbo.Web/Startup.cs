@@ -5,6 +5,7 @@ using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -24,7 +25,7 @@ namespace Bumbo.Web
             _isTestEnv = env.IsEnvironment("Testing");
 
             if(_isTestEnv) 
-                Console.WriteLine("Running in test mode");
+                Console.WriteLine(@"Running in test mode");
         }
 
         public IConfiguration Configuration { get; }
@@ -38,7 +39,7 @@ namespace Bumbo.Web
 
             if (_isTestEnv)
             {
-                Console.WriteLine("Using local SQLite database");
+                Console.WriteLine(@"Using local SQLite database");
                 _sqLiteTestConnection = new SqliteConnection("Data Source=:memory:;Mode=Memory;Cache=Shared");
                 // This connection ensures the database is not deleted
                 _sqLiteTestConnection.Open();
@@ -55,12 +56,13 @@ namespace Bumbo.Web
             );
 
             services
-                .AddDefaultIdentity<User>(options =>
+                .AddIdentity<User, Role>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                     options.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddRoles<Role>()
                 .AddClaimsPrincipalFactory<BumboUserClaimsPrincipalFactory>();
 
             services.ConfigureRepositoryWrapper();
@@ -110,6 +112,8 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
+            
+            Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

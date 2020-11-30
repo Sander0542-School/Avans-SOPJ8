@@ -18,6 +18,8 @@ namespace Bumbo.Data
             
         }
         
+        public DbSet<Role> Roles { get; set; }
+
         public DbSet<Branch> Branches { get; set; }
         
         public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
