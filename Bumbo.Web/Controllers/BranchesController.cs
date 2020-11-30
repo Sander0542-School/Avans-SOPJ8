@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bumbo.Web.Controllers
 {
+    [Authorize(Policy = "BranchEmployee")]
     [Route("Branches/{branchId?}/{action=Index}")]
     public class BranchesController : Controller
     {
@@ -20,13 +21,12 @@ namespace Bumbo.Web.Controllers
             _wrapper = wrapper;
         }
 
-        // GET: Branches
+        [Authorize(Policy = "SuperUser")]
         public async Task<IActionResult> Index()
         {
             return View(await _wrapper.Branch.GetAll());
         }
 
-        // GET: Branches/Details/5
         public async Task<IActionResult> Details(int? branchId)
         {
             if (branchId == null)
@@ -43,107 +43,75 @@ namespace Bumbo.Web.Controllers
             return View(branch);
         }
 
-        // GET: Branches/Create
+        [Authorize(Policy = "SuperUser")]
         public IActionResult Create()
         {
             return View();
         }
-
-        // POST: Branches/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        [Authorize(Policy = "SuperUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,ZipCode,HouseNumber,Id")] Branch branch)
         {
-            if (ModelState.IsValid)
-            {
-                await _wrapper.Branch.Add(branch);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(branch);
+            if (!ModelState.IsValid) return View(branch);
+            var newBranch =await _wrapper.Branch.Add(branch);
+            return RedirectToAction("Index");
         }
 
-        // GET: Branches/Edit/5
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> Edit(int? branchId)
         {
-            if (branchId == null)
-            {
-                return NotFound();
-            }
+            if (branchId == null) return NotFound();
 
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
-            if (branch == null)
-            {
-                return NotFound();
-            }
+            if (branch == null) return NotFound();
             return View(branch);
         }
-
-        // POST: Branches/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        [Authorize(Policy = "BranchManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int branchId, [Bind("Name,ZipCode,HouseNumber,Id")] Branch branch)
         {
-            if (branchId != branch.Id)
+            if (branchId != branch.Id) return NotFound();
+            if (!ModelState.IsValid) return View(branch);
+            
+            try
             {
-                return NotFound();
+                branch = await _wrapper.Branch.Update(branch);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
-                {
-                    await _wrapper.Branch.Update(branch);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BranchExists(branch.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                if (await _wrapper.Branch.Get(b => b.Id == branch.Id) == null) return NotFound();
+                throw;
             }
-            return View(branch);
+            return RedirectToAction(
+                "Details",
+                new {
+                    branchId = branch.Id
+                });
         }
 
-        // GET: Branches/Delete/5
+        [Authorize(Policy = "SuperUser")]
         public async Task<IActionResult> Delete(int? branchId)
         {
-            if (branchId == null)
-            {
-                return NotFound();
-            }
+            if (branchId == null) return NotFound();
 
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
-            if (branch == null)
-            {
-                return NotFound();
-            }
+            if (branch == null) return NotFound();
 
             return View(branch);
         }
 
-        // POST: Branches/Delete/5
+        [Authorize(Policy = "SuperUser")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int branchId)
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             await _wrapper.Branch.Remove(branch);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool BranchExists(int id)
-        {
-            return _wrapper.Branch.Get(b => b.Id == id).Result != null;
+            return RedirectToAction("Index");
         }
     }
 }

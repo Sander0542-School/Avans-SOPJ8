@@ -1,4 +1,7 @@
 ﻿@model Bumbo.Data.Models.Branch
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -36,7 +39,10 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+    {
+        <a asp-action="Index">Back to List</a>
+    }
 </div>
 
 @section Scripts {

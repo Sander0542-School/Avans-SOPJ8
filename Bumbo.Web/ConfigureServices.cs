@@ -26,6 +26,9 @@ namespace Bumbo.Web
                 options.AddPolicy("BranchManager", policy => policy.Requirements.Add(new BranchManagerRequirement()));
                 options.AddPolicy("BranchEmployee", policy => policy.Requirements.Add(new BranchEmployeeRequirement()));
                 options.AddPolicy("BranchDepartmentEmployee", policy => policy.Requirements.Add(new BranchDepartmentEmployeeRequirement()));
+                
+                // TODO: Replace with proper SuperUser configuration
+                options.AddPolicy("SuperUser", policy => policy.Requirements.Add(new SuperUserRequirement()));
             });
 
             services.AddSingleton<IAuthorizationHandler, BranchManagerHandler>();
