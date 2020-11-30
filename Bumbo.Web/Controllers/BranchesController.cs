@@ -12,17 +12,17 @@ namespace Bumbo.Web.Controllers
 {
     public class BranchesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly RepositoryWrapper _wrapper;
 
-        public BranchesController(ApplicationDbContext context)
+        public BranchesController(RepositoryWrapper wrapper)
         {
-            _context = context;
+            _wrapper = wrapper;
         }
 
         // GET: Branches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Branches.ToListAsync());
+            return View(await _wrapper.Branch.GetAll());
         }
 
         // GET: Branches/Details/5
@@ -33,8 +33,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == id);
             if (branch == null)
             {
                 return NotFound();
@@ -58,8 +57,7 @@ namespace Bumbo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(branch);
-                await _context.SaveChangesAsync();
+                await _wrapper.Branch.Add(branch);
                 return RedirectToAction(nameof(Index));
             }
             return View(branch);
@@ -73,7 +71,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches.FindAsync(id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == id);
             if (branch == null)
             {
                 return NotFound();
@@ -97,8 +95,7 @@ namespace Bumbo.Web.Controllers
             {
                 try
                 {
-                    _context.Update(branch);
-                    await _context.SaveChangesAsync();
+                    await _wrapper.Branch.Update(branch);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +121,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var branch = await _wrapper.Branch.Get(b => b.Id == id);
             if (branch == null)
             {
                 return NotFound();
@@ -139,15 +135,14 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var branch = await _context.Branches.FindAsync(id);
-            _context.Branches.Remove(branch);
-            await _context.SaveChangesAsync();
+            var branch = await _wrapper.Branch.Get(b => b.Id == id);
+            await _wrapper.Branch.Remove(branch);
             return RedirectToAction(nameof(Index));
         }
 
         private bool BranchExists(int id)
         {
-            return _context.Branches.Any(e => e.Id == id);
+            return _wrapper.Branch.Get(b => b.Id == id).Result != null;
         }
     }
 }
