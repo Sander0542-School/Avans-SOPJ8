@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ using Bumbo.Data.Models;
 
 namespace Bumbo.Web.Controllers
 {
+    [Route("Branches/{branchId}/{controller}/{year?}/{monthNr?}")]
     public class PayCheckController : Controller
     {
-
         private readonly RepositoryWrapper _wrapper;
 
         public PayCheckController(RepositoryWrapper wrapper)
@@ -21,8 +22,34 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: PayCheck
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int branchId, int year, int monthNr)
         {
+            
+            DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
+            DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
+
+            var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
+                ws => ws.Shift.BranchId == branchId,
+                ws => ws.Shift.Date <= lastDay,
+                ws => ws.Shift.Date >= firstDay);
+            
+            Dictionary<User, List<WorkedShift>> monthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShift>>();
+            
+            foreach (var workShift in allWorkedShifts)
+            {
+                if (monthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
+                {
+                    if (monthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
+                    {
+                        monthlyWorkedShifts.Add(workShift);
+                    }
+                }
+                else
+                {
+                    monthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
+                }
+            }
+
             return View(await _wrapper.User.GetAll());
         }
 
