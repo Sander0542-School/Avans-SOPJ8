@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using Bumbo.Data.Models.Enums
+@using Bumbo.Web.Models.Forecast
 @model Bumbo.Web.Models.Forecast.ForecastViewModel
 @inject IViewLocalizer Localizer
 
@@ -30,7 +31,7 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </div>
-            
+
             <div class="btn-group text-white" role="group" aria-label="Select Department">
                 <a class="btn btn-secondary">@Localizer["Department"]</a>
 
@@ -49,53 +50,65 @@
             </div>
         </div>
     </div>
+    @if (!Model.Forecasts.Any())
+    {
+        <div class="col-2">
+            <a class="btn btn-secondary float-right" asp-action="Create" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week">@Localizer["Create forecast"]</a>
+        </div>
+    }
 </div>
 
-<br />
+<br/>
 
 <table class="table table-bordered table-striped table-sm">
     <thead class="text-center">
+    <tr>
+        <th class="text-left">@Html.DisplayNameFor(model => model.Department)</th>
+
+        @foreach (var day in Model.DaysOfWeek)
+        {
+            <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
+        }
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (Department department in Enum.GetValues<Department>())
+    {
+        if (Model.Department != null && department != Model.Department)
+        {
+            continue;
+        }
         <tr>
-            <th class="text-left">@Html.DisplayNameFor(model => model.Department)</th>
+            <td>
+                @department.ToString()
+            </td>
 
             @foreach (var day in Model.DaysOfWeek)
             {
-                <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
-            }
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Department department in Enum.GetValues<Department>())
-        {
-            if(Model.Department != null && department != Model.Department)
-            {
-                continue;
-            }
-            <tr>
-                <td>
-                    @department.ToString()
-                </td>
-
-                @foreach (var day in Model.DaysOfWeek)
+                var forecast = Model.Forecasts.FirstOrDefault(f => f.Department == department && f.Date.DayOfWeek == day);
+                if (forecast != null)
                 {
-                    var forecast = Model.Forecasts.FirstOrDefault(f => f.Department == department && f.Date.DayOfWeek == day);
-                    if (forecast != null)
-                    {
-                        <td>@TimeSpan.FromHours((double)forecast.WorkingHours).ToString(@"hh\:mm")</td>
-                    }
-                    else
-                    {
-                        <td/>
-                    }
+                    var whTimeSpan = TimeSpan.FromHours((double) forecast.WorkingHours);
+                    // This is the only way to show hours that are greater than 24
+                    var hoursRounded = Math.Floor(whTimeSpan.TotalHours);
+                    var minutesFormatted = whTimeSpan.Minutes.ToString("00");
+                    <td onclick="forecastModal(@($"'{forecast.Date:yyyy-MM-dd}', '{forecast.Department}', '{hoursRounded}', '{minutesFormatted}'"))">
+                        @hoursRounded:@minutesFormatted
+                    </td>
                 }
-            </tr>
-        }
+                else
+                {
+                    <td/>
+                }
+            }
+        </tr>
+    }
     </tbody>
 </table>
 
-<partial name="_EditForecastModal"/>
+<partial name="_EditForecastModal" model="new ForecastViewModel.EditForecastViewModel{ BranchId = Model.Branch.Id , Year = Model.Year, Week = Model.Week}"/>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

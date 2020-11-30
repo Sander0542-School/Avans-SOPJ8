@@ -1,35 +1,55 @@
-﻿@model Bumbo.Web.Models.Forecast.ForecastViewModel
+﻿@using System.Globalization
+@model Bumbo.Web.Models.Forecast.ForecastViewModel.EditForecastViewModel;
 @inject IViewLocalizer Localizer
 
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <form asp-action="Edit">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editForecastModalLabel">@Localizer["Shift"]</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
-                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-            </div>
-        </form>
+<div class="modal fade" id="EditForecast_Modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="Edit" asp-route-year="@Model.Year" asp-route-week="@Model.Week" asp-route-branchId="@Model.BranchId">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editForecastModalLabel">@Localizer["Shift"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input id="EditForecast_Date" asp-for="Date" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Department"></label>
+                        <input id="EditForecast_Department" asp-for="Department" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <span class="row">
+                            <label class="col" asp-for="Hours"></label>
+                            <label class="col" asp-for="Minutes"></label>
+                        </span>
+                        <span style="display: flex;">
+                            <input id="EditForecast_Hours" asp-for="Hours" class="form-control"/>
+                            <input id="EditForecast_Minutes" asp-for="Minutes" class="form-control"/>
+                        </span>
+                        <span asp-validation-for="Hours" class="text-danger"></span>
+                        <span asp-validation-for="Minutes" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-    function shiftModal(shiftId, userId, userName, date, startTime, endTime) {
-        $('#EditForecast_ShiftId').val(shiftId);
-        $('#EditForecast_UserId').val(userId);
-        $('#EditForecast_UserName').val(userName)
-        $('#EditForecast_Date').val(date)
-        $('#EditForecast_StartTime').val(startTime)
-        $('#EditForecast_EndTime').val(endTime)
+<script type="text/javascript">
+    function forecastModal(date, department, hours, minutes) {
+        $('#EditForecast_Date').val(date);
+        $('#EditForecast_Department').val(department);
+        $('#EditForecast_Hours').val(hours);
+        $('#EditForecast_Minutes').val(minutes);
 
-        $('#shiftEditModal').modal('show');
+        $('#EditForecast_Modal').modal('show');
     }
 </script>

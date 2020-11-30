@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Bumbo.Web.Models.Forecast
 {
@@ -41,5 +43,33 @@ namespace Bumbo.Web.Models.Forecast
 
         public IEnumerable<Data.Models.Forecast> Forecasts;
 
+        public EditForecastViewModel EditForecast;
+
+
+        public class EditForecastViewModel
+        {
+            public int BranchId;
+            public int Week;
+            public int Year;
+
+            [DataType(DataType.Date)]
+            [Required]
+            [DisplayName("Date")]
+            public DateTime Date { get; set; }
+
+            [Display(Name = "Department")]
+            [Required]
+            public Department Department { get; set; }
+
+            [Display(Name = "Working hours")]
+            [Required]
+            [Range(1, 500)]
+            public int Hours { get; set; }
+
+            [Display(Name = "Working minutes")]
+            [Required]
+            [Range(1, 60)]
+            public int Minutes { get; set; }
+        }
     }
 }

@@ -80,6 +80,7 @@ namespace Bumbo.Web.Controllers
 
             viewModel.Week = week.Value;
             viewModel.Year = year.Value;
+            viewModel.EditForecast = new ForecastViewModel.EditForecastViewModel();
 
             return View(viewModel);
         }
@@ -146,38 +147,19 @@ namespace Bumbo.Web.Controllers
                 week
             });
         }
-
-        [Route("{dayOfWeek}/edit")]
-        public virtual async  Task<IActionResult> Edit(int branchId, Department? department, int year, int week, DayOfWeek dayOfWeek)
-        {
-            if (department == null) return NotFound();
-
-            var date = ISOWeek.ToDateTime(year, week, dayOfWeek);
-
-            var model = await _wrapper.Forecast.Get(
-                f => f.Department == department,
-                f => f.Date == date,
-                f => f.BranchId == branchId
-            );
-
-            if (model == null) return NotFound();
-
-            return View(model);
-        }
-
-        [Route("{dayOfWeek}/edit")]
+        
+        [Route("edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Edit(int branchId, Department department, int year, int week, DayOfWeek dayOfWeek, [FromForm] decimal WorkingHours)
+        public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm]DateTime date, Department department, int hours, int minutes)
         {
-            var date = ISOWeek.ToDateTime(year, week, dayOfWeek);
-
-            var model = new Forecast()
+            var workingHours =  hours + (decimal)minutes / 60;
+            var model = new Forecast
             {
                 BranchId = branchId,
                 Department = department,
                 Date = date,
-                WorkingHours = WorkingHours,
+                WorkingHours = workingHours
             };
 
             try
@@ -195,8 +177,7 @@ namespace Bumbo.Web.Controllers
             new {
                 branchId,
                 year,
-                week,
-                department
+                week
             });
         }
     }
