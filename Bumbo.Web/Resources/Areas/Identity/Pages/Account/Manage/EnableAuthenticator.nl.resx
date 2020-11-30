@@ -24,7 +24,7 @@
         <value>Nadat u de QR-code heeft gescand of de bovenstaande sleutel heeft ingevoerd, geeft uw app voor twee-factor-authenticatie u een unieke code. Voer de code in het bevestigingsvak hieronder in.</value>
     </data>
     <data name="MessageScanOrKey" xml:space="preserve">
-        <value>Scan de QR-code of voer deze sleutel &lt;kbd&gt;{0}&lt;/kbd&gt; in uw tweefactorauthenticatie-app in. Spaties en haken doen er niet toe.</value>
+        <value>Scan de QR-code of voer deze sleutel &lt;kbd&gt;{0}&lt;/kbd&gt; in uw twee-factor-authenticatie-app in. Spaties en haken doen er niet toe.</value>
     </data>
     <data name="MessageDownloadApp" xml:space="preserve">
         <value>Download een tweefactorauthenticatie-app zoals Microsoft Authenticator voor {0} en {1} of Google Authenticator voor {2} of {3}.</value>
