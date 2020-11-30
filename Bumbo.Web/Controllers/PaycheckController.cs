@@ -4,10 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Web.Models.Paycheck;
 
 namespace Bumbo.Web.Controllers
 {
@@ -24,7 +23,8 @@ namespace Bumbo.Web.Controllers
         // GET: PayCheck
         public async Task<IActionResult> Index(int branchId, int year, int monthNr)
         {
-            
+            var viewModel = new PaycheckViewModel();
+
             DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
             DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
 
