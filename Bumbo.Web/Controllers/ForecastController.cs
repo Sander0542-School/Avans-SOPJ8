@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using ASP;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
@@ -182,6 +181,8 @@ namespace Bumbo.Web.Controllers
             });
         }
 
+        [HttpGet]
+        [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
             var data = new ChangeNormsViewModel{ BranchId = branchId };
@@ -190,29 +191,32 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
         public async Task<IActionResult> ChangeNormsAsync(ChangeNormsViewModel data)
         {
             BranchForecastStandard entity = new BranchForecastStandard();
 
+            entity.BranchId = data.BranchId;
+
             entity.Activity = ForecastActivity.CASHIER;
             entity.Value = data.CashierValue;
-            await _wrapper.BranchForecastStandard.Update(entity);
+            await _wrapper.BranchForecastStandard.Add(entity);
 
             entity.Activity = ForecastActivity.FACE_SHELVES;
             entity.Value = data.FaceShelvesValue;
-            await _wrapper.BranchForecastStandard.Update(entity);
+            await _wrapper.BranchForecastStandard.Add(entity);
 
             entity.Activity = ForecastActivity.PRODUCE_DEPARTMENT;
             entity.Value = data.ProduceDepartmentValue;
-            await _wrapper.BranchForecastStandard.Update(entity);
+            await _wrapper.BranchForecastStandard.Add(entity);
 
             entity.Activity = ForecastActivity.STOCK_SHELVES;
             entity.Value = data.StockShelvesValue;
-            await _wrapper.BranchForecastStandard.Update(entity);
+            await _wrapper.BranchForecastStandard.Add(entity);
 
             entity.Activity = ForecastActivity.UNLOAD_COLI;
             entity.Value = data.UnloadColiValue;
-            await _wrapper.BranchForecastStandard.Update(entity);
+            await _wrapper.BranchForecastStandard.Add(entity);
 
             return RedirectToAction("Index");
         }
