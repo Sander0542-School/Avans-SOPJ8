@@ -1,4 +1,4 @@
-﻿@model Bumbo.Data.Models.Branch
+﻿@model Bumbo.Web.Models.Branches.DetailsViewModel
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 
@@ -8,40 +8,111 @@
 }
 
 <h1>Details</h1>
-
-<div>
-    <h4>Branch</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZipCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZipCode)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HouseNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HouseNumber)
-        </dd>
-    </dl>
-</div>
-<div>
-    @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-    }
+<div class="row">
+    <div class="col-md-6">
+        <h4>Branch</h4>
+        <hr/>
+        <dl class="row">
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.Branch.Name)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.Branch.Name)
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.Branch.ZipCode)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.Branch.ZipCode)
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.Branch.HouseNumber)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.Branch.HouseNumber)
+            </dd>
+        </dl>
     
-    @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
-    {
-        @("|") // This seems to be the only way to add the vertical line inside an if statement
-        <a asp-action="Index">Back to List</a>
-    }
+        @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Branch.Id">Edit</a>
+        }
+    
+        @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+        {
+            @("|") // This seems to be the only way to add the vertical line inside an if statement
+            <a asp-action="Index">Back to List</a>
+        }
+    </div>
+    <div class="col-md-4">
+        <h4>Manager toevoegen</h4>
+        <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserEmail" class="control-label"></label>
+                <input asp-for="UserEmail" class="form-control"/>
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+    
+            <div class="form-group">
+                <input type="submit" value="Add manager" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
 </div>
+<br/>
+<br/>
+<h4>Huidige managers</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().MiddleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().Birthday)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().Email)
+        </th>
+
+
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Managers)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Birthday))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Email)
+            </td>
+
+            <td>
+                <form asp-action="RemoveManager" asp-route-userId="@user.Id">
+                    <button class="btn btn-secondary" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

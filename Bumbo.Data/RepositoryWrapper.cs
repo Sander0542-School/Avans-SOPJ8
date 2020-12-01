@@ -17,6 +17,7 @@ namespace Bumbo.Data
         private WorkedShiftRepository _workedShift;
         private BranchForecastStandardRepository _branchForecastStandard;
         private ForecastStandardRepository _forecastStandard;
+        private BranchManagerRepository _branchManager;
 
         public BranchRepository Branch => _branch ??= new BranchRepository(_repositoryContext);
         public ClockSystemTagRepository ClockSystemTag => _clockSystemTag ??= new ClockSystemTagRepository(_repositoryContext);
@@ -28,9 +29,8 @@ namespace Bumbo.Data
         public WeekScheduleRepository WeekSchedule => _weekSchedule ??= new WeekScheduleRepository(_repositoryContext);
         public WorkedShiftRepository WorkedShift => _workedShift ??= new WorkedShiftRepository(_repositoryContext);
         public BranchForecastStandardRepository BranchForecastStandard => _branchForecastStandard ??= new BranchForecastStandardRepository(_repositoryContext);
-
         public ForecastStandardRepository ForecastStandard => _forecastStandard ??= new ForecastStandardRepository(_repositoryContext);
-
+        public BranchManagerRepository BranchManager =>  _branchManager ??= new BranchManagerRepository(_repositoryContext);
         public RepositoryWrapper(ApplicationDbContext context)
         {
             _repositoryContext = context;

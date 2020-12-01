@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Web.Models.Branches;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Web.Controllers
 {
@@ -18,34 +16,12 @@ namespace Bumbo.Web.Controllers
     public class BranchesController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly HttpContext _httpContext;
 
-        public BranchesController(RepositoryWrapper wrapper, RoleManager<Role> roleManager, UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor)
+        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor)
         {
             _wrapper = wrapper;
-            _roleManager = roleManager;
-            _userManager = userManager;
-            _signInManager = signInManager;
             _httpContext = httpContextAccessor.HttpContext;
-        }
-
-        [Authorize(Policy = "SuperUser")]
-        public async Task<IActionResult> Test()
-        {
-            var userId = _httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null) return NotFound();
-            var user = await _userManager.FindByIdAsync(userId);
-            await _userManager.AddToRoleAsync(user, "SuperUser");
-
-            if (_httpContext.User.IsInRole("SuperUser"))
-            {
-                return Ok("Hello world");
-            }
-
-            return Json(await _userManager.GetRolesAsync(user));
         }
 
         [Authorize(Policy = "SuperUser")]
@@ -67,7 +43,14 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            return View(branch);
+            var managersForBranch = _wrapper.BranchManager.GetAll(bm => bm.BranchId == branchId).Result
+                .Select(bm => bm.User).ToList();
+
+            return View(new DetailsViewModel
+            {
+                Branch = branch,
+                Managers = managersForBranch
+            });
         }
 
         [Authorize(Policy = "SuperUser")]
@@ -79,7 +62,7 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "SuperUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ZipCode,HouseNumber,Id")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Name,ZipCode,HouseNumber")] Branch branch)
         {
             if (!ModelState.IsValid) return View(branch);
             await _wrapper.Branch.Add(branch);
@@ -139,6 +122,49 @@ namespace Bumbo.Web.Controllers
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             await _wrapper.Branch.Remove(branch);
             return RedirectToAction("Index");
+        }
+
+        [Authorize(Policy = "BranchManager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveManager(int userId, int branchId)
+        {
+            // Manager can't remove itself
+            if (GetCurrentUserId() == userId) return RedirectToAction("Details");
+
+            var branchManager = await _wrapper.BranchManager.Get(
+                bm => bm.BranchId == branchId,
+                bm => bm.UserId == userId
+            );
+            await _wrapper.BranchManager.Remove(branchManager);
+
+            return RedirectToAction("Details");
+        }
+
+        [Authorize(Policy = "BranchManager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddManager(string userEmail, int branchId)
+        {
+            var user = await _wrapper.User.Get(u => u.Email == userEmail);
+            // Check if manager already exists
+            if (await _wrapper.BranchManager.Get(
+                bm => bm.BranchId == branchId,
+                bm => bm.UserId == user.Id
+            ) != null) return RedirectToAction("Details");
+            
+            await _wrapper.BranchManager.Add(new BranchManager
+            {
+                BranchId = branchId,
+                UserId = user.Id
+            });
+
+            return RedirectToAction("Details");
+        }
+
+        private int GetCurrentUserId()
+        {
+            return int.Parse(_httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         }
     }
 }
