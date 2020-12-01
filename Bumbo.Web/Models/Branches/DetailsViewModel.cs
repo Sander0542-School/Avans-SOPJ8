@@ -9,6 +9,7 @@ namespace Bumbo.Web.Models.Branches
     {
         public Branch Branch { get; set; }
         public List<User> Managers { get; set; }
+        public int CurrentUserId { get; set; }
         
         [DataType(DataType.EmailAddress)]
         [DisplayName("Manager's email address")]

@@ -48,6 +48,7 @@ namespace Bumbo.Web.Controllers
 
             return View(new DetailsViewModel
             {
+                CurrentUserId = GetCurrentUserId(),
                 Branch = branch,
                 Managers = managersForBranch
             });
