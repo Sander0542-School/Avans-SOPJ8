@@ -5,7 +5,6 @@ using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -56,13 +55,13 @@ namespace Bumbo.Web
             );
 
             services
-                .AddIdentity<User, Role>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddRoles<Role>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<BumboUserClaimsPrincipalFactory>();
 
             services.ConfigureRepositoryWrapper();
