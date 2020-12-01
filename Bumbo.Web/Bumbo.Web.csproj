@@ -30,10 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="wwwroot\js\Script-calendar.js" />
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.en.resx">
         <SubType>Designer</SubType>
         <Generator>PublicResXFileCodeGenerator</Generator>
