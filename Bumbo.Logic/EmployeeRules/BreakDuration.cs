@@ -24,6 +24,8 @@ namespace Bumbo.Logic.EmployeeRules
 
         public static TimeSpan GetDuration(DateTime startTime, DateTime endTime) => GetDuration(endTime - startTime);
 
+        public static TimeSpan GetDuration(TimeSpan startTime, TimeSpan endTime) => GetDuration(endTime - startTime);
+
         public static TimeSpan GetDuration(Shift shift) => GetDuration(shift.EndTime - shift.StartTime);
     }
 }

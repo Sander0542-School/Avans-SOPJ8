@@ -17,8 +17,8 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "BranchManager")]
-    [Route("Branches/{branchId}/{controller}/{action=Index}")]
+    [Authorize(Policy = "BranchEmployee")]
+    [Route("Branches/{branchId}/{controller}/{action=Week}")]
     public class ScheduleController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -32,12 +32,19 @@ namespace Bumbo.Web.Controllers
             _userManager = userManager;
         }
 
-        [Route("{department}/{year?}/{week?}")]
-        public async Task<IActionResult> Department(int branchId, Department department, int? year, int? week)
+        [Route("{year?}/{week?}/{department?}")]
+        public async Task<IActionResult> Week(int branchId, int? year, int? week, Department? department)
         {
-            year ??= DateTime.Today.Year;
-            week ??= ISOWeek.GetWeekOfYear(DateTime.Today);
-            
+            if (!year.HasValue || !week.HasValue)
+            {
+                return RedirectToAction(nameof(Week), new
+                {
+                    branchId,
+                    year = year ?? DateTime.Today.Year,
+                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
+                });
+            }
+
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
@@ -49,7 +56,26 @@ namespace Bumbo.Web.Controllers
 
             try
             {
-                var users = await _wrapper.User.GetUsersAndShifts(branch, year.Value, week.Value, department);
+                var departments = GetUserDepartments(User, branchId);
+
+                if (department.HasValue)
+                {
+                    if (departments.Contains(department.Value))
+                    {
+                        departments = new[] {department.Value};
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Week), new
+                        {
+                            branchId,
+                            year,
+                            week
+                        });
+                    }
+                }
+
+                var users = await _wrapper.User.GetUsersAndShifts(branch, year.Value, week.Value, departments);
 
                 return View(new DepartmentViewModel
                 {
@@ -59,35 +85,39 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-                    
-                    ScheduleApproved = branch.WeekSchedules
-                        .Where(schedule => schedule.Year == year)
-                        .Where(schedule => schedule.Week == week)
-                        .FirstOrDefault(schedule => schedule.Department == department)?.Confirmed ?? false,
 
-                    EmployeeShifts = users.Select(user => new DepartmentViewModel.EmployeeShift
+                    ScheduleApproved = department.HasValue && (branch.WeekSchedules
+                        .Where(schedule => schedule.Year == year.Value)
+                        .Where(schedule => schedule.Week == week.Value)
+                        .FirstOrDefault(schedule => schedule.Department == department.Value)?.Confirmed ?? false),
+
+                    EmployeeShifts = users.Select(user =>
                     {
-                        UserId = user.Id,
-                        Name = UserUtil.GetFullName(user),
-                        Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
+                        var notifications = WorkingHours.ValidateWeek(user, year.Value, week.Value);
 
-                        MaxHours = WorkingHours.MaxHoursPerWeek(user, year.Value, week.Value),
-
-                        Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
-
-                        Shifts = user.Shifts.Select(shift =>
+                        return new DepartmentViewModel.EmployeeShift
                         {
-                            var notifications = WorkingHours.ValidateWeek(user, year.Value, week.Value);
+                            UserId = user.Id,
+                            Name = UserUtil.GetFullName(user),
+                            Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
 
-                            return new DepartmentViewModel.Shift
+                            MaxHours = WorkingHours.MaxHoursPerWeek(user, year.Value, week.Value),
+
+                            Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
+
+                            Shifts = user.Shifts.Select(shift =>
                             {
-                                Id = shift.Id,
-                                Date = shift.Date,
-                                StartTime = shift.StartTime,
-                                EndTime = shift.EndTime,
-                                Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
-                            };
-                        }).ToList()
+                                return new DepartmentViewModel.Shift
+                                {
+                                    Id = shift.Id,
+                                    Department = shift.Department,
+                                    Date = shift.Date,
+                                    StartTime = shift.StartTime,
+                                    EndTime = shift.EndTime,
+                                    Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
+                                };
+                            }).ToList()
+                        };
                     }).ToList(),
 
                     InputShift = new DepartmentViewModel.InputShiftModel
@@ -119,6 +149,8 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("SaveShift")]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> SaveShift(int branchId, DepartmentViewModel.InputShiftModel shiftModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -139,7 +171,7 @@ namespace Bumbo.Web.Controllers
                 {
                     shift = new Shift
                     {
-                        Department = shiftModel.Department,
+                        Department = shiftModel.Department.Value,
                         BranchId = branch.Id,
                         UserId = shiftModel.UserId,
                         Date = shiftModel.Date,
@@ -165,7 +197,7 @@ namespace Bumbo.Web.Controllers
 
             TempData["alertMessage"] = alertMessage;
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = shiftModel.Year,
@@ -175,6 +207,8 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Copy")]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> CopySchedule(int branchId, DepartmentViewModel.InputCopyWeekModel copyWeekModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -220,7 +254,7 @@ namespace Bumbo.Web.Controllers
                         {
                             TempData["alertMessage"] = $"Success:{_localizer["ScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Department), new
+                            return RedirectToAction(nameof(Week), new
                             {
                                 branchId,
                                 year = copyWeekModel.TargetYear,
@@ -240,7 +274,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = copyWeekModel.Year,
@@ -250,6 +284,8 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Approve")]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> ApproveSchedule(int branchId, DepartmentViewModel.InputApproveScheduleModel approveScheduleModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -277,7 +313,7 @@ namespace Bumbo.Web.Controllers
                             BranchId = branch.Id,
                             Year = approveScheduleModel.Year,
                             Week = approveScheduleModel.Week,
-                            Department = approveScheduleModel.Department,
+                            Department = approveScheduleModel.Department.Value,
                             Confirmed = true
                         };
 
@@ -297,7 +333,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Department), new
+            return RedirectToAction(nameof(Week), new
             {
                 branchId,
                 year = approveScheduleModel.Year,
@@ -306,6 +342,6 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-       
+        private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
     }
 }

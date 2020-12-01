@@ -78,10 +78,10 @@ namespace Bumbo.Web
                 {
                     var supportedCultures = new List<CultureInfo>
                     {
-                        new CultureInfo("en"),
-                        new CultureInfo("nl")
+                        new CultureInfo("nl-NL"),
+                        new CultureInfo("en-US")
                     };
-                    opt.DefaultRequestCulture = new RequestCulture("nl");
+                    opt.DefaultRequestCulture = new RequestCulture("nl-NL");
                     opt.SupportedCultures = supportedCultures;
                     opt.SupportedUICultures = supportedCultures;
                 });

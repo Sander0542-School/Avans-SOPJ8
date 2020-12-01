@@ -52,6 +52,30 @@
       <EmbeddedResource Update="Resources\Models\Users\EditViewModel.nl.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Forecast\ForecastViewModel+EditForecastViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Forecast\Index.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index+Create+_EditModal.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Forecast\Create.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Forecast\_EditForecastModal.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_EditForecastModal.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Models\Forecast\ForecastViewModel.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ForecastViewModel+EditForecastViewModel.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
 </Project>
