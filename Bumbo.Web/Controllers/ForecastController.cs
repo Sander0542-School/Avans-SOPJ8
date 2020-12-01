@@ -16,8 +16,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "BranchManager")]
-    [Route("Branches/{branchId}/{controller}/{year?}/{weekNr?}/{department?}")]
-    [Route("Branches/{branchId}/{controller}/{year?}/{weekNr?}")]
+    [Route("Branches/{branchId}/{controller}/{year?}/{week?}/{department?}")]
+    [Route("Branches/{branchId}/{controller}/{year?}/{week?}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -33,40 +33,34 @@ namespace Bumbo.Web.Controllers
         /// <param name="branchId">Id of the branch</param>
         /// <param name="department">Filter on department</param>
         /// <param name="year">The year of the forecast</param>
-        /// <param name="weekNr">The year's week for the forecast</param>
+        /// <param name="week">The year's week for the forecast</param>
         /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
         [Route("")]
-        public async Task<IActionResult> Index(int branchId, Department? department, int? year, int? weekNr)
+        public async Task<IActionResult> Index(int branchId, Department? department, int? year, int? week)
         {
             var viewModel = new ForecastViewModel();
 
             // Check for default values
-            var redirect = false;
-            if (!year.HasValue)
+            if (!year.HasValue || !week.HasValue)
             {
-                redirect = true;
-                year = DateTime.Now.Year;
-            }
-
-            if (!weekNr.HasValue)
-            {
-                redirect = true;
-                weekNr = ISOWeek.GetWeekOfYear(DateTime.Now);
+                return RedirectToAction(nameof(Index), new
+                {
+                    branchId,
+                    year = year ?? DateTime.Today.Year,
+                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
+                });
             }
 
             // Check if date is valid
             try
             {
-                ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
+                ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday);
             }
             catch (Exception)
             {
                 //return RedirectToAction("Index", new {branchId});
                 return NotFound();
             }
-            
-            if (redirect) return RedirectToAction("Index", "Forecast", new { branchId, year, weekNr });
-
 
             // Define viewmodel variables
             viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
@@ -74,7 +68,7 @@ namespace Bumbo.Web.Controllers
 
             viewModel.Department = department;
 
-            var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, weekNr.Value, DayOfWeek.Monday);
+            var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday);
 
             viewModel.Forecasts = await _wrapper.Forecast.GetAll(
                 f => f.BranchId == branchId,
@@ -84,19 +78,20 @@ namespace Bumbo.Web.Controllers
                 f => f.Date < firstDayOfWeek.AddDays(7)
             );
 
-            viewModel.WeekNr = weekNr.Value;
+            viewModel.Week = week.Value;
             viewModel.Year = year.Value;
+            viewModel.EditForecast = new ForecastViewModel.EditForecastViewModel();
 
             return View(viewModel);
         }
 
         // GET: Forecast/Create
         [Route("create")]
-        public async Task<IActionResult> Create(int branchId, int year, int weekNr)
+        public async Task<IActionResult> Create(int branchId, int year, int week)
         {
             var data = new StockclerkViewModel()
             {
-                FirstDayOfWeek = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday),
+                FirstDayOfWeek = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday),
                 BranchId = branchId,
                 DaysInForecast = 7
             };
@@ -110,7 +105,7 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("create")]
-        public async Task<IActionResult> Create(int branchId, int year, int weekNr, [FromForm]StockclerkViewModel stockclerkViewModel)
+        public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm]StockclerkViewModel stockclerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
@@ -130,7 +125,7 @@ namespace Bumbo.Web.Controllers
             {
                 var forecast = new Forecast();
                 forecast.BranchId = branchId;
-                forecast.Date = ISOWeek.ToDateTime(year, weekNr, DayOfWeek.Monday).AddDays(i);
+                forecast.Date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
 
                 forecast.Department = Department.KAS;
                 forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(forecast.Date);
@@ -149,41 +144,22 @@ namespace Bumbo.Web.Controllers
             new {
                 branchId,
                 year,
-                weekNr
+                week
             });
         }
-
-        [Route("{dayOfWeek}/edit")]
-        public virtual async  Task<IActionResult> Edit(int branchId, Department? department, int year, int weekNr, DayOfWeek dayOfWeek)
-        {
-            if (department == null) return NotFound();
-
-            var date = ISOWeek.ToDateTime(year, weekNr, dayOfWeek);
-
-            var model = await _wrapper.Forecast.Get(
-                f => f.Department == department,
-                f => f.Date == date,
-                f => f.BranchId == branchId
-            );
-
-            if (model == null) return NotFound();
-
-            return View(model);
-        }
-
-        [Route("{dayOfWeek}/edit")]
+        
+        [Route("edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Edit(int branchId, Department department, int year, int weekNr, DayOfWeek dayOfWeek, [FromForm] decimal WorkingHours)
+        public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm]DateTime date, Department department, int hours, int minutes)
         {
-            var date = ISOWeek.ToDateTime(year, weekNr, dayOfWeek);
-
-            var model = new Forecast()
+            var workingHours =  hours + (decimal)minutes / 60;
+            var model = new Forecast
             {
                 BranchId = branchId,
                 Department = department,
                 Date = date,
-                WorkingHours = WorkingHours,
+                WorkingHours = workingHours
             };
 
             try
@@ -201,8 +177,7 @@ namespace Bumbo.Web.Controllers
             new {
                 branchId,
                 year,
-                weekNr,
-                department
+                week
             });
         }
     }
