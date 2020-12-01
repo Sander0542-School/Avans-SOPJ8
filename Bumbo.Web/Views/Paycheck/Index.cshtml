@@ -31,13 +31,13 @@
     </thead>
     <tbody>
 
-        @foreach (var kvp in Model.MonthlyWorkedShiftsPerUser)
+        @foreach (var kvp in Model.WeeklyWorkedWorkedHoursPerUser)
         {
             @foreach (var item in kvp.Value)
             {
                 @
                 {
-                    string name = item.Shift.User.FirstName + item.Shift.User.MiddleName + item.Shift.User.LastName;
+                    string name = .Shift.User.FirstName + item.Shift.User.MiddleName + item.Shift.User.LastName;
 
                     <tr>
                         <td>

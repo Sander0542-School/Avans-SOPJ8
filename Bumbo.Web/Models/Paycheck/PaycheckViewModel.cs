@@ -10,8 +10,7 @@ namespace Bumbo.Web.Models.Paycheck
 {
     public class PaycheckViewModel
     {
-        public int FirstWeekNumber;
-        public int LastWeekNumber;
+        public List<int> WeekNumbers;
         public Branch Branch;
         public int Year;
         public int WeekNr;

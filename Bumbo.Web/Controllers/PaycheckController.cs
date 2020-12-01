@@ -28,31 +28,34 @@ namespace Bumbo.Web.Controllers
             DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
             DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
 
+            for (int i = 0; firstDay.AddDays(i) <= lastDay; i += 7)
+            {
+                viewModel.WeekNumbers.Add(ISOWeek.GetWeekOfYear(firstDay.AddDays(i)));
+            }
+
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
                 ws => ws.Shift.BranchId == branchId,
                 ws => ws.Shift.Date <= lastDay,
                 ws => ws.Shift.Date >= firstDay);
             
-            Dictionary<User, List<WorkedShift>> monthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShift>>();
-            
             foreach (var workShift in allWorkedShifts)
             {
-                if (monthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
+                if (viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
                 {
-                    if (monthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
+                    if (viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
                     {
                         monthlyWorkedShifts.Add(workShift);
                     }
                 }
                 else
                 {
-                    monthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
+                    viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
                 }
             }
 
             viewModel.GenerateWeeklyWorkedWorkedHoursPerUser();
 
-            return View(await _wrapper.User.GetAll());
+            return View(viewModel);
         }
 
         //// GET: PayCheck/Details/5
