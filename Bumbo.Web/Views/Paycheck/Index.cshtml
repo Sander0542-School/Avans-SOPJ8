@@ -31,35 +31,33 @@
     </thead>
     <tbody>
 
-        @foreach (var kvp in Model.WeeklyWorkedWorkedHoursPerUser)
+        @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
         {
             @foreach (var item in kvp.Value)
             {
-                @
-                {
-                    string name = .Shift.User.FirstName + item.Shift.User.MiddleName + item.Shift.User.LastName;
-
-                    <tr>
+                <tr>
+                    @{
+                        string name = kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName;
+                    }
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        @name
+                    </td>
+                    @for (int i = Model.FirstWeekNumber; i <= Model.LastWeekNumber; i++)
+                    {
                         <td>
-                            Name
+                            @
                         </td>
-                        <td>
-                            @name
-                        </td>
-                        @for (int i = Model.FirstWeekNumber; i <= Model.LastWeekNumber; i++)
-                        {
-                            <td>
-                                @
-                            </td>
-                        }
-                        <td>
-                            Total workhours
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.totalWorkHours)
-                        </td>
-                    </tr>
-                }
+                    }
+                    <td>
+                        Total workhours
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalWorkHours)
+                    </td>
+                </tr>
             }
         }
 

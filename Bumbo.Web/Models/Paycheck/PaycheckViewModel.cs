@@ -15,7 +15,7 @@ namespace Bumbo.Web.Models.Paycheck
         public int Year;
         public int WeekNr;
         public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
-        public Dictionary<User, List<int>> WeeklyWorkedWorkedHoursPerUser;
+        public Dictionary<User, List<int>> WeeklyWorkedHoursPerUser;
         public User SelectedUser;
 
         public PaycheckViewModel()
@@ -24,7 +24,7 @@ namespace Bumbo.Web.Models.Paycheck
             SelectedUser = null;
         }
 
-        public void GenerateWeeklyWorkedWorkedHoursPerUser()
+        public void GenerateWeeklyWorkedHoursPerUser()
         {
 
         }
