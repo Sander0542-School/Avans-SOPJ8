@@ -17,9 +17,9 @@ namespace Bumbo.Tests.Utils
             var connection = new SqliteConnection(connectionStringBuilder.ConnectionString);
             connection.Open();
 
+            contextOptionsBuilder.EnableSensitiveDataLogging();
             contextOptionsBuilder.UseLoggerFactory(loggerFactory);
             contextOptionsBuilder.UseSqlite(connection);
-            contextOptionsBuilder.EnableSensitiveDataLogging();
 
             var context = new ApplicationDbContext(contextOptionsBuilder.Options);
 
