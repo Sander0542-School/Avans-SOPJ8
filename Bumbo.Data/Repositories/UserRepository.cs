@@ -33,7 +33,7 @@ namespace Bumbo.Data.Repositories
                 .Where(user => user.Contracts.Any(contract => contract.StartDate < startTime))
                 .Where(user => user.Contracts.Any(contract => contract.EndDate >= startTime))
                 .Include(user => user.Shifts
-                    .Where(shift => shift.BranchId == branch.Id)
+                    .Where(shift => shift.Schedule.BranchId == branch.Id)
                     .Where(shift => shift.Date >= startTime)
                     .Where(shift => shift.Date < startTime.AddDays(7))
                 )

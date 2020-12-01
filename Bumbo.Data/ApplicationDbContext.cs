@@ -111,13 +111,20 @@ namespace Bumbo.Data
                 b.ToTable("BranchManagers");
             });
 
+            builder.Entity<BranchSchedule>(b =>
+            {
+                b.HasKey(branchSchedule => new {branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department});
+                
+                b.ToTable("BranchSchedules");
+            });
+
             #endregion
 
             #region Shifts
 
             builder.Entity<Shift>(b =>
             {
-                b.HasIndex(shift => new {shift.UserId, shift.BranchId, shift.Department, shift.Date}).IsUnique();
+                b.HasIndex(shift => new {shift.UserId, shift.ScheduleId, shift.Date}).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
