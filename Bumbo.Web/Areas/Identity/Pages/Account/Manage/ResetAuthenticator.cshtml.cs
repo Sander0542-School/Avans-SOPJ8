@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -21,7 +18,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
         public ResetAuthenticatorModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<ResetAuthenticatorModel> logger, 
+            ILogger<ResetAuthenticatorModel> logger,
             IStringLocalizer<ResetAuthenticatorModel> localizer)
         {
             _userManager = userManager;
@@ -55,7 +52,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
-            
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _localizer["MessageAuthenticatorAppReset"];
 

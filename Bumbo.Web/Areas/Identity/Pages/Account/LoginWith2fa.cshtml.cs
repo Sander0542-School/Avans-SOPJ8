@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account
 {
@@ -20,8 +18,8 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
         private readonly ILogger<LoginWith2faModel> _logger;
         private readonly IStringLocalizer<LoginWith2faModel> _localizer;
 
-        public LoginWith2faModel(SignInManager<User> signInManager, 
-            ILogger<LoginWith2faModel> logger, 
+        public LoginWith2faModel(SignInManager<User> signInManager,
+            ILogger<LoginWith2faModel> logger,
             IStringLocalizer<LoginWith2faModel> localizer)
         {
             _signInManager = signInManager;

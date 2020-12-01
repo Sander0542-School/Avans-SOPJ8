@@ -1,5 +1,5 @@
-using System;
 using Bumbo.Data.Models;
+using System;
 
 namespace Bumbo.Logic.EmployeeRules
 {

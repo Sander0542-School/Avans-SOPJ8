@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bumbo.Data.Models
 {
@@ -8,10 +8,10 @@ namespace Bumbo.Data.Models
         [Key]
         [StringLength(20)]
         public string SerialNumber { get; set; }
-        
+
         public int UserId { get; set; }
-        
-        
+
+
         public User User { get; set; }
     }
 }

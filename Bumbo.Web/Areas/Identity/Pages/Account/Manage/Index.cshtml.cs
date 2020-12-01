@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -20,7 +18,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager, 
+            SignInManager<User> signInManager,
             IStringLocalizer<IndexModel> localizer)
         {
             _userManager = userManager;
@@ -129,7 +127,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-            
+
             user.FirstName = Input.FirstName;
             user.MiddleName = Input.MiddleName;
             user.LastName = Input.LastName;

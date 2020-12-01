@@ -62,9 +62,9 @@ namespace Bumbo.Web.Controllers
                     HouseNumber = model.HouseNumber,
                     UserName = model.Email
                 };
-                
+
                 var result = await _userManager.CreateAsync(user);
-                
+
                 if (result.Succeeded)
                 {
                     var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -83,7 +83,7 @@ namespace Bumbo.Web.Controllers
                     var callbackUrl = Url.Page(
                         "/Account/ResetPassword",
                         pageHandler: null,
-                        values: new {area = "Identity", code},
+                        values: new { area = "Identity", code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(
@@ -238,7 +238,7 @@ namespace Bumbo.Web.Controllers
                     string statusMessage = "Error employee of this branch already works in this department";
 
 
-                    return RedirectToAction("Edit", new {id = userModel.Id, status = statusMessage});
+                    return RedirectToAction("Edit", new { id = userModel.Id, status = statusMessage });
                 }
             }
 
@@ -252,7 +252,7 @@ namespace Bumbo.Web.Controllers
             user.Branches.Add(userBranch);
             await _wrapper.User.Update(user);
 
-            return RedirectToAction("Edit", new {userModel.Id});
+            return RedirectToAction("Edit", new { userModel.Id });
         }
 
         public async Task<IActionResult> DeleteBranchUser(int? id, int? branchId)
@@ -276,7 +276,7 @@ namespace Bumbo.Web.Controllers
             var branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
-            return RedirectToAction("Edit", new {userModel.Id});
+            return RedirectToAction("Edit", new { userModel.Id });
         }
 
         public async Task<IActionResult> CreateContractAsync(int id)
@@ -310,7 +310,7 @@ namespace Bumbo.Web.Controllers
                 user.Contracts.Add(contract);
                 var result = await _wrapper.User.Update(user);
 
-                return RedirectToAction("Edit", new {user.Id});
+                return RedirectToAction("Edit", new { user.Id });
             }
 
             return View();

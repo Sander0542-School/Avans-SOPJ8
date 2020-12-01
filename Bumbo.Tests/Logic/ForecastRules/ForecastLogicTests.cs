@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Bumbo.Tests.Logic.ForecastRules
 {
@@ -72,7 +72,7 @@ namespace Bumbo.Tests.Logic.ForecastRules
         {
             for (var i = 0; i < 50; i++)
             {
-                var manyColi = _logic.GetWorkHoursStockClerk( 0, i + 1);
+                var manyColi = _logic.GetWorkHoursStockClerk(0, i + 1);
                 var fewColi = _logic.GetWorkHoursStockClerk(0, i);
 
                 Assert.Greater(manyColi, fewColi);
@@ -84,7 +84,7 @@ namespace Bumbo.Tests.Logic.ForecastRules
         {
             for (var i = 0; i < 50; i++)
             {
-                var manyColi = _logic.GetWorkHoursStockClerk(i+1, 0);
+                var manyColi = _logic.GetWorkHoursStockClerk(i + 1, 0);
                 var fewColi = _logic.GetWorkHoursStockClerk(i, 0);
 
                 Assert.Greater(manyColi, fewColi);
@@ -96,7 +96,7 @@ namespace Bumbo.Tests.Logic.ForecastRules
         {
             for (var i = 0; i < 50; i++)
             {
-                var manyColi = _logic.GetWorkHoursStockClerk(i + 1, i+1);
+                var manyColi = _logic.GetWorkHoursStockClerk(i + 1, i + 1);
                 var fewColi = _logic.GetWorkHoursStockClerk(i, i);
 
                 Assert.Greater(manyColi, fewColi);

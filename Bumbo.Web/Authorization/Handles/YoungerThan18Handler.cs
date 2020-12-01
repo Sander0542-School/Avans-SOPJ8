@@ -1,9 +1,9 @@
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Authorization.Handles
 {
@@ -15,7 +15,7 @@ namespace Bumbo.Web.Authorization.Handles
         {
             _wrapper = wrapper;
         }
-        
+
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, YoungerThan18Requirement requirement)
         {
             var userIdString = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

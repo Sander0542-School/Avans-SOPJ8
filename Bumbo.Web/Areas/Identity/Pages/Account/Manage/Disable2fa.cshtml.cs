@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -19,7 +17,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
         public Disable2faModel(
             UserManager<User> userManager,
-            ILogger<Disable2faModel> logger, 
+            ILogger<Disable2faModel> logger,
             IStringLocalizer<Disable2faModel> localizer)
         {
             _userManager = userManager;

@@ -1,12 +1,12 @@
+using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
+using Bumbo.Logic.EmployeeRules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
-using Bumbo.Logic.EmployeeRules;
 
 namespace Bumbo.Web.Models.Schedule
 {

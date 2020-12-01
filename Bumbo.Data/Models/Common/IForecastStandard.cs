@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bumbo.Data.Models.Common
 {
@@ -10,7 +10,7 @@ namespace Bumbo.Data.Models.Common
         /// </summary>
         [DataType("int")]
         public ForecastActivity Activity { get; set; }
-        
+
         /// <summary>
         /// Value for converting activities to a prognosis. Depending on the activity this value has a different meaning.
         /// Value means the following for these <c>ForecastActivity</c>

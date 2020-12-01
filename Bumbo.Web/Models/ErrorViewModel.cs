@@ -1,5 +1,3 @@
-using System;
-
 namespace Bumbo.Web.Models
 {
     public class ErrorViewModel

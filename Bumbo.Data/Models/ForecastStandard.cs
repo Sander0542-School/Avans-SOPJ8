@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bumbo.Data.Models
 {
@@ -9,10 +9,10 @@ namespace Bumbo.Data.Models
     {
         [Key]
         public ForecastActivity Activity { get; set; }
-        
+
         public int Value { get; set; }
-        
-        
+
+
         public IList<BranchForecastStandard> BranchForecastStandards { get; set; }
     }
 }

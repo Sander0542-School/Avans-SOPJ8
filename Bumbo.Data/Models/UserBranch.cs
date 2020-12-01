@@ -7,9 +7,9 @@ namespace Bumbo.Data.Models
     {
         public int UserId { get; set; }
         public int BranchId { get; set; }
-        
+
         public Department Department { get; set; }
-        
+
         public User User { get; set; }
         public Branch Branch { get; set; }
     }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
+using Bumbo.Data.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
-using Bumbo.Data.Repositories.Common;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Data.Repositories
 {

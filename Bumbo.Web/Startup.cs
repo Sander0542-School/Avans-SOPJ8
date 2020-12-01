@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Bumbo.Web
 {
@@ -23,7 +23,7 @@ namespace Bumbo.Web
             Configuration = configuration;
             _isTestEnv = env.IsEnvironment("Testing");
 
-            if(_isTestEnv) 
+            if (_isTestEnv)
                 Console.WriteLine("Running in test mode");
         }
 
@@ -66,7 +66,7 @@ namespace Bumbo.Web
             services.ConfigureRepositoryWrapper();
 
             services.AddConfig(Configuration);
-            
+
             services.AddPolicies();
 
             // Localization configuration

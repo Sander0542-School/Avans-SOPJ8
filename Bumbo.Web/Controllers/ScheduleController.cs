@@ -1,19 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Bumbo.Data.Repositories;
 using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {
@@ -60,7 +58,7 @@ namespace Bumbo.Web.Controllers
                 {
                     if (departments.Contains(department.Value))
                     {
-                        departments = new[] {department.Value};
+                        departments = new[] { department.Value };
                     }
                     else
                     {
@@ -83,7 +81,7 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-                    
+
                     ScheduleApproved = users.FirstOrDefault()?.Shifts.FirstOrDefault()?.Schedule.Confirmed ?? false,
 
                     EmployeeShifts = users.Select(user =>
@@ -163,7 +161,7 @@ namespace Bumbo.Web.Controllers
                 if (shift == null)
                 {
                     var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, shiftModel.Year, shiftModel.Week, shiftModel.Department.Value);
-                    
+
                     shift = new Shift
                     {
                         ScheduleId = schedule.Id,

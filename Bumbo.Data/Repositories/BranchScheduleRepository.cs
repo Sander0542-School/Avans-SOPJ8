@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data.Models;
+﻿using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bumbo.Data.Repositories
 {
@@ -42,7 +42,7 @@ namespace Bumbo.Data.Repositories
             };
 
             Context.Add(schedule);
-            
+
             var changed = await Context.SaveChangesAsync();
             return changed > 0 ? schedule : null;
         }
