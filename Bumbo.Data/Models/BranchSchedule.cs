@@ -4,7 +4,7 @@ using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models
 {
-    public class BranchSchedule : IEntity
+    public class BranchSchedule : BaseEntity
     {
         public int BranchId { get; set; }
         

@@ -85,6 +85,8 @@ namespace Bumbo.Data.Migrations
                 name: "BranchSchedules",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BranchId = table.Column<int>(type: "int", nullable: false),
                     Department = table.Column<int>(type: "int", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
@@ -93,7 +95,7 @@ namespace Bumbo.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BranchSchedules", x => new { x.BranchId, x.Year, x.Week, x.Department });
+                    table.PrimaryKey("PK_BranchSchedules", x => x.Id);
                     table.ForeignKey(
                         name: "FK_BranchSchedules_Branches_BranchId",
                         column: x => x.BranchId,
@@ -116,27 +118,6 @@ namespace Bumbo.Data.Migrations
                     table.PrimaryKey("PK_Forecast", x => new { x.BranchId, x.Date, x.Department });
                     table.ForeignKey(
                         name: "FK_Forecast_Branches_BranchId",
-                        column: x => x.BranchId,
-                        principalTable: "Branches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WeekSchedules",
-                columns: table => new
-                {
-                    BranchId = table.Column<int>(type: "int", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Week = table.Column<int>(type: "int", nullable: false),
-                    Department = table.Column<int>(type: "int", nullable: false),
-                    Confirmed = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WeekSchedules", x => new { x.BranchId, x.Year, x.Week, x.Department });
-                    table.ForeignKey(
-                        name: "FK_WeekSchedules_Branches_BranchId",
                         column: x => x.BranchId,
                         principalTable: "Branches",
                         principalColumn: "Id",
@@ -413,20 +394,16 @@ namespace Bumbo.Data.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    ScheduleBranchId = table.Column<int>(type: "int", nullable: false),
-                    ScheduleYear = table.Column<int>(type: "int", nullable: false),
-                    ScheduleWeek = table.Column<int>(type: "int", nullable: false),
-                    ScheduleDepartment = table.Column<int>(type: "int", nullable: false)
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shifts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shifts_BranchSchedules_ScheduleBranchId_ScheduleYear_ScheduleWeek_ScheduleDepartment",
-                        columns: x => new { x.ScheduleBranchId, x.ScheduleYear, x.ScheduleWeek, x.ScheduleDepartment },
+                        name: "FK_Shifts_BranchSchedules_ScheduleId",
+                        column: x => x.ScheduleId,
                         principalTable: "BranchSchedules",
-                        principalColumns: new[] { "BranchId", "Year", "Week", "Department" },
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Shifts_Users_UserId",
@@ -467,6 +444,12 @@ namespace Bumbo.Data.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BranchSchedules_BranchId_Year_Week_Department",
+                table: "BranchSchedules",
+                columns: new[] { "BranchId", "Year", "Week", "Department" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClockSystemTags_UserId",
                 table: "ClockSystemTags",
                 column: "UserId");
@@ -489,9 +472,9 @@ namespace Bumbo.Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shifts_ScheduleBranchId_ScheduleYear_ScheduleWeek_ScheduleDepartment",
+                name: "IX_Shifts_ScheduleId",
                 table: "Shifts",
-                columns: new[] { "ScheduleBranchId", "ScheduleYear", "ScheduleWeek", "ScheduleDepartment" });
+                column: "ScheduleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shifts_UserId_ScheduleId_Date",
@@ -572,9 +555,6 @@ namespace Bumbo.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
-
-            migrationBuilder.DropTable(
-                name: "WeekSchedules");
 
             migrationBuilder.DropTable(
                 name: "WorkedShifts");

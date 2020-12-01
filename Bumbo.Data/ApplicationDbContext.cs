@@ -113,7 +113,7 @@ namespace Bumbo.Data
 
             builder.Entity<BranchSchedule>(b =>
             {
-                b.HasKey(branchSchedule => new {branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department});
+                b.HasIndex(branchSchedule => new {branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department}).IsUnique();
                 
                 b.ToTable("BranchSchedules");
             });
@@ -130,13 +130,6 @@ namespace Bumbo.Data
             builder.Entity<WorkedShift>(b =>
             {
                 b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
-            });
-
-            builder.Entity<WeekSchedule>(b =>
-            {
-                b.HasKey(weekSchedule => new {weekSchedule.BranchId, weekSchedule.Year, weekSchedule.Week, weekSchedule.Department});
-
-                b.ToTable("WeekSchedules");
             });
 
             #endregion
