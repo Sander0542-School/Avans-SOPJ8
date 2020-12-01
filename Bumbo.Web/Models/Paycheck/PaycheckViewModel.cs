@@ -10,16 +10,24 @@ namespace Bumbo.Web.Models.Paycheck
 {
     public class PaycheckViewModel
     {
+        public int FirstWeekNumber;
+        public int LastWeekNumber;
         public Branch Branch;
         public int Year;
         public int WeekNr;
-        public Dictionary<User, WorkedShift> MonthlyWorkedShiftsPerUser;
+        public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
+        public Dictionary<User, List<int>> WeeklyWorkedWorkedHoursPerUser;
         public User SelectedUser;
 
         public PaycheckViewModel()
         {
-            MonthlyWorkedShiftsPerUser = new Dictionary<User, WorkedShift>();
+            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShift>>();
             SelectedUser = null;
+        }
+
+        public void GenerateWeeklyWorkedWorkedHoursPerUser()
+        {
+
         }
     }
 }

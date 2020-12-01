@@ -11,12 +11,6 @@
 
 <table class="table">
     <thead>
-    @if (Model.SelectedUser != null)
-    {
-
-    }
-    else
-    {
         <tr>
             <th>
                 Name
@@ -34,40 +28,40 @@
                 Total workhours
             </th>
         </tr>
-    }
     </thead>
     <tbody>
 
-        @if (Model.SelectedUser != null)
+        @foreach (var kvp in Model.MonthlyWorkedShiftsPerUser)
         {
-
-        }
-        else
-        {
-            @foreach (var item in Model)
+            @foreach (var item in kvp.Value)
             {
-                <tr>
-                    <td>
-                        Name
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName + item.MiddleName + item.LastName)
-                    </td>
-                    @foreach (var weeknr in ViewData["Weeknumbers"])
-                    {
+                @
+                {
+                    string name = item.Shift.User.FirstName + item.Shift.User.MiddleName + item.Shift.User.LastName;
+
+                    <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.weeklyWorkhours)
+                            Name
                         </td>
-                    }
-                    <td>
-                        Total workhours
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.totalWorkHours)
-                    </td>
-                </tr>
+                        <td>
+                            @name
+                        </td>
+                        @for (int i = Model.FirstWeekNumber; i <= Model.LastWeekNumber; i++)
+                        {
+                            <td>
+                                @
+                            </td>
+                        }
+                        <td>
+                            Total workhours
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.totalWorkHours)
+                        </td>
+                    </tr>
+                }
             }
         }
-        
+
     </tbody>
 </table>

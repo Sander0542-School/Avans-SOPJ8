@@ -50,6 +50,8 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
+            viewModel.GenerateWeeklyWorkedWorkedHoursPerUser();
+
             return View(await _wrapper.User.GetAll());
         }
 
