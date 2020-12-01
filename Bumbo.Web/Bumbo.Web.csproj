@@ -7,6 +7,7 @@
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bumbo.Testing' " />
     <ItemGroup>
       <PackageReference Include="fullcalendar" Version="3.9.0" />
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
@@ -21,6 +22,7 @@
 
     <ItemGroup>
       <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
+      <Folder Include="Resources\Views\AdditionalWork\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -76,6 +78,34 @@
         <DependentUpon>ForecastViewModel+EditForecastViewModel.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
+      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserAdditionalWorkViewModel.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserAdditionalWorkViewModel.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Resources\Views\AdditionalWork\Index.en.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.en.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+    </ItemGroup>
 </Project>
