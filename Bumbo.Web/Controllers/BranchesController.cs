@@ -8,6 +8,7 @@ using Bumbo.Data.Models;
 using Bumbo.Web.Models.Branches;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Web.Controllers
 {
@@ -17,11 +18,13 @@ namespace Bumbo.Web.Controllers
     public class BranchesController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
+        private readonly SignInManager<User> _signInManager;
         private readonly HttpContext _httpContext;
 
-        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor)
+        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager)
         {
             _wrapper = wrapper;
+            _signInManager = signInManager;
             _httpContext = httpContextAccessor.HttpContext;
         }
 
@@ -68,9 +71,16 @@ namespace Bumbo.Web.Controllers
             // TODO: Don't add super users to their created branches
             // This is currently done to allow super users to access created branches
             // https://stackoverflow.com/questions/65094900/net-core-super-user-policy
-            await addManagerToBranchAsync(branch.Id, GetCurrentUserId()); 
-
-            return RedirectToAction("Index");
+            var userId = GetCurrentUserId();
+            await addManagerToBranchAsync(branch.Id, userId);
+            var user = await _wrapper.User.Get(u => u.Id == userId);
+            await _signInManager.RefreshSignInAsync(user); // Updates user claims so it immediately has access to branch
+            
+            return RedirectToAction(
+                "Details",
+                new {
+                    branchId = branch.Id
+                });
         }
 
         [Authorize(Policy = "BranchManager")]
@@ -124,8 +134,14 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int branchId)
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+
+            var allBranchUsers = _wrapper.UserBranch.GetAll(ub => ub.BranchId == branch.Id).Result.Select(ub => ub.User).ToList();
+            allBranchUsers.AddRange(_wrapper.BranchManager.GetAll(bm => bm.BranchId == branch.Id).Result.Select(bm => bm.User));
+            
             await _wrapper.Branch.Remove(branch);
-            return RedirectToAction("Index");
+            foreach (var user in allBranchUsers) await _signInManager.RefreshSignInAsync(user);
+            
+            return RedirectToAction("Index", new { branchId = ""});
         }
 
         [Authorize(Policy = "BranchManager")]
