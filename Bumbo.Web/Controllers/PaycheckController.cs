@@ -23,8 +23,11 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: PayCheck
-        public async Task<IActionResult> Index(int branchId, int year, int monthNr)
+        public async Task<IActionResult> Index(int branchId, int year = 2020, int monthNr = 10)
         {
+            _viewModel.Year = year;
+            _viewModel.MonthNr = monthNr;
+
             DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
             DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
 

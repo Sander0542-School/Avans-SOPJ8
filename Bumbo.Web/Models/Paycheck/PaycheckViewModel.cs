@@ -13,7 +13,7 @@ namespace Bumbo.Web.Models.Paycheck
         public List<int> WeekNumbers;
         public Branch Branch;
         public int Year;
-        public int WeekNr;
+        public int MonthNr;
         public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
         public Dictionary<User, List<int>> WeeklyWorkedHoursPerUser;
         public User SelectedUser;
