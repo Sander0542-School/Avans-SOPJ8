@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Bumbo.Web.Models.Paycheck.PaycheckViewModel>
+﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -10,10 +11,16 @@
 
 <table class="table">
     <thead>
+    @if (Model.SelectedUser != null)
+    {
+
+    }
+    else
+    {
         <tr>
             <th>
-               Name
-            </th> 
+                Name
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Contracts.First().Scale)
             </th>
@@ -25,31 +32,42 @@
             }
             <th>
                 Total workhours
-            </th> 
+            </th>
         </tr>
+    }
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                Name
-            </td> 
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName + item.MiddleName + item.LastName)
-            </td>
-            @foreach (var weeknr in ViewData["Weeknumbers"])
+
+        @if (Model.SelectedUser != null)
+        {
+
+        }
+        else
+        {
+            @foreach (var item in Model)
             {
-                <td>
-                    @Html.DisplayFor(modelItem => item.weeklyWorkhours)
-                </td>
+                <tr>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName + item.MiddleName + item.LastName)
+                    </td>
+                    @foreach (var weeknr in ViewData["Weeknumbers"])
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.weeklyWorkhours)
+                        </td>
+                    }
+                    <td>
+                        Total workhours
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalWorkHours)
+                    </td>
+                </tr>
             }
-            <td>
-                Total workhours
-            </td> 
-            <td>
-                @Html.DisplayFor(modelItem => item.totalWorkHours)
-            </td>
-        </tr>
-}
+        }
+        
     </tbody>
 </table>

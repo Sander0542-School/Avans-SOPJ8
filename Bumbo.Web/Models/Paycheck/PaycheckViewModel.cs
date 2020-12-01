@@ -13,11 +13,13 @@ namespace Bumbo.Web.Models.Paycheck
         public Branch Branch;
         public int Year;
         public int WeekNr;
-        private Dictionary<User, WorkedShift> MonthlyWorkedShiftsPerUser;
+        public Dictionary<User, WorkedShift> MonthlyWorkedShiftsPerUser;
+        public User SelectedUser;
 
         public PaycheckViewModel()
         {
             MonthlyWorkedShiftsPerUser = new Dictionary<User, WorkedShift>();
+            SelectedUser = null;
         }
     }
 }
