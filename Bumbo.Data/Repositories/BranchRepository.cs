@@ -12,11 +12,5 @@ namespace Bumbo.Data.Repositories
         public BranchRepository(ApplicationDbContext context) : base(context)
         {
         }
-
-        protected override IQueryable<Branch> GetQueryBase()
-        {
-            return base.GetQueryBase()
-                .Include(branch => branch.WeekSchedules);
-        }
     }
 }
