@@ -49,36 +49,23 @@
                     buttonText: 'hours'
                 }
             },
-            events: function (start, end, timezone, callback) {
-                $.ajax({
+            eventSources: [
+                {
                     url: '@Url.RouteUrl(new{ action= "GetCalendarEvents", controller= "Schedule" })',
-                    type: "GET",
-                    dataType: "JSON",
+                    type: 'Get',
                     headers: {
                         RequestVerificationToken:
                             $('input:hidden[name="__RequestVerificationToken"]').val()
                     },
+                    error: function () {
+                        alert('there was an error while fetching events!');
+                    },
+                    color: 'yellow',   
+                    textColor: 'white' 
+                }
 
-                    success: function (result) {
+            ],
 
-                        var events = [];
-
-                        $.each(result, function (i, data) {
-                            events.push(
-                                {
-                                    title: data.title,
-                                    description: data.description,
-                                    start: data.start,
-                                    end: data.end,
-                                    duration: data.duration,
-
-                                });
-                        });
-
-                        callback(events);
-                    }
-                });
-            },
             editable: false
         });
     });

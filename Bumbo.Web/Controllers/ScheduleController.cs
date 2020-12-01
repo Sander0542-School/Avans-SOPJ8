@@ -321,30 +321,38 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpGet]
-        [Route("{year?}/{week?}/{department?}")]
-        public async Task<JsonResult> GetCalendarEvents()
+        public async Task<JsonResult> GetCalendarEvents(int branchId, [FromQuery(Name = "start")] string start, [FromQuery(Name = "end")] string end)
         {
             var viewModel = new EventViewModel();
             var events = new List<EventViewModel>();
 
             var userId = int.Parse(_userManager.GetUserId(User));
 
+            DateTime startDate = Convert.ToDateTime(start);
+            DateTime endDate = Convert.ToDateTime(end);
+
             var shifts = await _wrapper.Shift.GetAll(
-                       shift => shift.UserId == userId
-                       //shift => shift.Date >= start,
-                       //shift => shift.Date < end.AddDays(7)
-                   );
+
+                shift => shift.UserId == userId,
+                shift => shift.Date  >= startDate && shift.Date <= endDate
+            );
+
 
             foreach (var i in shifts)
             {
-                events.Add(new EventViewModel()
+                if (i.Schedule.Confirmed)
                 {
-                    id = i.Id,
-                    title = i.Department.ToString(),
-                    start = $"{i.Date.ToString("yyyy-MM-dd")}T{i.StartTime}",
-                    end = $"{ i.Date.ToString("yyyy-MM-dd") }T{ i.EndTime }",
-                    allDay = false
-                });
+                    events.Add(new EventViewModel()
+                    {
+                        id = i.Id,
+                        title = i.Schedule.Department.ToString(),
+                        start = $"{i.Date.ToString("yyyy-MM-dd")}T{i.StartTime}",
+                        end = $"{ i.Date.ToString("yyyy-MM-dd") }T{ i.EndTime }",
+                        allDay = false
+                    });
+
+                }
+               
             }
 
             return Json(events.ToArray());

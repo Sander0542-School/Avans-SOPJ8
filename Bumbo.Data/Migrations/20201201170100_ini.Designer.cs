@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bumbo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201201112914_Initial")]
-    partial class Initial
+    [Migration("20201201170100_ini")]
+    partial class ini
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -285,8 +285,11 @@ namespace Bumbo.Data.Migrations
                     b.Property<int>("Day")
                         .HasColumnType("int");
 
-                    b.Property<double>("Hours")
-                        .HasColumnType("float");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("UserId", "Day");
 
