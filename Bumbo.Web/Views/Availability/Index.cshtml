@@ -20,7 +20,7 @@
 {
     <div class="row">
         <div class="col-4">
-            <p>@weekday</p>
+            <p>@Localizer[@weekday.ToString()]</p>
         </div>
         <div class="col-3">
             <input asp-for="Availability.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime" />
