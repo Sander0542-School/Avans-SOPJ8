@@ -22,15 +22,17 @@ namespace Bumbo.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
-                
+
                 options.AddPolicy("BranchManager", policy => policy.Requirements.Add(new BranchManagerRequirement()));
                 options.AddPolicy("BranchEmployee", policy => policy.Requirements.Add(new BranchEmployeeRequirement()));
                 options.AddPolicy("BranchDepartmentEmployee", policy => policy.Requirements.Add(new BranchDepartmentEmployeeRequirement()));
+                options.AddPolicy("YoungerThan18", policy => policy.Requirements.Add(new YoungerThan18Requirement()));
             });
 
             services.AddSingleton<IAuthorizationHandler, BranchManagerHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchEmployeeHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchDepartmentEmployeeHandler>();
+            services.AddScoped<IAuthorizationHandler, YoungerThan18Handler>(); // This service is scoped because it relies on a scoped repository wrapper
         }
     }
 }

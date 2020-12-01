@@ -1,0 +1,158 @@
+@using Bumbo.Data
+@using Bumbo.Logic.Utils
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Routing
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IOptions<BumboOptions> BumboOptions
+@inject IViewLocalizer Localizer
+@inject RepositoryWrapper Wrapper
+
+@{
+    bool hasCurrentBranch = int.TryParse(Context.GetRouteValue("branchId")?.ToString(), out var currentBranchId);
+}
+
+<nav class="sidebar d-print-none">
+    <div class="p-3 h-100">
+        <div class="sidebar-header">
+            <img src="/img/jumbo.png" width="100%" alt="Bumbo"/>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li class="@Html.IsActive("Home", "Index")">
+                <a asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-home mr-3"></i>
+                    @Localizer["Home"]
+                </a>
+            </li>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (hasCurrentBranch)
+                {
+                    var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == currentBranchId);
+
+                    <li class="active">
+                        <a href="#branchSubmenu" data-toggle="collapse" class="dropdown-toggle">
+                            <i class="fa fa-building-o mr-3"></i>
+                            @branch.Name
+                        </a>
+                        <ul class="collapse list-unstyled show" id="branchSubmenu">
+                            <li class="@Html.IsActive("Branches", "Details")">
+                                <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-building-o mr-3"></i>
+                                    @Localizer["Details"]
+                                </a>
+                            </li>
+                            <li class="@Html.IsActive("Schedule")">
+                                <a asp-controller="Schedule" asp-action="Week" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-calendar mr-3"></i>
+                                    @Localizer["Schedule"]
+                                </a>
+                            </li>
+                            @if (User.HasClaim("Manager", branch.Id.ToString()))
+                            {
+                                <li class="@Html.IsActive("Forecast", "Index")">
+                                    <a asp-controller="Forecast" asp-action="Index" asp-route-branchId="@branch.Id">
+                                        <i class="fa fa-line-chart mr-3"></i>
+                                        @Localizer["Forecast"]
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+                <li class="@Html.IsActive("Branches")">
+                    <a href="#branchesSubmenu" data-toggle="collapse" class="dropdown-toggle">
+                        <i class="fa fa-building-o mr-3"></i>
+                        @Localizer["Branches"]
+                    </a>
+                    <ul class="collapse list-unstyled" id="branchesSubmenu">
+                        @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
+                        {
+                            var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == id);
+
+                            <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
+                                <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+                <li class="@Html.IsActiveArea("Identity")">
+                    <a href="#accountSubmenu" data-toggle="collapse" class="dropdown-toggle text-truncate">
+                        <i class="fa fa-user mr-3"></i>
+                        @UserUtil.GetFullName(await UserManager.GetUserAsync(User))
+                    </a>
+                    <ul class="collapse list-unstyled @Html.IsActiveArea("Identity", null, "show")" id="accountSubmenu">
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Manage/Index")">
+                            <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                                <i class="fa fa-user-circle-o mr-3"></i>
+                                @Localizer["Profile"]
+                            </a>
+                        </li>
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Manage/Email")">
+                            <a asp-area="Identity" asp-page="/Account/Manage/Email">
+                                <i class="fa fa-envelope mr-3"></i>
+                                @Localizer["Email"]
+                            </a>
+                        </li>
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Manage/ChangePassword")">
+                            <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                                <i class="fa fa-key mr-3"></i>
+                                @Localizer["Password"]
+                            </a>
+                        </li>
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Manage/TwoFactorAuthentication")">
+                            <a asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">
+                                <i class="fa fa-qrcode mr-3"></i>
+                                @Localizer["2FA"]
+                            </a>
+                        </li>
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Manage/PersonalData")">
+                            <a asp-area="Identity" asp-page="/Account/Manage/PersonalData">
+                                <i class="fa fa-briefcase mr-3"></i>
+                                @Localizer["PersonalData"]
+                            </a>
+                        </li>
+                        <li class="@Html.IsActiveArea("Identity", "/Account/Logout")">
+                            <a asp-area="Identity" asp-page="/Account/Logout" onclick="event.preventDefault();document.getElementById('logoutForm').submit();">
+                                <i class="fa fa-sign-out mr-3"></i>
+                                @Localizer["Logout"]
+                            </a>
+
+                            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})"></form>
+                        </li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li class="@Html.IsActiveArea("Account", "/Account/Login")">
+                    <a asp-area="Identity" asp-page="/Account/Login">
+                        <i class="fa fa-sign-in mr-3"></i>
+                        @Localizer["Login"]
+                    </a>
+                </li>
+                @if (BumboOptions.Value.RegistrationEnabled)
+                {
+                    <li class="@Html.IsActiveArea("Schedule", "/Account/Register")">
+                        <a asp-area="Identity" asp-page="/Account/Register">
+                            <i class="fa fa-user-plus mr-3"></i>
+                            @Localizer["Register"]
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+
+        <div class="sidebar-footer text-center fixed-bottom position-absolute">
+            <button type="button" class="btn btn-secondary btn-sm m-2" data-toggle="modal" data-target="#cultureModal">
+                <i class="fa fa-language" aria-hidden="true"></i>
+                @Localizer["ChangeLanguage"]
+            </button>
+
+            <p>&copy; @DateTime.Today.Year - Bumbo</p>
+        </div>
+    </div>
+</nav>

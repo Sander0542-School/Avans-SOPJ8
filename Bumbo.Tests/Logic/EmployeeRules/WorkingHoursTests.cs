@@ -257,7 +257,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                     new UserAdditionalWork
                     {
                         Day = day,
-                        Hours = 3
+                        StartTime = new TimeSpan(9, 0, 0),
+                        EndTime = new TimeSpan(12, 0, 0),
                     }
                 }
             };
@@ -292,7 +293,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                     new UserAdditionalWork
                     {
                         Day = day,
-                        Hours = 5
+                        StartTime = new TimeSpan(9, 0, 0),
+                        EndTime = new TimeSpan(14, 0, 0),
                     }
                 }
             };
@@ -327,7 +329,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                     new UserAdditionalWork
                     {
                         Day = day,
-                        Hours = 8
+                        StartTime = new TimeSpan(8, 0, 0),
+                        EndTime = new TimeSpan(16, 0, 0),
                     }
                 }
             };

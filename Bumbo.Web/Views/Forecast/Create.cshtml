@@ -1,0 +1,76 @@
+﻿@using Bumbo.Web.Models.Forecast
+@using System.Globalization
+@model Bumbo.Web.Models.Forecast.StockclerkViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles
+{
+    <style type="text/css">
+        #forecast-create-container {
+            display: flex;
+        }
+        #forecast-create-container > * {
+            padding: 0 1.5em;
+        }
+        .forecast-submit {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .forecast-submit > * {
+            margin-left: 2em;
+        }
+    </style>
+}
+
+<h1>@Localizer["Create forecast"]</h1>
+
+<h4>@Localizer["Forecast for week"]: @ISOWeek.GetWeekOfYear(Model.FirstDayOfWeek)</h4>
+<hr/>
+<form asp-action="Create">
+    <div id="forecast-create-container">
+        <div class="row">
+            <div class="form-group">
+                <strong>@Localizer["Day"]</strong>
+            </div>
+            <div class="form-group">
+                <strong>@Localizer["Number of expected coli"]</strong>
+            </div>
+            <div class="form-group">
+                <strong>@Localizer["Meters of faced shelves"]</strong>
+            </div>
+        </div>
+        @for (var i = 0; i < Model.DaysInForecast; i++)
+        {
+            <div class="row">
+                <div>
+                    <h5>@Model.FirstDayOfWeek.AddDays(i).ToString("dddd")</h5>
+                </div>
+                <div class="form-group">
+                    @* <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op @day</label> *@
+                    <input asp-for="ExpectedNumberOfColi" class="form-control"/>
+                    <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    @* <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op @day</label> *@
+                    <input asp-for="MetersOfShelves" class="form-control"/>
+                    <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group forecast-submit">
+        <a asp-action="Index" asp-route-branchId="@Model.BranchId" asp-route-year="@Model.FirstDayOfWeek.Year" asp-route-week="@ISOWeek.GetWeekOfYear(Model.FirstDayOfWeek)">@Localizer["Back to List"]</a>
+        <input type="submit" value="@Localizer["Submit"]" class="btn btn-primary">
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
