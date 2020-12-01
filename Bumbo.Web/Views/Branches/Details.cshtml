@@ -1,53 +1,53 @@
 ﻿@model Bumbo.Web.Models.Branches.DetailsViewModel
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Localizer["Details"]</h1>
 <div class="row">
     <div class="col-md-6">
-        <h4>Branch</h4>
+        <h4>@Localizer["Branch"]</h4>
         <hr/>
         <dl class="row">
             <dt class="col-sm-6">
-                @Html.DisplayNameFor(model => model.Branch.Name)
+                @Localizer["Name"]
             </dt>
             <dd class="col-sm-6">
                 @Html.DisplayFor(model => model.Branch.Name)
             </dd>
             <dt class="col-sm-6">
-                @Html.DisplayNameFor(model => model.Branch.ZipCode)
+                @Localizer["Zip code"]
             </dt>
             <dd class="col-sm-6">
                 @Html.DisplayFor(model => model.Branch.ZipCode)
             </dd>
             <dt class="col-sm-6">
-                @Html.DisplayNameFor(model => model.Branch.HouseNumber)
+                @Localizer["House number"]
             </dt>
             <dd class="col-sm-6">
                 @Html.DisplayFor(model => model.Branch.HouseNumber)
             </dd>
         </dl>
-    
+
         @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
         {
-            <a asp-action="Edit">Edit</a>
+            <a asp-action="Edit">@Localizer["Edit"]</a>
         }
-    
+
         @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
         {
             @("|") // This seems to be the only way to add the vertical line inside an if statement
-            <a asp-action="Index" asp-route-branchId="">Back to List</a>
+            <a asp-action="Index" asp-route-branchId="">@Localizer["Back to List"]</a>
         }
     </div>
     @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
     {
         <div class="col-md-4">
-            <h4>Manager toevoegen</h4>
+            <h4>@Localizer["Add manager"]</h4>
             <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Add manager" class="btn btn-primary"/>
+                    <input type="submit" value='@Localizer["Add manager"]' class="btn btn-primary"/>
                 </div>
             </form>
         </div>
@@ -67,21 +67,21 @@
 <br/>
 @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
 {
-    <h4>Huidige managers</h4>
+    <h4>@Localizer["Current managers"]</h4>
     <table class="table">
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().FirstName)
+                @Localizer["First name"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().MiddleName)
+                @Localizer["Middle name"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().LastName)
+                @Localizer["Last name"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().Email)
+                @Localizer["Email address"]
             </th>
             <th/>
         </tr>
@@ -105,10 +105,12 @@
                 <td>
                     <form asp-action="RemoveManager" asp-route-userId="@user.Id">
                         <button class="btn btn-secondary" type="submit"
-                                @if (@Model.CurrentUserId == @user.Id)
+                                @if (Model.CurrentUserId == user.Id)
                                 {
                                     @("disabled")
-                                }>Delete</button>
+                                }>
+                            @Localizer["Delete"]
+                        </button>
                     </form>
                 </td>
             </tr>
