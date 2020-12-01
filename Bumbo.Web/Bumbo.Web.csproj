@@ -22,6 +22,8 @@
     <ItemGroup>
       <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
       <Folder Include="Resources\Views\AdditionalWork\" />
+      <Folder Include="Resources\Views\Availability\" />
+      <Folder Include="Views\Availability\" />
     </ItemGroup>
 
     <ItemGroup>
