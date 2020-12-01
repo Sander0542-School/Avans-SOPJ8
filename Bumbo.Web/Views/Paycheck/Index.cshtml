@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    ViewData["Weeknumbers"] = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -20,7 +19,7 @@
             @for (int i = 0; i < Model.WeekNumbers.Count; i++)
             {
                 <th>
-                    @Model.WeekNumbers[i]
+                    Week @Model.WeekNumbers[i]
                 </th>
             }
             <th>
@@ -41,7 +40,7 @@
             <td>
                 @kvp.Key.Contracts.First().Scale
             </td>
-            @for (int i = 0; i < kvp.Value.Count; i++)
+            @for (int i = 0; i < Model.WeekNumbers.Count; i++)
             {
                 <td>
                     @kvp.Value[i]

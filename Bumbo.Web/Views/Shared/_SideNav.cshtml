@@ -69,6 +69,17 @@
                         </ul>
                     </li>
                 }
+
+        <li class="@Html.IsActive("Paycheck", "Index")">
+            <a asp-controller="PayCheck" asp-action="Index" asp-route-branchId="1" asp-route-year="2020" asp-route-monthNr="10">
+                <i class="fa fa-line-chart mr-3"></i>
+                @*@Localizer["PayCheck"]*@
+            </a>
+            <!--<a asp-controller="PayCheck" asp-action="Details" asp-route-id="1">
+                <i class="fa fa-line-chart mr-3"></i>-->
+                @*@Localizer["PayCheck"]*@
+            <!--</a>-->
+        </li>
                 <li class="@Html.IsActive("Branches")">
                     <a href="#branchesSubmenu" data-toggle="collapse" class="dropdown-toggle">
                         <i class="fa fa-building-o mr-3"></i>

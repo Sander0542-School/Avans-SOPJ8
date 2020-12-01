@@ -37,63 +37,53 @@ namespace Bumbo.Web.Controllers
             }
 
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.BranchId == branchId,
+            ws => ws.Shift.BranchId == branchId,
                 ws => ws.Shift.Date <= lastDay,
                 ws => ws.Shift.Date >= firstDay);
-            
+
+            //TODO: Als we iets met een weeknummer van een shift willen doen:
+            //var currentCulture = CultureInfo.CurrentCulture;
+            //var weekNo = currentCulture.Calendar.GetWeekOfYear(
+            //    workShift.Shift.Date,
+            //    currentCulture.DateTimeFormat.CalendarWeekRule,
+            //    currentCulture.DateTimeFormat.FirstDayOfWeek);
+
             foreach (var workShift in allWorkedShifts)
             {
                 if (_viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
                 {
-                    if (_viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
+                    if (_viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User, out var monthlyWorkedShiftsPerUser))
                     {
-                        monthlyWorkedShifts.Add(workShift);
+                        monthlyWorkedShiftsPerUser.Add(workShift);
                     }
                 }
                 else
                 {
-                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
+                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> { workShift });
                 }
             }
 
-            _viewModel.GenerateWeeklyWorkedHoursPerUser();
-
             return View(_viewModel);
-        }
-        // GET: PayCheck/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == id);
-
-            if (_viewModel.SelectedUser == null)
-            {
-                return NotFound();
-            }
-
-            return View(_viewModel.SelectedUser);
         }
 
         //// GET: PayCheck/Details/5
-        //public async Task<IActionResult> Details(int? id)
+        //public async Task<IActionResult> Details(int id)
         //{
         //    if (id == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    var user = await _wrapper.User.Get(U => U.Id == id);
-        //    if (user == null)
+        //    _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == 1);
+
+        //    if (_viewModel.SelectedUser == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return View(user);
+        //    return View(_viewModel);
         //}
+
 
         //// GET: PayCheck/Edit/5
         //public async Task<IActionResult> Edit(int? id)
