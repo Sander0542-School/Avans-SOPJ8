@@ -17,7 +17,6 @@ namespace Bumbo.Data.Repositories
         {
             return base.GetQueryBase()
                 .Include(schedule => schedule.Branch);
-                
         }
 
         public async Task<BranchSchedule> GetOrCreate(int branchId, int year, int week, Department department)

@@ -2,9 +2,7 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
-
 }
-
 
 <div class="row">
     <section class="col-md-12 col-md-push-0">
@@ -12,13 +10,10 @@
     </section>
 </div>
 
-
 @section Styles{
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.print.css" media="print" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" />
-
-
 }
 
 @section Scripts {
@@ -31,6 +26,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
     <script type="text/javascript">
+
     $(document).ready(function () {
         $('#calendar').fullCalendar({
             locale: '@culture.RequestCulture.UICulture.TwoLetterISOLanguageName',

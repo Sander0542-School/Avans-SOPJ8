@@ -9,14 +9,11 @@ namespace Bumbo.Data.Repositories
     {
         public ShiftRepository(ApplicationDbContext context) : base(context)
         {
-
-
         }
         protected override IQueryable<Shift> GetQueryBase()
         {
             return base.GetQueryBase()
                 .Include(schedule => schedule.Schedule);
-
         }
     }
 }
