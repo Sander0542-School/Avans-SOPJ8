@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Data.Models.Common;
 using Bumbo.Web.Authorization.Handles;
 using Bumbo.Web.Authorization.Requirements;
 using Bumbo.Web.Models.Options;
@@ -41,7 +40,7 @@ namespace Bumbo.Web
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("SuperUser", policy => policy.Requirements.Add(new SuperUserRequirement()));
+                options.AddPolicy("SuperUser", policy => policy.RequireRole("SuperUser"));
                 options.AddPolicy("YoungerThan18", policy => policy.Requirements.Add(new YoungerThan18Requirement()));
               
                 options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
@@ -54,7 +53,6 @@ namespace Bumbo.Web
             services.AddSingleton<IAuthorizationHandler, BranchManagerHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchEmployeeHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchDepartmentEmployeeHandler>();
-            services.AddScoped<IAuthorizationHandler, SuperUserHandler>(); // This service is scoped because it requires UserManager from request
             services.AddScoped<IAuthorizationHandler, YoungerThan18Handler>(); // This service is scoped because it relies on a scoped repository wrapper
         }
     }
