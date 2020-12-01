@@ -1,6 +1,8 @@
 ﻿using Bumbo.Data;
+using Bumbo.Data.Models;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System;
@@ -15,16 +17,16 @@ namespace Bumbo.Web.Controllers
     [Route("{controller}/{action=Index}")]
     public class PersonalScheduleController : Controller
     {
-
         private readonly RepositoryWrapper _wrapper;
         private readonly IStringLocalizer<PersonalScheduleController> _localizer;
+        private readonly UserManager<User> _userManager;
 
-        public PersonalScheduleController(RepositoryWrapper wrapper, IStringLocalizer<PersonalScheduleController> localizer)
+        public PersonalScheduleController(RepositoryWrapper wrapper, IStringLocalizer<PersonalScheduleController> localizer, UserManager<User> userManager)
         {
             _wrapper = wrapper;
             _localizer = localizer;
+            _userManager = userManager;
         }
-
         
         public IActionResult Index()
         {
@@ -37,15 +39,13 @@ namespace Bumbo.Web.Controllers
             var viewModel = new EventViewModel();
             var events = new List<EventViewModel>();
 
-
-            int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = int.Parse(_userManager.GetUserId(User));
 
             var shifts = await _wrapper.Shift.GetAll(
                        shift => shift.UserId == userId
                        //shift => shift.Date >= start,
                        //shift => shift.Date < end.AddDays(7)
                    );
-
 
             foreach (var i in shifts)
             {
@@ -59,10 +59,7 @@ namespace Bumbo.Web.Controllers
                 });
             }
 
-
             return Json(events.ToArray());
         }
-
-
     }
 }
