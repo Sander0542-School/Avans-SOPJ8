@@ -44,65 +44,75 @@
             <a asp-action="Index">Back to List</a>
         }
     </div>
-    <div class="col-md-4">
-        <h4>Manager toevoegen</h4>
-        <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserEmail" class="control-label"></label>
-                <input asp-for="UserEmail" class="form-control"/>
-                <span asp-validation-for="UserEmail" class="text-danger"></span>
-            </div>
-    
-            <div class="form-group">
-                <input type="submit" value="Add manager" class="btn btn-primary"/>
-            </div>
-        </form>
-    </div>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
+    {
+        <div class="col-md-4">
+            <h4>Manager toevoegen</h4>
+            <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <input asp-for="UserEmail" class="form-control"/>
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Add manager" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    }
 </div>
 <br/>
 <br/>
-<h4>Huidige managers</h4>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().MiddleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().Email)
-        </th>
-        <th/>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var user in Model.Managers)
-    {
+@if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
+{
+    <h4>Huidige managers</h4>
+    <table class="table">
+        <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => user.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.MiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                <form asp-action="RemoveManager" asp-route-userId="@user.Id">
-                    <button class="btn btn-secondary" type="submit" @if(@Model.CurrentUserId ==@user.Id){@("disabled")}>Delete</button>
-                </form>
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Managers.FirstOrDefault().Email)
+            </th>
+            <th/>
         </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach (var user in Model.Managers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    <form asp-action="RemoveManager" asp-route-userId="@user.Id">
+                        <button class="btn btn-secondary" type="submit"
+                                @if (@Model.CurrentUserId == @user.Id)
+                                {
+                                    @("disabled")
+                                }>Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
