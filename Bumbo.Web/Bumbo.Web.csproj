@@ -67,6 +67,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>_EditForecastModal.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Availability\Index.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -87,21 +91,9 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.nl.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resources\Views\AdditionalWork\Index.en.Designer.cs">
+      <Compile Update="Resources\Views\Availability\Index.Designer.cs">
         <AutoGen>True</AutoGen>
-        <DependentUpon>Index.en.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>

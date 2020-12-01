@@ -53,4 +53,7 @@
     <data name="ChangeLanguage" xml:space="preserve">
         <value>Verander taal</value>
     </data>
+    <data name="Availability" xml:space="preserve">
+        <value>Beschikbaarheid</value>
+    </data>
 </root>

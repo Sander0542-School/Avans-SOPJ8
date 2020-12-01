@@ -11,37 +11,37 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="School timetable" xml:space="preserve">
-        <value>Schoolrooster</value>
-    </data>
     <data name="Day" xml:space="preserve">
-        <value>Dag</value>
-    </data>
-    <data name="Starttime" xml:space="preserve">
-        <value>Starttijd</value>
+        <value>Day</value>
     </data>
     <data name="Endtime" xml:space="preserve">
-        <value>Eindtijd</value>
+        <value>Endtime</value>
+    </data>
+    <data name="Starttime" xml:space="preserve">
+        <value>Starttime</value>
+    </data>
+    <data name="Availability" xml:space="preserve">
+        <value>Availability</value>
     </data>
     <data name="Monday" xml:space="preserve">
-        <value>Maandag</value>
-    </data>
-    <data name="Tuesday" xml:space="preserve">
-        <value>DInsdag</value>
-    </data>
-    <data name="Wednesday" xml:space="preserve">
-        <value>Woensdag</value>
-    </data>
-    <data name="Thursday" xml:space="preserve">
-        <value>Donderdag</value>
+        <value>Monday</value>
     </data>
     <data name="Friday" xml:space="preserve">
-        <value>Vrijday</value>
+        <value>Friday</value>
     </data>
     <data name="Saturday" xml:space="preserve">
-        <value>Zaterdag</value>
+        <value>Saturday</value>
     </data>
     <data name="Sunday" xml:space="preserve">
-        <value>Zondag</value>
+        <value>Sunday</value>
+    </data>
+    <data name="Thursday" xml:space="preserve">
+        <value>Thursday</value>
+    </data>
+    <data name="Tuesday" xml:space="preserve">
+        <value>Tuesday</value>
+    </data>
+    <data name="Wednesday" xml:space="preserve">
+        <value>Wednesday</value>
     </data>
 </root>
