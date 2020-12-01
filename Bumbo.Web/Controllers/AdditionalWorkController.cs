@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Bumbo.Web.Models;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "YoungerThan18")]
     public class AdditionalWorkController : Controller
     {
         private readonly ILogger<AdditionalWorkController> _logger;
