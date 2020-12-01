@@ -33,32 +33,20 @@
 
         @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
         {
-            @foreach (var item in kvp.Value)
+        <tr onclick="location.href = '@Html.ActionLink("Details", "Details", new { id = kvp.Key.Id }))'">
+            <td>
+                @kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName
+            </td>
+            @for (int i = 0; i < kvp.Value.Count; i++)
             {
-                <tr>
-                    @{
-                        string name = kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName;
-                    }
-                    <td>
-                        Name
-                    </td>
-                    <td>
-                        @name
-                    </td>
-                    @for (int i = Model.FirstWeekNumber; i <= Model.LastWeekNumber; i++)
-                    {
-                        <td>
-                            @
-                        </td>
-                    }
-                    <td>
-                        Total workhours
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.totalWorkHours)
-                    </td>
-                </tr>
+                <td>
+                    @kvp.Value[i]
+                </td>
             }
+            <td>
+                @Model.CalculateTotalWorkHours(kvp.Key)
+            </td>
+        </tr>
         }
 
     </tbody>

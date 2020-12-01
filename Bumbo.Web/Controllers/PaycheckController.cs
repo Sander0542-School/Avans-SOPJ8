@@ -14,23 +14,23 @@ namespace Bumbo.Web.Controllers
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
+        private PaycheckViewModel _viewModel;
 
         public PayCheckController(RepositoryWrapper wrapper)
         {
             _wrapper = wrapper;
+            _viewModel = new PaycheckViewModel();
         }
 
         // GET: PayCheck
         public async Task<IActionResult> Index(int branchId, int year, int monthNr)
         {
-            var viewModel = new PaycheckViewModel();
-
             DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
             DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
 
             for (int i = 0; firstDay.AddDays(i) <= lastDay; i += 7)
             {
-                viewModel.WeekNumbers.Add(ISOWeek.GetWeekOfYear(firstDay.AddDays(i)));
+                _viewModel.WeekNumbers.Add(ISOWeek.GetWeekOfYear(firstDay.AddDays(i)));
             }
 
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
@@ -40,22 +40,39 @@ namespace Bumbo.Web.Controllers
             
             foreach (var workShift in allWorkedShifts)
             {
-                if (viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
+                if (_viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
                 {
-                    if (viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
+                    if (_viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
                     {
                         monthlyWorkedShifts.Add(workShift);
                     }
                 }
                 else
                 {
-                    viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
+                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
                 }
             }
 
-            viewModel.GenerateWeeklyWorkedHoursPerUser();
+            _viewModel.GenerateWeeklyWorkedHoursPerUser();
 
-            return View(viewModel);
+            return View(_viewModel);
+        }
+        // GET: PayCheck/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == id);
+
+            if (_viewModel.SelectedUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(_viewModel.SelectedUser);
         }
 
         //// GET: PayCheck/Details/5

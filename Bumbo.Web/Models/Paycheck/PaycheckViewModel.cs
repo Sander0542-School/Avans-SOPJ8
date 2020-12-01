@@ -28,5 +28,20 @@ namespace Bumbo.Web.Models.Paycheck
         {
 
         }
+
+        public int CalculateTotalWorkHours(User user)
+        {
+            int result = 0;
+
+            WeeklyWorkedHoursPerUser.TryGetValue(user, out var weeklyWorkedHours);
+
+
+            foreach (var hours in weeklyWorkedHours)
+            {
+                result += hours;
+            }
+
+            return result;
+        }
     }
 }
