@@ -1,4 +1,9 @@
 ﻿@model Bumbo.Web.Models.Schedule.EventViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@{
+    var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+
+}
 
 
 <div class="row">
@@ -23,22 +28,20 @@
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="//ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
     <script type="text/javascript">
     $(document).ready(function () {
         $('#calendar').fullCalendar({
+            locale: '@culture.RequestCulture.UICulture.TwoLetterISOLanguageName',
+            firstDay: 1,
             header:
             {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            buttonText: {
-                today: 'today',
-                month: 'month',
-                week: 'week',
-                day: 'day'
-            },
+
             views: {
                 timelineHours: {
                     type: 'timeline',
@@ -48,7 +51,7 @@
             },
             events: function (start, end, timezone, callback) {
                 $.ajax({
-                    url: '@Url.RouteUrl(new{ action= "GetCalendarEvents", controller= "PersonalSchedule" })',
+                    url: '@Url.RouteUrl(new{ action= "GetCalendarEvents", controller= "Schedule" })',
                     type: "GET",
                     dataType: "JSON",
                     headers: {
@@ -80,5 +83,5 @@
         });
     });
     </script>
-    }
+}
 

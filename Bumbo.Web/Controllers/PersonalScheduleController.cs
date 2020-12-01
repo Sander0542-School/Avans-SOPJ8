@@ -28,38 +28,6 @@ namespace Bumbo.Web.Controllers
             _userManager = userManager;
         }
         
-        public IActionResult Index()
-        {
-            return View(new EventViewModel());
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> GetCalendarEvents()
-        {
-            var viewModel = new EventViewModel();
-            var events = new List<EventViewModel>();
-
-            var userId = int.Parse(_userManager.GetUserId(User));
-
-            var shifts = await _wrapper.Shift.GetAll(
-                       shift => shift.UserId == userId
-                       //shift => shift.Date >= start,
-                       //shift => shift.Date < end.AddDays(7)
-                   );
-
-            foreach (var i in shifts)
-            {
-                events.Add(new EventViewModel()
-                {
-                    id = i.Id,
-                    title = i.Department.ToString(),
-                    start = $"{i.Date.ToString("yyyy-MM-dd")}T{i.StartTime}",
-                    end = $"{ i.Date.ToString("yyyy-MM-dd") }T{ i.EndTime }",
-                    allDay = false
-                });
-            }
-
-            return Json(events.ToArray());
-        }
+       
     }
 }
