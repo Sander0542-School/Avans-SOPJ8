@@ -34,10 +34,12 @@
         {
         <tr onclick="location.href = '@Html.ActionLink("Details", "Details", new { id = kvp.Key.Id }))'">
             <td>
-                @{ kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName}
+                @{
+                    string name = kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName;
+                }
             </td>
             <td>
-                @{ kvp.Key.Contracts.First().Scale}
+                @kvp.Key.Contracts.First().Scale
             </td>
             @for (int i = 0; i < kvp.Value.Count; i++)
             {
