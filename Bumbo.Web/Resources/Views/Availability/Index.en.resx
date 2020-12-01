@@ -18,7 +18,7 @@
         <value>Endtime</value>
     </data>
     <data name="Starttime" xml:space="preserve">
-        <value>Starttime</value>
+        <value>Start time</value>
     </data>
     <data name="Availability" xml:space="preserve">
         <value>Availability</value>
