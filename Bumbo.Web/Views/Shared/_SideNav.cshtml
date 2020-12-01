@@ -72,6 +72,13 @@
                         @Localizer["Branches"]
                     </a>
                     <ul class="collapse list-unstyled" id="branchesSubmenu">
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                        {
+                            <li>
+                                <a asp-controller="Branches" asp-action="Index">@Localizer["All branches"]</a>
+</li>
+                        }
+
                         @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
                         {
                             var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == id);

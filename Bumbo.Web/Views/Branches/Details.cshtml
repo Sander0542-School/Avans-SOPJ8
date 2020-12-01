@@ -35,13 +35,13 @@
     
         @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
         {
-            <a asp-action="Edit" asp-route-id="@Model.Branch.Id">Edit</a>
+            <a asp-action="Edit">Edit</a>
         }
     
         @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
         {
             @("|") // This seems to be the only way to add the vertical line inside an if statement
-            <a asp-action="Index">Back to List</a>
+            <a asp-action="Index" asp-route-branchId="">Back to List</a>
         }
     </div>
     @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)

@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "BranchEmployee")]
-    [Route("Branches/{branchId?}/{action=Index}")]
+    [Authorize] // Fallback to prevent accidental unauthorized use
+    [Route("Branches/{branchId}/{action=Details}")]
+    [Route("Branches/{action=Index}")]
     public class BranchesController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -30,13 +31,9 @@ namespace Bumbo.Web.Controllers
             return View(await _wrapper.Branch.GetAll());
         }
 
-        public async Task<IActionResult> Details(int? branchId)
+        [Authorize(Policy = "BranchEmployee")]
+        public async Task<IActionResult> Details(int branchId)
         {
-            if (branchId == null)
-            {
-                return NotFound();
-            }
-
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
             if (branch == null)
             {
@@ -66,7 +63,13 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Create([Bind("Name,ZipCode,HouseNumber")] Branch branch)
         {
             if (!ModelState.IsValid) return View(branch);
-            await _wrapper.Branch.Add(branch);
+            branch = await _wrapper.Branch.Add(branch);
+
+            // TODO: Don't add super users to their created branches
+            // This is currently done to allow super users to access created branches
+            // https://stackoverflow.com/questions/65094900/net-core-super-user-policy
+            await addManagerToBranchAsync(branch.Id, GetCurrentUserId()); 
+
             return RedirectToAction("Index");
         }
 
@@ -153,12 +156,8 @@ namespace Bumbo.Web.Controllers
                 bm => bm.BranchId == branchId,
                 bm => bm.UserId == user.Id
             ) != null) return RedirectToAction("Details");
-            
-            await _wrapper.BranchManager.Add(new BranchManager
-            {
-                BranchId = branchId,
-                UserId = user.Id
-            });
+
+            await addManagerToBranchAsync(branchId, user.Id);
 
             return RedirectToAction("Details");
         }
@@ -166,6 +165,17 @@ namespace Bumbo.Web.Controllers
         private int GetCurrentUserId()
         {
             return int.Parse(_httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        }
+
+        private async Task<bool> addManagerToBranchAsync(int branchId, int userId)
+        {
+            var result = await _wrapper.BranchManager.Add(new BranchManager
+            {
+                BranchId = branchId,
+                UserId = userId
+            });
+
+            return result != null;
         }
     }
 }
