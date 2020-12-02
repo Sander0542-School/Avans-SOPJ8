@@ -1,0 +1,15 @@
+{
+  "loginUrl": "/Identity/Account/Register",
+  "comment": "Credential values must be in the same order as the input fields",
+  "credentials": {
+    "email": "admin@local",
+    "password": "Pass1234!",
+    "confirmPassword": "Pass1234!",
+    "firstName": "first",
+    "middleName": "middle",
+    "lastName": "last",
+    "birthday": "1990-10-10",
+    "zipCode": "1234ab",
+    "houseNumber": 1
+  }
+}
