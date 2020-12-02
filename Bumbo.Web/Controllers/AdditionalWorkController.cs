@@ -58,7 +58,7 @@ namespace Bumbo.Web.Controllers
                     presentUserWork.StartTime = model.Work.StartTime;
                     presentUserWork.EndTime = model.Work.EndTime;
 
-                    bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+                    await _wrapper.UserAdditionalWork.Update(presentUserWork);
                 }
             }
 

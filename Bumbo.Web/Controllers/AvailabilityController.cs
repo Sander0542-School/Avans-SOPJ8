@@ -57,7 +57,7 @@ namespace Bumbo.Web.Controllers
                     presentUserAvailability.StartTime = model.Availability.StartTime;
                     presentUserAvailability.EndTime = model.Availability.EndTime;
 
-                    bool success = await _wrapper.UserAvailability.Update(presentUserAvailability) != null;
+                    await _wrapper.UserAvailability.Update(presentUserAvailability);
                 }
             }
 
