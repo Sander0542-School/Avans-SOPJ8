@@ -7,7 +7,7 @@ function fillInRegistrationForm(formData: object) {
   });
 }
 
-describe("Registration", () => {
+describe('Registration', () => {
   it('Check for basic elements', () => {
     cy.visit('/Identity/Account/Register');
 
