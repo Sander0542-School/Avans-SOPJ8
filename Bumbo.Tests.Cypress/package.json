@@ -10,7 +10,8 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "cypress:dev": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing & cypress open"
   },
   "devDependencies": {
     "@types/node": "^8.0.14",
