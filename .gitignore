@@ -440,3 +440,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# Ignore Visual Studio Code config files
+.vscode/**
