@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +18,14 @@ namespace Bumbo.Web.Controllers
     {
         private readonly RepositoryWrapper _wrapper;
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly HttpContext _httpContext;
 
-        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager)
+        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _wrapper = wrapper;
             _signInManager = signInManager;
+            _userManager = userManager;
             _httpContext = httpContextAccessor.HttpContext;
         }
 
@@ -48,7 +49,7 @@ namespace Bumbo.Web.Controllers
 
             return View(new DetailsViewModel
             {
-                CurrentUserId = GetCurrentUserId(),
+                CurrentUserId = _userManager.GetUserAsync(User).Id,
                 Branch = branch,
                 Managers = managersForBranch
             });
@@ -71,8 +72,8 @@ namespace Bumbo.Web.Controllers
             // TODO: Don't add super users to their created branches
             // This is currently done to allow super users to access created branches
             // https://stackoverflow.com/questions/65094900/net-core-super-user-policy
-            var userId = GetCurrentUserId();
-            await addManagerToBranchAsync(branch.Id, userId);
+            var userId = _userManager.GetUserAsync(User).Id;
+            await AddManagerToBranchAsync(branch.Id, userId);
             var user = await _wrapper.User.Get(u => u.Id == userId);
             await _signInManager.RefreshSignInAsync(user); // Updates user claims so it immediately has access to branch
             
@@ -150,7 +151,7 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> RemoveManager(int userId, int branchId)
         {
             // Manager can't remove itself
-            if (GetCurrentUserId() == userId) return RedirectToAction("Details");
+            if (_userManager.GetUserAsync(User).Id == userId) return RedirectToAction("Details");
 
             var branchManager = await _wrapper.BranchManager.Get(
                 bm => bm.BranchId == branchId,
@@ -173,25 +174,18 @@ namespace Bumbo.Web.Controllers
                 bm => bm.UserId == user.Id
             ) != null) return RedirectToAction("Details");
 
-            await addManagerToBranchAsync(branchId, user.Id);
+            await AddManagerToBranchAsync(branchId, user.Id);
 
             return RedirectToAction("Details");
         }
 
-        private int GetCurrentUserId()
-        {
-            return int.Parse(_httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-        }
-
-        private async Task<bool> addManagerToBranchAsync(int branchId, int userId)
+        private async Task AddManagerToBranchAsync(int branchId, int userId)
         {
             var result = await _wrapper.BranchManager.Add(new BranchManager
             {
                 BranchId = branchId,
                 UserId = userId
             });
-
-            return result != null;
         }
     }
 }
