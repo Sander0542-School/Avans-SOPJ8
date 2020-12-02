@@ -9,5 +9,8 @@
   ],
   "extends": [
     "airbnb-typescript/base"
-  ]
+  ],
+  "rules": {
+    "linebreak-style": ["warning", "windows"]
+  }
 }
