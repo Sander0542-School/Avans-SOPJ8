@@ -78,9 +78,19 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            return View(_viewModel.SelectedUser);
+            _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
+            _viewModel.SelectedUserWorkedShifts = workedShifts;
+
+            return View(_viewModel);
         }
 
+        [HttpPost]
+        [Route("details")]
+        // GET: PayCheck/Details/5
+        public async Task<IActionResult> Details(PaycheckViewModel viewModel)
+        {
+            return View(_viewModel);
+        }
         //// GET: PayCheck/Details/5
         //public async Task<IActionResult> Details(int? id)
         //{
