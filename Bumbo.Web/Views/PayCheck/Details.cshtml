@@ -51,9 +51,6 @@
                 <td>
                     @Model.WeekNumbers[i]
                 </td>
-                <td>
-                    Difference in hours
-                </td>
                 @for (DateTime day = ISOWeek.ToDateTime(Model.Year, Model.WeekNumbers[i], DayOfWeek.Monday); ISOWeek.GetWeekOfYear(day) == Model.WeekNumbers[i]; day.AddDays(1))
                 {
                     @for (int j = 0; j < Model.SelectedUserWorkedShifts.Count; j++)
