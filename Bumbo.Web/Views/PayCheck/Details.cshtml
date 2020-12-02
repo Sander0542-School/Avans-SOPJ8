@@ -52,7 +52,7 @@
                     @Model.WeekNumbers[i]
                 </td>
                 <td>
-                    Difference in hours
+                    @Model.ExtraHoursPerWeekSelectedUser[i]
                 </td>
                 @for (DateTime day = ISOWeek.ToDateTime(Model.Year, Model.WeekNumbers[i], DayOfWeek.Monday); ISOWeek.GetWeekOfYear(day) == Model.WeekNumbers[i]; day.AddDays(1))
                 {

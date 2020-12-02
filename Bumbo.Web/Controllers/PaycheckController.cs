@@ -62,16 +62,30 @@ namespace Bumbo.Web.Controllers
             
             foreach (var workShift in allWorkedShifts)
             {
+
+                WorkedShiftViewModel vm = new WorkedShiftViewModel
+                {
+                    Shift = workShift.Shift,
+                    StartTime = workShift.StartTime,
+                    EndTime = workShift.EndTime,
+                    IsApprovedForPaycheck = workShift.IsApprovedForPaycheck,
+                    Sick = workShift.Sick,
+                    ShiftId = workShift.ShiftId
+                };
+
+                vm.ExtraTime += workShift.Shift.StartTime.Subtract(workShift.StartTime).TotalHours;
+                vm.ExtraTime += workShift.Shift.EndTime.Subtract((TimeSpan)workShift.EndTime).TotalHours;
+
                 if (_viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
                 {
                     if (_viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
                     {
-                        monthlyWorkedShifts.Add(workShift);
+                        monthlyWorkedShifts.Add(vm);
                     }
                 }
                 else
                 {
-                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShift> {workShift});
+                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShiftViewModel> {vm});
                 }
             }
 
@@ -102,13 +116,14 @@ namespace Bumbo.Web.Controllers
 
             _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
 
-            if (workedShifts != null)
+            if (workedShifts == null)
             {
-                _viewModel.SelectedUserWorkedShifts = workedShifts;
-                _viewModel.SortSelectedUserWorkedShiftsByDate();
+                return NotFound();
             }
 
-            _viewModel.CalculateDifferenceInHours();
+            _viewModel.SelectedUserWorkedShifts = workedShifts;
+            _viewModel.SortSelectedUserWorkedShiftsByDate();
+            _viewModel.CalculateTotalDifferencePerWeek();
 
             return View(_viewModel);
         }

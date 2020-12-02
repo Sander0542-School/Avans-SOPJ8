@@ -8,24 +8,25 @@ namespace Bumbo.Web.Models.Paycheck
     public class PaycheckViewModel
     {
         public List<int> WeekNumbers;
+        public List<double> ExtraHoursPerWeekSelectedUser;
         public Branch Branch;
         public User SelectedUser;
         public int Year;
         public int MonthNr;
         public bool OverviewApproved;
-        public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
+        public Dictionary<User, List<WorkedShiftViewModel>> MonthlyWorkedShiftsPerUser;
         public Dictionary<User, List<double>> WeeklyWorkedHoursPerUser;
-        public List<WorkedShift> SelectedUserWorkedShifts;
+        public List<WorkedShiftViewModel> SelectedUserWorkedShifts;
         public List<Shift> ScheduledShiftsPerUser;
         public Dictionary<string, string> ResetRouteValues;
 
         public PaycheckViewModel()
         {
-            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShift>>();
+            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShiftViewModel>>();
             SelectedUser = null;
             WeekNumbers = new List<int>();
             WeeklyWorkedHoursPerUser = new Dictionary<User, List<double>>();
-            SelectedUserWorkedShifts = new List<WorkedShift>();
+            SelectedUserWorkedShifts = new List<WorkedShiftViewModel>();
             ScheduledShiftsPerUser = new List<Shift>();
 
             //TODO: Might use?
@@ -110,6 +111,34 @@ namespace Bumbo.Web.Models.Paycheck
                     return;
                 }
             }
+        }
+
+        public void CalculateTotalDifferencePerWeek()
+        {
+            int indexWeekNr = 0;
+            bool first = true;
+            int weekNr = 0;
+            List<double> workHours = new List<double>();
+
+            foreach (var viewModel in SelectedUserWorkedShifts)
+            {
+                if (first)
+                {
+                    weekNr = ISOWeek.GetWeekOfYear(viewModel.Shift.Date);
+                    first = false;
+                }
+                
+                if (weekNr != ISOWeek.GetWeekOfYear(viewModel.Shift.Date))
+                {
+                    weekNr = ISOWeek.GetWeekOfYear(viewModel.Shift.Date);
+                    workHours.Add(0);
+                    indexWeekNr++;
+                }
+
+                workHours[indexWeekNr] += viewModel.ExtraTime;
+            }
+
+            ExtraHoursPerWeekSelectedUser = workHours;
         }
     }
 }
