@@ -10,7 +10,8 @@ using Bumbo.Web.Models.Paycheck;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("Branches/{branchId}/{controller}/{year?}/{monthNr?}")]
+    //  [Authorize(Policy = "BranchManager")]
+    
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -22,15 +23,33 @@ namespace Bumbo.Web.Controllers
             _viewModel = new PaycheckViewModel();
         }
 
-        [Route("")]
-        // GET: PayCheck
-        public async Task<IActionResult> Index(int branchId, int year = 2020, int monthNr = 10)
+        //Get /Branches/1/PayCheck/2020/10
+        [Route("Branches/{branchId}/{controller}/{year?}/{monthNr?}")]
+        public async Task<IActionResult> Index(int branchId, int? year, int? monthNr)
         {
-            _viewModel.Year = year;
-            _viewModel.MonthNr = monthNr;
+            // Check for default values
+            var redirect = false;
 
-            DateTime lastDay = new DateTime(year, monthNr, 1).AddDays(-1);
-            DateTime firstDay = new DateTime(year, monthNr, 1).AddMonths(-1);
+            if (!year.HasValue)
+            {
+                redirect = true;
+                year = DateTime.Now.Year;
+            }
+
+            if (!monthNr.HasValue)
+            {
+                redirect = true;
+                monthNr = DateTime.Now.Month;
+            }
+
+            _viewModel.Year = year.Value;
+            _viewModel.MonthNr = monthNr.Value;
+
+            DateTime lastDay = new DateTime(year.Value, monthNr.Value, 1).AddDays(-1);
+            DateTime firstDay = new DateTime(year.Value, monthNr.Value, 1).AddMonths(-1);
+
+            if (redirect) return RedirectToAction("Index", "PayCheck", new { branchId, year, monthNr });
+
 
             for (int i = 0; firstDay.AddDays(i) <= lastDay; i += 7)
             {
@@ -62,9 +81,10 @@ namespace Bumbo.Web.Controllers
             return View(_viewModel);
         }
 
-        [Route("details")]
-        // GET: PayCheck/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: /Branches/1/PayCheck/2020/10/1
+        //TODO: Fix routing
+        [Route("details/{branchId:int}/{id:int}")]
+        public async Task<IActionResult> Details(int? id, int branchId, int? year, int? monthNr)
         {
             if (id == null)
             {
@@ -79,9 +99,12 @@ namespace Bumbo.Web.Controllers
             }
 
             _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
-            _viewModel.SelectedUserWorkedShifts = workedShifts;
 
-            _viewModel.SortSelectedUserWorkedShiftsByDate();
+            if (workedShifts != null)
+            {
+                _viewModel.SelectedUserWorkedShifts = workedShifts;
+                _viewModel.SortSelectedUserWorkedShiftsByDate();
+            }
 
             return View(_viewModel);
         }
@@ -91,74 +114,8 @@ namespace Bumbo.Web.Controllers
         // GET: PayCheck/Details/5
         public async Task<IActionResult> Details(PaycheckViewModel viewModel)
         {
-            return View(_viewModel);
+
+            return RedirectToAction("Details");
         }
-        //// GET: PayCheck/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _wrapper.User.Get(U => U.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(user);
-        //}
-
-        //// GET: PayCheck/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _wrapper.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(user);
-        //}
-
-        //// POST: PayCheck/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("FirstName,MiddleName,LastName,Birthday,ZipCode,HouseNumber,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _wrapper.Update(user);
-        //            await _wrapper.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UserExists(user.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(user);
-        //}
     }
 }

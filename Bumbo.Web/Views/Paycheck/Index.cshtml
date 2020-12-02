@@ -1,11 +1,13 @@
-﻿@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
-
+﻿@using System.Globalization
+@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    DateTimeFormatInfo mfi = new DateTimeFormatInfo();
+    string strMonthName = "";
 
-<h1>Index</h1>
+    strMonthName = Model.MonthNr == 1 ? mfi.GetMonthName(12) : mfi.GetMonthName(Model.MonthNr - 1);
+}
+<h1>PayCheck</h1>
+<h2> @strMonthName</h2>
 
 <table class="table">
     <thead>
@@ -31,26 +33,23 @@
 
         @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
         {
-        <tr onclick="location.href = '@Html.ActionLink("Details", "Details", new { id = kvp.Key.Id }))'">
-            <td>
-                @{
-                    string name = kvp.Key.FirstName + kvp.Key.MiddleName + kvp.Key.LastName;
-                }
-            </td>
-            <td>
-                @kvp.Key.Contracts.First().Scale
-            </td>
-            @for (int i = 0; i < Model.WeekNumbers.Count; i++)
-            {
+            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = kvp.Key.Shifts.First().BranchId, id=kvp.Key.Id})'" style="cursor: pointer;">
                 <td>
-                    @kvp.Value[i]
+                    @kvp.Key.FirstName @kvp.Key.MiddleName @kvp.Key.LastName
                 </td>
-            }
-            <td>
-                @Model.CalculateTotalWorkHours(kvp.Key)
-            </td>
-        </tr>
+                <td>
+                    @*@kvp.Key.Contracts.First().Scale*@
+                </td>
+                @for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    <td>
+                        @kvp.Value[i]
+                    </td>
+                }
+                <td>
+                    @Model.CalculateTotalWorkHours(kvp.Key)
+                </td>
+            </tr>
         }
-
     </tbody>
 </table>
