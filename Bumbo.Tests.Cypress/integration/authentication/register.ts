@@ -32,8 +32,6 @@ describe("Registration", () => {
       cy.get(".validation-summary-errors").should('exist');
       cy.get(".validation-summary-errors > *").should('exist');
   }))});
-
-  it("fails", () => cy.should('be.true', false));
 });
 
 function fillInRegistrationForm(formData: object) {
