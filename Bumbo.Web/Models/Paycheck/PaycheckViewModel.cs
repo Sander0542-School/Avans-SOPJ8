@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Web.Models.Paycheck
 {
@@ -16,9 +21,9 @@ namespace Bumbo.Web.Models.Paycheck
         public PaycheckViewModel()
         {
             MonthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShift>>();
-            WeeklyWorkedHoursPerUser = new Dictionary<User, List<int>>();
-            WeekNumbers = new List<int>();
             SelectedUser = null;
+            WeekNumbers = new List<int>();
+            WeeklyWorkedHoursPerUser = new Dictionary<User, List<int>>();
         }
 
         public void GenerateWeeklyWorkedHoursPerUser()
