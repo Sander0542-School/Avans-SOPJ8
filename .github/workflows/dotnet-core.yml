@@ -37,6 +37,8 @@ jobs:
       run: |
         cd ./Bumbo.Tests.Cypress/
         npx cypress run
+    - name: Run eslint 
+      run: npm run lint
     - name: Upload Cypress Recordings
       # Only upload recordings if test fails
       if: steps.CypressStep.outcome == 'failure'
