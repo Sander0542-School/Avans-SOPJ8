@@ -9,6 +9,11 @@
 <h1>PayCheck</h1>
 <h2> @strMonthName</h2>
 
+@if (!Model.OverviewApproved)
+{
+    <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Approve workhours overview</button>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -53,3 +58,10 @@
         }
     </tbody>
 </table>
+
+@*TODO: Create Modal*@
+
+@*@if (!Model.OverviewApproved)
+{
+    <partial name="_ApproveWorkhoursOverviewModal" model="Model.InputApproveSchedule" />
+}*@

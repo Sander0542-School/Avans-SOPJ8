@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Web.Models.Paycheck
 {
@@ -12,12 +9,14 @@ namespace Bumbo.Web.Models.Paycheck
     {
         public List<int> WeekNumbers;
         public Branch Branch;
+        public User SelectedUser;
         public int Year;
         public int MonthNr;
+        public bool OverviewApproved;
         public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
         public Dictionary<User, List<double>> WeeklyWorkedHoursPerUser;
-        public User SelectedUser;
         public List<WorkedShift> SelectedUserWorkedShifts;
+        public Dictionary<string, string> ResetRouteValues;
 
         public PaycheckViewModel()
         {
@@ -26,6 +25,32 @@ namespace Bumbo.Web.Models.Paycheck
             WeekNumbers = new List<int>();
             WeeklyWorkedHoursPerUser = new Dictionary<User, List<double>>();
             SelectedUserWorkedShifts = new List<WorkedShift>();
+
+            //TODO: Might use?
+            ResetRouteValues = new Dictionary<string, string>
+            {
+                {
+                    "monthNr",
+                    DateTime.Now.Month.ToString()
+                },
+                {
+                    "year",
+                    DateTime.Now.Year.ToString()
+                }
+            };
+        }
+
+        public bool ApproveWorkhoursOverview()
+        {
+            foreach (var kvp in MonthlyWorkedShiftsPerUser)
+            {
+                for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    kvp.Value[i].IsApprovedForPaycheck = true;
+                }
+            }
+
+            return OverviewApproved = true;
         }
 
         public void GenerateWeeklyWorkedHoursPerUser()
