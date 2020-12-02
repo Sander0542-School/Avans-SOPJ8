@@ -7,23 +7,11 @@ describe("Registration", () => {
     cy.get("#logoutForm").should("not.exist");
   })
 
-  it("Can register new user", () => {
-    cy.visit("/Identity/Account/Register");
-
-  });
-
-
-  it("Should register user", () => {
+  it("register user", () => {
     cy.visit("/Identity/Account/Register");
 
     cy.fixture("admin-login").then((adminLogin => {
-      // Fill in input fields
-      cy.get("input").each((inputField, i) => {
-        let inputValue = adminLogin.credentials[Object.keys(adminLogin.credentials)[i]];
-        if(inputValue !== undefined) {
-          cy.wrap(inputField).type(inputValue);
-        }
-      });
+      fillInRegistrationForm(adminLogin.credentials);
 
       cy.get("form > .btn").click();
 
@@ -31,4 +19,26 @@ describe("Registration", () => {
 
       cy.get("#confirm-link").click();
   }))});
+
+  it("show warning on invalid data", () => {
+    cy.visit("/Identity/Account/Register");
+
+    cy.fixture("admin-login").then((adminLogin => {
+      fillInRegistrationForm(adminLogin.invalidCredentials)
+
+      cy.get("form > .btn").click();
+
+      cy.location('pathname').should('not.contain', "Identity/Account/RegisterConfirmation")
+      cy.get(".validation-summary-errors").should('exist');
+      cy.get(".validation-summary-errors > *").should('exist');
+  }))});
 });
+
+function fillInRegistrationForm(formData: object) {
+  cy.get("input").each((inputField, i) => {
+    let inputValue = formData[Object.keys(formData)[i]];
+    if (inputValue !== undefined) {
+      cy.wrap(inputField).type(inputValue);
+    }
+  });
+}
