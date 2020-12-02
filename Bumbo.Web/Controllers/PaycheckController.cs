@@ -14,7 +14,7 @@ namespace Bumbo.Web.Controllers
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
-        private PaycheckViewModel _viewModel;
+        private readonly PaycheckViewModel _viewModel;
 
         public PayCheckController(RepositoryWrapper wrapper)
         {
@@ -80,6 +80,8 @@ namespace Bumbo.Web.Controllers
 
             _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
             _viewModel.SelectedUserWorkedShifts = workedShifts;
+
+            _viewModel.SortSelectedUserWorkedShiftsByDate();
 
             return View(_viewModel);
         }
