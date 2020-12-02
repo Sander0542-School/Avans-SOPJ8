@@ -114,8 +114,38 @@ namespace Bumbo.Web.Controllers
         // GET: PayCheck/Details/5
         public async Task<IActionResult> Details(PaycheckViewModel viewModel)
         {
-
             return RedirectToAction("Details");
+        }
+
+        [HttpPost]
+        [Route("approve")]
+        //[Authorize(Policy = "BranchManager")]
+        public async Task<IActionResult> ApproveWorkhoursOverview(PaycheckViewModel approvePaycheckViewModel)
+        {
+            var branchId = approvePaycheckViewModel.Branch.Id;
+            var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                foreach (var kvp in approvePaycheckViewModel.MonthlyWorkedShiftsPerUser)
+                {
+                    for (int i = 0; i < kvp.Value.Count; i++)
+                    {
+                        kvp.Value[i].IsApprovedForPaycheck = true;
+                    }
+                }
+
+                approvePaycheckViewModel.OverviewApproved = true;
+            }
+
+            return RedirectToAction(nameof(Index), new
+            {
+                branchId,
+                year = approvePaycheckViewModel.Year,
+                week = approvePaycheckViewModel.MonthNr
+            });
         }
     }
 }

@@ -9,59 +9,56 @@
 <h1>PayCheck</h1>
 <h2> @strMonthName</h2>
 
-@if (!Model.OverviewApproved)
-{
-    <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">Approve workhours overview</button>
-}
-
 <table class="table">
     <thead>
-        <tr>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Kpu
+        </th>
+        @for (int i = 0; i < Model.WeekNumbers.Count; i++)
+        {
             <th>
-                Name
+                Week @Model.WeekNumbers[i]
             </th>
-            <th>
-                Kpu
-            </th>
-            @for (int i = 0; i < Model.WeekNumbers.Count; i++)
-            {
-                <th>
-                    Week @Model.WeekNumbers[i]
-                </th>
-            }
-            <th>
-                Total workhours
-            </th>
-        </tr>
+        }
+        <th>
+            Total workhours
+        </th>
+    </tr>
     </thead>
     <tbody>
 
-        @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
-        {
-            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = kvp.Key.Shifts.First().BranchId, id=kvp.Key.Id})'" style="cursor: pointer;">
+    @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
+    {
+        <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = kvp.Key.Shifts.First().BranchId, id=kvp.Key.Id})'" style="cursor: pointer;">
+            <td>
+                @kvp.Key.FirstName @kvp.Key.MiddleName @kvp.Key.LastName
+            </td>
+            <td>
+                @*@kvp.Key.Contracts.First().Scale*@
+            </td>
+            @for (int i = 0; i < kvp.Value.Count; i++)
+            {
                 <td>
-                    @kvp.Key.FirstName @kvp.Key.MiddleName @kvp.Key.LastName
+                    @kvp.Value[i]
                 </td>
-                <td>
-                    @*@kvp.Key.Contracts.First().Scale*@
-                </td>
-                @for (int i = 0; i < kvp.Value.Count; i++)
-                {
-                    <td>
-                        @kvp.Value[i]
-                    </td>
-                }
-                <td>
-                    @Model.CalculateTotalWorkHours(kvp.Key)
-                </td>
-            </tr>
-        }
+            }
+            <td>
+                @Model.CalculateTotalWorkHours(kvp.Key)
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 
-@*TODO: Create Modal*@
-
-@*@if (!Model.OverviewApproved)
+@if (!Model.OverviewApproved && Model != null)
 {
-    <partial name="_ApproveWorkhoursOverviewModal" model="Model.InputApproveSchedule" />
-}*@
+    <form asp-action="ApproveWorkhoursOverview">
+        @* hidden model *@
+        <button type="submit" class="btn btn-primary">Approve workhours</button>
+    </form>
+}
+

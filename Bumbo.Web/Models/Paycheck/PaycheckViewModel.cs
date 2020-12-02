@@ -40,19 +40,6 @@ namespace Bumbo.Web.Models.Paycheck
             };
         }
 
-        public bool ApproveWorkhoursOverview()
-        {
-            foreach (var kvp in MonthlyWorkedShiftsPerUser)
-            {
-                for (int i = 0; i < kvp.Value.Count; i++)
-                {
-                    kvp.Value[i].IsApprovedForPaycheck = true;
-                }
-            }
-
-            return OverviewApproved = true;
-        }
-
         public void GenerateWeeklyWorkedHoursPerUser()
         {
             foreach (var kvp in MonthlyWorkedShiftsPerUser)
