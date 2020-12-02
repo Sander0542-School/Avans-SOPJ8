@@ -33,6 +33,13 @@ jobs:
         cd ./Bumbo.Tests.Cypress/
         npm install
     - name: Run Cypress Tests
+      id: CypressStep
       run: |
         cd ./Bumbo.Tests.Cypress/
         npx cypress run
+    - name: Upload Cypress Recordings
+      if: always() && steps.CypressStep.outcome == 'failure'
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        name: Cypress Recordings
+        path: ./Bumbo.Tests.Cypress/videos
