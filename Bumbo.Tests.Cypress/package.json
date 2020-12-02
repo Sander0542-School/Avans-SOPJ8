@@ -11,11 +11,17 @@
     "clean": "tsc --build --clean",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:dev": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing & cypress open"
+    "cypress:dev": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing & cypress open",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@types/node": "^8.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
     "cypress": "^6.0.1",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.0",
     "typescript": "^3.2.2"
   }
 }
