@@ -11,7 +11,6 @@ using Bumbo.Web.Models.Paycheck;
 namespace Bumbo.Web.Controllers
 {
     //  [Authorize(Policy = "BranchManager")]
-    
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -92,13 +91,12 @@ namespace Bumbo.Web.Controllers
 
             _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == id);
 
-
-            _viewModel.ScheduledShiftsPerUser = await _wrapper.Shift.GetAll(s => s.User.Id == id);
-
             if (_viewModel.SelectedUser == null)
             {
                 return NotFound();
             }
+
+            _viewModel.ScheduledShiftsPerUser = await _wrapper.Shift.GetAll(s => s.User.Id == id);
 
             _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
 
@@ -108,7 +106,7 @@ namespace Bumbo.Web.Controllers
                 _viewModel.SortSelectedUserWorkedShiftsByDate();
             }
 
-            _viewModel.CalculateDifferenceInHours();
+            //_viewModel.CalculateDifferenceInHours();
 
             return View(_viewModel);
         }
