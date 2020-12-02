@@ -72,9 +72,8 @@ namespace Bumbo.Web.Controllers
             // TODO: Don't add super users to their created branches
             // This is currently done to allow super users to access created branches
             // https://stackoverflow.com/questions/65094900/net-core-super-user-policy
-            var userId = _userManager.GetUserAsync(User).Id;
-            await AddManagerToBranchAsync(branch.Id, userId);
-            var user = await _wrapper.User.Get(u => u.Id == userId);
+            var user = await _userManager.GetUserAsync(User);
+            await AddManagerToBranchAsync(branch.Id, user.Id);
             await _signInManager.RefreshSignInAsync(user); // Updates user claims so it immediately has access to branch
             
             return RedirectToAction(
