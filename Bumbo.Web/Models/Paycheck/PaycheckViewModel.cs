@@ -46,12 +46,13 @@ namespace Bumbo.Web.Models.Paycheck
                 {
                     if (weekNr != ISOWeek.GetWeekOfYear(kvp.Value[i].Shift.Date))
                     {
+                        weekNr = ISOWeek.GetWeekOfYear(kvp.Value[i].Shift.Date);
                         indexWeekNr++;
                     }
 
                     var timeDif = kvp.Value[i].EndTime - kvp.Value[i].StartTime;
 
-                    workHours[indexWeekNr] += timeDif.Value.Hours + timeDif.Value.Minutes * 0.1;
+                    workHours[indexWeekNr] += timeDif.Value.Hours + timeDif.Value.Minutes * 0.01;
                 }
 
                 WeeklyWorkedHoursPerUser.Add(kvp.Key, workHours);
@@ -90,7 +91,7 @@ namespace Bumbo.Web.Models.Paycheck
                     }
                 }
 
-                if (changed)
+                if (!changed)
                 {
                     return;
                 }
