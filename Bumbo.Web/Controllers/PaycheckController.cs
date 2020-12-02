@@ -50,7 +50,6 @@ namespace Bumbo.Web.Controllers
 
             if (redirect) return RedirectToAction("Index", "PayCheck", new { branchId, year, monthNr });
 
-
             for (int i = 0; firstDay.AddDays(i) <= lastDay; i += 7)
             {
                 _viewModel.WeekNumbers.Add(ISOWeek.GetWeekOfYear(firstDay.AddDays(i)));
@@ -93,6 +92,9 @@ namespace Bumbo.Web.Controllers
 
             _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == id);
 
+
+            _viewModel.ScheduledShiftsPerUser = await _wrapper.Shift.GetAll(s => s.User.Id == id);
+
             if (_viewModel.SelectedUser == null)
             {
                 return NotFound();
@@ -105,6 +107,8 @@ namespace Bumbo.Web.Controllers
                 _viewModel.SelectedUserWorkedShifts = workedShifts;
                 _viewModel.SortSelectedUserWorkedShiftsByDate();
             }
+
+            _viewModel.CalculateDifferenceInHours();
 
             return View(_viewModel);
         }
@@ -120,31 +124,32 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [Route("approve")]
         //[Authorize(Policy = "BranchManager")]
-        public async Task<IActionResult> ApproveWorkhoursOverview(PaycheckViewModel approvePaycheckViewModel)
+        public async Task<IActionResult> ApproveWorkhoursOverview(int branchId, int monthNr, int year)
         {
-            var branchId = approvePaycheckViewModel.Branch.Id;
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
             if (branch == null) return NotFound();
 
-            if (ModelState.IsValid)
-            {
-                foreach (var kvp in approvePaycheckViewModel.MonthlyWorkedShiftsPerUser)
-                {
-                    for (int i = 0; i < kvp.Value.Count; i++)
-                    {
-                        kvp.Value[i].IsApprovedForPaycheck = true;
-                    }
-                }
 
-                approvePaycheckViewModel.OverviewApproved = true;
-            }
+
+            //if (ModelState.IsValid)
+            //{
+            //    foreach (var kvp in _viewModel.MonthlyWorkedShiftsPerUser)
+            //    {
+            //        for (int i = 0; i < kvp.Value.Count; i++)
+            //        {
+            //            kvp.Value[i].IsApprovedForPaycheck = true;
+            //        }
+            //    }
+
+            //    approvePaycheckViewModel.OverviewApproved = true;
+            //}
 
             return RedirectToAction(nameof(Index), new
             {
                 branchId,
-                year = approvePaycheckViewModel.Year,
-                week = approvePaycheckViewModel.MonthNr
+                year = year,
+                monthNr = monthNr
             });
         }
     }

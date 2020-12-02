@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Bumbo.Data.Models;
@@ -16,6 +16,7 @@ namespace Bumbo.Web.Models.Paycheck
         public Dictionary<User, List<WorkedShift>> MonthlyWorkedShiftsPerUser;
         public Dictionary<User, List<double>> WeeklyWorkedHoursPerUser;
         public List<WorkedShift> SelectedUserWorkedShifts;
+        public List<Shift> ScheduledShiftsPerUser;
         public Dictionary<string, string> ResetRouteValues;
 
         public PaycheckViewModel()
@@ -25,6 +26,7 @@ namespace Bumbo.Web.Models.Paycheck
             WeekNumbers = new List<int>();
             WeeklyWorkedHoursPerUser = new Dictionary<User, List<double>>();
             SelectedUserWorkedShifts = new List<WorkedShift>();
+            ScheduledShiftsPerUser = new List<Shift>();
 
             //TODO: Might use?
             ResetRouteValues = new Dictionary<string, string>
