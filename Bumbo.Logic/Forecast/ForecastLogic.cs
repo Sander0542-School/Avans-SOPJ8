@@ -1,7 +1,7 @@
-﻿using Bumbo.Data.Models.Common;
-using Bumbo.Data.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Bumbo.Data.Models.Common;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Logic.Forecast
 {

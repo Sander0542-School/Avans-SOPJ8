@@ -1,4 +1,6 @@
-﻿using Bumbo.Data;
+﻿using System;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Authorization.Handles;
 using Bumbo.Web.Authorization.Requirements;
@@ -7,8 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web
 {

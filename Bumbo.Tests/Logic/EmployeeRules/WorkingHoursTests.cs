@@ -1,9 +1,9 @@
-using Bumbo.Data.Models;
-using Bumbo.Logic.EmployeeRules;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Bumbo.Data.Models;
+using Bumbo.Logic.EmployeeRules;
+using NUnit.Framework;
 
 namespace Bumbo.Tests.Logic.EmployeeRules
 {

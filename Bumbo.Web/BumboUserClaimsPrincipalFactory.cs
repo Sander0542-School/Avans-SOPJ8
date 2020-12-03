@@ -1,11 +1,11 @@
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web
 {

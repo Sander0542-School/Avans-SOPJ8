@@ -1,9 +1,9 @@
-﻿using Bumbo.Data.Models;
+﻿using System.Collections.Generic;
+using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Bumbo.Tests.Logic.ForecastRules
 {

@@ -1,6 +1,6 @@
-﻿using Bumbo.Data.Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models;
 
 
 namespace Bumbo.Web.Models.Users

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Web.Controllers;
@@ -8,11 +13,6 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bumbo.Tests.Web.Controllers
 {

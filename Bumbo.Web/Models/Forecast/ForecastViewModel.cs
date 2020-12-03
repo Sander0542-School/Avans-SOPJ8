@@ -1,10 +1,10 @@
-﻿using Bumbo.Data.Models;
-using Bumbo.Data.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Web.Models.Forecast
 {

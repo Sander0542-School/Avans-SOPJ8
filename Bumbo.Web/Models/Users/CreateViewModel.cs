@@ -1,9 +1,9 @@
-﻿using Bumbo.Data.Models;
-using Bumbo.Data.Models.Validators;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models;
+using Bumbo.Data.Models.Validators;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Bumbo.Web.Models.Users

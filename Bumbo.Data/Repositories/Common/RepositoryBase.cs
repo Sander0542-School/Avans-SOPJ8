@@ -1,10 +1,10 @@
-﻿using Bumbo.Data.Models.Common;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Bumbo.Data.Models.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Data.Repositories.Common
 {

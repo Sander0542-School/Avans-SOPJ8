@@ -1,4 +1,8 @@
-﻿using Bumbo.Data;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
@@ -7,10 +11,6 @@ using Bumbo.Web.Models.Forecast;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {

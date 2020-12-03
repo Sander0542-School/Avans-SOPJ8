@@ -1,10 +1,10 @@
-﻿using Bumbo.Data.Models;
+﻿using System.IO;
+using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 namespace Bumbo.Data
 {

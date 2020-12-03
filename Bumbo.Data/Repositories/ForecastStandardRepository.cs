@@ -1,7 +1,7 @@
+using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Bumbo.Data.Repositories
 {

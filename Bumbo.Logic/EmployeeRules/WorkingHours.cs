@@ -1,9 +1,9 @@
-using Bumbo.Data.Models;
-using Bumbo.Logic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Bumbo.Data.Models;
+using Bumbo.Logic.Utils;
 
 namespace Bumbo.Logic.EmployeeRules
 {

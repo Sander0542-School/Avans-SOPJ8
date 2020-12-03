@@ -1,3 +1,8 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
@@ -7,11 +12,6 @@ using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {

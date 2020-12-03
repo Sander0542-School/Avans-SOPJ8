@@ -1,4 +1,9 @@
-﻿using Bumbo.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -8,11 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {

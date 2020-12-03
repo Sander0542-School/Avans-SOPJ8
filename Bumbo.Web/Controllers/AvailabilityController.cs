@@ -1,10 +1,10 @@
-﻿using Bumbo.Data;
+﻿using System;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

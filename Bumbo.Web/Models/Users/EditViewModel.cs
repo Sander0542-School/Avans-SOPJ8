@@ -1,10 +1,10 @@
-﻿using Bumbo.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Bumbo.Web.Models.Users
 {

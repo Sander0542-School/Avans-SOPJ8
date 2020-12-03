@@ -1,4 +1,11 @@
-﻿using Bumbo.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
 using Bumbo.Web.Models.Options;
 using Microsoft.AspNetCore.Authentication;
@@ -10,13 +17,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Areas.Identity.Pages.Account
 {

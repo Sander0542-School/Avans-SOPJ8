@@ -1,8 +1,8 @@
-﻿using Bumbo.Data.Models.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Repositories.Common
 {

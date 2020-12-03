@@ -1,5 +1,5 @@
-using Bumbo.Data.Models.Common;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Models
 {

@@ -1,8 +1,8 @@
-using Bumbo.Data.Models.Common;
-using Bumbo.Data.Models.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bumbo.Data.Models.Common;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models
 {

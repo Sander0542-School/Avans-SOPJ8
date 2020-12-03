@@ -1,9 +1,9 @@
-using Bumbo.Data;
-using Bumbo.Web.Authorization.Requirements;
-using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Bumbo.Data;
+using Bumbo.Web.Authorization.Requirements;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bumbo.Web.Authorization.Handles
 {

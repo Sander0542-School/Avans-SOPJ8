@@ -1,4 +1,6 @@
-﻿using Bumbo.Data;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Branches;
 using Microsoft.AspNetCore.Authorization;
@@ -6,8 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {

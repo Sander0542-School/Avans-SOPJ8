@@ -1,10 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Authorization.Handles
 {

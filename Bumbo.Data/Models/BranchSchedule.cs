@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
-using System.Collections.Generic;
 
 namespace Bumbo.Data.Models
 {
