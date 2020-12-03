@@ -39,7 +39,7 @@ jobs:
         npx cypress run
     - name: Upload Cypress Recordings
       # Only upload recordings if test fails
-      if: steps.CypressStep.outcome == 'failure'
+      if: always() && steps.CypressStep.outcome == 'failure'
       uses: actions/upload-artifact@v2.2.1
       with:
         name: Cypress Recordings
