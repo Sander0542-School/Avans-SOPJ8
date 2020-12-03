@@ -81,7 +81,7 @@
                         {
                             <li>
                                 <a asp-controller="Branches" asp-action="Index">@Localizer["All branches"]</a>
-</li>
+                            </li>
                         }
 
                         @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
@@ -160,8 +160,8 @@
                 }
             }
         </ul>
-
-        <div class="sidebar-footer text-center fixed-bottom position-absolute">
+        <div class="nav-sticky-footer-box"></div>
+        <div class="sidebar-footer text-center">
             <button type="button" class="btn btn-secondary btn-sm m-2" data-toggle="modal" data-target="#cultureModal">
                 <i class="fa fa-language" aria-hidden="true"></i>
                 @Localizer["ChangeLanguage"]
