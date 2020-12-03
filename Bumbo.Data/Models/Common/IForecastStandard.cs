@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Models.Common

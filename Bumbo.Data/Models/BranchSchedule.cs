@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 

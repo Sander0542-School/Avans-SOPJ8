@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Web.Authorization.Requirements;

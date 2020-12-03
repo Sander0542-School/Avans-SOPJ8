@@ -1,4 +1,4 @@
-namespace Bumbo.Web.Models.Options
+﻿namespace Bumbo.Web.Models.Options
 {
     public class BumboOptions
     {

@@ -1,4 +1,4 @@
-using Bumbo.Data;
+﻿using Bumbo.Data;
 using Bumbo.Tests.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;

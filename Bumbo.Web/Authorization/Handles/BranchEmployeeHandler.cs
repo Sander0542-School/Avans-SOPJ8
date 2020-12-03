@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;

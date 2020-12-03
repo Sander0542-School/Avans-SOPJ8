@@ -1,4 +1,4 @@
-namespace Bumbo.Data.Models.Enums
+﻿namespace Bumbo.Data.Models.Enums
 {
     public enum MondayFirstDayOfWeek
     {
