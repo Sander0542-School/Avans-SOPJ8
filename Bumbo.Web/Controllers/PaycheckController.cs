@@ -6,150 +6,166 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.PayCheck;
+using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Paycheck;
+using Bumbo.Web.Models.Schedule;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    //  [Authorize(Policy = "BranchManager")]
+    //[Authorize(Policy = "BranchManager")]
+    [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
         private readonly PaycheckViewModel _viewModel;
 
-        public PayCheckController(RepositoryWrapper wrapper)
+        private readonly IStringLocalizer<PayCheckController> _localizer;
+
+        public PayCheckController(RepositoryWrapper wrapper, IStringLocalizer<PayCheckController> localizer)
         {
             _wrapper = wrapper;
             _viewModel = new PaycheckViewModel();
+            _localizer = localizer;
         }
 
-        //Get /Branches/1/PayCheck/2020/10
-        [Route("Branches/{branchId}/{controller}/{year?}/{monthNr?}")]
-        public async Task<IActionResult> Index(int branchId, int? year, int? monthNr)
+        [Route("{year?}/{month?}")]
+        public async Task<IActionResult> Index(int branchId, int? year, int? month)
         {
-            // Check for default values
-            var redirect = false;
-
-            if (!year.HasValue)
+            if (!year.HasValue || !month.HasValue)
             {
-                redirect = true;
-                year = DateTime.Now.Year;
+                return RedirectToAction(nameof(Index), new
+                {
+                    branchId,
+                    year = year ?? DateTime.Today.Year,
+                    month = month ?? DateTime.Today.Month,
+                });
             }
 
-            if (!monthNr.HasValue)
-            {
-                redirect = true;
-                monthNr = DateTime.Now.Month;
-            }
+            var branch = await _wrapper.Branch.Get(branch => branch.Id == branchId);
 
-            _viewModel.Year = year.Value;
-            _viewModel.MonthNr = monthNr.Value;
+            if (branch == null) return NotFound();
 
-            DateTime lastDay = new DateTime(year.Value, monthNr.Value, 1).AddDays(-1);
-            DateTime firstDay = new DateTime(year.Value, monthNr.Value, 1).AddMonths(-1);
-
-            if (redirect) return RedirectToAction("Index", "PayCheck", new { branchId, year, monthNr });
-
-            for (int i = 0; firstDay.AddDays(i) <= lastDay; i += 7)
-            {
-                _viewModel.WeekNumbers.Add(ISOWeek.GetWeekOfYear(firstDay.AddDays(i)));
-            }
+            var firstDay = new DateTime(year.Value, month.Value, 1);
+            var lastDay = new DateTime(year.Value, month.Value, DateTime.DaysInMonth(year.Value, month.Value));
 
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
                 ws => ws.Shift.BranchId == branchId,
-                ws => ws.Shift.Date <= lastDay,
-                ws => ws.Shift.Date >= firstDay);
-            
-            foreach (var workShift in allWorkedShifts)
+                ws => ws.Shift.Date >= firstDay,
+                ws => ws.Shift.Date < lastDay.AddDays(1));
+
+            var users = allWorkedShifts.Select(ws => ws.Shift.User).Distinct().ToList();
+
+            var weeknumbers = WeekNumberBetweenDates(firstDay, lastDay);
+
+            return View(new PaycheckViewModel
             {
-
-                SalaryBenefitViewModel vm = new SalaryBenefitViewModel
+                Branch = branch,
+                Year = year.Value,
+                Month = month.Value,
+                WeekNumbers = weeknumbers,
+                MonthShifts = users.ToDictionary(user => new PaycheckViewModel.User
                 {
-                    Shift = workShift.Shift,
-                    StartTime = workShift.StartTime,
-                    EndTime = workShift.EndTime,
-                    IsApprovedForPaycheck = workShift.IsApprovedForPaycheck,
-                    Sick = workShift.Sick,
-                    ShiftId = workShift.ShiftId
-                };
+                    Id = user.Id,
+                    Name = UserUtil.GetFullName(user),
+                    Scale = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Scale ?? 0,
+                    Function = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Function ?? "",
+                }, user => allWorkedShifts
 
-                vm.ExtraTime += workShift.Shift.StartTime.Subtract(workShift.StartTime).TotalHours;
-                vm.ExtraTime += workShift.Shift.EndTime.Subtract((TimeSpan)workShift.EndTime).TotalHours;
-
-                if (_viewModel.MonthlyWorkedShiftsPerUser.ContainsKey(workShift.Shift.User))
-                {
-                    if (_viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(workShift.Shift.User,out var monthlyWorkedShifts))
+                    .Where(ws => ws.Shift.User == user)
+                    .Select(ws => new PaycheckViewModel.Shift
                     {
-                        monthlyWorkedShifts.Add(vm);
-                    }
-                }
-                else
-                {
-                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<SalaryBenefitViewModel> {vm});
-                }
-            }
-
-            _viewModel.GenerateWeeklyWorkedHoursPerUser();
-
-            return View(_viewModel);
+                        Day = ws.Shift.Date.DayOfWeek,
+                        StartTime = ws.StartTime,
+                        EndTime = ws.EndTime.Value,
+                        Week = ISOWeek.GetWeekOfYear(ws.Shift.Date)
+                    })
+                    .ToList())
+            });
         }
 
-        // GET: /Branches/1/PayCheck/2020/10/1
-        //TODO: Fix routing
-        [Route("details/{branchId:int}/{id:int}")]
-        public async Task<IActionResult> Details(int? id, int branchId, int? year, int? monthNr)
+        [Route("{year}/{month}/{userId}")]
+        public async Task<IActionResult> Details(int branchId, int year, int month, int userId)
         {
-            if (id == null)
+            var firstDay = new DateTime(year, month, 1);
+            var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+            var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
+                ws => ws.Shift.BranchId == branchId,
+                ws => ws.Shift.Date >= firstDay,
+                ws => ws.Shift.Date < lastDay.AddDays(1),
+                ws => ws.Shift.UserId == userId);
+
+            var weeknumbers = WeekNumberBetweenDates(firstDay, lastDay);
+
+            return View(new DetailsViewModel
             {
-                return NotFound();
+                WeekShifts = weeknumbers
+                    .ToDictionary(weekNr => weekNr, weekNr => allWorkedShifts
+                        .Where(workedShift => ISOWeek.GetWeekOfYear(workedShift.Shift.Date) == weekNr)
+                        .Select(workedShift =>
+                        {
+                            var totalWorkTime = workedShift.EndTime.Value.Subtract(workedShift.StartTime);
+                            var actualWorkedTime = totalWorkTime.Subtract(BreakDuration.GetDuration(totalWorkTime));
+
+                            var totalWorkTimeShift = workedShift.Shift.EndTime.Subtract(workedShift.Shift.StartTime);
+                            var actualWorkedTimeShift = totalWorkTimeShift.Subtract(BreakDuration.GetDuration(totalWorkTimeShift));
+
+                            return new DetailsViewModel.Shift
+                            {
+                                ShiftId = workedShift.ShiftId,
+                                StartTime = workedShift.StartTime,
+                                EndTime = workedShift.EndTime.Value,
+                                Day = workedShift.Shift.Date.DayOfWeek,
+                                Difference = actualWorkedTime.Subtract(actualWorkedTimeShift)
+                            };
+                        })
+                        .ToList()
+                    ),
+                Input = new DetailsViewModel.InputModel
+                {
+                    UserId = userId,
+                    Year = year,
+                    Month = month
+                }
+            });
+        }
+
+        private List<int> WeekNumberBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            var weekNumbers = new List<int>();
+
+            for (var date = startDate; date.Date <= endDate.Date; date = date.AddDays(7))
+            {
+                weekNumbers.Add(ISOWeek.GetWeekOfYear(date));
             }
 
-            _viewModel.SelectedUser = await _wrapper.User.Get(U => U.Id == id);
-
-            if (_viewModel.SelectedUser == null)
-            {
-                return NotFound();
-            }
-
-            _viewModel.ScheduledShiftsPerUser = await _wrapper.Shift.GetAll(s => s.User.Id == id);
-
-            _viewModel.MonthlyWorkedShiftsPerUser.TryGetValue(_viewModel.SelectedUser,  out var workedShifts);
-
-            if (workedShifts == null)
-            {
-                return NotFound();
-            }
-
-            _viewModel.SelectedUserWorkedShifts = workedShifts;
-            _viewModel.SortSelectedUserWorkedShiftsByDate();
-            _viewModel.CalculateTotalDifferencePerWeek();
-
-            return View(_viewModel);
+            return weekNumbers;
         }
 
         [HttpPost]
-        [Route("approve")]
-        //[Authorize(Policy = "BranchManager")]
-        public async Task<IActionResult> ApproveWorkhoursOverview(int branchId, int monthNr, int year)
+        [Route("Approve")]
+        public async Task<IActionResult> ApproveWorkhoursOverview(int branchId, int monthNr, int year, Dictionary<User, List<SalaryBenefitViewModel>> monthlyWorkedShiftsPerUser)
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
             if (branch == null) return NotFound();
 
+            if (ModelState.IsValid)
+            {
+                foreach (var kvp in monthlyWorkedShiftsPerUser)
+                {
+                    for (int i = 0; i < kvp.Value.Count; i++)
+                    {
+                        kvp.Value[i].IsApprovedForPaycheck = true;
+                    }
+                }
 
-
-            //if (ModelState.IsValid)
-            //{
-            //    foreach (var kvp in _viewModel.MonthlyWorkedShiftsPerUser)
-            //    {
-            //        for (int i = 0; i < kvp.Value.Count; i++)
-            //        {
-            //            kvp.Value[i].IsApprovedForPaycheck = true;
-            //        }
-            //    }
-
-            //    approvePaycheckViewModel.OverviewApproved = true;
-            //}
+                _viewModel.OverviewApproved = true;
+            }
 
             return RedirectToAction(nameof(Index), new
             {
@@ -159,9 +175,8 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        //TODO: Fix routing
-        [Route("SalaryBenefit/{branchId:int}/{id:int}")]
-        public async Task<IActionResult> SalaryBenefit(int? id, int branchId, int? year, int? monthNr)
+        [Route("SalaryBenefit")]
+        public async Task<IActionResult> SalaryBenefit(int branchId, int? year, int? monthNr, int? id)
         {
             SalaryBenefitViewModel viewModel = new SalaryBenefitViewModel();
             PayCheckLogic pcl = new PayCheckLogic();
@@ -185,11 +200,48 @@ namespace Bumbo.Web.Controllers
                 }
                 else
                 {
-                    viewModel.PayChecks.Add(workedShift.Shift.User,pcl.CalculateBonus(workedShift));
+                    viewModel.PayChecks.Add(workedShift.Shift.User, pcl.CalculateBonus(workedShift));
                 }
             }
-           
+
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("SavePaycheck")]
+        public async Task<IActionResult> SavePaycheck(int branchId, DetailsViewModel.InputModel paycheckModel)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            var alertMessage = $"Danger:{_localizer["PaycheckNotSaved"]}";
+
+            if (ModelState.IsValid)
+            {
+                var shift = await _wrapper.WorkedShift.Get(shift => shift.ShiftId == paycheckModel.ShiftId);
+
+                if (shift != null)
+                {
+                    shift.StartTime = paycheckModel.StartTime;
+                    shift.EndTime = paycheckModel.EndTime;
+
+                    if (_wrapper.WorkedShift.Update(shift) != null)
+                    {
+                        alertMessage = $"Success:{_localizer["PaycheckSaved"]}";
+                    }
+                }
+            }
+
+            TempData["alertMessage"] = alertMessage;
+
+            return RedirectToAction(nameof(Details), new
+            {
+                userId = paycheckModel.UserId,
+                branchId,
+                year = paycheckModel.Year,
+                month = paycheckModel.Month
+            });
         }
     }
 }

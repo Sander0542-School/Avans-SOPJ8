@@ -1,66 +1,66 @@
 ﻿@using System.Globalization
 @model Bumbo.Web.Models.Paycheck.PaycheckViewModel
-@{
-    DateTimeFormatInfo mfi = new DateTimeFormatInfo();
-    string strMonthName = "";
 
-    strMonthName = Model.MonthNr == 1 ? mfi.GetMonthName(12) : mfi.GetMonthName(Model.MonthNr - 1);
-}
 <h1>PayCheck</h1>
-<h2> @strMonthName</h2>
+<h2>@(new DateTime(Model.Year, Model.Month, 1).ToString("MMMMM"))</h2>
 
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Kpu
-        </th>
-        @for (int i = 0; i < Model.WeekNumbers.Count; i++)
-        {
+        <tr>
+            <th class="text-left">@Html.DisplayNameFor(model => model.MonthShifts.FirstOrDefault().Key.Name)</th>
+            <th class="text-left">@Html.DisplayNameFor(model => model.MonthShifts.FirstOrDefault().Key.Scale)</th>
+
+            @foreach (var week in Model.WeekNumbers)
+            {
+                <th>
+                    Week @week
+                </th>
+            }
             <th>
-                Week @Model.WeekNumbers[i]
+                Total workhours
             </th>
-        }
-        <th>
-            Total workhours
-        </th>
-    </tr>
+        </tr>
     </thead>
     <tbody>
 
-    @foreach (var kvp in Model.WeeklyWorkedHoursPerUser)
-    {
-        <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = kvp.Key.Shifts.First().BranchId, id = kvp.Key.Id, year = @Model.Year, monthNr = @Model.MonthNr })'" style="cursor: pointer;">
-            <td>
-                @kvp.Key.FirstName @kvp.Key.MiddleName @kvp.Key.LastName
-            </td>
-            <td>
-                @*@kvp.Key.Contracts.First().Scale*@
-            </td>
-            @for (int i = 0; i < kvp.Value.Count; i++)
-            {
+        @foreach (var pair in Model.MonthShifts)
+        {
+            var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
+            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
                 <td>
-                    @kvp.Value[i]
+                    <span class="d-inline-block">
+                        @Html.DisplayFor(model => pair.Key.Name)
+                        <br />
+                        <span class="text-secondary">
+                            @Html.DisplayFor(model => pair.Key.Function)
+                        </span>
+                    </span>
                 </td>
-            }
-            <td>
-                @Model.CalculateTotalWorkHours(kvp.Key)
-            </td>
-        </tr>
-    }
+                <td>
+                    @Html.DisplayFor(model => pair.Key.Scale)
+                </td>
+                @foreach (var week in Model.WeekNumbers)
+                {
+                    var workedShifts = pair.Value.Where(ws => ws.Week == week);
+                    var workedTime = new TimeSpan(workedShifts.Sum(ws => ws.WorkTime.Ticks));
+                    <td>
+                        @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+                    </td>
+                }
+                <td>
+                    @($"{totalWorkedTime.TotalHours:00}:{totalWorkedTime.Minutes:00}")
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 @if (!Model.OverviewApproved && Model != null)
 {
-    <form asp-action="ApproveWorkhoursOverview">
+    <form asp-action="ApproveWorkhoursOverview" method="post">
         <input type="hidden" asp-for="@Model.Branch.Id">
-        <input type="hidden" asp-for="@Model.MonthNr">
+        <input type="hidden" asp-for="@Model.Month">
         <input type="hidden" asp-for="@Model.Year">
         <button type="submit" class="btn btn-primary">Approve workhours</button>
     </form>
 }
-

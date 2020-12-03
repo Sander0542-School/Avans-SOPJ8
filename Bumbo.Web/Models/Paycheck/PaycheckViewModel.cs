@@ -1,144 +1,56 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
+using Bumbo.Logic.EmployeeRules;
 
 namespace Bumbo.Web.Models.Paycheck
 {
     public class PaycheckViewModel
     {
-        public List<int> WeekNumbers;
-        public List<double> ExtraHoursPerWeekSelectedUser;
-        public Branch Branch;
-        public User SelectedUser;
-        public int Year;
-        public int MonthNr;
-        public bool OverviewApproved;
-        public Dictionary<User, List<SalaryBenefitViewModel>> MonthlyWorkedShiftsPerUser;
-        public Dictionary<User, List<double>> WeeklyWorkedHoursPerUser;
-        public List<SalaryBenefitViewModel> SelectedUserWorkedShifts;
-        public List<Shift> ScheduledShiftsPerUser;
-        public Dictionary<string, string> ResetRouteValues;
+        public Dictionary<User, List<Shift>> MonthShifts { get; set; }
+        public List<int> WeekNumbers { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public Branch Branch { get; set; }
+        public bool OverviewApproved { get; set; }
 
-        public PaycheckViewModel()
+        public class User
         {
-            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<SalaryBenefitViewModel>>();
-            SelectedUser = null;
-            WeekNumbers = new List<int>();
-            WeeklyWorkedHoursPerUser = new Dictionary<User, List<double>>();
-            SelectedUserWorkedShifts = new List<SalaryBenefitViewModel>();
-            ScheduledShiftsPerUser = new List<Shift>();
-
-            //TODO: Might use?
-            ResetRouteValues = new Dictionary<string, string>
-            {
-                {
-                    "monthNr",
-                    DateTime.Now.Month.ToString()
-                },
-                {
-                    "year",
-                    DateTime.Now.Year.ToString()
-                }
-            };
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int Scale { get; set; }
+            public string Function { get; set; }
         }
 
-        public void GenerateWeeklyWorkedHoursPerUser()
+        public class Shift
         {
-            foreach (var kvp in MonthlyWorkedShiftsPerUser)
-            {
-                int weekNr = ISOWeek.GetWeekOfYear(kvp.Value[0].Shift.Date);
-                int indexWeekNr = 0;
+            [Display(Name = "StartTime")]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan StartTime { get; set; }
 
-                List<double> workHours = new List<double>();
+            [Display(Name = "EndTime")]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan EndTime { get; set; }
 
-                for (int i = 0; i < WeekNumbers.Count; i++)
-                {
-                    workHours.Add(0);
-                }
+            [Display(Name = "DayOfWeek")]
+            public DayOfWeek Day { get; set; }
 
-                for (int i = 0; i < kvp.Value.Count; i++)
-                {
-                    if (weekNr != ISOWeek.GetWeekOfYear(kvp.Value[i].Shift.Date))
-                    {
-                        weekNr = ISOWeek.GetWeekOfYear(kvp.Value[i].Shift.Date);
-                        indexWeekNr++;
-                    }
+            [Display(Name = "BreakTime")]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
-                    var timeDif = kvp.Value[i].EndTime - kvp.Value[i].StartTime;
+            [Display(Name = "WorkTime")]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan WorkTime => TotalTime.Subtract(BreakTime);
 
-                    workHours[indexWeekNr] += timeDif.Value.Hours + timeDif.Value.Minutes * 0.01;
-                }
+            [Display(Name = "TotalTime")]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 
-                WeeklyWorkedHoursPerUser.Add(kvp.Key, workHours);
-            }
-        }
-
-        public double CalculateTotalWorkHours(User user)
-        {
-            double result = 0;
-
-            WeeklyWorkedHoursPerUser.TryGetValue(user, out var weeklyWorkedHours);
-
-
-            foreach (var hours in weeklyWorkedHours)
-            {
-                result += hours;
-            }
-
-            return result;
-        }
-
-        public void SortSelectedUserWorkedShiftsByDate()
-        {
-            bool changed = false;
-
-            for (int j = 0; j <= SelectedUserWorkedShifts.Count - 2; j++)
-            {
-                for (int i = 0; i <= SelectedUserWorkedShifts.Count - 2; i++)
-                {
-                    if (SelectedUserWorkedShifts[i].Shift.Date > SelectedUserWorkedShifts[i + 1].Shift.Date)
-                    {
-                        var temp = SelectedUserWorkedShifts[i + 1];
-                        SelectedUserWorkedShifts[i + 1] = SelectedUserWorkedShifts[i];
-                        SelectedUserWorkedShifts[i] = temp;
-                        changed = true;
-                    }
-                }
-
-                if (!changed)
-                {
-                    return;
-                }
-            }
-        }
-
-        public void CalculateTotalDifferencePerWeek()
-        {
-            int indexWeekNr = 0;
-            bool first = true;
-            int weekNr = 0;
-            List<double> workHours = new List<double>();
-
-            foreach (var viewModel in SelectedUserWorkedShifts)
-            {
-                if (first)
-                {
-                    weekNr = ISOWeek.GetWeekOfYear(viewModel.Shift.Date);
-                    first = false;
-                }
-                
-                if (weekNr != ISOWeek.GetWeekOfYear(viewModel.Shift.Date))
-                {
-                    weekNr = ISOWeek.GetWeekOfYear(viewModel.Shift.Date);
-                    workHours.Add(0);
-                    indexWeekNr++;
-                }
-
-                workHours[indexWeekNr] += viewModel.ExtraTime;
-            }
-
-            ExtraHoursPerWeekSelectedUser = workHours;
+            public int Week { get; set; }
         }
     }
 }

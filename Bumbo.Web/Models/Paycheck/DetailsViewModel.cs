@@ -40,20 +40,19 @@ namespace Bumbo.Web.Models.Paycheck
             [Display(Name = "DayOfWeek")]
             public DayOfWeek Day { get; set; }
 
-            //TODO: DIsplayname
-            [DisplayName("BreakTime")]
+            [Display(Name = "BreakTime")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
-            [DisplayName("WorkTime")]
+            [Display(Name = "WorkTime")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan WorkTime => TotalTime.Subtract(BreakTime);
 
-            [DisplayName("TotalTime")]
+            [Display(Name = "TotalTime")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 
-            [DisplayName("Difference")]
+            [Display(Name = "Difference")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan Difference { get; set; }
         }
@@ -66,13 +65,13 @@ namespace Bumbo.Web.Models.Paycheck
             public int Year { get; set; }
             public int Month { get; set; }
 
-            [DisplayName("StartTime")]
+            [Display(Name = "StartTime")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan StartTime { get; set; }
 
-            [DisplayName("EndTime")]
+            [Display(Name = "EndTime")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
