@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Logic.PayCheck;
 using Bumbo.Web.Models.Paycheck;
 
 namespace Bumbo.Web.Controllers
@@ -62,7 +63,7 @@ namespace Bumbo.Web.Controllers
             foreach (var workShift in allWorkedShifts)
             {
 
-                WorkedShiftViewModel vm = new WorkedShiftViewModel
+                SalaryBenefitViewModel vm = new SalaryBenefitViewModel
                 {
                     Shift = workShift.Shift,
                     StartTime = workShift.StartTime,
@@ -84,7 +85,7 @@ namespace Bumbo.Web.Controllers
                 }
                 else
                 {
-                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<WorkedShiftViewModel> {vm});
+                    _viewModel.MonthlyWorkedShiftsPerUser.Add(workShift.Shift.User, new List<SalaryBenefitViewModel> {vm});
                 }
             }
 
@@ -127,14 +128,6 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        [Route("details")]
-        // GET: PayCheck/Details/5
-        public async Task<IActionResult> Details(PaycheckViewModel viewModel)
-        {
-            return RedirectToAction("Details");
-        }
-
-        [HttpPost]
         [Route("approve")]
         //[Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> ApproveWorkhoursOverview(int branchId, int monthNr, int year)
@@ -164,6 +157,39 @@ namespace Bumbo.Web.Controllers
                 year = year,
                 monthNr = monthNr
             });
+        }
+
+        //TODO: Fix routing
+        [Route("SalaryBenefit/{branchId:int}/{id:int}")]
+        public async Task<IActionResult> SalaryBenefit(int? id, int branchId, int? year, int? monthNr)
+        {
+            SalaryBenefitViewModel viewModel = new SalaryBenefitViewModel();
+            PayCheckLogic pcl = new PayCheckLogic();
+
+            DateTime lastDay = new DateTime(year.Value, monthNr.Value, 1).AddDays(-1);
+            DateTime firstDay = new DateTime(year.Value, monthNr.Value, 1).AddMonths(-1);
+
+            var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
+                ws => ws.Shift.BranchId == branchId,
+                ws => ws.Shift.Date <= lastDay,
+                ws => ws.Shift.Date >= firstDay);
+
+
+            foreach (var workedShift in allWorkedShifts)
+            {
+                if (viewModel.PayChecks.ContainsKey(workedShift.Shift.User))
+                {
+                    viewModel.PayChecks.TryGetValue(workedShift.Shift.User, out var temp);
+                    temp.AddPayCheck(pcl.CalculateBonus(workedShift));
+                    viewModel.PayChecks.Add(workedShift.Shift.User, temp);
+                }
+                else
+                {
+                    viewModel.PayChecks.Add(workedShift.Shift.User,pcl.CalculateBonus(workedShift));
+                }
+            }
+           
+            return View(viewModel);
         }
     }
 }

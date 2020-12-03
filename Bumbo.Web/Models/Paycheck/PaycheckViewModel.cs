@@ -14,19 +14,19 @@ namespace Bumbo.Web.Models.Paycheck
         public int Year;
         public int MonthNr;
         public bool OverviewApproved;
-        public Dictionary<User, List<WorkedShiftViewModel>> MonthlyWorkedShiftsPerUser;
+        public Dictionary<User, List<SalaryBenefitViewModel>> MonthlyWorkedShiftsPerUser;
         public Dictionary<User, List<double>> WeeklyWorkedHoursPerUser;
-        public List<WorkedShiftViewModel> SelectedUserWorkedShifts;
+        public List<SalaryBenefitViewModel> SelectedUserWorkedShifts;
         public List<Shift> ScheduledShiftsPerUser;
         public Dictionary<string, string> ResetRouteValues;
 
         public PaycheckViewModel()
         {
-            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<WorkedShiftViewModel>>();
+            MonthlyWorkedShiftsPerUser = new Dictionary<User, List<SalaryBenefitViewModel>>();
             SelectedUser = null;
             WeekNumbers = new List<int>();
             WeeklyWorkedHoursPerUser = new Dictionary<User, List<double>>();
-            SelectedUserWorkedShifts = new List<WorkedShiftViewModel>();
+            SelectedUserWorkedShifts = new List<SalaryBenefitViewModel>();
             ScheduledShiftsPerUser = new List<Shift>();
 
             //TODO: Might use?
