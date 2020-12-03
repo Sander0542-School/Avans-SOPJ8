@@ -58,7 +58,7 @@ namespace Bumbo.Web.Controllers
                     presentUserWork.StartTime = model.Work.StartTime;
                     presentUserWork.EndTime = model.Work.EndTime;
 
-                    bool success = await _wrapper.UserAdditionalWork.Update(presentUserWork) != null;
+                    await _wrapper.UserAdditionalWork.Update(presentUserWork);
                 }
             }
 
@@ -68,8 +68,7 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Delete(DayOfWeek day)
         {
             int userId = int.Parse(_userManager.GetUserId(User));
-            var additionalWork = await _wrapper.UserAdditionalWork.Get(work => work.Day == day, work => work.UserId == userId);
-            await _wrapper.UserAdditionalWork.Remove(additionalWork);
+            await _wrapper.UserAdditionalWork.Remove(work => work.Day == day, work => work.UserId == userId);
 
             return RedirectToAction("Index");
         }
