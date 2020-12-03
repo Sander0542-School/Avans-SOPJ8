@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
@@ -27,8 +26,10 @@ namespace Bumbo.Tests.Web.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new ScheduleController(Wrapper, Localizer);
-            _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller = new ScheduleController(Wrapper, Localizer)
+            {
+                TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+            };
         }
 
         [OneTimeSetUp]
@@ -61,8 +62,8 @@ namespace Bumbo.Tests.Web.Controllers
                     new UserAvailability
                     {
                         Day = DayOfWeek.Monday,
-                        StartTime = new TimeSpan(15,0,0),
-                        EndTime = new TimeSpan(21,0,0)
+                        StartTime = TimeSpan.FromHours(15),
+                        EndTime = TimeSpan.FromHours(21)
                     }
                 }
             }).Result;
@@ -79,29 +80,30 @@ namespace Bumbo.Tests.Web.Controllers
                 Week = 50,
                 StartTime = TimeSpan.FromHours(16),
                 EndTime = TimeSpan.FromHours(18),
-                Date = ISOWeek.ToDateTime(2020,50, DayOfWeek.Monday)
+                Date = ISOWeek.ToDateTime(2020, 50, DayOfWeek.Monday)
             };
 
             var result = await _controller.SaveShift(_branch.Id, model);
             var redirectResult = result as RedirectToActionResult;
-            
+
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+
             var expectedRedirectValues = new RouteValueDictionary
             {
-                { "branchId", _branch.Id },
-                { "year", model.Year },
-                { "week", model.Week },
-                { "department", model.Department }
+                {"branchId", _branch.Id},
+                {"year", model.Year},
+                {"week", model.Week},
+                {"department", model.Department}
             };
-            
+
             Assert.AreEqual(nameof(ScheduleController.Week), redirectResult.ActionName);
             Assert.AreEqual(expectedRedirectValues, redirectResult.RouteValues);
 
             var shift = await Wrapper.Shift.Get(shift1 => shift1.UserId == _user.Id);
-            
-            Assert.NotNull(shift);
+
+            Assert.IsNotNull(shift);
             Assert.AreEqual(_user.Id, shift.UserId);
         }
 
@@ -109,10 +111,10 @@ namespace Bumbo.Tests.Web.Controllers
         public async Task TestEditShift()
         {
             var shift = await Wrapper.Shift.Get(shift1 => shift1.UserId == _user.Id);
-            
-            Assert.NotNull(shift);
+
+            Assert.IsNotNull(shift);
             Assert.AreEqual(_user.Id, shift.UserId);
-            
+
             var model = new DepartmentViewModel.InputShiftModel
             {
                 ShiftId = shift.Id,
@@ -122,32 +124,109 @@ namespace Bumbo.Tests.Web.Controllers
                 Week = 50,
                 StartTime = TimeSpan.FromHours(15),
                 EndTime = TimeSpan.FromHours(17),
-                Date = ISOWeek.ToDateTime(2020,50, DayOfWeek.Monday)
+                Date = ISOWeek.ToDateTime(2020, 50, DayOfWeek.Monday)
             };
 
             var result = await _controller.SaveShift(_branch.Id, model);
             var redirectResult = result as RedirectToActionResult;
-            
+
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+
             var expectedRedirectValues = new RouteValueDictionary
             {
-                { "branchId", _branch.Id },
-                { "year", model.Year },
-                { "week", model.Week },
-                { "department", model.Department }
+                {"branchId", _branch.Id},
+                {"year", model.Year},
+                {"week", model.Week},
+                {"department", model.Department}
             };
-            
+
             Assert.AreEqual(nameof(ScheduleController.Week), redirectResult.ActionName);
             Assert.AreEqual(expectedRedirectValues, redirectResult.RouteValues);
 
             var updatedShift = await Wrapper.Shift.Get(shift1 => shift1.Id == shift.Id);
-            
-            Assert.NotNull(updatedShift);
-            
+
+            Assert.IsNotNull(updatedShift);
+
             Assert.AreEqual(TimeSpan.FromHours(15), updatedShift.StartTime);
             Assert.AreEqual(TimeSpan.FromHours(17), updatedShift.EndTime);
+        }
+
+        [Test, Order(3)]
+        public async Task TestCopySchedule()
+        {
+            var model = new DepartmentViewModel.InputCopyWeekModel()
+            {
+                Department = _user.Branches.First().Department,
+                Year = 2020,
+                Week = 50,
+                TargetYear = 2020,
+                TargetWeek = 51,
+            };
+
+            var result = await _controller.CopySchedule(_branch.Id, model);
+            var redirectResult = result as RedirectToActionResult;
+
+            Assert.IsNotNull(redirectResult);
+            Assert.IsNotNull(_controller.TempData["alertMessage"]);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+
+            var expectedRedirectValues = new RouteValueDictionary
+            {
+                {"branchId", _branch.Id},
+                {"year", model.TargetYear},
+                {"week", model.TargetWeek},
+                {"department", model.Department}
+            };
+
+            Assert.AreEqual(nameof(ScheduleController.Week), redirectResult.ActionName);
+            Assert.AreEqual(expectedRedirectValues, redirectResult.RouteValues);
+
+            var targetSchedule = await Wrapper.BranchSchedule.Get(
+                schedule => schedule.Year == model.TargetYear,
+                schedule => schedule.Week == model.TargetWeek,
+                schedule => schedule.Department == model.Department);
+
+            Assert.IsNotNull(targetSchedule);
+            Assert.That(targetSchedule.Shifts, Has.Count.EqualTo(1));
+        }
+
+        [Test, Order(3)]
+        public async Task TestApproveSchedule()
+        {
+            var model = new DepartmentViewModel.InputApproveScheduleModel()
+            {
+                Department = _user.Branches.First().Department,
+                Year = 2020,
+                Week = 50,
+            };
+
+            var result = await _controller.ApproveSchedule(_branch.Id, model);
+            var redirectResult = result as RedirectToActionResult;
+
+            Assert.IsNotNull(redirectResult);
+            Assert.IsNotNull(_controller.TempData["alertMessage"]);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+
+            var expectedRedirectValues = new RouteValueDictionary
+            {
+                {"branchId", _branch.Id},
+                {"year", model.Year},
+                {"week", model.Week},
+                {"department", model.Department}
+            };
+
+            Assert.AreEqual(nameof(ScheduleController.Week), redirectResult.ActionName);
+            Assert.AreEqual(expectedRedirectValues, redirectResult.RouteValues);
+
+            var schedule = await Wrapper.BranchSchedule.Get(
+                schedule1 => schedule1.Year == model.Year,
+                schedule1 => schedule1.Week == model.Week,
+                schedule1 => schedule1.Department == model.Department);
+
+            Assert.IsNotNull(schedule);
+            Assert.IsTrue(schedule.Confirmed);
         }
     }
 }
