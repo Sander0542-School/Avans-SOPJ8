@@ -2,7 +2,7 @@ name: .NET Core
 
 on:
   push:
-    branches: 
+    branches:
       - master
       - develop
 
@@ -28,7 +28,7 @@ jobs:
     - name: Start Website
       #  " & " makes it so the command run in the background and does not block the command line
       run: dotnet run -p ./Bumbo.Web/ --launch-profile Bumbo.Testing &
-    - name: Install npm Dependencies 
+    - name: Install npm Dependencies
       run: |
         cd ./Bumbo.Tests.Cypress/
         npm install
@@ -37,10 +37,6 @@ jobs:
       run: |
         cd ./Bumbo.Tests.Cypress/
         npx cypress run
-    - name: Run eslint 
-      run: |
-        cd ./Bumbo.Tests.Cypress/
-        npm run lint
     - name: Upload Cypress Recordings
       # Only upload recordings if test fails
       if: steps.CypressStep.outcome == 'failure'
