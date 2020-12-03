@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Bumbo.Web
 {
-    public class BumboUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User>
+    public class BumboUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public BumboUserClaimsPrincipalFactory(ApplicationDbContext dbContext, UserManager<User> userManager, IOptions<IdentityOptions> optionsAccessor) : base(userManager, optionsAccessor)
+        public BumboUserClaimsPrincipalFactory(ApplicationDbContext dbContext, UserManager<User> userManager, RoleManager<Role> roleManager, IOptions<IdentityOptions> optionsAccessor) : base(userManager, roleManager, optionsAccessor)
         {
             _dbContext = dbContext;
         }

@@ -8,11 +8,10 @@ using System.IO;
 
 namespace Bumbo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
 
         public DbSet<Branch> Branches { get; set; }
@@ -53,7 +52,7 @@ namespace Bumbo.Data
                 b.ToTable("UserTokens");
             });
 
-            builder.Entity<IdentityRole<int>>(b =>
+            builder.Entity<Role>(b =>
             {
                 b.ToTable("Roles");
             });
