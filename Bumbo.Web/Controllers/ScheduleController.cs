@@ -351,7 +351,6 @@ namespace Bumbo.Web.Controllers
                 }
                
             }
-            b
             return Json(events.ToArray());
         }
 
