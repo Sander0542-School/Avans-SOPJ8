@@ -13,7 +13,7 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Bumbo.Tests.Cypress", "Bumb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumbo.Logic", "Bumbo.Logic\Bumbo.Logic.csproj", "{CABF5193-C076-4B35-ABAE-BD2EE93DB2DE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90768E84-0F07-46CE-9855-0363D8351B99}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B863C3EC-2C72-4C5B-9DFC-A1A77D8345E9}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
