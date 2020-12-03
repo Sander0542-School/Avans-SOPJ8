@@ -1,7 +1,7 @@
-@model UserAdditionalWorkViewModel
+@model UserAvailabilityViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["School timetable"];
+    ViewData["Title"] = Localizer["Availability"];
 }
 
 <h4>@ViewData["Title"]</h4>
@@ -10,30 +10,30 @@
         <p class="mb-0 font-weight-bold">@Localizer["Day"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["StartTime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["Starttime"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["EndTime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["Endtime"]</p>
     </div>
 </div>
-@foreach (DayOfWeek weekday in UserAdditionalWorkViewModel.InputAdditionalWork.DaysOfWeek)
+@foreach (DayOfWeek weekday in UserAvailabilityViewModel.DaysOfWeek)
 {
     <div class="row">
         <div class="col-4">
-            <p>@Localizer[weekday.ToString()]</p>
+            <p>@Localizer[@weekday.ToString()]</p>
         </div>
         <div class="col-3">
-            <input asp-for="Work.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime" />
+            <input asp-for="Availability.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime" />
         </div>
         <div class="col-3">
-            <input asp-for="Work.EndTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime" />
+            <input asp-for="Availability.EndTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime" />
         </div>
         <div class="col-2">
             <form method="POST" asp-action="Edit" class="d-inline-block">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input asp-for="Work.Day" value="@weekday" class="d-none" />
-                <input asp-for="Work.StartTime" type="time" class="d-none" />
-                <input asp-for="Work.EndTime" type="time" class="d-none" />
+                <input asp-for="Availability.Day" value="@weekday" class="d-none" />
+                <input asp-for="Availability.StartTime" type="time" class="d-none" />
+                <input asp-for="Availability.EndTime" type="time" class="d-none" />
                 <button type="submit" class="btn btn-link text-success d-none p-0">
                     <i class="fa fa-save"></i>
                 </button>
@@ -56,7 +56,7 @@
         let startEl;
         let endEl;
 
-        if (el.getAttribute("name") == "Work.StartTime") {
+        if (el.getAttribute("name") == "Availability.StartTime") {
             startEl = el;
             endEl = el.parentElement.nextElementSibling.firstElementChild;
         } else {
