@@ -7,7 +7,7 @@ namespace Bumbo.Web.Models.Schedule
 {
     public class EventViewModel
     {
-        public Int64 id { get; set; }
+        public int id { get; set; }
 
         public String title { get; set; }
 
