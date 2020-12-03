@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
-    @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
 <div class="wrapper">
@@ -16,6 +16,7 @@
     <partial name="_SideNav"/>
 
     <div class="content">
+        <partial name="_CookieConsentPartial"/>
         @if (ViewData["AlertMessage"] != null)
         {
             <div class="container">
@@ -36,6 +37,6 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>
