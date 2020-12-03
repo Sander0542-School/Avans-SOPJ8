@@ -14,15 +14,6 @@ namespace Bumbo.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IStringLocalizer _localizer;
-
-        public HomeController(ILogger<HomeController> logger/**, IStringLocalizer localizer **/)
-        {
-            _logger = logger;
-            // _localizer = localizer;
-        }
-
         public IActionResult Index()
         {
             return View();
@@ -44,7 +35,7 @@ namespace Bumbo.Web.Controllers
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions() { Expires = DateTimeOffset.Now.AddDays(999) });
+                new CookieOptions() {Expires = DateTimeOffset.Now.AddDays(999)});
 
             return LocalRedirect(returnUrl);
         }

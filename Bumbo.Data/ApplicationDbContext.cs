@@ -11,11 +11,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace Bumbo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
         }
         
         public DbSet<Branch> Branches { get; set; }
@@ -56,7 +55,7 @@ namespace Bumbo.Data
                 b.ToTable("UserTokens");
             });
 
-            builder.Entity<IdentityRole<int>>(b =>
+            builder.Entity<Role>(b =>
             {
                 b.ToTable("Roles");
             });
@@ -111,25 +110,25 @@ namespace Bumbo.Data
                 b.ToTable("BranchManagers");
             });
 
+            builder.Entity<BranchSchedule>(b =>
+            {
+                b.HasIndex(branchSchedule => new {branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department}).IsUnique();
+                
+                b.ToTable("BranchSchedules");
+            });
+
             #endregion
 
             #region Shifts
 
             builder.Entity<Shift>(b =>
             {
-                b.HasIndex(shift => new {shift.UserId, shift.BranchId, shift.Department, shift.Date}).IsUnique();
+                b.HasIndex(shift => new {shift.UserId, shift.ScheduleId, shift.Date}).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
             {
                 b.Property(workedShift => workedShift.Sick).HasDefaultValue(false);
-            });
-
-            builder.Entity<WeekSchedule>(b =>
-            {
-                b.HasKey(weekSchedule => new {weekSchedule.BranchId, weekSchedule.Year, weekSchedule.Week, weekSchedule.Department});
-
-                b.ToTable("WeekSchedules");
             });
 
             #endregion

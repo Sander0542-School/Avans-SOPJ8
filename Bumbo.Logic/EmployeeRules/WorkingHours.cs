@@ -23,7 +23,7 @@ namespace Bumbo.Logic.EmployeeRules
                 .ToList();
 
             var totalDuration = new TimeSpan(shifts
-                .Select(shift => (shift.EndTime - shift.StartTime))
+                .Select(shift => shift.EndTime - shift.StartTime - BreakDuration.GetDuration(shift.StartTime, shift.EndTime))
                 .Sum(time => time.Ticks));
 
             var maxWeekHours = MaxHoursPerWeek(user, year, week);
@@ -108,12 +108,12 @@ namespace Bumbo.Logic.EmployeeRules
 
             if (age < 18)
             {
-                var otherWorkHours = user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.Hours ?? 0;
-                var maxHours = 9;
+                var otherWorkMinutes = user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.EndTime.TotalMinutes - user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.StartTime.TotalMinutes ?? 0;
+                var maxMinutes = 540;
 
-                if (age < 16) maxHours = 8;
+                if (age < 16) maxMinutes = 480;
 
-                return TimeSpan.FromHours(otherWorkHours > maxHours ? 0 : maxHours - otherWorkHours);
+                return TimeSpan.FromMinutes(otherWorkMinutes > maxMinutes ? 0 : maxMinutes - otherWorkMinutes);
             }
 
             return new TimeSpan(12, 0, 0);

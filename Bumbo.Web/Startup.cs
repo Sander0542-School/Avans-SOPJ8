@@ -24,7 +24,7 @@ namespace Bumbo.Web
             _isTestEnv = env.IsEnvironment("Testing");
 
             if(_isTestEnv) 
-                Console.WriteLine("Running in test mode");
+                Console.WriteLine(@"Running in test mode");
         }
 
         public IConfiguration Configuration { get; }
@@ -38,7 +38,7 @@ namespace Bumbo.Web
 
             if (_isTestEnv)
             {
-                Console.WriteLine("Using local SQLite database");
+                Console.WriteLine(@"Using local SQLite database");
                 _sqLiteTestConnection = new SqliteConnection("Data Source=:memory:;Mode=Memory;Cache=Shared");
                 // This connection ensures the database is not deleted
                 _sqLiteTestConnection.Open();
@@ -60,6 +60,7 @@ namespace Bumbo.Web
                     options.SignIn.RequireConfirmedAccount = true;
                     options.User.RequireUniqueEmail = true;
                 })
+                .AddRoles<Role>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<BumboUserClaimsPrincipalFactory>();
 
@@ -78,10 +79,10 @@ namespace Bumbo.Web
                 {
                     var supportedCultures = new List<CultureInfo>
                     {
-                        new CultureInfo("en"),
-                        new CultureInfo("nl")
+                        new CultureInfo("nl-NL"),
+                        new CultureInfo("en-US")
                     };
-                    opt.DefaultRequestCulture = new RequestCulture("nl");
+                    opt.DefaultRequestCulture = new RequestCulture("nl-NL");
                     opt.SupportedCultures = supportedCultures;
                     opt.SupportedUICultures = supportedCultures;
                 });
@@ -110,6 +111,8 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
+            
+            Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

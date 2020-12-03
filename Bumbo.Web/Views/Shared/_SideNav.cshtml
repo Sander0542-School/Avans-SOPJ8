@@ -2,11 +2,14 @@
 @using Bumbo.Logic.Utils
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Routing
+@using Microsoft.AspNetCore.Authorization
+@using System.Runtime.CompilerServices
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IOptions<BumboOptions> BumboOptions
 @inject IViewLocalizer Localizer
+@inject IAuthorizationService AuthorizationService
 @inject RepositoryWrapper Wrapper
 
 @{
@@ -16,7 +19,7 @@
 <nav class="sidebar d-print-none">
     <div class="p-3 h-100">
         <div class="sidebar-header">
-            <img src="/img/jumbo.png" width="100%" alt="Bumbo"/>
+            <img src="/img/jumbo.png" width="100%" alt="Bumbo" />
         </div>
 
         <ul class="list-unstyled components">
@@ -45,14 +48,14 @@
                                     @Localizer["Details"]
                                 </a>
                             </li>
+                            <li class="@Html.IsActive("Schedule")">
+                                <a asp-controller="Schedule" asp-action="Week" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-calendar mr-3"></i>
+                                    @Localizer["Schedule"]
+                                </a>
+                            </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
                             {
-                                <li class="@Html.IsActive("Schedule", "Department")">
-                                    <a asp-controller="Schedule" asp-action="Index" asp-route-branchId="@branch.Id">
-                                        <i class="fa fa-calendar mr-3"></i>
-                                        @Localizer["Schedule"]
-                                    </a>
-                                </li>
                                 <li class="@Html.IsActive("Forecast", "Index")">
                                     <a asp-controller="Forecast" asp-action="Index" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-line-chart mr-3"></i>
@@ -69,6 +72,13 @@
                         @Localizer["Branches"]
                     </a>
                     <ul class="collapse list-unstyled" id="branchesSubmenu">
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                        {
+                            <li>
+                                <a asp-controller="Branches" asp-action="Index">@Localizer["All branches"]</a>
+</li>
+                        }
+
                         @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
                         {
                             var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == id);
@@ -147,6 +157,14 @@
         </ul>
 
         <div class="sidebar-footer text-center fixed-bottom position-absolute">
+            <button type="button" class="btn btn-secondary btn-sm m-2" data-toggle="modal" data-target="#cultureModal">
+                <i class="fa fa-language" aria-hidden="true"></i>
+                @Localizer["ChangeLanguage"]
+            </button>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+            {
+                <strong>SUPER USER</strong>
+            }
             <p>&copy; @DateTime.Today.Year - Bumbo</p>
         </div>
     </div>
