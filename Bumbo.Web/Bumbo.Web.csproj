@@ -26,6 +26,8 @@
     <ItemGroup>
       <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
       <Folder Include="Resources\Views\AdditionalWork\" />
+      <Folder Include="Resources\Views\Availability\" />
+      <Folder Include="Views\Availability\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -68,6 +70,10 @@
       <EmbeddedResource Update="Resources\Views\Forecast\_EditForecastModal.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>_EditForecastModal.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Availability\Index.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Branches\Create.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
@@ -151,7 +157,7 @@
       </Compile>
       <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
         <AutoGen>True</AutoGen>
-        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>

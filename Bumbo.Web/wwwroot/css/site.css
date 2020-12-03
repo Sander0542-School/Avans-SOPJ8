@@ -213,3 +213,15 @@ ul ul a {
         size: landscape
     }
 }
+
+/* Custom navigation bar styling
+-------------------------------------------------- */
+
+nav > * {
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+nav .nav-sticky-footer-box {
+  flex-grow: 1;
+}

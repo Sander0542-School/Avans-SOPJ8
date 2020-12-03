@@ -2,6 +2,7 @@
   "name": "bumbo.tests.cypress",
   "version": "0.0.0",
   "description": "Bumbo.Tests.Cypress",
+  "readme": "To run cypress:dev check -> https://stackoverflow.com/a/58808786/10557332",
   "main": "./dist/app.js",
   "author": {
     "name": ""
@@ -10,11 +11,20 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "npm run start:dotnet & cypress run --config video=false",
+    "cypress:run:record": "npm run start:dotnet & cypress run",
+    "cypress:dev": "npm run start:dotnet & npm run cypress:open",
+    "start:dotnet": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@types/node": "^8.0.14",
-    "cypress": "^5.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "cypress": "^6.0.1",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.0",
     "typescript": "^3.2.2"
   }
 }
