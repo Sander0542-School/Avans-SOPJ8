@@ -23,7 +23,7 @@ namespace Bumbo.Web
             Configuration = configuration;
             _isTestEnv = env.IsEnvironment("Testing");
 
-            if(_isTestEnv) 
+            if (_isTestEnv)
                 Console.WriteLine(@"Running in test mode");
         }
 
@@ -111,7 +111,7 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
-            
+
             Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
 
             app.UseHttpsRedirection();
