@@ -16,7 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90768E84-0F07-46CE-9855-0363D8351B99}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.editorconfig.inferred = .editorconfig.inferred
 	EndProjectSection
 EndProject
 Global
