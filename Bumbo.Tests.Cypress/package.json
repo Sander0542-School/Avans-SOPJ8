@@ -11,8 +11,10 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "cypress:dev": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing & cypress open",
+    "cypress:run": "npm run start:dotnet & cypress run --config video=false",
+    "cypress:run:record": "npm run start:dotnet & cypress run",
+    "cypress:dev": "npm run start:dotnet & npm run cypress:open",
+    "start:dotnet": "dotnet run -p ../Bumbo.Web/ --launch-profile Bumbo.Testing",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
