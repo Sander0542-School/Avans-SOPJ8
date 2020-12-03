@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Bumbo.Data;
+﻿using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +25,8 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var availabilities = await _wrapper.UserAvailability.GetAll(a => a.UserId == int.Parse(_userManager.GetUserId(User)));
-            return View(new UserAvailabilityViewModel{
+            return View(new UserAvailabilityViewModel
+            {
                 Schedule = availabilities
             });
         }
