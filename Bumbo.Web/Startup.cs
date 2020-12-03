@@ -40,7 +40,7 @@ namespace Bumbo.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             if (_isTestEnv)
