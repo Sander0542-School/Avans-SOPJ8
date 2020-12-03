@@ -32,6 +32,12 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
+                <li class="@Html.IsActive("Availability", "Index")">
+                    <a asp-controller="Availability" asp-action="Index">
+                        <i class="fa fa-calendar mr-3"></i>
+                        @Localizer["Availability"]
+                    </a>
+                </li>
                 @if (hasCurrentBranch)
                 {
                     var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == currentBranchId);
