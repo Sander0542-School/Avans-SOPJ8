@@ -8,37 +8,37 @@ function fillInRegistrationForm(formData: object) {
 }
 
 describe('Registration', () => {
-  it('Check for basic elements', () => {
+  beforeEach(() => {
     cy.visit('/Identity/Account/Register');
+  });
 
+  it('Check for basic elements', () => {
     cy.get('input').should('exist');
-
     cy.get('#logoutForm').should('not.exist');
   });
 
   it('register user', () => {
-    cy.visit('/Identity/Account/Register');
-
     cy.fixture('admin-login').then(((adminLogin) => {
+      // Fill in form and submit
       fillInRegistrationForm(adminLogin.credentials);
-
       cy.get('form > .btn').click();
-
+      // Validate if you're on email confirm page
       cy.location('pathname').should('contain', 'Identity/Account/RegisterConfirmation');
-
+      // Confirm email
       cy.get('#confirm-link').click();
     }));
   });
 
   it('show warning on invalid data', () => {
-    cy.visit('/Identity/Account/Register');
-
     cy.fixture('admin-login').then(((adminLogin) => {
+      // Fill in form and submit
       fillInRegistrationForm(adminLogin.invalidCredentials);
-
       cy.get('form > .btn').click();
 
-      cy.location('pathname').should('not.contain', 'Identity/Account/RegisterConfirmation');
+      // Check if user still on registration page
+      cy.location('pathname').should('contain', '/Identity/Account/Register');
+
+      // Check for warning tooltips
       cy.get('.validation-summary-errors').should('exist');
       cy.get('.validation-summary-errors > *').should('exist');
     }));
