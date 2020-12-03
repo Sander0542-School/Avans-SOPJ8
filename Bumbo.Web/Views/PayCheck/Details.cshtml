@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
+@model Bumbo.Web.Models.Paycheck.DetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -17,71 +17,65 @@
             <th>
                 Difference in hours
             </th>
-            <th>
-                Monday
-            </th>
-            <th>
-                Tuesday
-            </th>
-            <th>
-                Wednesday
-            </th>
-            <th>
-                Thursday
-            </th>
-            <th>
-                Friday
-            </th>
-            <th>
-                Saturday
-            </th>
-            <th>
-                Sunday
-            </th>
+            @foreach (var day in Model.DaysOfWeek)
+            {
+                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+            }
             <th>
                 Total worked hours
             </th>
         </tr>
     </thead>
     <tbody>
-
-        @for (int i = 0; i < Model.WeekNumbers.Count; i++)
+        @foreach (var pair in Model.WeekShifts)
         {
+            var weekDifference = new TimeSpan(pair.Value.Sum(ws => ws.Difference.Ticks));
             <tr>
+
                 <td>
-                    @Model.WeekNumbers[i]
+                    @pair.Key
                 </td>
                 <td>
-                    @Model.ExtraHoursPerWeekSelectedUser[i]
+                    @((weekDifference.Ticks < 0 ? "-" : "") + weekDifference.ToString(@"hh\:mm"))
                 </td>
-                @for (DateTime day = ISOWeek.ToDateTime(Model.Year, Model.WeekNumbers[i], DayOfWeek.Monday); ISOWeek.GetWeekOfYear(day) == Model.WeekNumbers[i]; day.AddDays(1))
+                @foreach (var day in Model.DaysOfWeek)
                 {
-                    @for (int j = 0; j < Model.SelectedUserWorkedShifts.Count; j++)
-                    {
-                        if (Model.SelectedUserWorkedShifts[j].Shift.Date == day)
+                    var workedShift = pair.Value.FirstOrDefault(ws => ws.Day == day);
+                    <td>
+                        @if (workedShift != null)
                         {
-                            <td>
-                                @Model.SelectedUserWorkedShifts[j].StartTime - @Model.SelectedUserWorkedShifts[j].EndTime
-                            </td>
+                            <div>
+                                <span class="fa-stack fa-sm">
+                                    <i class="fa fa-stack-2x fa-square"></i>
+                                    <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                </span>
+                                @Html.DisplayFor(model => workedShift.StartTime)-@Html.DisplayFor(model => workedShift.EndTime)
+                            </div>
+                            @if (workedShift.BreakTime.Ticks > 0)
+                            {
+                                <div>
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fa fa-stack-2x fa-square"></i>
+                                        <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                    </span>
+                                    @Html.DisplayFor(model => workedShift.BreakTime)
+                                </div>
+                            }
                         }
-                        else if (Model.SelectedUserWorkedShifts[j].Shift.Date > day)
-                        {
-                            <td>
-                               
-                            </td>
-                            break;
-                        }
-                    }
+                    </td>
                 }
+                @{
+                    var workedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
+                } 
                 <td>
-                    @Model.CalculateTotalWorkHours(Model.SelectedUser)
+                    @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<div>
-    @*TODO: add real values*@ 
-    <a asp-action="Details" asp-route-id="">Save changes</a>
+<!--<div>-->
+@*TODO: add real values*@
+<!--<a asp-action="Details" asp-route-id="">Save changes</a>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>-->
