@@ -11,6 +11,6 @@
     "airbnb-typescript/base"
   ],
   "rules": {
-    "linebreak-style": ["warning", "windows"]
+    "linebreak-style": [1, "windows"]
   }
 }
