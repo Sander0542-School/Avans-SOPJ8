@@ -334,8 +334,7 @@ namespace Bumbo.Web.Controllers
                 shift => shift.Date  >= startDate,
                 shift => shift.Date <= endDate
             );
-
-
+            
             foreach (var shift in shifts)
             {
                 if (shift.Schedule.Confirmed)
@@ -352,7 +351,7 @@ namespace Bumbo.Web.Controllers
                 }
                
             }
-
+            b
             return Json(events.ToArray());
         }
 
