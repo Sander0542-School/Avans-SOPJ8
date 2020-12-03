@@ -10,40 +10,40 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                Week number
-            </th>
-            <th>
-                Difference in hours
-            </th>
-            @foreach (var day in Model.DaysOfWeek)
-            {
-                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
-            }
-            <th>
-                Total worked hours
-            </th>
-        </tr>
+    <tr>
+        <th>
+            Week number
+        </th>
+        <th>
+            Difference in hours
+        </th>
+        @foreach (var day in Model.DaysOfWeek)
+        {
+            <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+        }
+        <th>
+            Total worked hours
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var pair in Model.WeekShifts)
-        {
-            var weekDifference = new TimeSpan(pair.Value.Sum(ws => ws.Difference.Ticks));
-            <tr>
-
+    @foreach (var pair in Model.WeekShifts)
+    {
+        var weekDifference = new TimeSpan(pair.Value.Sum(ws => ws.Difference.Ticks));
+        <tr>
+            <td>
+                @pair.Key
+            </td>
+            <td>
+                @((weekDifference.Ticks < 0 ? "-" : "") + weekDifference.ToString(@"hh\:mm"))
+            </td>
+            @foreach (var day in Model.DaysOfWeek)
+            {
+                var workedShift = pair.Value.FirstOrDefault(ws => ws.Day == day);
                 <td>
-                    @pair.Key
-                </td>
-                <td>
-                    @((weekDifference.Ticks < 0 ? "-" : "") + weekDifference.ToString(@"hh\:mm"))
-                </td>
-                @foreach (var day in Model.DaysOfWeek)
-                {
-                    var workedShift = pair.Value.FirstOrDefault(ws => ws.Day == day);
-                    <td>
-                        @if (workedShift != null)
-                        {
+                    @if (workedShift != null)
+                    {
+                        <div onclick="paycheckModal(@workedShift.ShiftId, '@workedShift.StartTime', '@workedShift.EndTime');" class="c-pointer">
                             <div>
                                 <span class="fa-stack fa-sm">
                                     <i class="fa fa-stack-2x fa-square"></i>
@@ -61,21 +61,20 @@
                                     @Html.DisplayFor(model => workedShift.BreakTime)
                                 </div>
                             }
-                        }
-                    </td>
-                }
-                @{
-                    var workedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
-                } 
-                <td>
-                    @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+
+                        </div>
+                    }
                 </td>
-            </tr>
-        }
+            }
+            @{
+                var workedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
+            }
+            <td>
+                @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
-<!--<div>-->
-@*TODO: add real values*@
-<!--<a asp-action="Details" asp-route-id="">Save changes</a>
-    <a asp-action="Index">Back to List</a>
-</div>-->
+
+<partial name="_PaycheckModal" model="@Model.Input" />

@@ -12,6 +12,8 @@ namespace Bumbo.Web.Models.Paycheck
     {
         public Dictionary<int, List<Shift>> WeekShifts { get; set; }
 
+        public InputModel Input { get; set; }
+
         public readonly DayOfWeek[] DaysOfWeek =
         {
             DayOfWeek.Monday,
@@ -25,6 +27,8 @@ namespace Bumbo.Web.Models.Paycheck
 
         public class Shift
         {
+            public int ShiftId { get; set; }
+
             [Display(Name = "StartTime")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
@@ -52,6 +56,27 @@ namespace Bumbo.Web.Models.Paycheck
             [DisplayName("Difference")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan Difference { get; set; }
+        }
+
+        public class InputModel 
+        {
+            [Required]
+            public int ShiftId { get; set; }
+            public int UserId { get; set; }
+            public int Year { get; set; }
+            public int Month { get; set; }
+
+            [DisplayName("StartTime")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [Required]
+            public TimeSpan StartTime { get; set; }
+
+            [DisplayName("EndTime")]
+            [DataType(DataType.Time)]
+            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
+            [Required]
+            public TimeSpan EndTime { get; set; }
         }
     }
 }
