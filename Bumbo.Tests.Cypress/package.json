@@ -2,6 +2,7 @@
   "name": "bumbo.tests.cypress",
   "version": "0.0.0",
   "description": "Bumbo.Tests.Cypress",
+  "readme": "To run cypress:dev check -> https://stackoverflow.com/a/58808786/10557332",
   "main": "./dist/app.js",
   "author": {
     "name": ""
