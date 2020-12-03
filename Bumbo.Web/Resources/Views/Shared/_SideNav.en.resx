@@ -53,4 +53,7 @@
     <data name="ChangeLanguage" xml:space="preserve">
         <value>Change Language</value>
     </data>
+    <data name="Availability" xml:space="preserve">
+        <value>Availability</value>
+    </data>
 </root>
