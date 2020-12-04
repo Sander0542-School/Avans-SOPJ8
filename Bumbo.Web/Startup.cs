@@ -118,7 +118,11 @@ namespace Bumbo.Web
             if (env.IsTesting())
             {
                 context.Database.EnsureCreated();
-                // Todo: Add database seeder method
+                
+                var seeder = new TestDataSeeder();
+                context.Branches.AddRange(seeder.Branches);
+                context.Users.AddRange(seeder.Users);
+                context.Set<BranchSchedule>().AddRange(seeder.Shifts);
             }
             
             Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
