@@ -343,8 +343,8 @@ namespace Bumbo.Web.Controllers
                     {
                         Id = shift.Id,
                         Title = shift.Schedule.Department.ToString(),
-                        Start = $"{shift.Date.ToString("yyyy-MM-dd")}T{shift.StartTime}",
-                        End = $"{ shift.Date.ToString("yyyy-MM-dd") }T{ shift.EndTime }",
+                        Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
+                        End = $"{shift.Date:yyyy-MM-dd}T{ shift.EndTime }",
                         AllDay = false
                     });
 
