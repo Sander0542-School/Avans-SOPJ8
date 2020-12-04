@@ -16,7 +16,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    //[Authorize(Policy = "BranchManager")]
+    [Authorize(Policy = "BranchManager")]
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class PayCheckController : Controller
     {

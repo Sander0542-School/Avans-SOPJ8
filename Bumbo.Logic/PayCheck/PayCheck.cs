@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bumbo.Logic.Utils
+namespace Bumbo.Logic.PayCheck
 {
     public class PayCheck
     {
@@ -32,7 +29,7 @@ namespace Bumbo.Logic.Utils
 
         public void AddTime(double key, TimeSpan timeSpan)
         {
-            if (_workedHoursPerBonus.ContainsKey(key))
+            if (!_workedHoursPerBonus.ContainsKey(key))
                 throw new ArgumentNullException("KeyNotFound", "The Given Key Does Not exist. Did you try to look for a bonus that is not used?");
             _workedHoursPerBonus.TryGetValue(key, out var hoursAlreadyInTheBonus);
             _workedHoursPerBonus.Remove(key);
@@ -41,7 +38,7 @@ namespace Bumbo.Logic.Utils
 
         public TimeSpan GetTime(double key)
         {
-            if (_workedHoursPerBonus.ContainsKey(key))
+            if (!_workedHoursPerBonus.ContainsKey(key))
                 throw new ArgumentNullException("KeyNotFound", "The Given Key Does Not exist. Did you try to look for a bonus that is not used?");
             _workedHoursPerBonus.TryGetValue(key, out var hoursAlreadyInTheBonus);
             return hoursAlreadyInTheBonus;
