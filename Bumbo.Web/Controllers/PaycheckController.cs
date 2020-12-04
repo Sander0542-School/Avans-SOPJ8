@@ -52,29 +52,25 @@ namespace Bumbo.Web.Controllers
             var firstDay = new DateTime(year.Value, month.Value, 1);
             var lastDay = new DateTime(year.Value, month.Value, DateTime.DaysInMonth(year.Value, month.Value));
 
-            var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.BranchId == branchId,
-                ws => ws.Shift.Date >= firstDay,
-                ws => ws.Shift.Date < lastDay.AddDays(1));
+            var workedShifts = await GetWorkedShifts(branch.Id, firstDay, lastDay);
 
-            var users = allWorkedShifts.Select(ws => ws.Shift.User).Distinct().ToList();
+            var users = workedShifts.Select(ws => ws.Shift.User).Distinct().ToList();
 
-            var weeknumbers = WeekNumberBetweenDates(firstDay, lastDay);
+            var weekNumbers = WeekNumberBetweenDates(firstDay, lastDay);
 
             return View(new PaycheckViewModel
             {
                 Branch = branch,
                 Year = year.Value,
                 Month = month.Value,
-                WeekNumbers = weeknumbers,
+                WeekNumbers = weekNumbers,
                 MonthShifts = users.ToDictionary(user => new PaycheckViewModel.User
                 {
                     Id = user.Id,
                     Name = UserUtil.GetFullName(user),
                     Scale = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Scale ?? 0,
                     Function = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Function ?? "",
-                }, user => allWorkedShifts
-
+                }, user => workedShifts
                     .Where(ws => ws.Shift.User == user)
                     .Select(ws => new PaycheckViewModel.Shift
                     {
@@ -94,7 +90,7 @@ namespace Bumbo.Web.Controllers
             var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.BranchId == branchId,
+                ws => ws.Shift.Schedule.BranchId == branchId,
                 ws => ws.Shift.Date >= firstDay,
                 ws => ws.Shift.Date < lastDay.AddDays(1),
                 ws => ws.Shift.UserId == userId);
@@ -134,63 +130,49 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        private List<int> WeekNumberBetweenDates(DateTime startDate, DateTime endDate)
-        {
-            var weekNumbers = new List<int>();
-
-            for (var date = startDate; date.Date <= endDate.Date; date = date.AddDays(7))
-            {
-                weekNumbers.Add(ISOWeek.GetWeekOfYear(date));
-            }
-
-            return weekNumbers;
-        }
-
-        [HttpPost]
-        [Route("Approve")]
-        public async Task<IActionResult> ApproveWorkhoursOverview(int branchId, int monthNr, int year, Dictionary<User, List<SalaryBenefitViewModel>> monthlyWorkedShiftsPerUser)
+        [HttpPost, ActionName("Approve")]
+        public async Task<IActionResult> ApproveMonth(int branchId, PaycheckViewModel model)
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
             if (branch == null) return NotFound();
 
+            var alertMessage = "Danger:Could not approve shifts";
+
             if (ModelState.IsValid)
             {
-                foreach (var kvp in monthlyWorkedShiftsPerUser)
+                var workedShifts = (await GetWorkedShifts(branch.Id, model.Year, model.Month)).Select(shift =>
                 {
-                    for (int i = 0; i < kvp.Value.Count; i++)
-                    {
-                        kvp.Value[i].IsApprovedForPaycheck = true;
-                    }
-                }
+                    shift.IsApprovedForPaycheck = true;
 
-                _viewModel.OverviewApproved = true;
+                    return shift;
+                }).ToArray();
+
+                if (_wrapper.WorkedShift.Update(workedShifts) != null)
+                {
+                    alertMessage = "Success:Approved all worked shifts";
+                }
             }
 
-            return RedirectToAction(nameof(Index), new
+            TempData["AlertMessage"] = alertMessage;
+
+            return RedirectToAction(nameof(SalaryBenefit), new
             {
                 branchId,
-                year = year,
-                monthNr = monthNr
+                year = model.Year,
+                month = model.Month
             });
         }
 
-        [Route("SalaryBenefit")]
-        public async Task<IActionResult> SalaryBenefit(int branchId, int? year, int? monthNr, int? id)
+        [Route("{year}/{month}")]
+        public async Task<IActionResult> SalaryBenefit(int branchId, int year, int month)
         {
-            SalaryBenefitViewModel viewModel = new SalaryBenefitViewModel();
-            PayCheckLogic pcl = new PayCheckLogic();
+            var viewModel = new SalaryBenefitViewModel();
+            var pcl = new PayCheckLogic();
 
-            DateTime lastDay = new DateTime(year.Value, monthNr.Value, 1).AddDays(-1);
-            DateTime firstDay = new DateTime(year.Value, monthNr.Value, 1).AddMonths(-1);
+            var workedShifts = await GetWorkedShifts(branchId, year, month);
 
-            var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.BranchId == branchId,
-                ws => ws.Shift.Date <= lastDay,
-                ws => ws.Shift.Date >= firstDay);
-
-
-            foreach (var workedShift in allWorkedShifts)
+            foreach (var workedShift in workedShifts)
             {
                 if (viewModel.PayChecks.ContainsKey(workedShift.Shift.User))
                 {
@@ -242,6 +224,34 @@ namespace Bumbo.Web.Controllers
                 year = paycheckModel.Year,
                 month = paycheckModel.Month
             });
+        }
+
+        private async Task<List<WorkedShift>> GetWorkedShifts(int branchId, int year, int month)
+        {
+            var firstDay = new DateTime(year, month, 1);
+            var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+            return await GetWorkedShifts(branchId, firstDay, lastDay);
+        }
+
+        private async Task<List<WorkedShift>> GetWorkedShifts(int branchId, DateTime firstDay, DateTime lastDay)
+        {
+            return await _wrapper.WorkedShift.GetAll(
+                ws => ws.Shift.Schedule.BranchId == branchId,
+                ws => ws.Shift.Date >= firstDay,
+                ws => ws.Shift.Date < lastDay.AddDays(1));
+        }
+
+        private static List<int> WeekNumberBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            var weekNumbers = new List<int>();
+
+            for (var date = startDate; date.Date <= endDate.Date; date = date.AddDays(7))
+            {
+                weekNumbers.Add(ISOWeek.GetWeekOfYear(date));
+            }
+
+            return weekNumbers;
         }
     }
 }

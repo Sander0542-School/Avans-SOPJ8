@@ -57,8 +57,7 @@
 
 @if (!Model.OverviewApproved && Model != null)
 {
-    <form asp-action="ApproveWorkhoursOverview" method="post">
-        <input type="hidden" asp-for="@Model.Branch.Id">
+    <form asp-action="Approve" method="post">
         <input type="hidden" asp-for="@Model.Month">
         <input type="hidden" asp-for="@Model.Year">
         <button type="submit" class="btn btn-primary">Approve workhours</button>
