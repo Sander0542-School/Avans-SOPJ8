@@ -83,7 +83,7 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-                    
+
                     ScheduleApproved = department.HasValue && users.Any(user => user.Shifts.Any(shift => shift.Schedule.Department == department.Value && shift.Schedule.Confirmed)),
 
                     EmployeeShifts = users.Select(user =>
@@ -163,7 +163,7 @@ namespace Bumbo.Web.Controllers
                 if (shift == null)
                 {
                     var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, shiftModel.Year, shiftModel.Week, shiftModel.Department.Value);
-                    
+
                     shift = new Shift
                     {
                         ScheduleId = schedule.Id,
