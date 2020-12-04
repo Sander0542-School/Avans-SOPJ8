@@ -20,8 +20,6 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             };
 
             WorkingHours.ValidateUserProperties(user);
-
-            Assert.Pass();
         }
 
         [Test]

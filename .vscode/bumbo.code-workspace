@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Bumbo",
+			"path": ".."
+		},
+		{
+			"name": "Cypress Tests",
+			"path": "../Bumbo.Tests.Cypress"
+		}
+	],
+	"settings": {}
+}
