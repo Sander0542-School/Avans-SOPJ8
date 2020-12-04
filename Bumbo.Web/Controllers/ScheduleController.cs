@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -341,11 +341,11 @@ namespace Bumbo.Web.Controllers
                 {
                     events.Add(new EventViewModel()
                     {
-                        id = shift.Id,
-                        title = shift.Schedule.Department.ToString(),
-                        start = $"{shift.Date.ToString("yyyy-MM-dd")}T{shift.StartTime}",
-                        end = $"{ shift.Date.ToString("yyyy-MM-dd") }T{ shift.EndTime }",
-                        allDay = false
+                        Id = shift.Id,
+                        Title = shift.Schedule.Department.ToString(),
+                        Start = $"{shift.Date.ToString("yyyy-MM-dd")}T{shift.StartTime}",
+                        End = $"{ shift.Date.ToString("yyyy-MM-dd") }T{ shift.EndTime }",
+                        AllDay = false
                     });
 
                 }

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "cypress:open": "cypress open",
+    "cypress:open": "npx cypress open",
     "cypress:run": "npm run start:dotnet & cypress run --config video=false",
     "cypress:run:record": "npm run start:dotnet & cypress run",
     "cypress:dev": "npm run start:dotnet & npm run cypress:open",

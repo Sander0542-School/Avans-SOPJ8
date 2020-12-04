@@ -7,14 +7,14 @@ namespace Bumbo.Web.Models.Schedule
 {
     public class EventViewModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public String title { get; set; }
+        public String Title { get; set; }
 
-        public String start { get; set; }
+        public String Start { get; set; }
 
-        public String end { get; set; }
+        public String End { get; set; }
 
-        public bool allDay { get; set; }
+        public bool AllDay { get; set; }
     }
 }
