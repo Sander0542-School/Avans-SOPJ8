@@ -15,8 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bumbo.Web.Controllers
 {
     // [Authorize(Policy = "BranchManager")]
-    [Route("Branches/{branchId}/{controller}/{year?}/{week?}/{department?}")]
-    [Route("Branches/{branchId}/{controller}/{year?}/{week?}")]
+    [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -30,12 +29,12 @@ namespace Bumbo.Web.Controllers
         /// Creates the default view for viewing forecasts for 1 week
         /// </summary>
         /// <param name="branchId">Id of the branch</param>
-        /// <param name="department">Filter on department</param>
         /// <param name="year">The year of the forecast</param>
         /// <param name="week">The year's week for the forecast</param>
+        /// <param name="department">Filter on department</param>
         /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
-        [Route("")]
-        public async Task<IActionResult> Index(int branchId, Department? department, int? year, int? week)
+        [Route("{year?}/{week?}/{department?}")]
+        public async Task<IActionResult> Index(int branchId, int? year, int? week, Department? department)
         {
             var viewModel = new ForecastViewModel();
 
@@ -85,7 +84,7 @@ namespace Bumbo.Web.Controllers
         }
 
         // GET: Forecast/Create
-        [Route("create")]
+        [Route("{year}/{week}")]
         public async Task<IActionResult> Create(int branchId, int year, int week)
         {
             var data = new StockclerkViewModel()
@@ -102,8 +101,8 @@ namespace Bumbo.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
-        [Route("create")]
         public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm]StockclerkViewModel stockclerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
@@ -137,8 +136,8 @@ namespace Bumbo.Web.Controllers
             });
         }
         
-        [Route("edit")]
         [HttpPost]
+        [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm]DateTime date, Department department, int hours, int minutes)
         {
@@ -171,7 +170,6 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpGet]
-        [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
             var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId};
@@ -183,8 +181,7 @@ namespace Bumbo.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
+        [HttpPost, ActionName("ChangeNorms")]
         public async Task<IActionResult> SaveChangeNorms(int branchId, ChangeNormsViewModel viewModel)
         {
             foreach (var (activity, value) in viewModel.Standards)
