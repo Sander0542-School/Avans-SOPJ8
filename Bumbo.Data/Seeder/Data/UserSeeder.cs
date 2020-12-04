@@ -106,6 +106,57 @@ namespace Bumbo.Data.Seeder.Data
                             SerialNumber = "74:a3:c5:c4:88:2b"
                         }
                     }
+                },
+                new User
+                {
+                    Id = 2,
+                    
+                    FirstName = "Micheal",
+                    MiddleName = "van",
+                    LastName = "Managum",
+                    
+                    UserName = "micheal.sexybabes@bumbo.test",
+
+                    Email = "micheal.sexybabes@bumbo.test",
+                    EmailConfirmed = true,
+                    
+                    PhoneNumber = "0670665768",
+                    PhoneNumberConfirmed = true,
+
+                    Birthday = DateTime.Today.AddYears(-40),
+
+                    ZipCode = "5454 NG",
+                    HouseNumber = "4",
+
+
+                    Contracts = new List<UserContract>
+                    {
+                        new UserContract
+                        {
+                            Function = "Manager",
+                            Scale = 20,
+                            StartDate = DateTime.Today.AddMonths(-13),
+                            EndDate = DateTime.Today.AddMonths(20).AddDays(-1)
+                        },
+                    },
+                    
+                    Branches = new List<UserBranch>
+                    {
+                        new UserBranch
+                        {
+                            Department = Department.KAS,
+                            BranchId = 1
+                        },
+                    },
+                    
+                    ManagerBranches = new List<BranchManager>(
+                        new List<BranchManager>{
+                            new BranchManager
+                            {
+                                BranchId = 1,
+                                UserId = 2,
+                            }
+                        })
                 }
             };
         }
