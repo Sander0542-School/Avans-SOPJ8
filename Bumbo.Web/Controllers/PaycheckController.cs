@@ -201,14 +201,14 @@ namespace Bumbo.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var shift = await _wrapper.WorkedShift.Get(shift => shift.ShiftId == paycheckModel.ShiftId);
+                var shift = await _wrapper.WorkedShift.Get(shift1 => shift1.ShiftId == paycheckModel.ShiftId);
 
                 if (shift != null)
                 {
                     shift.StartTime = paycheckModel.StartTime;
                     shift.EndTime = paycheckModel.EndTime;
 
-                    if (_wrapper.WorkedShift.Update(shift) != null)
+                    if ((await _wrapper.WorkedShift.Update(shift)) != null)
                     {
                         alertMessage = $"Success:{_localizer["PaycheckSaved"]}";
                     }
