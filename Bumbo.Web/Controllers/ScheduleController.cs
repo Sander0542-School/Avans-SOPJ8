@@ -83,11 +83,8 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-
-                    ScheduleApproved = department.HasValue && (branch.WeekSchedules
-                        .Where(schedule => schedule.Year == year.Value)
-                        .Where(schedule => schedule.Week == week.Value)
-                        .FirstOrDefault(schedule => schedule.Department == department.Value)?.Confirmed ?? false),
+                    
+                    ScheduleApproved = department.HasValue && users.Any(user => user.Shifts.Any(shift => shift.Schedule.Department == department.Value && shift.Schedule.Confirmed)),
 
                     EmployeeShifts = users.Select(user =>
                     {
@@ -108,7 +105,7 @@ namespace Bumbo.Web.Controllers
                                 return new DepartmentViewModel.Shift
                                 {
                                     Id = shift.Id,
-                                    Department = shift.Department,
+                                    Department = shift.Schedule.Department,
                                     Date = shift.Date,
                                     StartTime = shift.StartTime,
                                     EndTime = shift.EndTime,
@@ -159,18 +156,17 @@ namespace Bumbo.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var shift = await _wrapper.Shift.Get(
-                    shift1 => shift1.BranchId == branch.Id,
-                    shift1 => shift1.Id == shiftModel.ShiftId);
+                var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == shiftModel.ShiftId);
 
                 bool success;
 
                 if (shift == null)
                 {
+                    var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, shiftModel.Year, shiftModel.Week, shiftModel.Department.Value);
+                    
                     shift = new Shift
                     {
-                        Department = shiftModel.Department.Value,
-                        BranchId = branch.Id,
+                        ScheduleId = schedule.Id,
                         UserId = shiftModel.UserId,
                         Date = shiftModel.Date,
                         StartTime = shiftModel.StartTime,
@@ -219,29 +215,17 @@ namespace Bumbo.Web.Controllers
             {
                 try
                 {
-                    var startDateTarget = ISOWeek.ToDateTime(copyWeekModel.TargetYear, copyWeekModel.TargetWeek, DayOfWeek.Monday);
-
-                    var targetShifts = await _wrapper.Shift.GetAll(
-                        shift => shift.BranchId == branch.Id,
-                        shift => shift.Department == copyWeekModel.Department,
-                        shift => shift.Date >= startDateTarget,
-                        shift => shift.Date < startDateTarget.AddDays(7)
-                    );
+                    var targetSchedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, copyWeekModel.TargetYear, copyWeekModel.TargetWeek, copyWeekModel.Department.Value);
+                    var targetShifts = await _wrapper.Shift.GetAll(shift => shift.ScheduleId == targetSchedule.Id);
 
                     if (!targetShifts.Any())
                     {
-                        var startDate = ISOWeek.ToDateTime(copyWeekModel.Year, copyWeekModel.Week, DayOfWeek.Monday);
-                        var shifts = await _wrapper.Shift.GetAll(
-                            shift => shift.BranchId == branch.Id,
-                            shift => shift.Department == copyWeekModel.Department,
-                            shift => shift.Date >= startDate,
-                            shift => shift.Date < startDate.AddDays(7)
-                        );
+                        var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, copyWeekModel.Year, copyWeekModel.Week, copyWeekModel.Department.Value);
+                        var shifts = await _wrapper.Shift.GetAll(shift => shift.ScheduleId == schedule.Id);
 
                         var newShifts = shifts.Select(shift => new Shift
                         {
-                            BranchId = shift.BranchId,
-                            Department = shift.Department,
+                            ScheduleId = targetSchedule.Id,
                             UserId = shift.UserId,
                             Date = ISOWeek.ToDateTime(copyWeekModel.TargetYear, copyWeekModel.TargetWeek, shift.Date.DayOfWeek),
                             StartTime = shift.StartTime,
@@ -296,33 +280,21 @@ namespace Bumbo.Web.Controllers
             {
                 try
                 {
-                    var startDate = ISOWeek.ToDateTime(approveScheduleModel.Year, approveScheduleModel.Week, DayOfWeek.Monday);
-                    var shifts = await _wrapper.Shift.GetAll(
-                        shift => shift.BranchId == branch.Id,
-                        shift => shift.Department == approveScheduleModel.Department,
-                        shift => shift.Date >= startDate,
-                        shift => shift.Date < startDate.AddDays(7)
-                    );
+                    var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, approveScheduleModel.Year, approveScheduleModel.Week, approveScheduleModel.Department.Value);
+                    var shifts = await _wrapper.Shift.GetAll(shift => shift.ScheduleId == schedule.Id);
 
                     if (shifts.Any())
                     {
-                        var weekSchedule = new WeekSchedule
-                        {
-                            BranchId = branch.Id,
-                            Year = approveScheduleModel.Year,
-                            Week = approveScheduleModel.Week,
-                            Department = approveScheduleModel.Department.Value,
-                            Confirmed = true
-                        };
+                        schedule.Confirmed = true;
 
-                        if (await _wrapper.WeekSchedule.Add(weekSchedule) != null)
+                        if (await _wrapper.BranchSchedule.Update(schedule) != null)
                         {
                             TempData["alertMessage"] = $"Success:{_localizer["ScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Success:{_localizer["ScheduleEmpty"]}";
+                        TempData["alertMessage"] = $"Danger:{_localizer["ScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)

@@ -7,11 +7,9 @@ namespace Bumbo.Data.Models
 {
     public class Shift : BaseEntity
     {
-        public int BranchId { get; set; }
+        public int ScheduleId { get; set; }
         
         public int UserId { get; set; }
-        
-        public Department Department { get; set; }
         
         [Column(TypeName="date")]
         public DateTime Date { get; set; }
@@ -23,7 +21,7 @@ namespace Bumbo.Data.Models
 
         public User User { get; set; }
         
-        public Branch Branch { get; set; }
+        public BranchSchedule Schedule { get; set; }
         
         public WorkedShift WorkedShift { get; set; }
     }

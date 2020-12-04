@@ -8,13 +8,17 @@ namespace Bumbo.Data.Models
     {
         public int UserId { get; set; }
 
-        [Range(1, 7)]
+        [Required]
+        [Display(Name = "Day")]
         public DayOfWeek Day { get; set; }
 
+        [Required]
+        [Display(Name = "Starttime")]
         public TimeSpan StartTime { get; set; }
 
+        [Required]
+        [Display(Name = "Endtime")]
         public TimeSpan EndTime { get; set; }
-
 
         public User User { get; set; }
     }

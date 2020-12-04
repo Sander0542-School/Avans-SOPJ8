@@ -1,0 +1,25 @@
+name: Check Typescript Formatting
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Install npm Dependencies
+      run: |
+        cd ./Bumbo.Tests.Cypress/
+        npm install
+    - name: Run eslint
+      run: |
+        cd ./Bumbo.Tests.Cypress/
+        npm run lint
