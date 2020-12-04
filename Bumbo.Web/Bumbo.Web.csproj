@@ -56,6 +56,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Forecast\ChangeNorms.en.resx">
+        <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Forecast\Index.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index+Create+_EditModal.Designer.cs</LastGenOutput>

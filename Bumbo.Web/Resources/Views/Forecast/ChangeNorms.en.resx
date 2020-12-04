@@ -117,31 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to list" xml:space="preserve">
-    <value>Terug naar de vorige pagina</value>
-  </data>
   <data name="CASHIER" xml:space="preserve">
-    <value>Kassa</value>
+    <value>Cashier</value>
   </data>
   <data name="FACE_SHELVES" xml:space="preserve">
-    <value>Spiegelen</value>
+    <value>Face shelves</value>
   </data>
   <data name="PRODUCE_DEPARTMENT" xml:space="preserve">
-    <value>Vers</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Opslaan</value>
+    <value>Produce department</value>
   </data>
   <data name="STOCK_SHELVES" xml:space="preserve">
-    <value>Vakkenvullen</value>
+    <value>Stock Shelves</value>
   </data>
   <data name="UNLOAD_COLI" xml:space="preserve">
-    <value>Coli uitladen</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Aanpassen</value>
-  </data>
-  <data name="Change norms" xml:space="preserve">
-    <value>Aanpassen normeringen</value>
+    <value>Unload coli</value>
   </data>
 </root>
