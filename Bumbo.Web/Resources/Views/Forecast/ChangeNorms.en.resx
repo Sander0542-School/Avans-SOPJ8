@@ -117,22 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Today" xml:space="preserve">
-    <value>Vandaag</value>
+  <data name="CASHIER" xml:space="preserve">
+    <value>Cashier</value>
   </data>
-  <data name="Department" xml:space="preserve">
-    <value>Afdeling</value>
+  <data name="FACE_SHELVES" xml:space="preserve">
+    <value>Face shelves</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Alle</value>
+  <data name="PRODUCE_DEPARTMENT" xml:space="preserve">
+    <value>Produce department</value>
   </data>
-  <data name="Create forecast" xml:space="preserve">
-    <value>Maak prognose</value>
+  <data name="STOCK_SHELVES" xml:space="preserve">
+    <value>Stock Shelves</value>
   </data>
-  <data name="Week" xml:space="preserve">
-    <value>Week</value>
-  </data>
-  <data name="Change Norms" xml:space="preserve">
-    <value>Verander normeringen</value>
+  <data name="UNLOAD_COLI" xml:space="preserve">
+    <value>Unload coli</value>
   </data>
 </root>
