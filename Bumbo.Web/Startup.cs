@@ -38,7 +38,6 @@ namespace Bumbo.Web
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
