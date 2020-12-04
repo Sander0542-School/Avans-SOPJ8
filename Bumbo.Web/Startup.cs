@@ -5,6 +5,7 @@ using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -24,7 +25,7 @@ namespace Bumbo.Web
             _isTestEnv = env.IsEnvironment("Testing");
 
             if(_isTestEnv) 
-                Console.WriteLine("Running in test mode");
+                Console.WriteLine(@"Running in test mode");
         }
 
         public IConfiguration Configuration { get; }
@@ -34,11 +35,16 @@ namespace Bumbo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+            });
+            
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             if (_isTestEnv)
             {
-                Console.WriteLine("Using local SQLite database");
+                Console.WriteLine(@"Using local SQLite database");
                 _sqLiteTestConnection = new SqliteConnection("Data Source=:memory:;Mode=Memory;Cache=Shared");
                 // This connection ensures the database is not deleted
                 _sqLiteTestConnection.Open();
@@ -60,6 +66,7 @@ namespace Bumbo.Web
                     options.SignIn.RequireConfirmedAccount = true;
                     options.User.RequireUniqueEmail = true;
                 })
+                .AddRoles<Role>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<BumboUserClaimsPrincipalFactory>();
 
@@ -110,9 +117,12 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
+            
+            Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
