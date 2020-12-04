@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Data.Seeder;
+using Bumbo.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +24,7 @@ namespace Bumbo.Web
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
-            _isTestEnv = env.IsEnvironment("Testing");
+            _isTestEnv = env.IsTesting();
 
             if(_isTestEnv) 
                 Console.WriteLine(@"Running in test mode");
@@ -101,7 +103,7 @@ namespace Bumbo.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
-            if (env.IsDevelopment() || _isTestEnv)
+            if (env.IsDevelopment() || env.IsTesting())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
@@ -113,7 +115,7 @@ namespace Bumbo.Web
                 app.UseHsts();
             }
 
-            if (_isTestEnv)
+            if (env.IsTesting())
             {
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
