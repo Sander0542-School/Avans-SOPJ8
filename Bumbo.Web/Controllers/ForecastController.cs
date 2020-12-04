@@ -10,11 +10,12 @@ using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    // [Authorize(Policy = "BranchManager")]
+    [Authorize(Policy = "BranchManager")]
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class ForecastController : Controller
     {
