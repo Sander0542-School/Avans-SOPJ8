@@ -10,33 +10,19 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-branchId="@Model.BranchId" asp-action="ChangeNorms">
+        <form asp-action="ChangeNorms">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UnloadColiValue" class="control-label"></label>
-                <input asp-for="UnloadColiValue" class="form-control" />
-                <span asp-validation-for="UnloadColiValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CashierValue" class="control-label"></label>
-                <input asp-for="CashierValue" class="form-control" />
-                <span asp-validation-for="CashierValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FaceShelvesValue" class="control-label"></label>
-                <input asp-for="FaceShelvesValue" class="form-control" />
-                <span asp-validation-for="FaceShelvesValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProduceDepartmentValue" class="control-label"></label>
-                <input asp-for="ProduceDepartmentValue" class="form-control" />
-                <span asp-validation-for="ProduceDepartmentValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockShelvesValue" class="control-label"></label>
-                <input asp-for="StockShelvesValue" class="form-control" />
-                <span asp-validation-for="StockShelvesValue" class="text-danger"></span>
-            </div>
+
+            @* Made according to: https://stackoverflow.com/a/18683004/10557332 *@
+            @foreach (var (key, value) in Model.Standards)
+            {
+                <div class="form-group">
+                    <label class="control-label">@key</label>
+                    <input asp-for="@Model.ForecastStandardValue" name="@("Standards["+key+"]")" value="@value" class="form-control" />
+                    <span asp-validation-for="@Model.ForecastStandardValue" class="text-danger"></span>
+                </div>
+            
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

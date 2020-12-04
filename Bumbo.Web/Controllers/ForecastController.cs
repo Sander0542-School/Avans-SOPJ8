@@ -10,12 +10,11 @@ using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "BranchManager")]
+    // [Authorize(Policy = "BranchManager")]
     [Route("Branches/{branchId}/{controller}/{year?}/{week?}/{department?}")]
     [Route("Branches/{branchId}/{controller}/{year?}/{week?}")]
     public class ForecastController : Controller
@@ -109,17 +108,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
-            var forecastStandards =
-                _wrapper.ForecastStandard.GetAll(
-                    f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
-                ).Result.ToList<IForecastStandard>();
-
-            forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
-                bf => bf.BranchId == branchId
-            ));
-            
-            
-            var forecastLogic = new ForecastLogic(forecastStandards);
+            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId));
 
             for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
@@ -185,40 +174,71 @@ namespace Bumbo.Web.Controllers
         [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
-            var data = new ChangeNormsViewModel{ BranchId = branchId };
-
-            return View(data);
+            var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>()};
+            var standards = await GetForecastStandardsForBranch(branchId);
+            
+            foreach (var standard in standards)
+                viewModel.Standards.Add(standard.Activity, standard.Value);
+            
+            return View(viewModel);
         }
 
         [HttpPost]
         [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
-        public async Task<IActionResult> ChangeNormsAsync(ChangeNormsViewModel data)
+        public async Task<IActionResult> SaveChangeNorms(int branchId, ChangeNormsViewModel viewModel)
         {
-            BranchForecastStandard entity = new BranchForecastStandard();
+            foreach (var (activity, value) in viewModel.Standards)
+            {
+                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new {branchId});
+                
+                // Check if values are the same as forecastStandard
+                var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
+                // Remove old branch forecast standard if it existed
+                if (forecastStandard.Value == value)
+                {
+                    await _wrapper.BranchForecastStandard.Remove(
+                        bfs => bfs.Activity == activity,
+                        bfs => bfs.BranchId == branchId
+                        );
+                }
+                else
+                {
+                    var currentBfs = await _wrapper.BranchForecastStandard.Get(
+                        bfs => bfs.BranchId == branchId,
+                        bfs => bfs.Activity == activity
+                    );
 
-            entity.BranchId = data.BranchId;
+                    if (currentBfs != null)
+                    {
+                        currentBfs.Value = value;
+                        await _wrapper.BranchForecastStandard.Update(currentBfs);
+                    }
+                    else
+                    {
+                        await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard
+                        {
+                            Activity = activity, BranchId = branchId, Value = value
+                        });
+                    }
+                }
+            }
 
-            entity.Activity = ForecastActivity.CASHIER;
-            entity.Value = data.CashierValue;
-            await _wrapper.BranchForecastStandard.Add(entity);
+            return RedirectToAction("Index", new { branchId });
+        }
 
-            entity.Activity = ForecastActivity.FACE_SHELVES;
-            entity.Value = data.FaceShelvesValue;
-            await _wrapper.BranchForecastStandard.Add(entity);
 
-            entity.Activity = ForecastActivity.PRODUCE_DEPARTMENT;
-            entity.Value = data.ProduceDepartmentValue;
-            await _wrapper.BranchForecastStandard.Add(entity);
+        private async Task<List<IForecastStandard>> GetForecastStandardsForBranch(int branchId)
+        {
+            var forecastStandards =
+                _wrapper.ForecastStandard.GetAll(
+                    f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
+                ).Result.ToList<IForecastStandard>();
 
-            entity.Activity = ForecastActivity.STOCK_SHELVES;
-            entity.Value = data.StockShelvesValue;
-            await _wrapper.BranchForecastStandard.Add(entity);
+            forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
+                bf => bf.BranchId == branchId
+            ));
 
-            entity.Activity = ForecastActivity.UNLOAD_COLI;
-            entity.Value = data.UnloadColiValue;
-            await _wrapper.BranchForecastStandard.Add(entity);
-
-            return RedirectToAction("Index");
+            return forecastStandards;
         }
     }
 }
