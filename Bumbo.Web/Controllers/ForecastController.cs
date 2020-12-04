@@ -174,7 +174,7 @@ namespace Bumbo.Web.Controllers
         [Route("/Branches/{branchId}/{controller}/ChangeNorms")]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
-            var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>()};
+            var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId};
             var standards = await GetForecastStandardsForBranch(branchId);
             
             foreach (var standard in standards)

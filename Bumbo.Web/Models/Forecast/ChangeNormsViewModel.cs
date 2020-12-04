@@ -10,5 +10,7 @@ namespace Bumbo.Web.Models.Forecast
 
         [Range(1, 30)]
         public int ForecastStandardValue;
+
+        public int BranchId;
     }
 }
