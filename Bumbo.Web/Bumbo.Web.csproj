@@ -57,7 +57,7 @@
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Forecast\ChangeNorms.en.resx">
-        <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
+        <LastGenOutput>ChangeNorms.en.Designer.cs</LastGenOutput>
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Forecast\Index.resx">
@@ -156,6 +156,9 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
+        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
