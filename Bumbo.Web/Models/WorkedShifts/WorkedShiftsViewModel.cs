@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
 
-namespace Bumbo.Web.Resources.Models.WorkedShifts
+namespace Bumbo.Web.Models.WorkedShifts
 {
     public class WorkedShiftsViewModel
     {
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
-        public int NextYear => _mondayOfWeek.AddYears(7).Year;
+        public int NextYear => _mondayOfWeek.AddYears(1).Year;
         public int PreviousWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(-7));
         public int PreviousYear => _mondayOfWeek.AddDays(-7).Year;
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Bumbo.Web.Models.WorkedShifts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("{year?}/{week?}")]
-        public async IActionResult Week(int branchId, int? year, int? week)
+        public async Task<IActionResult> Week(int branchId, int? year, int? week)
         {
             if (!year.HasValue || !week.HasValue)
             {
@@ -49,16 +50,24 @@ namespace Bumbo.Web.Controllers
             {
                 var departments = GetUserDepartments(User, branchId);
 
-                var user = await _wrapper.User.GetShiftsForUser(int.Parse(_userManager.GetUserId(User)), branch, year.Value, week.Value);
+                int userId = int.Parse(_userManager.GetUserId(User));
+
+                var user = await _wrapper.User.GetShiftsForUser(userId, branch, year.Value, week.Value);
+
+                return View(new WorkedShiftsViewModel
+                {
+                    Year = year.Value,
+                    Week = week.Value,
+
+                    Branch = branch,
+
+                    WorkedShifts = await _wrapper.WorkedShift.GetAll(shift => shift.Shift.UserId == userId),
+                });
             }
             catch
             {
                 throw new ArgumentOutOfRangeException();
             }
-
-
-
-            return View();
         }
 
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
