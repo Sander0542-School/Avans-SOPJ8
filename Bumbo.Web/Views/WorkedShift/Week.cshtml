@@ -72,9 +72,9 @@
                                             </span>
                                             @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
                                         </div>
-                                        @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Subtract(s.StartTime).Ticks)).Ticks > 0)
+                                        @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)).Ticks > 0)
                                         {
-                                            var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Subtract(s.StartTime).Ticks)));
+                                            var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)));
                                             <div>
                                                 <span class="fa-stack fa-sm">
                                                     <i class="fa fa-stack-2x fa-square"></i>
@@ -96,7 +96,7 @@
                         @if (Model.WorkedShifts.Any())
                         {
                             <span>
-                                @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Subtract(s.StartTime).Ticks))}")
+                                @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
                             </span>
                         }
                     </td>
