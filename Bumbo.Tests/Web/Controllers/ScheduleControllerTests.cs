@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
@@ -26,9 +27,9 @@ namespace Bumbo.Tests.Web.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new ScheduleController(Wrapper, Localizer)
+            _controller = new ScheduleController(Wrapper, Localizer, UserManager)
             {
-                TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+                TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>()),
             };
         }
 
