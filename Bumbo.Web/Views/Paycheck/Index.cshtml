@@ -1,5 +1,5 @@
-﻿@using System.Globalization
-@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
+﻿@model Bumbo.Web.Models.Paycheck.PaycheckViewModel
+@inject IViewLocalizer Localizer
 
 <h1>PayCheck</h1>
 <h2>@(new DateTime(Model.Year, Model.Month, 1).ToString("MMMMM"))</h2>
