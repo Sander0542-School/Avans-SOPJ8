@@ -11,7 +11,7 @@ namespace Bumbo.Web.Models.WorkedShifts
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
-        public int NextYear => _mondayOfWeek.AddYears(1).Year;
+        public int NextYear => _mondayOfWeek.AddDays(7).Year;
         public int PreviousWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(-7));
         public int PreviousYear => _mondayOfWeek.AddDays(-7).Year;
 

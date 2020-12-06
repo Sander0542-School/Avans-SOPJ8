@@ -48,11 +48,7 @@ namespace Bumbo.Web.Controllers
 
             try
             {
-                var departments = GetUserDepartments(User, branchId);
-
                 int userId = int.Parse(_userManager.GetUserId(User));
-
-                var user = await _wrapper.User.GetWorkedShiftsForUser(userId, branch, year.Value, week.Value);
 
                 return View(new WorkedShiftsViewModel
                 {
@@ -69,8 +65,5 @@ namespace Bumbo.Web.Controllers
                 throw new ArgumentOutOfRangeException();
             }
         }
-
-        private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
-
     }
 }
