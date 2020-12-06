@@ -4,9 +4,24 @@
 <h2>@(new DateTime(Model.Year, Model.Month, 1).ToString("MMMMM"))</h2>
 
 <table class="table">
-    <tbody>
+    <thead>
+        <tr>
+            <th class="text-left">@Html.DisplayNameFor(model => model.MonthShifts.FirstOrDefault().Key.Name)</th>
+            <th class="text-left">@Html.DisplayNameFor(model => model.MonthShifts.FirstOrDefault().Key.Scale)</th>
 
-        @foreach (var pair in Model.MonthShifts)
+            @foreach (var week in Model.WeekNumbers)
+            {
+                <th>
+                    Week @week
+                </th>
+            }
+            <th>
+                Total workhours
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var pair in Model.MonthShifts)
         {
             var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
             <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
@@ -37,12 +52,3 @@
         }
     </tbody>
 </table>
-
-@if (!Model.OverviewApproved && Model != null)
-{
-    <form asp-action="Approve" method="post">
-        <input type="hidden" asp-for="@Model.Month">
-        <input type="hidden" asp-for="@Model.Year">
-        <button type="submit" class="btn btn-primary">Approve workhours</button>
-    </form>
-}
