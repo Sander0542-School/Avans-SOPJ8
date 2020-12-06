@@ -13,7 +13,7 @@ namespace Bumbo.Data.Models
 
         public TimeSpan StartTime { get; set; }
 
-        public TimeSpan EndTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
 
         
         public Shift Shift { get; set; }
