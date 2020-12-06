@@ -48,7 +48,7 @@ namespace Bumbo.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<User>> GetShiftsForUser(int userId, Branch branch, int year, int week)
+        public async Task<List<User>> GetWorkedShiftsForUser(int userId, Branch branch, int year, int week)
         {
             var startTime = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday);
 

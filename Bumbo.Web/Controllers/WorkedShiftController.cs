@@ -52,7 +52,7 @@ namespace Bumbo.Web.Controllers
 
                 int userId = int.Parse(_userManager.GetUserId(User));
 
-                var user = await _wrapper.User.GetShiftsForUser(userId, branch, year.Value, week.Value);
+                var user = await _wrapper.User.GetWorkedShiftsForUser(userId, branch, year.Value, week.Value);
 
                 return View(new WorkedShiftsViewModel
                 {
