@@ -117,22 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Today" xml:space="preserve">
-    <value>Vandaag</value>
+  <data name="Back to list" xml:space="preserve">
+    <value>Terug naar de vorige pagina</value>
   </data>
-  <data name="Department" xml:space="preserve">
-    <value>Afdeling</value>
+  <data name="CASHIER" xml:space="preserve">
+    <value>Kassa</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Alle</value>
+  <data name="FACE_SHELVES" xml:space="preserve">
+    <value>Spiegelen</value>
   </data>
-  <data name="Create forecast" xml:space="preserve">
-    <value>Maak prognose</value>
+  <data name="PRODUCE_DEPARTMENT" xml:space="preserve">
+    <value>Vers</value>
   </data>
-  <data name="Week" xml:space="preserve">
-    <value>Week</value>
+  <data name="Save" xml:space="preserve">
+    <value>Opslaan</value>
   </data>
-  <data name="Change Norms" xml:space="preserve">
-    <value>Verander normeringen</value>
+  <data name="STOCK_SHELVES" xml:space="preserve">
+    <value>Vakkenvullen</value>
+  </data>
+  <data name="UNLOAD_COLI" xml:space="preserve">
+    <value>Coli uitladen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Aanpassen</value>
+  </data>
+  <data name="Change norms" xml:space="preserve">
+    <value>Aanpassen normeringen</value>
   </data>
 </root>

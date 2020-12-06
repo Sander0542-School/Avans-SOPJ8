@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -21,11 +23,13 @@ namespace Bumbo.Web.Controllers
     {
         private readonly RepositoryWrapper _wrapper;
         private readonly IStringLocalizer<ScheduleController> _localizer;
+        private readonly UserManager<User> _userManager;
 
-        public ScheduleController(RepositoryWrapper wrapper, IStringLocalizer<ScheduleController> localizer)
+        public ScheduleController(RepositoryWrapper wrapper, IStringLocalizer<ScheduleController> localizer, UserManager<User> userManager)
         {
             _wrapper = wrapper;
             _localizer = localizer;
+            _userManager = userManager;
         }
 
         [Route("{year?}/{week?}/{department?}")]
@@ -308,6 +312,46 @@ namespace Bumbo.Web.Controllers
                 week = approveScheduleModel.Week,
                 department = approveScheduleModel.Department
             });
+        }
+
+
+        public IActionResult Personal()
+        {
+            return View(new EventViewModel());
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetCalendarEvents(int branchId, [FromQuery(Name = "start")] DateTime startDate, [FromQuery(Name = "end")] DateTime endDate)
+        {
+            var viewModel = new EventViewModel();
+            var events = new List<EventViewModel>();
+
+            var userId = int.Parse(_userManager.GetUserId(User));
+
+            var shifts = await _wrapper.Shift.GetAll(
+                shift => shift.UserId == userId,
+                shift => shift.Schedule.BranchId == branchId,
+                shift => shift.Date  >= startDate,
+                shift => shift.Date <= endDate
+            );
+            
+            foreach (var shift in shifts)
+            {
+                if (shift.Schedule.Confirmed)
+                {
+                    events.Add(new EventViewModel()
+                    {
+                        Id = shift.Id,
+                        Title = shift.Schedule.Department.ToString(),
+                        Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
+                        End = $"{shift.Date:yyyy-MM-dd}T{ shift.EndTime }",
+                        AllDay = false
+                    });
+
+                }
+            }
+
+            return Json(events.ToArray());
         }
 
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
