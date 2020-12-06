@@ -331,10 +331,10 @@ namespace Bumbo.Web.Controllers
             var shifts = await _wrapper.Shift.GetAll(
                 shift => shift.UserId == userId,
                 shift => shift.Schedule.BranchId == branchId,
-                shift => shift.Date  >= startDate,
+                shift => shift.Date >= startDate,
                 shift => shift.Date <= endDate
             );
-            
+
             foreach (var shift in shifts)
             {
                 if (shift.Schedule.Confirmed)

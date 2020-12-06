@@ -104,7 +104,7 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm]StockclerkViewModel stockclerkViewModel)
+        public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm] StockclerkViewModel stockclerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
@@ -137,7 +137,7 @@ namespace Bumbo.Web.Controllers
                 week
             });
         }
-        
+
         [HttpPost]
         [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
@@ -175,12 +175,12 @@ namespace Bumbo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
-            var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId};
+            var viewModel = new ChangeNormsViewModel { Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId };
             var standards = await GetForecastStandardsForBranch(branchId);
-            
+
             foreach (var standard in standards)
                 viewModel.Standards.Add(standard.Activity, standard.Value);
-            
+
             return View(viewModel);
         }
 
@@ -189,8 +189,8 @@ namespace Bumbo.Web.Controllers
         {
             foreach (var (activity, value) in viewModel.Standards)
             {
-                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new {branchId});
-                
+                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new { branchId });
+
                 // Check if values are the same as forecastStandard
                 var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
                 // Remove old branch forecast standard if it existed
@@ -217,7 +217,9 @@ namespace Bumbo.Web.Controllers
                     {
                         await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard
                         {
-                            Activity = activity, BranchId = branchId, Value = value
+                            Activity = activity,
+                            BranchId = branchId,
+                            Value = value
                         });
                     }
                 }
