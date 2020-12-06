@@ -178,7 +178,7 @@ namespace Bumbo.Web.Controllers
                 {
                     viewModel.PayChecks.TryGetValue(workedShift.Shift.User, out var temp);
                     temp.AddPayCheck(pcl.CalculateBonus(workedShift));
-                    viewModel.PayChecks.Add(workedShift.Shift.User, temp);
+                    viewModel.PayChecks[workedShift.Shift.User] = temp;
                 }
                 else
                 {
