@@ -27,6 +27,7 @@
       <Folder Include="Views\Availability\" />
       <Folder Include="Views\WorkedShift\" />
       <Folder Include="Resources\Models\WorkedShifts\" />
+      <Folder Include="Models\WorkedShifts\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -161,6 +162,16 @@
       </Compile>
       <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
         <DependentUpon>ChangeNorms.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ChangeNorms.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>
 

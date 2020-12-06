@@ -132,4 +132,7 @@
   <data name="UNLOAD_COLI" xml:space="preserve">
     <value>Unload coli</value>
   </data>
+  <data name="Worked hours" xml:space="preserve">
+      <value>Gewerkte uren</value>
+  </data>
 </root>
