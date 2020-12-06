@@ -50,6 +50,8 @@ namespace Bumbo.Web.Controllers
             {
                 int userId = int.Parse(_userManager.GetUserId(User));
 
+                var date = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday).Date;
+
                 return View(new WorkedShiftsViewModel
                 {
                     Year = year.Value,
@@ -57,7 +59,7 @@ namespace Bumbo.Web.Controllers
 
                     Branch = branch,
 
-                    WorkedShifts = await _wrapper.WorkedShift.GetAll(shift => shift.Shift.UserId == userId),
+                    WorkedShifts = await _wrapper.WorkedShift.GetAll(shift => shift.Shift.UserId == userId, shift => shift.Shift.Date >= date, shift => shift.Shift.Date < date.AddDays(7)),
                 });
             }
             catch
