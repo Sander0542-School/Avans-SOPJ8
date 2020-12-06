@@ -48,59 +48,62 @@
     </thead>
     <tbody>
         @if (Model.WorkedShifts.Any())
-        { 
-                <tr>
-                    @foreach (var day in Model.DaysOfWeek)
+        {
+            <p>Test5</p>
+            <tr>
+                @foreach (DayOfWeek day in Model.DaysOfWeek)
+                {
+                    @if (Model.WorkedShifts.Any(shift => shift.Shift?.Date.DayOfWeek == day))
                     {
-                        @if (Model.WorkedShifts.Any(shift => shift?.Shift?.Date.DayOfWeek == day))
-                        {
-                            <td class="align-middle">
-                                @foreach (var shift in Model.WorkedShifts.Where(shift => shift.Shift.Date.DayOfWeek == day))
-                                {
+                        <td class="align-middle">
+                            <p>Test2</p>
+                            @foreach (WorkedShift shift in Model.WorkedShifts.Where(shift => shift?.Shift?.Date.DayOfWeek == day))
+                            {
+                                <p>Test</p>
+                                <div>
                                     <div>
-                                        <div>
-                                            <span class="fa-stack fa-sm">
-                                                <i class="fa fa-stack-2x fa-square"></i>
-                                                <i class="fa fa-stack-1x fa-building text-white"></i>
-                                            </span>
-                                            @Html.DisplayFor(model => shift.Shift.Schedule.Department)
-                                        </div>
-                                        <div>
-                                            <span class="fa-stack fa-sm">
-                                                <i class="fa fa-stack-2x fa-square"></i>
-                                                <i class="fa fa-stack-1x fa-briefcase text-white"></i>
-                                            </span>
-                                            @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
-                                        </div>
-                                        @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)).Ticks > 0)
-                                        {
-                                            var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)));
-                                            <div>
-                                                <span class="fa-stack fa-sm">
-                                                    <i class="fa fa-stack-2x fa-square"></i>
-                                                    <i class="fa fa-stack-1x fa-coffee text-white"></i>
-                                                </span>
-                                                @Html.DisplayFor(model => timespan)
-                                            </div>
-                                        }
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-building text-white"></i>
+                                        </span>
+                                        @Html.DisplayFor(model => shift.Shift.Schedule.Department)
                                     </div>
-                                }
-                            </td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+                                    <div>
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                        </span>
+                                        @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
+                                    </div>
+                                    @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)).Ticks > 0)
+                                    {
+                                        var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)));
+                                        <div>
+                                            <span class="fa-stack fa-sm">
+                                                <i class="fa fa-stack-2x fa-square"></i>
+                                                <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                            </span>
+                                            @Html.DisplayFor(model => timespan)
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </td>
                     }
-                    <td class="align-middle">
-                        @if (Model.WorkedShifts.Any())
-                        {
-                            <span>
-                                @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
-                            </span>
-                        }
-                    </td>
-                </tr>
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+                <td class="align-middle">
+                    @if (Model.WorkedShifts.Any())
+                    {
+                        <span>
+                            @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
+                        </span>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
