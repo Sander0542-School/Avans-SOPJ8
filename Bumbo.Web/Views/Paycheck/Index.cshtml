@@ -20,38 +20,6 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-
-        @foreach (var pair in Model.MonthShifts)
-        {
-            var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
-            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
-                <td>
-                    <span class="d-inline-block">
-                        @Html.DisplayFor(model => pair.Key.Name)
-                        <br />
-                        <span class="text-secondary">
-                            @Html.DisplayFor(model => pair.Key.Function)
-                        </span>
-                    </span>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => pair.Key.Scale)
-                </td>
-                @foreach (var week in Model.WeekNumbers)
-                {
-                    var workedShifts = pair.Value.Where(ws => ws.Week == week);
-                    var workedTime = new TimeSpan(workedShifts.Sum(ws => ws.WorkTime.Ticks));
-                    <td>
-                        @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
-                    </td>
-                }
-                <td>
-                    @($"{totalWorkedTime.TotalHours:00}:{totalWorkedTime.Minutes:00}")
-                </td>
-            </tr>
-        }
-    </tbody>
 </table>
 
 @if (!Model.OverviewApproved && Model != null)
