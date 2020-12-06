@@ -7,7 +7,7 @@ namespace Bumbo.Logic.PayCheck
     {
         public PayCheck CalculateBonus(WorkedShift workedShift)
         {
-            if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime), "Bonus can't be calculated for a shift that hasn't ended yet. EndTime cannot bes Null");
+            if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime), "Bonus can't be calculated for a shift that hasn't ended yet. EndTime cannot be null");
 
             PayCheck payCheck = new PayCheck();
 
