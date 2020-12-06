@@ -25,11 +25,11 @@
         @foreach (var pair in Model.MonthShifts)
         {
             var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
-            <tr class="c-pointer">
+            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
                 <td>
                     <span class="d-inline-block">
                         @Html.DisplayFor(model => pair.Key.Name)
-                        <br/>
+                        <br />
                         <span class="text-secondary">
                             @Html.DisplayFor(model => pair.Key.Function)
                         </span>
