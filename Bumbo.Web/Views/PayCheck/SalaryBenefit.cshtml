@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@inject IViewLocalizer Localizer
 @model Bumbo.Web.Models.Paycheck.SalaryBenefitViewModel
 
 @{
@@ -12,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                Employee name
+                @Localizer["Name"]
             </th>
             <th>
-                Hours
+                @Localizer["Hours"]
             </th>
             <th>
-                Benefit
+                @Localizer["Benefit"]
             </th>
         </tr>
     </thead>
@@ -40,6 +41,5 @@
                 </tr>
             }
         }
-
     </tbody>
 </table>

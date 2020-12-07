@@ -10,7 +10,6 @@ using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.PayCheck;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Paycheck;
-using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 
@@ -21,14 +20,12 @@ namespace Bumbo.Web.Controllers
     public class PayCheckController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
-        private readonly PaycheckViewModel _viewModel;
 
         private readonly IStringLocalizer<PayCheckController> _localizer;
 
         public PayCheckController(RepositoryWrapper wrapper, IStringLocalizer<PayCheckController> localizer)
         {
             _wrapper = wrapper;
-            _viewModel = new PaycheckViewModel();
             _localizer = localizer;
         }
 
