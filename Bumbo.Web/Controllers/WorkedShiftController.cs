@@ -52,13 +52,6 @@ namespace Bumbo.Web.Controllers
 
                 var date = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday).Date;
 
-                var ws = await _wrapper.WorkedShift.GetAll(shift => shift.Shift.UserId == userId, shift => shift.Shift.Date >= date, shift => shift.Shift.Date < date.AddDays(7));
-
-                foreach (WorkedShift w in ws)
-                {
-                    Console.WriteLine("Start: " + w.StartTime);
-                    Console.WriteLine("end: " + w.EndTime);
-                }
 
                 return View(new WorkedShiftsViewModel
                 {

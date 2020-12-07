@@ -69,8 +69,8 @@
                                     @Localizer["Schedule"]
                                 </a>
                             </li>
-                            <li class="@Html.IsActive("WorkedShifts")">
-                                <a asp-controller="WorkedShifts" asp-action="Week" asp-route-branchId="@branch.Id">
+                            <li class="@Html.IsActive("WorkedShift")">
+                                <a asp-controller="WorkedShift" asp-action="Week" asp-route-branchId="@branch.Id">
                                     <i class="fa fa-calendar mr-3"></i>
                                     @Localizer["Worked hours"]
                                 </a>
