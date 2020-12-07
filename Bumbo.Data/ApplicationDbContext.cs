@@ -29,6 +29,8 @@ namespace Bumbo.Data
         
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
+        public DbSet<ForecastStandard> ForecastStandard { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
