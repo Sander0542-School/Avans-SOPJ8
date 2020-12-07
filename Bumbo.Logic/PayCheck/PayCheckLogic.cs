@@ -1,5 +1,6 @@
 ﻿using Bumbo.Data.Models;
 using System;
+using System.Linq.Expressions;
 
 namespace Bumbo.Logic.PayCheck
 {
@@ -34,7 +35,11 @@ namespace Bumbo.Logic.PayCheck
                     ? new TimeSpan(18, 0, 0)
                     : workedShift.EndTime.Value;
 
-                payCheck.AddTime(1.0, endTime - startTime);
+                var result = endTime - startTime;
+
+                _ = result.TotalMinutes < 0 ? result = new TimeSpan(0, 0, 0) : result;
+
+                payCheck.AddTime(1.0, result);
             }
             else
             {
@@ -50,7 +55,11 @@ namespace Bumbo.Logic.PayCheck
                     ? new TimeSpan(18, 0, 0)
                     : workedShift.EndTime.Value;
 
-                payCheck.AddTime(1.0, endTime - startTime);
+                var result = endTime - startTime;
+
+                _ = result.TotalMinutes < 0 ? result = new TimeSpan(0, 0, 0) : result;
+
+                payCheck.AddTime(1.0, result);
             }
 
             return payCheck;
@@ -62,7 +71,7 @@ namespace Bumbo.Logic.PayCheck
         /// <param name="workedShift">Shift to calculate the extra billable time for</param>
         /// <exception cref="ArgumentNullException">Throws exception if EndTime is not defined.</exception>
         /// <returns>Extra amount of billable time that can be added to the shift</returns>
-        private static TimeSpan BonusTimeBetween00And06(WorkedShift workedShift)
+        public TimeSpan BonusTimeBetween00And06(WorkedShift workedShift)
         {
             if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime));
 
@@ -84,17 +93,18 @@ namespace Bumbo.Logic.PayCheck
             return endTime - startTime;
         }
 
-        private static TimeSpan BonusTimeBetween18And24(WorkedShift workedShift)
+        public TimeSpan BonusTimeBetween18And24(WorkedShift workedShift)
         {
             if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime));
 
             // Time started working within the time frame that allocates the bonus 
             var startTime = workedShift.StartTime.Hours < 18 ? new TimeSpan(18,0,0) : workedShift.StartTime;
 
-            return workedShift.EndTime.Value - startTime;
+            var result = workedShift.EndTime.Value - startTime;
+            return result.TotalMinutes < 0 ? new TimeSpan(0,0,0) : result;
         }
 
-        private static TimeSpan BonusTimeBetween20And21(WorkedShift workedShift)
+        public TimeSpan BonusTimeBetween20And21(WorkedShift workedShift)
         {
             if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime));
 
@@ -103,17 +113,19 @@ namespace Bumbo.Logic.PayCheck
 
             var endTime = workedShift.EndTime.Value.Hours > 20 ? new TimeSpan(21, 0, 0) : workedShift.EndTime.Value;
 
-            return endTime - startTime;
+            var result = endTime - startTime;
+            return result.TotalMinutes < 0 ? new TimeSpan(0, 0, 0) : result;
         }
 
-        private static TimeSpan BonusTimeBetween21And24(WorkedShift workedShift)
+        public TimeSpan BonusTimeBetween21And24(WorkedShift workedShift)
         {
             if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime));
 
             // Time started working within the time frame that allocates the bonus 
             var startTime = workedShift.StartTime.Hours < 21 ? new TimeSpan(21, 0, 0) : workedShift.StartTime;
 
-            return workedShift.EndTime.Value - startTime;
+            var result = workedShift.EndTime.Value - startTime;
+            return result.TotalMinutes < 0 ? new TimeSpan(0, 0, 0) : result;
         }
     }
 }

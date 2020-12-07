@@ -31,7 +31,7 @@ namespace Bumbo.Logic.PayCheck
             if (!_workedHoursPerBonus.ContainsKey(key))
                 throw new ArgumentNullException("KeyNotFound", "The Given Key Does Not exist. Did you try to look for a bonus that is not used?");
 
-            _workedHoursPerBonus[key].Add(timeSpan);
+            _workedHoursPerBonus[key] = _workedHoursPerBonus[key] + timeSpan;
         }
 
         public TimeSpan GetTime(double key)
