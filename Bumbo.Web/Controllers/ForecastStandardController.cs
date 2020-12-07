@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
@@ -117,36 +114,7 @@ namespace Bumbo.Web.Controllers
             return View(forecastStandard);
         }
 
-        // GET: ForecastStandard/Delete/5
-        public async Task<IActionResult> Delete(ForecastActivity id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var forecastStandard = await _context.ForecastStandard
-                .FirstOrDefaultAsync(m => m.Activity == id);
-            if (forecastStandard == null)
-            {
-                return NotFound();
-            }
-
-            return View(forecastStandard);
-        }
-
-        // POST: ForecastStandard/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(ForecastActivity id)
-        {
-            var forecastStandard = await _context.ForecastStandard.FindAsync(id);
-            _context.ForecastStandard.Remove(forecastStandard);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ForecastStandardExists(ForecastActivity id)
+       private bool ForecastStandardExists(ForecastActivity id)
         {
             return _context.ForecastStandard.Any(e => e.Activity == id);
         }
