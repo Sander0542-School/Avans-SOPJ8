@@ -93,12 +93,9 @@
                     }
                 }
                 <td class="align-middle">
-                    @if (Model.WorkedShifts.Any())
-                    {
-                        <span>
-                            @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
-                        </span>
-                    }
+                    <span>
+                        @($"{ new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
+                    </span>
                 </td>
             </tr>
         }
