@@ -2,11 +2,13 @@
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
 {
+    [Authorize(Policy = "SuperUser")]
     public class ForecastStandardController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
