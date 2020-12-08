@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Bumbo.Web.Controllers
 {
-    [Route("WorkedShifts/{branchId}/{action=Week}")]
+    [Route("Branches/{branchId}/{controller}/{action=Week}")]
     public class WorkedShiftController : Controller
     {
         private readonly ILogger<WorkedShiftController> _logger;
