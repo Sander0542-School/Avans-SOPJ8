@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,10 @@ namespace Bumbo.Data.Repositories
         {
             return base.GetQueryBase()
                 .Include(ws => ws.Shift)
-                .ThenInclude(u => u.User);
+                .ThenInclude(s => s.User)
+                .ThenInclude(u => u.Branches)
+                .Include(ws => ws.Shift)
+                .ThenInclude(s => s.Schedule);
         }
     }
 }

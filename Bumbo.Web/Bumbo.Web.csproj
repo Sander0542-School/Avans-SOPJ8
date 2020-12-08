@@ -25,6 +25,9 @@
       <Folder Include="Resources\Views\AdditionalWork\" />
       <Folder Include="Resources\Views\Availability\" />
       <Folder Include="Views\Availability\" />
+      <Folder Include="Views\WorkedShift\" />
+      <Folder Include="Resources\Models\WorkedShifts\" />
+      <Folder Include="Models\WorkedShifts\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -57,7 +60,7 @@
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Forecast\ChangeNorms.en.resx">
-        <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
+        <LastGenOutput>ChangeNorms.en.Designer.cs</LastGenOutput>
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Forecast\Index.resx">
@@ -155,6 +158,19 @@
       <Compile Update="Resources\Views\Forecast\Index+Create+_EditModal.Designer.cs">
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
+        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ChangeNorms.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>
