@@ -1,4 +1,4 @@
-name: Validate Commit
+name: Check C# Formatting
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
 jobs:
   format:
     runs-on: ubuntu-latest
-    name: DotNet Format
+    name: Run .NET formatter
     steps:
       - uses: actions/checkout@v2
       - run: dotnet tool install -g dotnet-format
