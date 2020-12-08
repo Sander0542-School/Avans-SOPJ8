@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,17 +30,17 @@ namespace Bumbo.Web.Extensions
 
             return acceptedAreas.Contains(currentArea) && (acceptedPages.Contains(currentPage) || currentPage == null) ? cssClass : string.Empty;
         }
-        
+
         public static HtmlString ConditionalAttr(this IHtmlHelper helper, string name, string value)
         {
             return helper.ConditionalAttr(name, value, true);
         }
-        
+
         public static HtmlString ConditionalAttr(this IHtmlHelper helper, string name, string value, bool render)
         {
             return helper.ConditionalAttr(name, value, () => render);
         }
-        
+
         public static HtmlString ConditionalAttr(this IHtmlHelper helper, string name, string value, Func<bool> condition)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value))

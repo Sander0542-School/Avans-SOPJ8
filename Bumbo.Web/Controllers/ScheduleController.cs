@@ -62,7 +62,7 @@ namespace Bumbo.Web.Controllers
                 {
                     if (departments.Contains(department.Value))
                     {
-                        departments = new[] {department.Value};
+                        departments = new[] { department.Value };
                     }
                     else
                     {
@@ -85,7 +85,7 @@ namespace Bumbo.Web.Controllers
                     Department = department,
 
                     Branch = branch,
-                    
+
                     ScheduleApproved = department.HasValue && users.Any(user => user.Shifts.Any(shift => shift.Schedule.Department == department.Value && shift.Schedule.Confirmed)),
 
                     EmployeeShifts = users.Select(user =>
@@ -165,7 +165,7 @@ namespace Bumbo.Web.Controllers
                 if (shift == null)
                 {
                     var schedule = await _wrapper.BranchSchedule.GetOrCreate(branch.Id, shiftModel.Year, shiftModel.Week, shiftModel.Department.Value);
-                    
+
                     shift = new Shift
                     {
                         ScheduleId = schedule.Id,
@@ -331,10 +331,10 @@ namespace Bumbo.Web.Controllers
             var shifts = await _wrapper.Shift.GetAll(
                 shift => shift.UserId == userId,
                 shift => shift.Schedule.BranchId == branchId,
-                shift => shift.Date  >= startDate,
+                shift => shift.Date >= startDate,
                 shift => shift.Date <= endDate
             );
-            
+
             foreach (var shift in shifts)
             {
                 if (shift.Schedule.Confirmed)

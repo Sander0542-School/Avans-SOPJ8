@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 
@@ -60,27 +58,27 @@ namespace Bumbo.Logic.Forecast
         {
             foreach (var f in forecastStandards)
             {
-               switch (f.Activity)
-               {
-                   case ForecastActivity.UNLOAD_COLI:
-                       _minutesPerColiUnloading = f.Value;
-                       break;
-                   case ForecastActivity.STOCK_SHELVES:
-                       _minutesPerColiStockShelves = f.Value;
-                       break;
-                   case ForecastActivity.CASHIER:
-                       _customersPerHourCashRegister = f.Value;
-                       break;
-                   case ForecastActivity.PRODUCE_DEPARTMENT:
-                       _customersPerHourProduceDepartment = f.Value;
-                       break;
-                   case ForecastActivity.FACE_SHELVES:
-                       _secondsPerMeterFacing = f.Value;
-                       break;
-                   default:
-                       throw new ArgumentOutOfRangeException(nameof(forecastStandards),
-                           "ForecastLogic encountered an unknown enum value. Did you add a new enum to ForecastActivity?");
-               }
+                switch (f.Activity)
+                {
+                    case ForecastActivity.UNLOAD_COLI:
+                        _minutesPerColiUnloading = f.Value;
+                        break;
+                    case ForecastActivity.STOCK_SHELVES:
+                        _minutesPerColiStockShelves = f.Value;
+                        break;
+                    case ForecastActivity.CASHIER:
+                        _customersPerHourCashRegister = f.Value;
+                        break;
+                    case ForecastActivity.PRODUCE_DEPARTMENT:
+                        _customersPerHourProduceDepartment = f.Value;
+                        break;
+                    case ForecastActivity.FACE_SHELVES:
+                        _secondsPerMeterFacing = f.Value;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(forecastStandards),
+                            "ForecastLogic encountered an unknown enum value. Did you add a new enum to ForecastActivity?");
+                }
             }
         }
 
@@ -134,13 +132,13 @@ namespace Bumbo.Logic.Forecast
             // Haal mensen eraf of voeg mensen toe op basis van de dag van de week
             _numberOfCustomersExpected = date.DayOfWeek switch
             {
-                DayOfWeek.Monday => (int) (_numberOfCustomersExpected * 0.90),
-                DayOfWeek.Tuesday => (int) (_numberOfCustomersExpected * 0.95),
-                DayOfWeek.Wednesday => (int) (_numberOfCustomersExpected * 1.0),
-                DayOfWeek.Thursday => (int) (_numberOfCustomersExpected * 1.05),
-                DayOfWeek.Friday => (int) (_numberOfCustomersExpected * 1.10),
-                DayOfWeek.Saturday => (int) (_numberOfCustomersExpected * 1.0),
-                _ => (int) (_numberOfCustomersExpected * 0.90) // It sure would be nice if Sunday always was the default value
+                DayOfWeek.Monday => (int)(_numberOfCustomersExpected * 0.90),
+                DayOfWeek.Tuesday => (int)(_numberOfCustomersExpected * 0.95),
+                DayOfWeek.Wednesday => (int)(_numberOfCustomersExpected * 1.0),
+                DayOfWeek.Thursday => (int)(_numberOfCustomersExpected * 1.05),
+                DayOfWeek.Friday => (int)(_numberOfCustomersExpected * 1.10),
+                DayOfWeek.Saturday => (int)(_numberOfCustomersExpected * 1.0),
+                _ => (int)(_numberOfCustomersExpected * 0.90) // It sure would be nice if Sunday always was the default value
             };
 
             // TODO: haal mensen eraf of voeg mensen toe op basis van het weer

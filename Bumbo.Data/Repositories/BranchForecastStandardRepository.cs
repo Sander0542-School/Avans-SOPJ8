@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,4 @@
-using System;
-using System.ComponentModel;
+﻿using System;
 using System.Threading.Tasks;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Web.Authorization.Requirements;
@@ -27,7 +26,7 @@ namespace Bumbo.Web.Authorization.Handles
             {
                 context.Succeed(requirement);
             }
-            
+
             return Task.CompletedTask;
         }
     }

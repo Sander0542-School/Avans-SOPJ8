@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
@@ -11,6 +10,7 @@ using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using Bumbo.Web.Models.Forecast;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Web.Controllers
@@ -94,7 +94,7 @@ namespace Bumbo.Web.Controllers
                 BranchId = branchId,
                 DaysInForecast = 7
             };
-        
+
             return View(data);
         }
 
@@ -104,7 +104,7 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm]StockclerkViewModel stockclerkViewModel)
+        public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm] StockclerkViewModel stockclerkViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction();
 
@@ -130,19 +130,20 @@ namespace Bumbo.Web.Controllers
             }
 
             return RedirectToAction("Index",
-            new {
+            new
+            {
                 branchId,
                 year,
                 week
             });
         }
-        
+
         [HttpPost]
         [Route("{year}/{week}")]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm]DateTime date, Department department, int hours, int minutes)
+        public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm] DateTime date, Department department, int hours, int minutes)
         {
-            var workingHours =  hours + (decimal)minutes / 60;
+            var workingHours = hours + (decimal)minutes / 60;
             var model = new Forecast
             {
                 BranchId = branchId,
@@ -163,7 +164,8 @@ namespace Bumbo.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index),
-            new {
+            new
+            {
                 branchId,
                 year,
                 week
@@ -173,12 +175,12 @@ namespace Bumbo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
-            var viewModel = new ChangeNormsViewModel {Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId};
+            var viewModel = new ChangeNormsViewModel { Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId };
             var standards = await GetForecastStandardsForBranch(branchId);
-            
+
             foreach (var standard in standards)
                 viewModel.Standards.Add(standard.Activity, standard.Value);
-            
+
             return View(viewModel);
         }
 
@@ -187,8 +189,8 @@ namespace Bumbo.Web.Controllers
         {
             foreach (var (activity, value) in viewModel.Standards)
             {
-                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new {branchId});
-                
+                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new { branchId });
+
                 // Check if values are the same as forecastStandard
                 var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
                 // Remove old branch forecast standard if it existed
@@ -215,7 +217,9 @@ namespace Bumbo.Web.Controllers
                     {
                         await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard
                         {
-                            Activity = activity, BranchId = branchId, Value = value
+                            Activity = activity,
+                            BranchId = branchId,
+                            Value = value
                         });
                     }
                 }

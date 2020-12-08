@@ -1,10 +1,10 @@
-﻿using Bumbo.Data.Models.Common;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Bumbo.Data.Models.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Data.Repositories.Common
 {
@@ -92,7 +92,7 @@ namespace Bumbo.Data.Repositories.Common
             var changed = await Context.SaveChangesAsync();
             return changed > 0 ? entity : null;
         }
-        
+
         public virtual async Task<List<TEntity>> Update(params TEntity[] entities)
         {
             await using var transaction = await Context.Database.BeginTransactionAsync();
@@ -117,7 +117,7 @@ namespace Bumbo.Data.Repositories.Common
 
             return null;
         }
-        
+
         public virtual async Task<List<TEntity>> Remove(params Expression<Func<TEntity, bool>>[] predicates)
         {
             var entities = await GetAll(predicates);
