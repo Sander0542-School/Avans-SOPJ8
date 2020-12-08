@@ -50,7 +50,7 @@ namespace Bumbo.Web.Controllers
             {
                 int userId = int.Parse(_userManager.GetUserId(User));
 
-                var date = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday).Date;
+                var date = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday);
 
 
                 return View(new WorkedShiftsViewModel
