@@ -92,6 +92,32 @@ namespace Bumbo.Data.Repositories.Common
             var changed = await Context.SaveChangesAsync();
             return changed > 0 ? entity : null;
         }
+        
+        public virtual async Task<List<TEntity>> Update(params TEntity[] entities)
+        {
+            await using var transaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                Context.UpdateRange(entities);
+                int updated = await Context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                if (updated == entities.Length)
+                {
+                    return entities.ToList();
+                }
+
+                await transaction.RollbackAsync();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return null;
+        }
+        
         public virtual async Task<List<TEntity>> Remove(params Expression<Func<TEntity, bool>>[] predicates)
         {
             var entities = await GetAll(predicates);

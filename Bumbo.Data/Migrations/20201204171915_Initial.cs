@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bumbo.Data.Migrations
 {
-    public partial class Milestone21 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -420,6 +420,7 @@ namespace Bumbo.Data.Migrations
                 {
                     ShiftId = table.Column<int>(type: "int", nullable: false),
                     Sick = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsApprovedForPaycheck = table.Column<bool>(type: "bit", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: true)
                 },

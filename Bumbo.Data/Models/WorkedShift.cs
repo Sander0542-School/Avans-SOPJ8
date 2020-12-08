@@ -10,6 +10,7 @@ namespace Bumbo.Data.Models
         public int ShiftId { get; set; }
         
         public bool Sick { get; set; }
+        public bool IsApprovedForPaycheck { get; set; }
 
         public TimeSpan StartTime { get; set; }
 
