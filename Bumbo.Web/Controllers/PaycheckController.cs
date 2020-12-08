@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Logic.EmployeeRules;
@@ -11,6 +10,7 @@ using Bumbo.Logic.PayCheck;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Paycheck;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers

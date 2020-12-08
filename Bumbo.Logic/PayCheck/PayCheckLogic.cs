@@ -1,6 +1,5 @@
-﻿using Bumbo.Data.Models;
-using System;
-using System.Linq.Expressions;
+﻿using System;
+using Bumbo.Data.Models;
 
 namespace Bumbo.Logic.PayCheck
 {
@@ -87,7 +86,7 @@ namespace Bumbo.Logic.PayCheck
 
             // Time started working within the time frame that allocates the bonus 
             var startTime = multiDayShift ? new TimeSpan() : workedShift.StartTime;
-            
+
             var endTime = workedShift.EndTime.Value.Hours > 6 ? new TimeSpan(6, 0, 0) : workedShift.EndTime.Value;
 
             return endTime - startTime;
@@ -98,10 +97,10 @@ namespace Bumbo.Logic.PayCheck
             if (!workedShift.EndTime.HasValue) throw new ArgumentNullException(nameof(workedShift.EndTime));
 
             // Time started working within the time frame that allocates the bonus 
-            var startTime = workedShift.StartTime.Hours < 18 ? new TimeSpan(18,0,0) : workedShift.StartTime;
+            var startTime = workedShift.StartTime.Hours < 18 ? new TimeSpan(18, 0, 0) : workedShift.StartTime;
 
             var result = workedShift.EndTime.Value - startTime;
-            return result.TotalMinutes < 0 ? new TimeSpan(0,0,0) : result;
+            return result.TotalMinutes < 0 ? new TimeSpan(0, 0, 0) : result;
         }
 
         public TimeSpan BonusTimeBetween20And21(WorkedShift workedShift)

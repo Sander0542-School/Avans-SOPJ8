@@ -54,7 +54,7 @@ namespace Bumbo.Tests.Logic.PayCheckRules
         public void BonusTimeBetween21And24ShouldReturn0WhenNotWorkedInTimeSpan()
         {
             var data = new WorkedShift();
-            data.StartTime = new TimeSpan(12,0,0);
+            data.StartTime = new TimeSpan(12, 0, 0);
             data.EndTime = new TimeSpan(14, 0, 0);
 
             var result = _logic.BonusTimeBetween21And24(data);
@@ -71,7 +71,7 @@ namespace Bumbo.Tests.Logic.PayCheckRules
 
             var result = _logic.BonusTimeBetween00And06(data);
 
-            Assert.AreEqual(result.TotalMinutes,120);
+            Assert.AreEqual(result.TotalMinutes, 120);
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             data.EndTime = new TimeSpan(22, 0, 0);
 
             var checkResult = new PayCheck();
-            checkResult.AddTime(1.5, new TimeSpan(1, 0, 0)); 
+            checkResult.AddTime(1.5, new TimeSpan(1, 0, 0));
             checkResult.AddTime(1.33, new TimeSpan(1, 0, 0));
             checkResult.AddTime(1.5, new TimeSpan(1, 0, 0));
             checkResult.AddTime(1, new TimeSpan(12, 0, 0));
@@ -139,12 +139,12 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             var data = new WorkedShift();
             data.Sick = false;
             // deze datum is een zondag
-            data.Shift = new Shift {Date = new DateTime(2020, 12, 6)};
+            data.Shift = new Shift { Date = new DateTime(2020, 12, 6) };
             data.StartTime = new TimeSpan(12, 0, 0);
             data.EndTime = new TimeSpan(18, 0, 0);
 
             var checkResult = new PayCheck();
-            checkResult.AddTime(2.0, new TimeSpan(6,0,0));
+            checkResult.AddTime(2.0, new TimeSpan(6, 0, 0));
 
             var result = _logic.CalculateBonus(data);
 
@@ -169,6 +169,6 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             Assert.AreEqual(result.GetTime(0.7).TotalMinutes, checkResult.GetTime(0.7).TotalMinutes);
         }
 
-        
+
     }
 }

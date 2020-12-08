@@ -30,7 +30,7 @@ namespace Bumbo.Web.Models.Paycheck
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
 
-            [Display(Name="EndTime")]
+            [Display(Name = "EndTime")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan EndTime { get; set; }
 
@@ -54,7 +54,7 @@ namespace Bumbo.Web.Models.Paycheck
             public TimeSpan Difference { get; set; }
         }
 
-        public class InputModel 
+        public class InputModel
         {
             [Required]
             public int ShiftId { get; set; }

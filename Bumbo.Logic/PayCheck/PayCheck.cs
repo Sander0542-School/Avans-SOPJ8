@@ -10,7 +10,7 @@ namespace Bumbo.Logic.PayCheck
 
         public const double Standard = 1.0;
         public const double Between20And21Bonus = 1.33;
-        public const double NightBonus = 1.5; 
+        public const double NightBonus = 1.5;
         public const double SundayBonus = 2.0;
         public const double SickBonus = 0.70;
 
@@ -46,7 +46,7 @@ namespace Bumbo.Logic.PayCheck
         {
             foreach (var kvp in payCheck.GetPayCheck())
             {
-                AddTime(kvp.Key,kvp.Value);
+                AddTime(kvp.Key, kvp.Value);
             }
         }
 

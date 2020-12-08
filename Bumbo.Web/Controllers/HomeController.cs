@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Bumbo.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Bumbo.Web.Controllers
