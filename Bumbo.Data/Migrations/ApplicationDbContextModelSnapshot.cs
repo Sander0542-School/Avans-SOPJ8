@@ -397,6 +397,9 @@ namespace Bumbo.Data.Migrations
                     b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsApprovedForPaycheck")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Sick")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")

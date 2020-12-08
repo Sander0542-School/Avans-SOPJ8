@@ -83,10 +83,17 @@
                                         @Localizer["Forecast"]
                                     </a>
                                 </li>
+                                <li class="@Html.IsActive("PayCheck", "Index")">
+                                    <a asp-controller="PayCheck" asp-action="Index" asp-route-branchId="@branch.Id">
+                                        <i class="fa fa-money mr-3"></i>
+                                        @Localizer["PayCheck"]
+                                    </a>
+                                </li>
                             }
                         </ul>
                     </li>
                 }
+
                 <li class="@Html.IsActive("Branches")">
                     <a href="#branchesSubmenu" data-toggle="collapse" class="dropdown-toggle">
                         <i class="fa fa-building-o mr-3"></i>

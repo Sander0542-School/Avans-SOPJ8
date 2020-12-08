@@ -1,0 +1,49 @@
+﻿@model Bumbo.Web.Models.Paycheck.DetailsViewModel.InputModel
+@inject IViewLocalizer Localizer
+
+<div class="modal fade" id="paycheckEditModal" tabindex="-1" role="dialog" aria-labelledby="paycheckEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="SavePaycheck">
+                <div class="modal-header">
+                    <h5>@Localizer["PayCheck"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input id="Input_ShiftId" asp-for="ShiftId" hidden />
+                    <input asp-for="UserId" hidden />
+                    <input asp-for="Year" hidden />
+                    <input asp-for="Month" hidden />
+
+                    <div class="form-group">
+                        <label asp-for="StartTime"></label>
+                        <input id="Input_StartTime" asp-for="StartTime" class="form-control" />
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndTime"></label>
+                        <input id="Input_EndTime" asp-for="EndTime" class="form-control" />
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function paycheckModal(shiftId, startTime, endTime) {
+        $('#Input_ShiftId').val(shiftId)
+        $('#Input_StartTime').val(startTime)
+        $('#Input_EndTime').val(endTime)
+
+        $('#paycheckEditModal').modal('show');
+    }
+</script>

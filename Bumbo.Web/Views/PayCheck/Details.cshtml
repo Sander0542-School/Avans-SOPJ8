@@ -1,0 +1,80 @@
+﻿@using System.Globalization
+@inject IViewLocalizer Localizer
+@model Bumbo.Web.Models.Paycheck.DetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Localizer["Week"]
+            </th>
+            <th>
+                @Localizer["Difference"]
+            </th>
+            @foreach (var day in Model.DaysOfWeek)
+            {
+                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+            }
+            <th>
+                @Localizer["Total"]
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pair in Model.WeekShifts)
+        {
+            var weekDifference = new TimeSpan(pair.Value.Sum(ws => ws.Difference.Ticks));
+            <tr>
+                <td>
+                    @pair.Key
+                </td>
+                <td>
+                    @((weekDifference.Ticks < 0 ? "-" : "") + weekDifference.ToString(@"hh\:mm"))
+                </td>
+                @foreach (var day in Model.DaysOfWeek)
+                {
+                    var workedShift = pair.Value.FirstOrDefault(ws => ws.Day == day);
+                    <td>
+                        @if (workedShift != null)
+                        {
+                            <div onclick="paycheckModal(@workedShift.ShiftId, '@workedShift.StartTime', '@workedShift.EndTime');" class="c-pointer">
+                                <div>
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fa fa-stack-2x fa-square"></i>
+                                        <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                    </span>
+                                    @Html.DisplayFor(model => workedShift.StartTime)-@Html.DisplayFor(model => workedShift.EndTime)
+                                </div>
+                                @if (workedShift.BreakTime.Ticks > 0)
+                                {
+                                    <div>
+                                        <span class="fa-stack fa-sm">
+                                            <i class="fa fa-stack-2x fa-square"></i>
+                                            <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                        </span>
+                                        @Html.DisplayFor(model => workedShift.BreakTime)
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                    </td>
+                }
+                @{
+                    var workedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
+                }
+                <td>
+                    @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_PaycheckModal" model="@Model.Input" />
