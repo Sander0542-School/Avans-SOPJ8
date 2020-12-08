@@ -56,4 +56,10 @@
     <data name="Availability" xml:space="preserve">
         <value>Availability</value>
     </data>
+    <data name="School schedule" xml:space="preserve">
+        <value>School schedule</value>
+    </data>
+    <data name="Users" xml:space="preserve">
+        <value>Users</value>
+    </data>
 </root>

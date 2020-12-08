@@ -144,4 +144,7 @@
   <data name="Change norms" xml:space="preserve">
     <value>Aanpassen normeringen</value>
   </data>
+  <data name="Worked hours" xml:space="preserve">
+      <value>Gewerkte uren</value>
+  </data>
 </root>
