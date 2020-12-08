@@ -1,12 +1,12 @@
 ﻿@model Bumbo.Web.Models.Schedule.EventViewModel
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@inject IViewLocalizer localizer
 @{
     var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
 }
 
 <div class="row">
     <section class="col-md-12 col-md-push-0">
-        @Html.Partial("_CalendarPartial")
+       <partial name="_CalendarPartial" />
     </section>
 </div>
 
