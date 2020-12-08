@@ -268,11 +268,6 @@ namespace Bumbo.Web.Controllers
             user.Branches.Remove(userBranch);
             await _wrapper.User.Update(user);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
