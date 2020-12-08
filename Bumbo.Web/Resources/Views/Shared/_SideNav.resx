@@ -202,4 +202,10 @@
     <data name="Availability" xml:space="preserve">
         <value>Beschikbaarheid</value>
     </data>
+  <data name="School schedule" xml:space="preserve">
+      <value>Schoolrooster</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+      <value>Gebruikers</value>
+  </data>
 </root>

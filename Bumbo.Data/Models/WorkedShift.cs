@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Models
@@ -15,7 +14,6 @@ namespace Bumbo.Data.Models
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan? EndTime { get; set; }
-
         
         public Shift Shift { get; set; }
     }

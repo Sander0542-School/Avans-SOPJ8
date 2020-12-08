@@ -38,6 +38,15 @@
                         @Localizer["Availability"]
                     </a>
                 </li>
+                @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
+                {
+                    <li class="@Html.IsActive("AdditionalWork", "Index")">
+                        <a asp-controller="Availability" asp-action="Index">
+                            <i class="fa fa-calendar mr-3"></i>
+                            @Localizer["School schedule"]
+                        </a>
+                    </li>
+                }
                 @if (hasCurrentBranch)
                 {
                     var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == currentBranchId);
@@ -58,6 +67,12 @@
                                 <a asp-controller="Schedule" asp-action="Week" asp-route-branchId="@branch.Id">
                                     <i class="fa fa-calendar mr-3"></i>
                                     @Localizer["Schedule"]
+                                </a>
+                            </li>
+                            <li class="@Html.IsActive("WorkedShift")">
+                                <a asp-controller="WorkedShift" asp-action="Week" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-calendar mr-3"></i>
+                                    @Localizer["Worked hours"]
                                 </a>
                             </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
@@ -98,6 +113,15 @@
                         }
                     </ul>
                 </li>
+                @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                {
+                    <li class="@Html.IsActive("users")">
+                        <a asp-controller="Users" asp-action="Index">
+                            <i class="fa fa-user mr-3"></i>
+                            @Localizer["Users"]
+                        </a>
+                    </li>
+                }
                 <li class="@Html.IsActiveArea("Identity")">
                     <a href="#accountSubmenu" data-toggle="collapse" class="dropdown-toggle text-truncate">
                         <i class="fa fa-user mr-3"></i>
