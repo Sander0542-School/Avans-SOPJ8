@@ -229,7 +229,7 @@ namespace Bumbo.Web.Controllers
             var branchesList = await GetBranchList();
 
             var userModel = CreateUserModel(user, branchesList);
-            var userBranch2 = user.Branches.Where(b => b.BranchId == branch).Where(b => b.Department == department).FirstOrDefault();
+            var userBranch2 = user.Branches.Where(b => b.BranchId == branch).FirstOrDefault(b => b.Department == department);
 
             if (userBranch2 != null)
             {
@@ -263,7 +263,7 @@ namespace Bumbo.Web.Controllers
             }
 
             var user = await _wrapper.User.Get(m => m.Id == id);
-            var userBranch = user.Branches.Where(b => b.BranchId == branchId).FirstOrDefault();
+            var userBranch = user.Branches.FirstOrDefault(b => b.BranchId == branchId);
 
             user.Branches.Remove(userBranch);
             await _wrapper.User.Update(user);
@@ -277,17 +277,6 @@ namespace Bumbo.Web.Controllers
             var userModel = CreateUserModel(user, branchesList);
 
             return RedirectToAction("Edit", new { userModel.Id });
-        }
-
-        public async Task<IActionResult> CreateContractAsync(int id)
-        {
-            User user = await _wrapper.User.Get(u => u.Id == id);
-            var viewModel = new ContractViewModel
-            {
-                UserId = user.Id,
-            };
-
-            return View(viewModel);
         }
 
         [HttpPost]
