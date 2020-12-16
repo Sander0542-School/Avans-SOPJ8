@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BreakTime" xml:space="preserve">
+  <data name="Break Time" xml:space="preserve">
     <value>Pauzetijd</value>
   </data>
-  <data name="DayOfWeek" xml:space="preserve">
+  <data name="Day of Week" xml:space="preserve">
     <value>Dag van de week</value>
   </data>
-  <data name="EndTime" xml:space="preserve">
+  <data name="End Time" xml:space="preserve">
     <value>Eindtijd</value>
   </data>
-  <data name="StartTime" xml:space="preserve">
+  <data name="Start Time" xml:space="preserve">
     <value>Starttijd</value>
   </data>
-  <data name="TotalTime" xml:space="preserve">
+  <data name="Total Time" xml:space="preserve">
     <value>Totale tijd</value>
   </data>
-  <data name="WorkTime" xml:space="preserve">
+  <data name="Work Time" xml:space="preserve">
     <value>Werktijd</value>
   </data>
 </root>
