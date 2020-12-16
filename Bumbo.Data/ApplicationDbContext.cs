@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -25,6 +25,8 @@ namespace Bumbo.Data
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
 
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
+
+        public DbSet<Furlough> Furloughs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
