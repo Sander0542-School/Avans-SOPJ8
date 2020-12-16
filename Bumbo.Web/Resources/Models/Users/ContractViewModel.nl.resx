@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EndDate" xml:space="preserve">
+  <data name="End Date" xml:space="preserve">
     <value>Einddatum</value>
   </data>
   <data name="Function" xml:space="preserve">
@@ -126,7 +126,7 @@
   <data name="Scale" xml:space="preserve">
     <value>Schaal</value>
   </data>
-  <data name="StartDate" xml:space="preserve">
+  <data name="Start Date" xml:space="preserve">
     <value>Startdatum</value>
   </data>
   <data name="User Id" xml:space="preserve">

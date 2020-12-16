@@ -10,10 +10,10 @@
         <p class="mb-0 font-weight-bold">@Localizer["Day"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["Starttime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["Start Time"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["Endtime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["End Time"]</p>
     </div>
 </div>
 @foreach (DayOfWeek weekday in UserAvailabilityViewModel.DaysOfWeek)
@@ -23,31 +23,32 @@
             <p>@Localizer[@weekday.ToString()]</p>
         </div>
         <div class="col-3">
-            <input asp-for="Availability.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime" />
+            <input asp-for="Availability.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime"/>
         </div>
         <div class="col-3">
-            <input asp-for="Availability.EndTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime" />
+            <input asp-for="Availability.EndTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.EndTime"/>
         </div>
         <div class="col-2">
             <form method="POST" asp-action="Edit" class="d-inline-block">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input asp-for="Availability.Day" value="@weekday" class="d-none" />
-                <input asp-for="Availability.StartTime" type="time" class="d-none" />
-                <input asp-for="Availability.EndTime" type="time" class="d-none" />
+                <input asp-for="Availability.Day" value="@weekday" class="d-none"/>
+                <input asp-for="Availability.StartTime" type="time" class="d-none"/>
+                <input asp-for="Availability.EndTime" type="time" class="d-none"/>
                 <button type="submit" class="btn btn-link text-success d-none p-0">
                     <i class="fa fa-save"></i>
                 </button>
             </form>
             @if (Model.Schedule.Any(model => model.Day == @weekday))
-            { 
-                <a class="text-danger" asp-action="Delete" asp-route-day="@weekday"><i class="fa fa-trash"></i></a>
-            }
+            {
+                <a class="text-danger" asp-action="Delete" asp-route-day="@weekday">
+                    <i class="fa fa-trash"></i>
+                </a>            }
         </div>
     </div>
 }
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }
 
 <script>
