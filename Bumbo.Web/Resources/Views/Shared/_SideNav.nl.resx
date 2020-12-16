@@ -25,7 +25,8 @@
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
-    </data>  
+    </data>
+                
     There are any number of "resheader" rows that contain simple 
     name/value pairs.
     
@@ -120,54 +121,94 @@
     <value>Home</value>
   </data>
   <data name="Branches" xml:space="preserve">
-    <value>Branches</value>
+    <value>Filialen</value>
   </data>
   <data name="Schedule" xml:space="preserve">
-    <value>Schedule</value>
+    <value>Rooster</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profiel</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Wachtwoord</value>
   </data>
-  <data name="2FA" xml:space="preserve">
-    <value>Two-factor authentication</value>
+  <data name="Two-factor authentication" xml:space="preserve">
+    <value>Tweestapsverificatie</value>
   </data>
-  <data name="PersonalData" xml:space="preserve">
-    <value>Personal data</value>
+  <data name="Personal Data" xml:space="preserve">
+    <value>Persoonlijke gegevens</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Uitloggen</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>Inloggen</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>Registreren</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
   <data name="Forecast" xml:space="preserve">
-    <value>Forecast</value>
+    <value>Prognose</value>
   </data>
-  <data name="ChangeLanguage" xml:space="preserve">
-    <value>Change Language</value>
+  <data name="Change Language" xml:space="preserve">
+    <value>Verander taal</value>
+  </data>
+  <data name="All branches" xml:space="preserve">
+    <value>Alle filialen</value>
+    <comment>All Branches</comment>
   </data>
   <data name="Availability" xml:space="preserve">
-    <value>Availability</value>
+    <value>Beschikbaarheid</value>
   </data>
-  <data name="PayCheck" xml:space="preserve">
-    <value>Paycheck</value>
+  <data name="Paycheck" xml:space="preserve">
+    <value>Loonstroken</value>
   </data>
-    <data name="School schedule" xml:space="preserve">
-        <value>School schedule</value>
-    </data>
-    <data name="Users" xml:space="preserve">
-        <value>Users</value>
-    </data>
+  <data name="Schedule" xml:space="preserve">
+      <value>Rooster</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+      <value>Profiel</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+      <value>Email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+      <value>Wachtwoord</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+      <value>Tweestapsverificatie</value>
+  </data>
+  <data name="Personal Data" xml:space="preserve">
+      <value>Persoonlijke gegevens</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+      <value>Uitloggen</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+      <value>Inloggen</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+      <value>Registreren</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+      <value>Details</value>
+  </data>
+  <data name="Forecast" xml:space="preserve">
+      <value>Prognose</value>
+  </data>
+  <data name="Change Language" xml:space="preserve">
+      <value>Verander taal</value>
+  </data>
+  <data name="School schedule" xml:space="preserve">
+      <value>Schoolrooster</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+      <value>Gebruikers</value>
+  </data>
 </root>
