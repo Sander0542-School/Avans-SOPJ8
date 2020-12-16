@@ -11,31 +11,31 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="ShiftNotSaved" xml:space="preserve">
+    <data name="MessageShiftNotSaved" xml:space="preserve">
         <value>The shift could not be saved.</value>
     </data>
-    <data name="ShiftSaved" xml:space="preserve">
+    <data name="MessageShiftSaved" xml:space="preserve">
         <value>The shift was successfully saved.</value>
     </data>
-    <data name="ScheduleNotSaved" xml:space="preserve">
+    <data name="MessageScheduleNotSaved" xml:space="preserve">
         <value>The schedule could not be saved.</value>
     </data>
-    <data name="ScheduleCopied" xml:space="preserve">
+    <data name="MessageScheduleCopied" xml:space="preserve">
         <value>The schedule was successfully copied to week {0} of {1}.</value>
     </data>
-    <data name="ScheduleNotEmpty" xml:space="preserve">
+    <data name="MessageScheduleNotEmpty" xml:space="preserve">
         <value>The selected schedule already contains shifts.</value>
     </data>
-    <data name="WeekNotExists" xml:space="preserve">
+    <data name="MessageWeekNotExists" xml:space="preserve">
         <value>The selected week does not exist.</value>
     </data>
-    <data name="ScheduleNotApproved" xml:space="preserve">
+    <data name="MessageScheduleNotApproved" xml:space="preserve">
         <value>The schedule could not be approved.</value>
     </data>
-    <data name="ScheduleApproved" xml:space="preserve">
+    <data name="MessageScheduleApproved" xml:space="preserve">
         <value>The schedule was successfully approved.</value>
     </data>
-    <data name="ScheduleEmpty" xml:space="preserve">
+    <data name="MessageScheduleEmpty" xml:space="preserve">
         <value>The schedule does not contain any shifts.</value>
     </data>
 </root>
