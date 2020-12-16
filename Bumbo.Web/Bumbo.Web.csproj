@@ -123,10 +123,6 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>UserAdditionalWorkViewModel.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.en.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>UserAdditionalWorkViewModel.en.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.en.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
