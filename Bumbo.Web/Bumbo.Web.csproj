@@ -26,7 +26,6 @@
       <Folder Include="Resources\Views\Availability\" />
       <Folder Include="Views\Availability\" />
       <Folder Include="Views\WorkedShift\" />
-      <Folder Include="Resources\Models\WorkedShifts\" />
       <Folder Include="Models\WorkedShifts\" />
     </ItemGroup>
 
