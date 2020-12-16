@@ -30,10 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.en.resx">
-        <SubType>Designer</SubType>
-        <Generator>PublicResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.nl.resx">
         <SubType>Designer</SubType>
         <Generator>PublicResXFileCodeGenerator</Generator>
