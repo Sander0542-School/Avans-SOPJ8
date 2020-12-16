@@ -261,7 +261,12 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Personal()
         {
-            return View(new EventViewModel());
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+            
+            return View(new PersonalViewModel {InputOfferShift = new PersonalViewModel.InputOfferShiftModel()});
         }
 
         [HttpGet]
@@ -283,8 +288,33 @@ namespace Bumbo.Web.Controllers
                 Title = shift.Schedule.Department.ToString(),
                 Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
                 End = $"{shift.Date:yyyy-MM-dd}T{shift.EndTime}",
-                AllDay = false
+                AllDay = false,
+                ExtendedProps = new Dictionary<string, object> {{"offered", shift.Offered}}
             }));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OfferShift(int branchId, PersonalViewModel.InputOfferShiftModel model)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            TempData["alertMessage"] = $"Danger:{_localizer["MessageShiftNotOffered"]}";
+
+            if (ModelState.IsValid)
+            {
+                var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == model.ShiftId);
+
+                shift.Offered = true;
+
+                if (await _wrapper.Shift.Update(shift) != null)
+                {
+                    TempData["alertMessage"] = $"Success:{_localizer["MessageShiftOffered"]}";
+                }
+            }
+
+            return RedirectToAction(nameof(Personal));
         }
 
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
