@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewBag.Title = Localizer["DepartmentSchedule"];
+    ViewBag.Title = Localizer["Department Schedule"];
     ViewBag.ContainerType = "container-fluid";
 
     var canEdit = User.HasClaim("Manager", Model.Branch.Id.ToString());
@@ -25,7 +25,7 @@
             @if (!Model.Department.HasValue && canEdit)
             {
                 <br/>
-                <span style="font-size: 16px" class="text-danger font-weight-normal">(@Localizer["ReadOnly"])</span>
+                <span style="font-size: 16px" class="text-danger font-weight-normal">(@Localizer["Read Only"])</span>
             }
         </h4>
     </div>
@@ -64,10 +64,10 @@
     </div>
     <div class="col d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["CopySchedule"]</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["Copy Schedule"]</button>
         @if (!Model.ScheduleApproved && Model.Department.HasValue)
         {
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["ApproveSchedule"]</button>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["Approve Schedule"]</button>
         }
     </div>
 </div>

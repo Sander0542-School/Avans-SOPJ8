@@ -1,0 +1,52 @@
+@model PersonalViewModel.InputOfferShiftModel
+
+@inject IViewLocalizer Localizer
+
+<div class="modal fade" id="offerShiftModal" tabindex="-1" role="dialog" aria-labelledby="offerShiftModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="OfferShift">
+                <input asp-for="ShiftId" id="OfferShift_ShiftId" type="hidden">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="copyScheduleModalLabel">@Localizer["Offer Shift"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input asp-for="Date" id="OfferShift_Date" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartTime"></label>
+                        <input asp-for="StartTime" id="OfferShift_StartTime" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndTime"></label>
+                        <input asp-for="EndTime" id="OfferShift_EndTime" class="form-control" readonly/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Offer"]</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function offerShiftModal(shiftId, date, startTime, endTime) {
+        $('#OfferShift_ShiftId').val(shiftId);
+        $('#OfferShift_Date').val(date);
+        $('#OfferShift_StartTime').val(startTime);
+        $('#OfferShift_EndTime').val(endTime);
+
+        $('#offerShiftModal').modal('show');
+    }
+</script>

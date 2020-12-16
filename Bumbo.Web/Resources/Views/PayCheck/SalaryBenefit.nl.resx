@@ -123,7 +123,7 @@
   <data name="Hours" xml:space="preserve">
     <value>Uren</value>
   </data>
-  <data name="Name" xml:space="preserve">
+  <data name="Employee Name" xml:space="preserve">
     <value>Werknemer naam</value>
   </data>
 </root>

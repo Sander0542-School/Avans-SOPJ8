@@ -37,12 +37,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Week), new
-                {
-                    branchId,
-                    year = year ?? DateTime.Today.Year,
-                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
-                });
+                return RedirectToAction(nameof(Week), new {branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),});
             }
 
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -62,16 +57,11 @@ namespace Bumbo.Web.Controllers
                 {
                     if (departments.Contains(department.Value))
                     {
-                        departments = new[] { department.Value };
+                        departments = new[] {department.Value};
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Week), new
-                        {
-                            branchId,
-                            year,
-                            week
-                        });
+                        return RedirectToAction(nameof(Week), new {branchId, year, week});
                     }
                 }
 
@@ -81,13 +71,9 @@ namespace Bumbo.Web.Controllers
                 {
                     Year = year.Value,
                     Week = week.Value,
-
                     Department = department,
-
                     Branch = branch,
-
                     ScheduleApproved = department.HasValue && users.Any(user => user.Shifts.Any(shift => shift.Schedule.Department == department.Value && shift.Schedule.Confirmed)),
-
                     EmployeeShifts = users.Select(user =>
                     {
                         var notifications = WorkingHours.ValidateWeek(user, year.Value, week.Value);
@@ -97,11 +83,8 @@ namespace Bumbo.Web.Controllers
                             UserId = user.Id,
                             Name = UserUtil.GetFullName(user),
                             Contract = user.Contracts.FirstOrDefault()?.Function ?? "",
-
                             MaxHours = WorkingHours.MaxHoursPerWeek(user, year.Value, week.Value),
-
                             Scale = user.Contracts.FirstOrDefault()?.Scale ?? 0,
-
                             Shifts = user.Shifts.Select(shift =>
                             {
                                 return new DepartmentViewModel.Shift
@@ -116,27 +99,9 @@ namespace Bumbo.Web.Controllers
                             }).ToList()
                         };
                     }).ToList(),
-
-                    InputShift = new DepartmentViewModel.InputShiftModel
-                    {
-                        Year = year.Value,
-                        Week = week.Value,
-                        Department = department
-                    },
-
-                    InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel
-                    {
-                        Year = year.Value,
-                        Week = week.Value,
-                        Department = department
-                    },
-
-                    InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel
-                    {
-                        Year = year.Value,
-                        Week = week.Value,
-                        Department = department
-                    }
+                    InputShift = new DepartmentViewModel.InputShiftModel {Year = year.Value, Week = week.Value, Department = department},
+                    InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel {Year = year.Value, Week = week.Value, Department = department},
+                    InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel {Year = year.Value, Week = week.Value, Department = department}
                 });
             }
             catch (ArgumentOutOfRangeException)
@@ -154,7 +119,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"Danger:{_localizer["ShiftNotSaved"]}";
+            var alertMessage = $"Danger:{_localizer["MessageShiftNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -187,7 +152,7 @@ namespace Bumbo.Web.Controllers
 
                 if (success)
                 {
-                    alertMessage = $"Success:{_localizer["ShiftSaved"]}";
+                    alertMessage = $"Success:{_localizer["MessageShiftSaved"]}";
                 }
             }
 
@@ -195,10 +160,7 @@ namespace Bumbo.Web.Controllers
 
             return RedirectToAction(nameof(Week), new
             {
-                branchId,
-                year = shiftModel.Year,
-                week = shiftModel.Week,
-                department = shiftModel.Department,
+                branchId, year = shiftModel.Year, week = shiftModel.Week, department = shiftModel.Department,
             });
         }
 
@@ -211,7 +173,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotSaved"]}";
+            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -236,35 +198,23 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["ScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
+                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Week), new
-                            {
-                                branchId,
-                                year = copyWeekModel.TargetYear,
-                                week = copyWeekModel.TargetWeek,
-                                department = copyWeekModel.Department
-                            });
+                            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.TargetYear, week = copyWeekModel.TargetWeek, department = copyWeekModel.Department});
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotEmpty"]}";
+                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["WeekNotExists"]}";
+                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
-            return RedirectToAction(nameof(Week), new
-            {
-                branchId,
-                year = copyWeekModel.Year,
-                week = copyWeekModel.Week,
-                department = copyWeekModel.Department
-            });
+            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.Year, week = copyWeekModel.Week, department = copyWeekModel.Department});
         }
 
         [HttpPost]
@@ -276,7 +226,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["ScheduleNotApproved"]}";
+            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -291,67 +241,80 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.BranchSchedule.Update(schedule) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["ScheduleApproved"]}";
+                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["ScheduleEmpty"]}";
+                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["WeekNotExists"]}";
+                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
-            return RedirectToAction(nameof(Week), new
-            {
-                branchId,
-                year = approveScheduleModel.Year,
-                week = approveScheduleModel.Week,
-                department = approveScheduleModel.Department
-            });
+            return RedirectToAction(nameof(Week), new {branchId, year = approveScheduleModel.Year, week = approveScheduleModel.Week, department = approveScheduleModel.Department});
         }
 
 
         public IActionResult Personal()
         {
-            return View(new EventViewModel());
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+            
+            return View(new PersonalViewModel {InputOfferShift = new PersonalViewModel.InputOfferShiftModel()});
         }
 
         [HttpGet]
         public async Task<JsonResult> GetCalendarEvents(int branchId, [FromQuery(Name = "start")] DateTime startDate, [FromQuery(Name = "end")] DateTime endDate)
         {
-            var viewModel = new EventViewModel();
-            var events = new List<EventViewModel>();
-
             var userId = int.Parse(_userManager.GetUserId(User));
 
             var shifts = await _wrapper.Shift.GetAll(
                 shift => shift.UserId == userId,
                 shift => shift.Schedule.BranchId == branchId,
+                shift => shift.Schedule.Confirmed,
                 shift => shift.Date >= startDate,
                 shift => shift.Date <= endDate
             );
 
-            foreach (var shift in shifts)
+            return Json(shifts.Select(shift => new EventViewModel
             {
-                if (shift.Schedule.Confirmed)
-                {
-                    events.Add(new EventViewModel()
-                    {
-                        Id = shift.Id,
-                        Title = shift.Schedule.Department.ToString(),
-                        Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
-                        End = $"{shift.Date:yyyy-MM-dd}T{ shift.EndTime }",
-                        AllDay = false
-                    });
+                Id = shift.Id,
+                Title = shift.Schedule.Department.ToString(),
+                Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
+                End = $"{shift.Date:yyyy-MM-dd}T{shift.EndTime}",
+                AllDay = false,
+                ExtendedProps = new Dictionary<string, object> {{"offered", shift.Offered}}
+            }));
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> OfferShift(int branchId, PersonalViewModel.InputOfferShiftModel model)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            TempData["alertMessage"] = $"Danger:{_localizer["MessageShiftNotOffered"]}";
+
+            if (ModelState.IsValid)
+            {
+                var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == model.ShiftId);
+
+                shift.Offered = true;
+
+                if (await _wrapper.Shift.Update(shift) != null)
+                {
+                    TempData["alertMessage"] = $"Success:{_localizer["MessageShiftOffered"]}";
                 }
             }
 
-            return Json(events.ToArray());
+            return RedirectToAction(nameof(Personal));
         }
 
         public async Task<IActionResult> Offers(int branchId)
