@@ -1,19 +1,23 @@
-﻿@model Bumbo.Web.Models.Schedule.EventViewModel
-@inject IViewLocalizer localizer
+﻿@model PersonalViewModel
+
+@inject IViewLocalizer Localizer
+
 @{
     var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
 }
 
 <div class="row">
     <section class="col-md-12 col-md-push-0">
-       <partial name="_CalendarPartial" />
+        <partial name="_CalendarPartial"/>
     </section>
+    
+    <partial name="_OfferShiftModal" model="Model.InputOfferShift"/>
 </div>
 
 @section Styles{
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.print.css" media="print" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.print.css" media="print"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css"/>
 }
 
 @section Scripts {
@@ -42,7 +46,7 @@
             },
             eventSources: [
                 {
-                    url: '@Url.RouteUrl(new{ action= "GetCalendarEvents", controller= "Schedule" })',
+                    url: '@Url.RouteUrl(new {action = "GetCalendarEvents", controller = "Schedule"})',
                     type: 'Get',
                     headers: {
                         RequestVerificationToken:
@@ -56,10 +60,14 @@
                 }
 
             ],
+            eventClick: function (event) {
+                if (!event.extendedProps.offered) {
+                    offerShiftModal(event.id, event.start.format("YYYY-MM-DD"), event.start.format("HH:mm"), event.end.format("HH:mm"));
+                }
+            },
 
             editable: false
         });
     });
     </script>
 }
-
