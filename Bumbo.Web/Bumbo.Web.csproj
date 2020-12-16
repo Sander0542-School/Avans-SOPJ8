@@ -46,22 +46,6 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Forecast\ChangeNorms.en.resx">
-        <LastGenOutput>ChangeNorms.en.Designer.cs</LastGenOutput>
-        <Generator>ResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Forecast\Index.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Index+Create+_EditModal.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Forecast\Create.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Create.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Forecast\_EditForecastModal.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>_EditForecastModal.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Availability\Index.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.Designer.cs</LastGenOutput>
@@ -142,9 +126,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
-        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
       </Compile>
       <Compile Update="Resources\Views\Forecast\ChangeNorms.nl.Designer.cs">
         <AutoGen>True</AutoGen>
