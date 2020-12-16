@@ -1,0 +1,38 @@
+@inject IViewLocalizer Localizer
+
+@model OffersViewModel
+
+@{
+    ViewBag.Title = Localizer["Shift Offers"];
+}
+
+<table class="table table-striped">
+    <tbody>
+    @foreach (var (date, shifts) in Model.Shifts)
+    {
+        <tr>
+            <th colspan="2">
+                <h4 class="m-0">@($"{date:D}")</h4>
+            </th>
+        </tr>
+
+        @foreach (var shift in shifts)
+        {
+            <tr>
+                <form asp-action="AdoptOffer">
+                    <input type="hidden" asp-for="Input.ShiftId" value="@shift.Id">
+                    <td>
+                        @Html.DisplayNameFor(model => shift.Employee): @Html.DisplayFor(model => shift.Employee)<br/>
+                        @Html.DisplayNameFor(model => shift.Department): @Html.DisplayFor(model => shift.Department)<br/>
+                        @Html.DisplayNameFor(model => shift.StartTime): @Html.DisplayFor(model => shift.StartTime)<br/>
+                        @Html.DisplayNameFor(model => shift.EndTime): @Html.DisplayFor(model => shift.EndTime)
+                    </td>
+                    <td class="text-right">
+                        <input type="submit" class="btn btn-primary" value="@Localizer["Adopt"]">
+                    </td>
+                </form>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

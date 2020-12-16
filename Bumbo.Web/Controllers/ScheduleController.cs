@@ -354,6 +354,74 @@ namespace Bumbo.Web.Controllers
             return Json(events.ToArray());
         }
 
+        public async Task<IActionResult> Offers(int branchId)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+            
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+            
+            int userId = int.Parse(_userManager.GetUserId(User));
+
+            var departments = (await _wrapper.UserBranch.GetAll(userBranch => userBranch.UserId == userId)).Select(userBranch => userBranch.Department);
+
+            var shifts = await _wrapper.Shift.GetAll(
+                shift => shift.Offered,
+                shift => shift.Schedule.BranchId == branch.Id,
+                shift => shift.UserId != userId,
+                shift => departments.Contains(shift.Schedule.Department),
+                shift => shift.Date >= DateTime.Today,
+                shift => shift.WorkedShift == null);
+
+            return View(new OffersViewModel
+            {
+                Shifts = shifts.GroupBy(shift => shift.Date)
+                    .ToDictionary(grouping => grouping.Key, grouping => grouping.Select(shift => new OffersViewModel.Shift
+                    {
+                        Id = shift.Id,
+                        Department = shift.Schedule.Department,
+                        Employee = UserUtil.GetFullName(shift.User),
+                        StartTime = shift.StartTime,
+                        EndTime = shift.EndTime
+                    }).ToList())
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdoptOffer(int branchId, OffersViewModel model)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+            
+            var alertMessage = $"Danger:{_localizer["MessageOfferNotAdopted"]}";
+            
+            if (ModelState.IsValid)
+            {
+                var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == model.Input.ShiftId);
+
+                if (shift != null && shift.Offered)
+                {
+                    int userId = int.Parse(_userManager.GetUserId(User));
+
+                    shift.UserId = userId;
+
+                    if (await _wrapper.Shift.Update(shift) != null)
+                    {
+                        alertMessage = $"Success:{_localizer["MessageOfferAdopted"]}";
+                    }
+                }
+            }
+
+            TempData["alertMessage"] = alertMessage;
+
+            return RedirectToAction(nameof(Offers));
+        }
+
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
     }
 }

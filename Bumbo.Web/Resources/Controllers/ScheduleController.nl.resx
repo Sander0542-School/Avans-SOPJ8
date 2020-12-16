@@ -38,4 +38,10 @@
     <data name="ScheduleEmpty" xml:space="preserve">
         <value>Het rooster bevat geen diensten.</value>
     </data>
+    <data name="MessageOfferNotAdopted" xml:space="preserve">
+        <value>De geselecteerde dienst kan niet worden overgenomen.</value>
+    </data>
+    <data name="MessageOfferAdopted" xml:space="preserve">
+        <value>De geselecteerde dienst is succesvol overgenomen.</value>
+    </data>
 </root>

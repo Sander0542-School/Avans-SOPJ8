@@ -38,4 +38,10 @@
     <data name="ScheduleEmpty" xml:space="preserve">
         <value>The schedule does not contain any shifts.</value>
     </data>
+    <data name="MessageOfferNotAdopted" xml:space="preserve">
+        <value>The selected shift could not be adopted.</value>
+    </data>
+    <data name="MessageOfferAdopted" xml:space="preserve">
+        <value>The selected shift was successfully adopted.</value>
+    </data>
 </root>
