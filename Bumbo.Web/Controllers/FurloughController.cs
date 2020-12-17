@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Furlough;
@@ -27,7 +28,7 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
             return View(new FurloughViewModel
             {
@@ -98,7 +99,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
             return RedirectToAction(nameof(Index), new FurloughViewModel
             {
