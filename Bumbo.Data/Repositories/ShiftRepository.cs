@@ -13,7 +13,8 @@ namespace Bumbo.Data.Repositories
         protected override IQueryable<Shift> GetQueryBase()
         {
             return base.GetQueryBase()
-                .Include(schedule => schedule.Schedule);
+                .Include(shift => shift.Schedule)
+                .Include(shift => shift.User);
         }
     }
 }
