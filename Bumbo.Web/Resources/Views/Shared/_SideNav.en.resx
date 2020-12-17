@@ -25,7 +25,8 @@
     <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
-    </data>  
+    </data>
+                
     There are any number of "resheader" rows that contain simple 
     name/value pairs.
     
@@ -164,10 +165,13 @@
   <data name="PayCheck" xml:space="preserve">
     <value>Paycheck</value>
   </data>
-    <data name="School schedule" xml:space="preserve">
-        <value>School schedule</value>
-    </data>
-    <data name="Users" xml:space="preserve">
-        <value>Users</value>
-    </data>
+  <data name="School schedule" xml:space="preserve">
+    <value>School schedule</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Furlough" xml:space="preserve">
+    <value>Furlough</value>
+  </data>
 </root>

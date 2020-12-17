@@ -117,65 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
+  <data name="FurloughNotSaved" xml:space="preserve">
+    <value>Het verlof kon niet worden opgeslagen.</value>
   </data>
-  <data name="Branches" xml:space="preserve">
-    <value>Filialen</value>
+  <data name="FurloughSaved" xml:space="preserve">
+    <value>Het verlof is succesvol opgeslagen.</value>
   </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Rooster</value>
+  <data name="Success" xml:space="preserve">
+    <value>Succesvol</value>
   </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profiel</value>
+  <data name="FurloughUpdated" xml:space="preserve">
+    <value>Het verlof is succesvol aangepast.</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="Danger" xml:space="preserve">
+    <value>Pas op</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Wachtwoord</value>
-  </data>
-  <data name="2FA" xml:space="preserve">
-    <value>Tweestapsverificatie</value>
-  </data>
-  <data name="PersonalData" xml:space="preserve">
-    <value>Persoonlijke gegevens</value>
-  </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Uitloggen</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Inloggen</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-    <value>Registreren</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="Forecast" xml:space="preserve">
-    <value>Prognose</value>
-  </data>
-  <data name="ChangeLanguage" xml:space="preserve">
-    <value>Verander taal</value>
-  </data>
-  <data name="All branches" xml:space="preserve">
-    <value>Alle filialen</value>
-    <comment>All Branches</comment>
-  </data>
-  <data name="Availability" xml:space="preserve">
-    <value>Beschikbaarheid</value>
-  </data>
-  <data name="PayCheck" xml:space="preserve">
-    <value>Loonstroken</value>
-  </data>
-  <data name="School schedule" xml:space="preserve">
-    <value>Schoolrooster</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Gebruikers</value>
-  </data>
-  <data name="Furlough" xml:space="preserve">
-    <value>Verlof</value>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>Het verlof kon niet worden opgeslagen, omdat je op een dag werkt.</value>
   </data>
 </root>
