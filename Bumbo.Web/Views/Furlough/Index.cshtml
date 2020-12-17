@@ -1,46 +1,84 @@
 ﻿@using Bumbo.Data.Models.Enums
 @model Bumbo.Web.Models.Furlough.FurloughViewModel
-
 @inject IViewLocalizer Localizer
-@{ ViewData["Title"] = Localizer["Furlough"]; }
+
+@{ 
+    ViewData["Title"] = Localizer["Furlough"]; 
+}
 
 <h4>@ViewData["Title"]</h4>
+<div class="btn btn-primary c-pointer mb-1" onclick="furloughModal();">Nieuwe aanvraag</div>
 <div class="row mb-2">
-     <div class="form-group">
-         <div class="btn btn-primary c-pointer" onclick="furloughModal();">Nieuwe aanvraag</div>
-     </div>
     @if (Model.Furloughs.Count == 0)
     {
-    <div>
-        <p class="mb-0 font-weight-bold"><i class="alert-info"></i> Nog geen aanvragen</p>
+    <div class="ml-3">
+        <p class="my-1 font-weight-bold"><i class="alert-info"></i> Nog geen aanvragen</p>
      </div>
     }
     else
     {
         @foreach (var furlough in Model.Furloughs)
         {
-            <div class="card">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">@furlough.Description</li>
-                    <li class="list-group-item">@furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm")</li>
-                    @if (furlough.Status == FurloughStatus.REQUESTED)
-                    {
-                        <li class="list-group-item">Requested</li>
-                    }
-                    else if(furlough.Status == FurloughStatus.APPROVED)
-                    {
-                        <li class="list-group-item">Requested</li>
-                    }
-                    else
-                    {
-                        <li class="list-group-item">Rejected</li>
-                    }
-                </ul>
+            <div class="list-group-item w-75 ml-3 mb-1">
+                <div>
+                    <h5 class="mb-1">@furlough.Description</h5>
+                </div>
+                <small>
+                     @if (furlough.StartDate.Date == furlough.EndDate.Date)
+                     {
+                         @if (furlough.IsAllDay)
+                         {
+                             @furlough.StartDate.ToString("ddd d MMM yyyy")
+                         }
+
+                         else
+                         {
+                             @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm")
+                         }
+                     }
+                     else
+                     {
+                         @if (furlough.IsAllDay)
+                         {
+                             @furlough.StartDate.ToString("ddd d MMM yyyy - ")  @furlough.EndDate.ToString("ddd d MMM yyyy")
+                         }
+
+                         else
+                         {
+                            @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm - ") @furlough.EndDate.ToString("ddd d MMM yyyy | hh:mm")
+                         }
+                     }
+                </small>
+                <div class="row">
+                    <div class="col-10">
+                        <p class="mb-1">
+                        @if (furlough.Status == FurloughStatus.REQUESTED)
+                        {
+                            <span class="badge badge-primary">@furlough.Status</span>
+                        }
+                        else if (furlough.Status == FurloughStatus.APPROVED)
+                        {
+                            <span class="badge badge-success">@furlough.Status</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">@furlough.Status</span>
+                        }
+                        </p>
+                    </div>
+                    <div class="col">
+                        <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate', '@furlough.EndDate', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
+                        <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
+                    </div>
+                </div>
             </div>
         }
     }
-
 </div>
 
 <partial name="_FurloughModal" model="@Model.Input" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Furlough;
@@ -26,7 +25,6 @@ namespace Bumbo.Web.Controllers
             _localizer = localizer;
         }
 
-
         public async Task<IActionResult> Index()
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
@@ -38,37 +36,66 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FurloughViewModel.InputModel furloughModel)
+        public async Task<IActionResult> Create(int? id, FurloughViewModel.InputModel furloughModel)
         {
             if (TempData["alertMessage"] != null)
                 ViewData["AlertMessage"] = TempData["alertMessage"];
 
             int userId = int.Parse(_userManager.GetUserId(User));
 
+            if (!ModelState.IsValid)
+            {
+                //TODO: show a message
+            }
+
             if (ModelState.IsValid)
             {
+                if (!furloughModel.IsAllDay)
+                {
+                    furloughModel.StartDate = furloughModel.StartDate + furloughModel.StartTime.Value;
+                    furloughModel.EndDate = furloughModel.EndDate + furloughModel.EndTime.Value;
+                }
+
                 //TODO: Build checks:
-                // - Check if user has no shifts during furlough request
-                // - Check if isAllDay is true => change Time
-                // - Check if endDate is not smaller than startDate
                 // - Set balance of to request furlough hours/days
                 // - Check if requesttime is nog bigger than balance
 
-                // var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date >= furloughModel.StartDate && shift.Date <= furloughModel.EndDate);
+                //TODO: not correct result yet
+                //Check time as well
+                var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
-                var furlough = new Furlough
+                if (shifts.Count != 0)
+                    TempData["alertMessage"] = $"{_localizer["Danger"]}:{_localizer["NotAllowed"]}";
+                else
                 {
-                    UserId = userId,
-                    Description = furloughModel.Description,
-                    StartDate = furloughModel.StartDate,
-                    EndDate = furloughModel.EndDate,
-                    IsAllDay = furloughModel.IsAllDay,
-                    Status = Data.Models.Enums.FurloughStatus.REQUESTED
-                };
+                    var presentFurlough = await _wrapper.Furlough.Get(f => f.Id ==  id);
 
-                if (await _wrapper.Furlough.Add(furlough) != null)
-                    TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughSaved"]}";
+                    if (presentFurlough == null)
+                    {
+                        var furlough = new Furlough
+                        {
+                            UserId = userId,
+                            Description = furloughModel.Description,
+                            StartDate = furloughModel.StartDate,
+                            EndDate = furloughModel.EndDate,
+                            IsAllDay = furloughModel.IsAllDay,
+                            Status = Data.Models.Enums.FurloughStatus.REQUESTED
+                        };
 
+                        if (await _wrapper.Furlough.Add(furlough) != null)
+                            TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughSaved"]}";
+                    }
+                    else
+                    {
+                        presentFurlough.Description = furloughModel.Description;
+                        presentFurlough.StartDate = furloughModel.StartDate;
+                        presentFurlough.EndDate = furloughModel.EndDate;
+                        presentFurlough.IsAllDay = furloughModel.IsAllDay;
+
+                        if (await _wrapper.Furlough.Update(presentFurlough) != null)
+                            TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughUpdated"]}";
+                    }
+                }
             }
 
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
@@ -79,10 +106,17 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Delete(int id)
         {
-            //Wijzigen van een aanvraag
-            return View();
+            int userId = int.Parse(_userManager.GetUserId(User));
+            await _wrapper.Furlough.Remove(f => f.Id == id & f.UserId == userId);
+
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
+
+            return RedirectToAction(nameof(Index), new FurloughViewModel
+            {
+                Furloughs = furloughs
+            });
         }
     }
 }
