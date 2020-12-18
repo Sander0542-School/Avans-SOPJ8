@@ -9,9 +9,6 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    //TODO: scheiden van manager en medewerker
-    //[Authorize(Policy = "BranchManager")]
-    //[Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class FurloughController : Controller
     {
         private readonly RepositoryWrapper _wrapper;

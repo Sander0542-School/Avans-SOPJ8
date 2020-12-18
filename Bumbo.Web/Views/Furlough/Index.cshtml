@@ -50,25 +50,25 @@
                      }
                 </small>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-8">
                         <p class="mb-1">
                         @if (furlough.Status == FurloughStatus.REQUESTED)
                         {
-                            <span class="badge badge-primary">@furlough.Status</span>
+                        <span class="badge badge-primary">@Localizer["Requested"]</span>
                         }
                         else if (furlough.Status == FurloughStatus.APPROVED)
                         {
-                            <span class="badge badge-success">@furlough.Status</span>
+                        <span class="badge badge-success">@Localizer["Approved"]</span>
                         }
                         else
                         {
-                            <span class="badge badge-danger">@furlough.Status</span>
+                        <span class="badge badge-danger">@Localizer["Rejected"]</span>
                         }
                         </p>
                     </div>
                     <div class="col">
-                        <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate', '@furlough.EndDate', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
-                        <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
+                      <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToShortDateString()', '@furlough.EndDate.ToShortDateString()', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
+                      <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
                     </div>
                 </div>
             </div>
