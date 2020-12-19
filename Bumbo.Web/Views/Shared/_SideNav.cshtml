@@ -130,6 +130,15 @@
                             @Localizer["Users"]
                         </a>
                     </li>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                    {
+                        <li class="@Html.IsActive("Furlough", "Overview")">
+                            <a asp-controller="Furlough" asp-action="Overview">
+                                <i class="fa fa-tree mr-3"></i>
+                                @Localizer["Furloughs for"] @branch.Name
+                            </a>
+                        </li>
+                    }
                 }
                 <li class="@Html.IsActiveArea("Identity")">
                     <a href="#accountSubmenu" data-toggle="collapse" class="dropdown-toggle text-truncate">

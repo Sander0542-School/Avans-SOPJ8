@@ -178,4 +178,7 @@
   <data name="Furlough" xml:space="preserve">
     <value>Verlof</value>
   </data>
+  <data name="Furlough for" xml:space="preserve">
+      <value>Verlof voor</value>
+  </data>
 </root>

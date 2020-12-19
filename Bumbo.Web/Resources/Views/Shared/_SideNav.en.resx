@@ -174,4 +174,7 @@
   <data name="Furlough" xml:space="preserve">
     <value>Furlough</value>
   </data>
+  <data name="Furlough for" xml:space="preserve">
+      <value>Furlough for</value>
+  </data>
 </root>
