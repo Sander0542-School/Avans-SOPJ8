@@ -1,5 +1,5 @@
 ﻿@using Bumbo.Data.Models.Enums
-@model Bumbo.Web.Models.Furlough.FurloughViewModel
+@model Bumbo.Web.Models.Furlough.ManagerFurloughViewModel
 @inject IViewLocalizer Localizer
 
 @{ ViewData["Title"] = Localizer["Furlough"]; }
@@ -59,14 +59,10 @@
             </p>
         </div>
         <div class="col">
-            <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToString("yyyy-MM-dd")', '@furlough.EndDate.ToString("yyyy-MM-dd")', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
-            <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
         </div>
     </div>
 </div>}}
 </div>
-
-<partial name="_FurloughModal" model="@Model.Input" />
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
