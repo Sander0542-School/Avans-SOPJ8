@@ -39,7 +39,6 @@ namespace Bumbo.Web.Models.Furlough
             [Display(Name = "IsAllDay")]
             public bool IsAllDay { get; set; }
 
-            //TODO: Show message
             IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
             {
                 if (EndDate < StartDate || EndDate < DateTime.Now || StartDate < DateTime.Now)

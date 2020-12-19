@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Furlough;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -41,11 +42,6 @@ namespace Bumbo.Web.Controllers
 
             int userId = int.Parse(_userManager.GetUserId(User));
 
-            if (!ModelState.IsValid)
-            {
-                //TODO: show a message
-            }
-
             if (ModelState.IsValid)
             {
                 if (!furloughModel.IsAllDay)
@@ -54,12 +50,6 @@ namespace Bumbo.Web.Controllers
                     furloughModel.EndDate = furloughModel.EndDate + furloughModel.EndTime.Value;
                 }
 
-                //TODO: Build checks:
-                // - Set balance of to request furlough hours/days
-                // - Check if requesttime is nog bigger than balance
-
-                //TODO: not correct result yet
-                //Check time as well
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
                 if (shifts.Count != 0)
@@ -116,5 +106,21 @@ namespace Bumbo.Web.Controllers
                 Furloughs = furloughs
             });
         }
+
+
+       // [Authorize(Policy = "BranchManager")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    int userId = int.Parse(_userManager.GetUserId(User));
+        //    await _wrapper.Furlough.Remove(f => f.Id == id & f.UserId == userId);
+
+        //    var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
+
+        //    return RedirectToAction(nameof(Index), new FurloughViewModel
+        //    {
+        //        Furloughs = furloughs
+        //    });
+        //}
+
     }
 }

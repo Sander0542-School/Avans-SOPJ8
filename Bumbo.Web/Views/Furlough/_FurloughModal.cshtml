@@ -93,12 +93,10 @@
             hiddenEl.classList.remove("d-none");
         }
 
-        //Incorrect for both dutch and english language
-        document.getElementById("Input_StartDate").valueAsDate = new Date(startDate);
-        document.getElementById("Input_EndDate").valueAsDate = new Date(endDate);
-
         $('#Input_FurloughId').val(id)
         $('#Input_Description').val(description)
+        $('#Input_StartDate').val(startDate)
+        $('#Input_EndDate').val(endDate)
         $('#Input_StartTime').val(startTime)
         $('#Input_EndTime').val(endTime)
         $('#furloughCreateModal').modal('show');
