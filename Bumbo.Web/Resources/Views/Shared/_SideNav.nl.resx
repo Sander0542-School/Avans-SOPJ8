@@ -211,4 +211,7 @@
   <data name="Users" xml:space="preserve">
       <value>Gebruikers</value>
   </data>
+  <data name="Furlough for" xml:space="preserve">
+      <value>Verlof voor</value>
+  </data>
 </root>

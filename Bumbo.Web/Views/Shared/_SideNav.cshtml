@@ -125,8 +125,17 @@
                             <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
                                 <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
                             </li>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                            {
+                                <li class="@Html.IsActive("Furlough", "Overview")">
+                                    <a asp-controller="Furlough" asp-action="Overview">
+                                        <i class="fa fa-tree mr-3"></i>
+                                        @Localizer["Furloughs for"] @branch.Name
+                                    </a>
+                                </li>
+                            }
                         }
-                    </ul>
+                        </ul>
                 </li>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
                 {
