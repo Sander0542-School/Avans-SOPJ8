@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Furlough;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -108,14 +110,28 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("Overview")]
-        [Authorize(Policy = "BranchManager")]
+        //[Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> Overview()
         {
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now);
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == Data.Models.Enums.FurloughStatus.REQUESTED);
+            var users = furloughs.Select(f => f.User).Distinct().ToList();
 
             return View("Manager/Index", new ManagerFurloughViewModel
             {
-                Furloughs = furloughs
+                UserFurloughs = users.ToDictionary(user => new ManagerFurloughViewModel.User
+                {
+                    Id = user.Id,
+                    Name = UserUtil.GetFullName(user),
+                }, user => furloughs
+                    .Where(f => f.User == user)
+                    .Select(f => new ManagerFurloughViewModel.Furlough
+                {
+                    Description = f.Description,
+                    StartDate = f.StartDate,
+                    EndDate = f.EndDate,
+                    IsAllDay = f.IsAllDay
+                })
+                .ToList())
             });
         }
     }

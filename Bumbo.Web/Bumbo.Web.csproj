@@ -24,6 +24,7 @@
       <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
       <Folder Include="Resources\Views\AdditionalWork\" />
       <Folder Include="Resources\Views\Availability\" />
+      <Folder Include="Resources\Views\Furlough\Manager\" />
       <Folder Include="Views\Availability\" />
       <Folder Include="Views\WorkedShift\" />
       <Folder Include="Resources\Models\WorkedShifts\" />
