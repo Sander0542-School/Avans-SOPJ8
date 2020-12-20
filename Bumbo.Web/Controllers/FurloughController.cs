@@ -132,6 +132,7 @@ namespace Bumbo.Web.Controllers
                     Description = f.Description,
                     StartDate = f.StartDate,
                     EndDate = f.EndDate,
+                    Status = f.Status,
                     IsAllDay = f.IsAllDay
                 })
                 .ToList())
@@ -139,14 +140,16 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateFurloughStatus(Furlough furlough, FurloughStatus newStatus)
+        public async Task<IActionResult> UpdateFurloughStatus(int id, FurloughStatus status)
         {
             if (TempData["alertMessage"] != null)
                 ViewData["AlertMessage"] = TempData["alertMessage"];
 
             if (ModelState.IsValid)
             {
-                furlough.Status = newStatus;
+                var furlough = await _wrapper.Furlough.Get(f => f.Id == id);
+
+                furlough.Status = status;
 
                 if (await _wrapper.Furlough.Update(furlough) != null)
                     TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughUpdated"]}";

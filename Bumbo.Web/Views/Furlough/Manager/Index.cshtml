@@ -63,12 +63,16 @@
                                     </small>
                                 </div>
                                 <div class="w-25">
-                                    <a href="" class="mr-3 text-success">
-                                        <i class="fa fa-check"></i>
-                                    </a>
-                                    <a href="" class="text-danger">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+                                    <form method="post" asp-action="UpdateFurloughStatus" asp-route-id="@furlough.Id" asp-route-status="@FurloughStatus.APPROVED" class="d-inline-block">
+                                        <button type="submit" class="mr-3 text-success btn btn-link">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" asp-action="UpdateFurloughStatus" asp-route-id="@furlough.Id" asp-route-status="@FurloughStatus.REJECTED" class="d-inline-block">
+                                        <button type="submit" class="text-danger btn btn-link">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         }
