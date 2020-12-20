@@ -111,7 +111,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [Route("Overview")]
-        //[Authorize(Policy = "BranchManager")]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> Overview()
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == Data.Models.Enums.FurloughStatus.REQUESTED);
