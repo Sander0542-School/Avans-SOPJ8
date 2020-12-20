@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Furlough;
 using Microsoft.AspNetCore.Authorization;
@@ -126,6 +127,8 @@ namespace Bumbo.Web.Controllers
                     .Where(f => f.User == user)
                     .Select(f => new ManagerFurloughViewModel.Furlough
                 {
+                    Id = f.Id,
+                    UserId = f.UserId,
                     Description = f.Description,
                     StartDate = f.StartDate,
                     EndDate = f.EndDate,
@@ -133,6 +136,23 @@ namespace Bumbo.Web.Controllers
                 })
                 .ToList())
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateFurloughStatus(Furlough furlough, FurloughStatus newStatus)
+        {
+            if (TempData["alertMessage"] != null)
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+
+            if (ModelState.IsValid)
+            {
+                furlough.Status = newStatus;
+
+                if (await _wrapper.Furlough.Update(furlough) != null)
+                    TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughUpdated"]}";
+            }
+
+            return RedirectToAction(nameof(Overview));
         }
     }
 }
