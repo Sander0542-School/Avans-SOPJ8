@@ -1,7 +1,7 @@
 @model UserAdditionalWorkViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["School timetable"];
+    ViewData["Title"] = Localizer["School Timetable"];
 }
 
 <h4>@ViewData["Title"]</h4>
@@ -10,10 +10,10 @@
         <p class="mb-0 font-weight-bold">@Localizer["Day"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["StartTime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["Start Time"]</p>
     </div>
     <div class="col-3">
-        <p class="mb-0 font-weight-bold">@Localizer["EndTime"]</p>
+        <p class="mb-0 font-weight-bold">@Localizer["End Time"]</p>
     </div>
 </div>
 @foreach (DayOfWeek weekday in UserAdditionalWorkViewModel.InputAdditionalWork.DaysOfWeek)

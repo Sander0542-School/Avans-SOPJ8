@@ -16,7 +16,7 @@ namespace Bumbo.Web.Models.Schedule
 
             if (additionalWork.StartTime > additionalWork.EndTime)
             {
-                return new ValidationResult("Starttime must be before endtime");
+                return new ValidationResult("Start time must be before end time");
             }
 
             return ValidationResult.Success;
@@ -45,12 +45,12 @@ namespace Bumbo.Web.Models.Schedule
             public DayOfWeek Day { get; set; }
 
             [Required]
-            [Display(Name = "StartTime")]
+            [Display(Name = "Start Time")]
             [DataType(DataType.Time)]
             public TimeSpan StartTime { get; set; }
 
             [Required]
-            [Display(Name = "EndTime")]
+            [Display(Name = "End Time")]
             [DataType(DataType.Time)]
             public TimeSpan EndTime { get; set; }
         }
