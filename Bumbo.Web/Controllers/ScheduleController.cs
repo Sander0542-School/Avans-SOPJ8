@@ -280,7 +280,7 @@ namespace Bumbo.Web.Controllers
             {
                 ViewData["AlertMessage"] = TempData["alertMessage"];
             }
-            
+
             return View(new PersonalViewModel { InputOfferShift = new PersonalViewModel.InputOfferShiftModel() });
         }
 
@@ -304,7 +304,12 @@ namespace Bumbo.Web.Controllers
                 Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
                 End = $"{shift.Date:yyyy-MM-dd}T{shift.EndTime}",
                 AllDay = false,
-                ExtendedProps = new Dictionary<string, object> {{"offered", shift.Offered}}
+                ExtendedProps = new Dictionary<string, object>
+                {
+                    {
+                        "offered", shift.Offered
+                    }
+                }
             }));
         }
 
@@ -337,12 +342,12 @@ namespace Bumbo.Web.Controllers
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
-            
+
             if (TempData["alertMessage"] != null)
             {
                 ViewData["AlertMessage"] = TempData["alertMessage"];
             }
-            
+
             int userId = int.Parse(_userManager.GetUserId(User));
 
             var departments = (await _wrapper.UserBranch.GetAll(userBranch => userBranch.UserId == userId)).Select(userBranch => userBranch.Department);
@@ -375,9 +380,9 @@ namespace Bumbo.Web.Controllers
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
             if (branch == null) return NotFound();
-            
+
             var alertMessage = $"Danger:{_localizer["MessageOfferNotAdopted"]}";
-            
+
             if (ModelState.IsValid)
             {
                 var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == model.Input.ShiftId);
