@@ -41,7 +41,10 @@ namespace Bumbo.Web.Models.Furlough
             IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
             {
                 if (EndDate < StartDate || EndDate < DateTime.Now || StartDate < DateTime.Now)
-                    yield return new ValidationResult("EndDate must be greater than StartDate", new[] {"EndDate"});
+                    yield return new ValidationResult("EndDate must be greater than StartDate", new[]
+                    {
+                        "EndDate"
+                    });
             }
         }
     }

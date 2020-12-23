@@ -158,8 +158,12 @@ namespace Bumbo.Web.Controllers
 
             TempData["alertMessage"] = alertMessage;
 
-            return RedirectToAction(nameof(Week), new {
-                branchId, year = shiftModel.Year, week = shiftModel.Week, department = shiftModel.Department,
+            return RedirectToAction(nameof(Week), new
+            {
+                branchId,
+                year = shiftModel.Year,
+                week = shiftModel.Week,
+                department = shiftModel.Department,
             });
         }
 
@@ -199,7 +203,13 @@ namespace Bumbo.Web.Controllers
                         {
                             TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.TargetYear, week = copyWeekModel.TargetWeek, department = copyWeekModel.Department});
+                            return RedirectToAction(nameof(Week), new
+                            {
+                                branchId,
+                                year = copyWeekModel.TargetYear,
+                                week = copyWeekModel.TargetWeek,
+                                department = copyWeekModel.Department
+                            });
                         }
                     }
                     else
@@ -213,7 +223,13 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.Year, week = copyWeekModel.Week, department = copyWeekModel.Department});
+            return RedirectToAction(nameof(Week), new
+            {
+                branchId,
+                year = copyWeekModel.Year,
+                week = copyWeekModel.Week,
+                department = copyWeekModel.Department
+            });
         }
 
         [HttpPost]
