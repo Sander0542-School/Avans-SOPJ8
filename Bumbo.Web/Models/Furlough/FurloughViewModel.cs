@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bumbo.Web.Models.Furlough
 {
-    public class FurloughViewModel 
+    public class FurloughViewModel
     {
         public List<Data.Models.Furlough> Furloughs { get; set; }
 
@@ -36,13 +36,12 @@ namespace Bumbo.Web.Models.Furlough
             [DataType(DataType.Time)]
             public TimeSpan? EndTime { get; set; }
 
-            [Display(Name = "IsAllDay")]
-            public bool IsAllDay { get; set; }
+            [Display(Name = "IsAllDay")] public bool IsAllDay { get; set; }
 
             IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
             {
                 if (EndDate < StartDate || EndDate < DateTime.Now || StartDate < DateTime.Now)
-                    yield return new ValidationResult("EndDate must be greater than StartDate", new[] { "EndDate" });
+                    yield return new ValidationResult("EndDate must be greater than StartDate", new[] {"EndDate"});
             }
         }
     }

@@ -37,7 +37,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Week), new {branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),});
+                return RedirectToAction(nameof(Week), new { branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today) });
             }
 
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -57,11 +57,11 @@ namespace Bumbo.Web.Controllers
                 {
                     if (departments.Contains(department.Value))
                     {
-                        departments = new[] {department.Value};
+                        departments = new[] { department.Value };
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Week), new {branchId, year, week});
+                        return RedirectToAction(nameof(Week), new { branchId, year, week });
                     }
                 }
 
@@ -99,9 +99,9 @@ namespace Bumbo.Web.Controllers
                             }).ToList()
                         };
                     }).ToList(),
-                    InputShift = new DepartmentViewModel.InputShiftModel {Year = year.Value, Week = week.Value, Department = department},
-                    InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel {Year = year.Value, Week = week.Value, Department = department},
-                    InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel {Year = year.Value, Week = week.Value, Department = department}
+                    InputShift = new DepartmentViewModel.InputShiftModel { Year = year.Value, Week = week.Value, Department = department },
+                    InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel { Year = year.Value, Week = week.Value, Department = department },
+                    InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel { Year = year.Value, Week = week.Value, Department = department }
                 });
             }
             catch (ArgumentOutOfRangeException)
@@ -158,8 +158,7 @@ namespace Bumbo.Web.Controllers
 
             TempData["alertMessage"] = alertMessage;
 
-            return RedirectToAction(nameof(Week), new
-            {
+            return RedirectToAction(nameof(Week), new {
                 branchId, year = shiftModel.Year, week = shiftModel.Week, department = shiftModel.Department,
             });
         }
@@ -255,7 +254,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Week), new {branchId, year = approveScheduleModel.Year, week = approveScheduleModel.Week, department = approveScheduleModel.Department});
+            return RedirectToAction(nameof(Week), new { branchId, year = approveScheduleModel.Year, week = approveScheduleModel.Week, department = approveScheduleModel.Department });
         }
 
 
@@ -266,7 +265,7 @@ namespace Bumbo.Web.Controllers
                 ViewData["AlertMessage"] = TempData["alertMessage"];
             }
             
-            return View(new PersonalViewModel {InputOfferShift = new PersonalViewModel.InputOfferShiftModel()});
+            return View(new PersonalViewModel { InputOfferShift = new PersonalViewModel.InputOfferShiftModel() });
         }
 
         [HttpGet]

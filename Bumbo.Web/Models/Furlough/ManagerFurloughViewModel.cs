@@ -5,7 +5,7 @@ using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Web.Models.Furlough
 {
-    public class ManagerFurloughViewModel 
+    public class ManagerFurloughViewModel
     {
         public Dictionary<User, List<Furlough>> UserFurloughs { get; set; }
 
@@ -30,7 +30,7 @@ namespace Bumbo.Web.Models.Furlough
             [Display(Name = "EndDate")]
             public DateTime EndDate { get; set; }
 
-            public FurloughStatus Status{ get; set; }
+            public FurloughStatus Status { get; set; }
 
             [Display(Name = "IsAllDay")]
             public bool IsAllDay { get; set; }

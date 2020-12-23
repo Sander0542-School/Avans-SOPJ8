@@ -126,15 +126,15 @@ namespace Bumbo.Web.Controllers
                 }, user => furloughs
                     .Where(f => f.User == user)
                     .Select(f => new ManagerFurloughViewModel.Furlough
-                {
-                    Id = f.Id,
-                    UserId = f.UserId,
-                    Description = f.Description,
-                    StartDate = f.StartDate,
-                    EndDate = f.EndDate,
-                    Status = f.Status,
-                    IsAllDay = f.IsAllDay
-                })
+                    {
+                        Id = f.Id,
+                        UserId = f.UserId,
+                        Description = f.Description,
+                        StartDate = f.StartDate,
+                        EndDate = f.EndDate,
+                        Status = f.Status,
+                        IsAllDay = f.IsAllDay
+                    })
                 .ToList())
             });
         }

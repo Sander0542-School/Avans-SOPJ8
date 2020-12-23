@@ -7,7 +7,7 @@ namespace Bumbo.Data.Models
     public class Shift : BaseEntity
     {
         public int ScheduleId { get; set; }
-
+        
         public int UserId { get; set; }
 
         [Column(TypeName = "date")]
