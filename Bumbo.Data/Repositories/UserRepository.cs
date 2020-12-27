@@ -44,6 +44,7 @@ namespace Bumbo.Data.Repositories
                 )
                 .Include(user => user.UserAvailabilities)
                 .Include(user => user.UserAdditionalWorks)
+                .Include(user => user.UserFurloughs)
                 .AsSplitQuery()
                 .ToListAsync();
         }
