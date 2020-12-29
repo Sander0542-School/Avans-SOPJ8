@@ -276,10 +276,9 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> CreateContractAsync(int id)
         {
-            
-
-            ContractViewModel contractModel = new ContractViewModel {
-            UserId = id
+            ContractViewModel contractModel = new ContractViewModel
+            {
+                UserId = id
             };
 
             return View(contractModel);

@@ -111,8 +111,6 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayName("Total Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
-
-            
         }
 
         public class InputShiftModel : InputDateDepartmentModel
