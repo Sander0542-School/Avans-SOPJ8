@@ -21,10 +21,10 @@
     <data name="Day" xml:space="preserve">
         <value>Dag</value>
     </data>
-    <data name="Starttime" xml:space="preserve">
+    <data name="Start Time" xml:space="preserve">
         <value>Starttijd</value>
     </data>
-    <data name="Endtime" xml:space="preserve">
+    <data name="End Time" xml:space="preserve">
         <value>Eindtijd</value>
     </data>
     <data name="Availability" xml:space="preserve">

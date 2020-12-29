@@ -26,26 +26,26 @@ namespace Bumbo.Web.Models.Paycheck
         {
             public int ShiftId { get; set; }
 
-            [Display(Name = "StartTime")]
+            [Display(Name = "Start Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
 
-            [Display(Name = "EndTime")]
+            [Display(Name = "End Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan EndTime { get; set; }
 
-            [Display(Name = "DayOfWeek")]
+            [Display(Name = "Day of Week")]
             public DayOfWeek Day { get; set; }
 
-            [Display(Name = "BreakTime")]
+            [Display(Name = "Break Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
-            [Display(Name = "WorkTime")]
+            [Display(Name = "Work Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan WorkTime => TotalTime.Subtract(BreakTime);
 
-            [Display(Name = "TotalTime")]
+            [Display(Name = "Total Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 
@@ -62,13 +62,13 @@ namespace Bumbo.Web.Models.Paycheck
             public int Year { get; set; }
             public int Month { get; set; }
 
-            [Display(Name = "StartTime")]
+            [Display(Name = "Start Time")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan StartTime { get; set; }
 
-            [Display(Name = "EndTime")]
+            [Display(Name = "End Time")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]

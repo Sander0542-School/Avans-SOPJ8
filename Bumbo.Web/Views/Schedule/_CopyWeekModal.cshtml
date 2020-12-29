@@ -6,7 +6,7 @@
         <div class="modal-content">
             <form asp-action="CopySchedule">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="copyScheduleModalLabel">@Localizer["CopySchedule"]</h5>
+                    <h5 class="modal-title" id="copyScheduleModalLabel">@Localizer["Copy Schedule"]</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -14,7 +14,7 @@
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <h6>@Localizer["CopyFrom"]:</h6>
+                    <h6>@Localizer["Copy From"]:</h6>
                     <div class="form-group">
                         <label asp-for="Year"></label>
                         <input asp-for="Year" class="form-control" readonly/>
@@ -28,7 +28,7 @@
                         <input asp-for="Department" class="form-control" readonly/>
                     </div>
 
-                    <h6>@Localizer["CopyTo"]:</h6>
+                    <h6>@Localizer["Copy To"]:</h6>
                     <div class="form-group">
                         <label asp-for="TargetYear"></label>
                         <input asp-for="TargetYear" class="form-control"/>

@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PaycheckSaved" xml:space="preserve">
+  <data name="MessagePaycheckSaved" xml:space="preserve">
     <value>The paycheck was successfully saved.</value>
   </data>
-  <data name="PaycheckNotSaved" xml:space="preserve">
+  <data name="MessagePaycheckNotSaved" xml:space="preserve">
     <value>The paycheck could not be saved.</value>
   </data>
-  <data name="WorkShiftsNotApproved" xml:space="preserve">
+  <data name="MessageWorkShiftsNotApproved" xml:space="preserve">
     <value>The worked shifts could not be approved.</value>
   </data>
-  <data name="WorkShiftsApproved" xml:space="preserve">
+  <data name="MessageWorkShiftsApproved" xml:space="preserve">
     <value>The worked shifts were successfully approved.</value>
   </data>
 </root>

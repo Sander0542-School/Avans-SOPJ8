@@ -11,16 +11,16 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="School timetable" xml:space="preserve">
+    <data name="School Timetable" xml:space="preserve">
         <value>Schoolrooster</value>
     </data>
     <data name="Day" xml:space="preserve">
         <value>Dag</value>
     </data>
-    <data name="Starttime" xml:space="preserve">
+    <data name="Start Time" xml:space="preserve">
         <value>Starttijd</value>
     </data>
-    <data name="Endtime" xml:space="preserve">
+    <data name="End Time" xml:space="preserve">
         <value>Eindtijd</value>
     </data>
     <data name="Monday" xml:space="preserve">

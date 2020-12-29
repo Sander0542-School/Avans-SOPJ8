@@ -13,12 +13,12 @@ namespace Bumbo.Web.Models.Users
 
         [Required]
         [DataType(DataType.Date)]
-        [Display(Name = "StartDate")]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        [Display(Name = "EndDate")]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
         [Required]

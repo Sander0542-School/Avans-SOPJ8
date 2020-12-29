@@ -134,7 +134,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["WorkShiftsNotApproved"]}";
+            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessageWorkShiftsNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -147,7 +147,7 @@ namespace Bumbo.Web.Controllers
 
                 if (_wrapper.WorkedShift.Update(workedShifts) != null)
                 {
-                    alertMessage = $"{_localizer["Success"]}:{_localizer["WorkShiftsApproved"]}";
+                    alertMessage = $"{_localizer["Success"]}:{_localizer["MessageWorkShiftsApproved"]}";
                 }
             }
 
@@ -194,7 +194,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["PaycheckNotSaved"]}";
+            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessagePaycheckNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -207,7 +207,7 @@ namespace Bumbo.Web.Controllers
 
                     if ((await _wrapper.WorkedShift.Update(shift)) != null)
                     {
-                        alertMessage = $"{_localizer["Success"]}:{_localizer["PaycheckSaved"]}";
+                        alertMessage = $"{_localizer["Success"]}:{_localizer["MessagePaycheckSaved"]}";
                     }
                 }
             }

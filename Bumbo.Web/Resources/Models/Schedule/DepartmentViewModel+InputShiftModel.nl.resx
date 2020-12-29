@@ -26,10 +26,10 @@
     <data name="Date" xml:space="preserve">
         <value>Datum</value>
     </data>
-    <data name="StartTime" xml:space="preserve">
+    <data name="Start Time" xml:space="preserve">
         <value>Starttijd</value>
     </data>
-    <data name="EndTime" xml:space="preserve">
+    <data name="End Time" xml:space="preserve">
         <value>Eindtijd</value>
     </data>
     <data name="Employee" xml:space="preserve">
