@@ -28,6 +28,14 @@
                     @Localizer["Home"]
                 </a>
             </li>
+            @if ((AuthorizationService.AuthorizeAsync(User, "Manager")).Result.Succeeded){
+            <li class="@Html.IsActive("Users", "Index")">
+                <a asp-controller="Users" asp-action="Index">
+                    <i class="fa fa-users mr-3"></i>
+                    @Localizer["Users"]
+                </a>
+            </li>
+            }
 
             @if (SignInManager.IsSignedIn(User))
             {
@@ -37,6 +45,7 @@
                         @Localizer["Availability"]
                     </a>
                 </li>
+
                 @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
                 {
                     <li class="@Html.IsActive("AdditionalWork", "Index")">
