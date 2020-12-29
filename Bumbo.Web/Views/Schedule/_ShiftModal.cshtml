@@ -41,10 +41,9 @@
                         <input id="InputShift_EndTime" asp-for="EndTime" class="form-control" />
                         <span asp-validation-for="EndTime" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group">
-                        <label asp-for="Sick"></label>
-                        <input  id="InputShift_Sick" asp-for="Sick" class="form-control" readonly />
+                    <div class="form-check form-check-inline">
+                        <input id="InputShift_Sick" asp-for="Sick"  class="form-check-input">
+                        <label class="form-check-label" for="InputShift_Sick">@Localizer["Is sick this day"]</label>
                     </div>
                 </div>
                 <div class="modal-footer">

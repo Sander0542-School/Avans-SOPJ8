@@ -29,7 +29,6 @@
       <Folder Include="Resources\Views\AdditionalWork\" />
       <Folder Include="Resources\Views\Availability\" />
       <Folder Include="Views\Availability\" />
-      <Folder Include="Views\SickReport\" />
       <Folder Include="Views\WorkedShift\" />
       <Folder Include="Models\WorkedShifts\" />
     </ItemGroup>
