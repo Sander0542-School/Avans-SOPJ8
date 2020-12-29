@@ -274,6 +274,17 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction("Edit", new { userModel.Id });
         }
 
+        public async Task<IActionResult> CreateContractAsync(int id)
+        {
+            
+
+            ContractViewModel contractModel = new ContractViewModel {
+            UserId = id
+            };
+
+            return View(contractModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateContract(ContractViewModel model)

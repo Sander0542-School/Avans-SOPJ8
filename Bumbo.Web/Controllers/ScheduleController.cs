@@ -94,6 +94,7 @@ namespace Bumbo.Web.Controllers
                                     Date = shift.Date,
                                     StartTime = shift.StartTime,
                                     EndTime = shift.EndTime,
+                                    Sick = shift.WorkedShift?.Sick ?? false,
                                     Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
                                 };
                             }).ToList()
@@ -125,7 +126,7 @@ namespace Bumbo.Web.Controllers
             {
                 var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == shiftModel.ShiftId);
 
-                bool success;
+                bool newShift = true;
 
                 if (shift == null)
                 {
@@ -140,15 +141,22 @@ namespace Bumbo.Web.Controllers
                         EndTime = shiftModel.EndTime
                     };
 
-                    success = await _wrapper.Shift.Add(shift) != null;
                 }
                 else
                 {
                     shift.StartTime = shiftModel.StartTime;
                     shift.EndTime = shiftModel.EndTime;
 
-                    success = await _wrapper.Shift.Update(shift) != null;
+                    newShift = false;
                 }
+
+                shift.WorkedShift ??= new WorkedShift();
+
+                shift.WorkedShift.StartTime = shiftModel.StartTime;
+                shift.WorkedShift.EndTime = shiftModel.EndTime;
+                shift.WorkedShift.Sick = shiftModel.Sick;
+
+                bool success = (newShift ? await _wrapper.Shift.Add(shift) : await _wrapper.Shift.Update(shift)) != null;
 
                 if (success)
                 {

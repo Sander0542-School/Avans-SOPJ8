@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -10,6 +10,10 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bumbo.Testing' " />
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
       <PackageReference Include="Sentry.AspNetCore" Version="2.1.8" />
@@ -25,6 +29,7 @@
       <Folder Include="Resources\Views\AdditionalWork\" />
       <Folder Include="Resources\Views\Availability\" />
       <Folder Include="Views\Availability\" />
+      <Folder Include="Views\SickReport\" />
       <Folder Include="Views\WorkedShift\" />
       <Folder Include="Models\WorkedShifts\" />
     </ItemGroup>

@@ -94,6 +94,9 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan EndTime { get; set; }
 
+            [DisplayName("Sick")]
+            public bool Sick { get; set; }
+
             [DisplayName("Notifications")]
             public IEnumerable<string> Notifications { get; set; }
 
@@ -108,6 +111,8 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayName("Total Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
+
+            
         }
 
         public class InputShiftModel : InputDateDepartmentModel
@@ -125,6 +130,10 @@ namespace Bumbo.Web.Models.Schedule
             [DataType(DataType.Date)]
             [Required]
             public DateTime Date { get; set; }
+
+            [DisplayName("Sick")]
+            [Required]
+            public Boolean Sick { get; set; }
 
             [DisplayName("Start Time")]
             [DataType(DataType.Time)]

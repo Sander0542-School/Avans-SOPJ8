@@ -13,33 +13,38 @@
                 </div>
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input id="InputShift_ShiftId" asp-for="ShiftId" hidden/>
-                    <input id="InputShift_UserId" asp-for="UserId" hidden/>
+                    <input id="InputShift_ShiftId" asp-for="ShiftId" hidden />
+                    <input id="InputShift_UserId" asp-for="UserId" hidden />
 
-                    <input asp-for="Year" hidden/>
-                    <input asp-for="Week" hidden/>
+                    <input asp-for="Year" hidden />
+                    <input asp-for="Week" hidden />
 
                     <div class="form-group">
                         <label asp-for="UserName"></label>
-                        <input id="InputShift_UserName" asp-for="UserName" class="form-control" readonly/>
+                        <input id="InputShift_UserName" asp-for="UserName" class="form-control" readonly />
                     </div>
                     <div class="form-group">
                         <label asp-for="Date"></label>
-                        <input id="InputShift_Date" asp-for="Date" class="form-control" readonly/>
+                        <input id="InputShift_Date" asp-for="Date" class="form-control" readonly />
                     </div>
                     <div class="form-group">
                         <label asp-for="Department"></label>
-                        <input asp-for="Department" class="form-control" readonly/>
+                        <input asp-for="Department" class="form-control" readonly />
                     </div>
                     <div class="form-group">
                         <label asp-for="StartTime"></label>
-                        <input id="InputShift_StartTime" asp-for="StartTime" class="form-control"/>
+                        <input id="InputShift_StartTime" asp-for="StartTime" class="form-control" />
                         <span asp-validation-for="StartTime" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EndTime"></label>
-                        <input id="InputShift_EndTime" asp-for="EndTime" class="form-control"/>
+                        <input id="InputShift_EndTime" asp-for="EndTime" class="form-control" />
                         <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Sick"></label>
+                        <input  id="InputShift_Sick" asp-for="Sick" class="form-control" readonly />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -52,13 +57,14 @@
 </div>
 
 <script type="text/javascript">
-    function shiftModal(shiftId, userId, userName, date, startTime, endTime) {
+    function shiftModal(shiftId, userId, userName, date, startTime, endTime, sick) {
         $('#InputShift_ShiftId').val(shiftId);
         $('#InputShift_UserId').val(userId);
         $('#InputShift_UserName').val(userName);
         $('#InputShift_Date').val(date);
         $('#InputShift_StartTime').val(startTime);
         $('#InputShift_EndTime').val(endTime);
+        $('#InputShift_Sick').prop("checked", sick);
 
         $('#shiftEditModal').modal('show');
     }
