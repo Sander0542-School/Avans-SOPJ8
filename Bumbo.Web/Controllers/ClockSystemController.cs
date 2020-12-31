@@ -1,7 +1,6 @@
-﻿using Bumbo.Data;
-using Bumbo.Data.Models;
-using Bumbo.Web.Models.ClockSystem;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using Bumbo.Data;
+using Bumbo.Logic.ClockSystem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,14 +19,17 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Tag(int tagId)
+        public async Task<IActionResult> Tag(int tagId)
         {
-            var getTag = _wrapper.ClockSystemTag.Get(myTag => myTag.SerialNumber == tagId.ToString());
-            if (getTag.Result == null)
+            var tag = _wrapper.ClockSystemTag.Get(myTag => myTag.SerialNumber == tagId.ToString());
+            if (tag.Result == null)
             {
                 return NotFound();
             }
 
+            ClockSystemLogic rules = new ClockSystemLogic(_wrapper);
+
+            await rules.HandleTagScan(tag.Result.User);
 
             return View();
         }
