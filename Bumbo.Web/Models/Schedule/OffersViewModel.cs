@@ -8,7 +8,7 @@ namespace Bumbo.Web.Models.Schedule
     public class OffersViewModel
     {
         public Dictionary<DateTime, List<Shift>> Shifts { get; set; }
-        
+
         public InputModel Input { get; set; }
 
         public class Shift
