@@ -21,51 +21,35 @@ namespace Bumbo.Logic.ClockSystem
         {
             DateTime scannedDateTime = GetRoundedTimeFromDateTimeNow();
 
-            var shift = user.Shifts.Where(shift => shift.Date == scannedDateTime.Date).ToList().FirstOrDefault();
+            var shift = user.Shifts.Where(myShift => myShift.Date == scannedDateTime.Date).ToList().FirstOrDefault();
 
             if (shift != null)
             {
-                var allWorkedShiftsConnectedToShift = await _wrapper.WorkedShift.GetAll(workedShift => workedShift.ShiftId == shift.Id);
+                var workedShift = await _wrapper.WorkedShift.Get(myWorkedShift => myWorkedShift.ShiftId == shift.Id);
 
-                if (allWorkedShiftsConnectedToShift.Count == 0)
+                if (workedShift.EndTime == null)
                 {
-                    await _wrapper.WorkedShift.Add(new WorkedShift
-                    {
-                        StartTime = scannedDateTime.TimeOfDay,
-                        ShiftId = shift.Id,
-                        Shift = shift,
-                        Sick = false,
-                        IsApprovedForPaycheck = false,
-                    });
+                    workedShift.EndTime = scannedDateTime.TimeOfDay;
+                    await _wrapper.WorkedShift.Update(workedShift);
                     return;
                 }
-                else
+
+                await _wrapper.WorkedShift.Add(new WorkedShift
                 {
-                    foreach (var workedShift in allWorkedShiftsConnectedToShift)
-                    {
-                        if (workedShift.EndTime == null)
-                        {
-                            //TODO: update worked shift
-                            return;
-                        }
-                    }
-                    await _wrapper.WorkedShift.Add(new WorkedShift
-                    {
-                        StartTime = scannedDateTime.TimeOfDay,
-                        ShiftId = shift.Id,
-                        Shift = shift,
-                        Sick = false,
-                        IsApprovedForPaycheck = false,
-                    });
-                    return;
-                }
+                    StartTime = scannedDateTime.TimeOfDay,
+                    ShiftId = shift.Id,
+                    Shift = shift,
+                    Sick = false,
+                    IsApprovedForPaycheck = false,
+                });
+                return;
             }
 
             // if there is no shift then we throw an error.
             throw new ArgumentNullException("the person that is clocking in has no shift for today. try scheduling him first.");
         }
 
-        private DateTime GetRoundedTimeFromDateTimeNow()
+        public DateTime GetRoundedTimeFromDateTimeNow()
         {
             DateTime rawTime = DateTime.Now;
 

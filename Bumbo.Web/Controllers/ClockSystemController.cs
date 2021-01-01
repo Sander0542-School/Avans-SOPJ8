@@ -31,7 +31,10 @@ namespace Bumbo.Web.Controllers
 
             await rules.HandleTagScan(tag.Result.User);
 
-            return View();
+            ViewBag["Username"] = tag.Result.User.FirstName + " " + tag.Result.User.MiddleName + " " +
+                                  tag.Result.User.LastName;
+
+            return View("Index");
         }
     }
 }
