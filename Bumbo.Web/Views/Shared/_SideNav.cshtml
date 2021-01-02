@@ -28,7 +28,8 @@
                     @Localizer["Home"]
                 </a>
             </li>
-            @if ((AuthorizationService.AuthorizeAsync(User, "Manager")).Result.Succeeded){
+            @if (User.Claims.Any(claim => claim.Type == "Manager"))
+            {
             <li class="@Html.IsActive("Users", "Index")">
                 <a asp-controller="Users" asp-action="Index">
                     <i class="fa fa-users mr-3"></i>
