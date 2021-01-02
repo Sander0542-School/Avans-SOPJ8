@@ -34,7 +34,7 @@ namespace Bumbo.Web.Models.Users
 
         public User User { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             IStringLocalizer _Localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<ContractViewModel>));
             if (StartDate > EndDate)
