@@ -29,7 +29,6 @@ namespace Bumbo.Web.Models.Users
         [Display(Name = "Scale")]
         public int Scale { get; set; }
 
-
         public User User { get; set; }
     }
 
