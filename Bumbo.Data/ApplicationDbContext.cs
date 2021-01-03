@@ -1,4 +1,6 @@
+﻿using System;
 using System.IO;
+using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -143,7 +145,7 @@ namespace Bumbo.Data
             builder.Entity<ForecastStandard>(b =>
             {
                 // Loops through enum and generates a forecast standard for each item with value 10
-                b.HasData(Enum.GetValues<ForecastActivity>().Select(activity => 
+                b.HasData(Enum.GetValues<ForecastActivity>().Select(activity =>
                     new ForecastStandard { Value = 10, Activity = activity })
                 );
             });
