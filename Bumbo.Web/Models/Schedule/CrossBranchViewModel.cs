@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Bumbo.Logic.EmployeeRules;
 
-namespace Bumbo.Web.Views.Schedule
+namespace Bumbo.Web.Models.Schedule
 {
-    public class CreateCrossBranchViewModel
+    public class CrossBranchViewModel
     {
         public class Shift
         {
@@ -30,7 +28,12 @@ namespace Bumbo.Web.Views.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 
+            [DisplayName("Department")] 
+            public Department Department { get; set; }
+
             public User User;
+
+            public Branch Branch;
         }
 
     }
