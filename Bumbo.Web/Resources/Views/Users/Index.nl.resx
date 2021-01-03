@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,22 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="End Date" xml:space="preserve">
-    <value>Einddatum</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>Voornaam</value>
+    <comment>FirstName</comment>
   </data>
-  <data name="Function" xml:space="preserve">
-    <value>Functie</value>
+  <data name="Birthday" xml:space="preserve">
+    <value>Verjaardag</value>
+    <comment>Birthday</comment>
   </data>
-  <data name="Scale" xml:space="preserve">
-    <value>Schaal</value>
+  <data name="Create new" xml:space="preserve">
+    <value>Toevoegen</value>
+    <comment>Create new</comment>
   </data>
-  <data name="Start Date" xml:space="preserve">
-    <value>Startdatum</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Verwijderen</value>
+    <comment>Delete</comment>
   </data>
-  <data name="The start date cannot be after the end date" xml:space="preserve">
-    <value>De startdatum mag niet na de einddatum komen</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Aanpassen</value>
+    <comment>Edit</comment>
   </data>
-  <data name="User Id" xml:space="preserve">
-    <value>User id</value>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+    <comment>Email</comment>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Achternaam</value>
+    <comment>LastName</comment>
+  </data>
+  <data name="MiddleName" xml:space="preserve">
+    <value>Tussenvoegsel</value>
+    <comment>MiddleName</comment>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Gebruikers</value>
+    <comment>Users</comment>
   </data>
 </root>
