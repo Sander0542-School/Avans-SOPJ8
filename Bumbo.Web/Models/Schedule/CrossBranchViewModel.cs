@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
@@ -36,5 +37,13 @@ namespace Bumbo.Web.Models.Schedule
             public Branch Branch;
         }
 
+        public class AdoptShift
+        {
+            public List<User> AvailableEmployees { get; set; }
+            public Shift Shift { get; set; }
+
+            public int ShiftId { get; set; }
+            public int SelectedUserId { get; set; }
+        }
     }
 }

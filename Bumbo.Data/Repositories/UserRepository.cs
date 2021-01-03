@@ -47,5 +47,16 @@ namespace Bumbo.Data.Repositories
                 .AsSplitQuery()
                 .ToListAsync();
         }
+
+        public async Task<List<User>> GetFreeEmployees(int branchId, DateTime date, Department department)
+        {
+
+            return await Context.Users
+                .Where(user => user.Branches.Any(b => b.BranchId == branchId && b.Department == department)) // Check if user works at branch and department
+                .Where(user => user.Contracts.Any(contract => contract.StartDate < date)) // Check for active contract
+                .Where(user => user.Contracts.Any(contract => contract.EndDate >= date))
+                .Include(user => user.Shifts.Where(s => s.Date != date)) // Get users who do not have any shifts on that day
+                .ToListAsync();
+        }
     }
 }
