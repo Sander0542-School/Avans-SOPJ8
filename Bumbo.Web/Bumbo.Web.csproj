@@ -102,6 +102,14 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Create.nl.resx">
+        <LastGenOutput>Create.nl+Delete.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Index.nl.resx">
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
       <Compile Update="Resources\Views\Branches\Details.nl.Designer.cs">
         <AutoGen>True</AutoGen>
         <DependentUpon>Details.nl.resx</DependentUpon>
