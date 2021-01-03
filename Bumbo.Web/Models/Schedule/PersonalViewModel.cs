@@ -7,12 +7,12 @@ namespace Bumbo.Web.Models.Schedule
     public class PersonalViewModel
     {
         public InputOfferShiftModel InputOfferShift { get; set; }
-        
+
         public class InputOfferShiftModel
         {
             [Required]
             public int ShiftId { get; set; }
-            
+
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
             [DataType(DataType.Date)]
             [Column(TypeName = "Date")]
