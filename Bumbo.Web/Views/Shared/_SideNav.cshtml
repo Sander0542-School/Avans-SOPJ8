@@ -3,7 +3,6 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Routing
 @using Microsoft.AspNetCore.Authorization
-@using System.Runtime.CompilerServices
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -63,10 +62,22 @@
                                     @Localizer["Details"]
                                 </a>
                             </li>
-                            <li class="@Html.IsActive("Schedule")">
+                            <li class="@Html.IsActive("Schedule", "Week")">
                                 <a asp-controller="Schedule" asp-action="Week" asp-route-branchId="@branch.Id">
                                     <i class="fa fa-calendar mr-3"></i>
                                     @Localizer["Schedule"]
+                                </a>
+                            </li>
+                            <li class="@Html.IsActive("Schedule", "Personal")">
+                                <a asp-controller="Schedule" asp-action="Personal" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-calendar mr-3"></i>
+                                    @Localizer["Personal"]
+                                </a>
+                            </li>
+                            <li class="@Html.IsActive("Schedule", "Offers")">
+                                <a asp-controller="Schedule" asp-action="Offers" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-calendar mr-3"></i>
+                                    @Localizer["Offers"]
                                 </a>
                             </li>
                             <li class="@Html.IsActive("WorkedShift")">
@@ -86,7 +97,7 @@
                                 <li class="@Html.IsActive("PayCheck", "Index")">
                                     <a asp-controller="PayCheck" asp-action="Index" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-money mr-3"></i>
-                                        @Localizer["PayCheck"]
+                                        @Localizer["Paycheck"]
                                     </a>
                                 </li>
                             }
@@ -94,7 +105,7 @@
                     </li>
                 }
 
-                <li class="@Html.IsActive("Branches")">
+                <li>
                     <a href="#branchesSubmenu" data-toggle="collapse" class="dropdown-toggle">
                         <i class="fa fa-building-o mr-3"></i>
                         @Localizer["Branches"]
@@ -156,13 +167,13 @@
                         <li class="@Html.IsActiveArea("Identity", "/Account/Manage/TwoFactorAuthentication")">
                             <a asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">
                                 <i class="fa fa-qrcode mr-3"></i>
-                                @Localizer["2FA"]
+                                @Localizer["Two-factor authentication"]
                             </a>
                         </li>
                         <li class="@Html.IsActiveArea("Identity", "/Account/Manage/PersonalData")">
                             <a asp-area="Identity" asp-page="/Account/Manage/PersonalData">
                                 <i class="fa fa-briefcase mr-3"></i>
-                                @Localizer["PersonalData"]
+                                @Localizer["Personal Data"]
                             </a>
                         </li>
                         <li class="@Html.IsActiveArea("Identity", "/Account/Logout")">
@@ -199,7 +210,7 @@
         <div class="sidebar-footer text-center">
             <button type="button" class="btn btn-secondary btn-sm m-2" data-toggle="modal" data-target="#cultureModal">
                 <i class="fa fa-language" aria-hidden="true"></i>
-                @Localizer["ChangeLanguage"]
+                @Localizer["Change Language"]
             </button>
             @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
             {

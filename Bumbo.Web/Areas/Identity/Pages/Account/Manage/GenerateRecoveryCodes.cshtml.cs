@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data.Models;
@@ -19,7 +18,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
         public GenerateRecoveryCodesModel(
             UserManager<User> userManager,
-            ILogger<GenerateRecoveryCodesModel> logger, 
+            ILogger<GenerateRecoveryCodesModel> logger,
             IStringLocalizer<GenerateRecoveryCodesModel> localizer)
         {
             _userManager = userManager;

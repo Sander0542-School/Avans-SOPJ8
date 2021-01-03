@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Models.Schedule
 {
@@ -16,5 +14,7 @@ namespace Bumbo.Web.Models.Schedule
         public String End { get; set; }
 
         public bool AllDay { get; set; }
+        
+        public Dictionary<string, object> ExtendedProps { get; set; }
     }
 }

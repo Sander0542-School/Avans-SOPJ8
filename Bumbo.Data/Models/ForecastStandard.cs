@@ -12,8 +12,8 @@ namespace Bumbo.Data.Models
         
         [Range(1, 500)]
         public int Value { get; set; }
-        
-        
+
+
         public IList<BranchForecastStandard> BranchForecastStandards { get; set; }
     }
 }

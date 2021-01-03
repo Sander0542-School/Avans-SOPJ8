@@ -1,5 +1,4 @@
-﻿using Bumbo.Data.Models;
-using Bumbo.Data.Repositories;
+﻿using Bumbo.Data.Repositories;
 
 namespace Bumbo.Data
 {
@@ -32,7 +31,7 @@ namespace Bumbo.Data
         public WorkedShiftRepository WorkedShift => _workedShift ??= new WorkedShiftRepository(_repositoryContext);
         public BranchForecastStandardRepository BranchForecastStandard => _branchForecastStandard ??= new BranchForecastStandardRepository(_repositoryContext);
         public ForecastStandardRepository ForecastStandard => _forecastStandard ??= new ForecastStandardRepository(_repositoryContext);
-        public BranchManagerRepository BranchManager =>  _branchManager ??= new BranchManagerRepository(_repositoryContext);
+        public BranchManagerRepository BranchManager => _branchManager ??= new BranchManagerRepository(_repositoryContext);
         public UserBranchRepository UserBranch => _userBranch ??= new UserBranchRepository(_repositoryContext);
         public RepositoryWrapper(ApplicationDbContext context)
         {

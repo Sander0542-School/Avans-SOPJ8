@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +16,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
         public SetPasswordModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager, 
+            SignInManager<User> signInManager,
             IStringLocalizer<SetPasswordModel> localizer)
         {
             _userManager = userManager;

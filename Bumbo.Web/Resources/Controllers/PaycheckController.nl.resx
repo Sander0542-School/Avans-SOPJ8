@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PaycheckNotSaved" xml:space="preserve">
+  <data name="MessagePaycheckNotSaved" xml:space="preserve">
     <value>De loonstroken konden niet worden opgeslagen.</value>
   </data>
-  <data name="PaycheckSaved" xml:space="preserve">
+  <data name="MessagePaycheckSaved" xml:space="preserve">
     <value>De loonstroken zijn succesvol opgeslagen.</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Succesvol</value>
   </data>
-  <data name="WorkShiftsNotApproved" xml:space="preserve">
+  <data name="MessageWorkShiftsNotApproved" xml:space="preserve">
     <value>De gewerkte shifts konden niet worden goedgekeurd.</value>
   </data>
-  <data name="WorkShiftsApproved" xml:space="preserve">
+  <data name="MessageWorkShiftsApproved" xml:space="preserve">
     <value>De gewerkte shifts zijn succesvol goedgekeurd.</value>
   </data>
   <data name="Danger" xml:space="preserve">

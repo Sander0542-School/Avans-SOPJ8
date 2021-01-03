@@ -5,7 +5,6 @@ using Bumbo.Data;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -24,7 +23,7 @@ namespace Bumbo.Web
             Configuration = configuration;
             _isTestEnv = env.IsEnvironment("Testing");
 
-            if(_isTestEnv) 
+            if (_isTestEnv)
                 Console.WriteLine(@"Running in test mode");
         }
 
@@ -39,7 +38,7 @@ namespace Bumbo.Web
             {
                 options.CheckConsentNeeded = context => true;
             });
-            
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             if (_isTestEnv)
@@ -73,7 +72,7 @@ namespace Bumbo.Web
             services.ConfigureRepositoryWrapper();
 
             services.AddConfig(Configuration);
-            
+
             services.AddPolicies();
 
             // Localization configuration
@@ -117,7 +116,7 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 // Todo: Add database seeder method
             }
-            
+
             Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
 
             app.UseHttpsRedirection();

@@ -1,8 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Logic.EmployeeRules;
 
@@ -27,26 +25,26 @@ namespace Bumbo.Web.Models.Paycheck
 
         public class Shift
         {
-            [Display(Name = "StartTime")]
+            [Display(Name = "Start Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
 
-            [Display(Name = "EndTime")]
+            [Display(Name = "End Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan EndTime { get; set; }
 
-            [Display(Name = "DayOfWeek")]
+            [Display(Name = "Day of Week")]
             public DayOfWeek Day { get; set; }
 
-            [Display(Name = "BreakTime")]
+            [Display(Name = "Break Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
-            [Display(Name = "WorkTime")]
+            [Display(Name = "Work Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan WorkTime => TotalTime.Subtract(BreakTime);
 
-            [Display(Name = "TotalTime")]
+            [Display(Name = "Total Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 

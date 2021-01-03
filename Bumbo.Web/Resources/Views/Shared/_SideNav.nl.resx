@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,19 +117,98 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EndDate" xml:space="preserve">
-    <value>End date</value>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
   </data>
-  <data name="Function" xml:space="preserve">
-    <value>Function</value>
+  <data name="Branches" xml:space="preserve">
+    <value>Filialen</value>
   </data>
-  <data name="Scale" xml:space="preserve">
-    <value>Scale</value>
+  <data name="Schedule" xml:space="preserve">
+    <value>Rooster</value>
   </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Start date</value>
+  <data name="Profile" xml:space="preserve">
+    <value>Profiel</value>
   </data>
-  <data name="User Id" xml:space="preserve">
-    <value>User id</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Wachtwoord</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+    <value>Tweestapsverificatie</value>
+  </data>
+  <data name="Personal Data" xml:space="preserve">
+    <value>Persoonlijke gegevens</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Uitloggen</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Inloggen</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registreren</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Forecast" xml:space="preserve">
+    <value>Prognose</value>
+  </data>
+  <data name="Change Language" xml:space="preserve">
+    <value>Verander taal</value>
+  </data>
+  <data name="All branches" xml:space="preserve">
+    <value>Alle filialen</value>
+    <comment>All Branches</comment>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>Beschikbaarheid</value>
+  </data>
+  <data name="Paycheck" xml:space="preserve">
+    <value>Loonstroken</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+      <value>Rooster</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+      <value>Profiel</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+      <value>Email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+      <value>Wachtwoord</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+      <value>Tweestapsverificatie</value>
+  </data>
+  <data name="Personal Data" xml:space="preserve">
+      <value>Persoonlijke gegevens</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+      <value>Uitloggen</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+      <value>Inloggen</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+      <value>Registreren</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+      <value>Details</value>
+  </data>
+  <data name="Forecast" xml:space="preserve">
+      <value>Prognose</value>
+  </data>
+  <data name="Change Language" xml:space="preserve">
+      <value>Verander taal</value>
+  </data>
+  <data name="School schedule" xml:space="preserve">
+      <value>Schoolrooster</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+      <value>Gebruikers</value>
   </data>
 </root>

@@ -42,7 +42,7 @@ namespace Bumbo.Data.Repositories
             };
 
             Context.Add(schedule);
-            
+
             var changed = await Context.SaveChangesAsync();
             return changed > 0 ? schedule : null;
         }

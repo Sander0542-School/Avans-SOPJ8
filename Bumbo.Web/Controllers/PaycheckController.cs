@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Logic.EmployeeRules;
@@ -11,6 +10,7 @@ using Bumbo.Logic.PayCheck;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Paycheck;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
@@ -134,7 +134,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["WorkShiftsNotApproved"]}";
+            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessageWorkShiftsNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -147,7 +147,7 @@ namespace Bumbo.Web.Controllers
 
                 if (_wrapper.WorkedShift.Update(workedShifts) != null)
                 {
-                    alertMessage = $"{_localizer["Success"]}:{_localizer["WorkShiftsApproved"]}";
+                    alertMessage = $"{_localizer["Success"]}:{_localizer["MessageWorkShiftsApproved"]}";
                 }
             }
 
@@ -194,7 +194,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["PaycheckNotSaved"]}";
+            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessagePaycheckNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -207,7 +207,7 @@ namespace Bumbo.Web.Controllers
 
                     if ((await _wrapper.WorkedShift.Update(shift)) != null)
                     {
-                        alertMessage = $"{_localizer["Success"]}:{_localizer["PaycheckSaved"]}";
+                        alertMessage = $"{_localizer["Success"]}:{_localizer["MessagePaycheckSaved"]}";
                     }
                 }
             }

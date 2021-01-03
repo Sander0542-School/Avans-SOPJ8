@@ -11,10 +11,13 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Number of expected coli" xml:space="preserve">
-        <value>Expected coli</value>
+    <data name="Offer Shift" xml:space="preserve">
+        <value>Biedt dienst aan</value>
     </data>
-    <data name="Meters of faced shelves" xml:space="preserve">
-        <value>Meters of faced shelves</value>
+    <data name="Close" xml:space="preserve">
+        <value>Sluit</value>
+    </data>
+    <data name="Offer" xml:space="preserve">
+        <value>Aanbieden</value>
     </data>
 </root>

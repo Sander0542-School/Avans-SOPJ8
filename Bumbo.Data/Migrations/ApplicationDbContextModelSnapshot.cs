@@ -17,7 +17,7 @@ namespace Bumbo.Data.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Bumbo.Data.Models.Branch", b =>
                 {
@@ -197,6 +197,9 @@ namespace Bumbo.Data.Migrations
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
+
+                    b.Property<bool>("Offered")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");

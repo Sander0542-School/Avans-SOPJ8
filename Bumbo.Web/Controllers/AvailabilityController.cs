@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
@@ -27,7 +25,8 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var availabilities = await _wrapper.UserAvailability.GetAll(a => a.UserId == int.Parse(_userManager.GetUserId(User)));
-            return View(new UserAvailabilityViewModel{
+            return View(new UserAvailabilityViewModel
+            {
                 Schedule = availabilities
             });
         }
