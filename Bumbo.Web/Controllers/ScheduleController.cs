@@ -10,6 +10,7 @@ using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.EmployeeRules;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models.Schedule;
+using Bumbo.Web.Views.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -383,6 +384,37 @@ namespace Bumbo.Web.Controllers
             TempData["alertMessage"] = alertMessage;
 
             return RedirectToAction(nameof(Offers));
+        }
+
+        [Route("{shiftId}")]
+        [HttpGet]
+        public async Task<IActionResult> CreateCrossBranchOffer(int shiftId)
+        {
+            var shift = await _wrapper.Shift.Get(
+                s => s.Id == shiftId
+            );
+
+            var vmShift = new CreateCrossBranchViewModel.Shift
+            {
+                Date = shift.Date,
+                EndTime = shift.EndTime,
+                StartTime = shift.StartTime,
+                Id = shift.Id,
+                User = shift.User,
+            };
+
+            return View(vmShift);
+        }
+
+        [HttpPost]
+        [Route("{shiftId}")]
+        public async Task<IActionResult> ConfirmCreateCrossBranchOffer(int shiftId)
+        {
+            var shift = await _wrapper.Shift.Get(s => s.Id == shiftId);
+            shift.OfferedCrossBranch = true;
+            await _wrapper.Shift.Update(shift);
+
+            return RedirectToAction("Week");
         }
 
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();

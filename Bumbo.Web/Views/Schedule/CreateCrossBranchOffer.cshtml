@@ -1,0 +1,47 @@
+﻿@model Bumbo.Web.Views.Schedule.CreateCrossBranchViewModel.Shift
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Submit shift offer for other branches</h1>
+
+<div>
+    <h4>Shift</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalTime)
+        </dd>
+        <dt class = "col-sm-2">
+            Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.MiddleName) @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+    </dl>
+</div>
+<form asp-action="ConfirmCreateCrossBranchOffer" asp-route-shiftId="@Model.Id">
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
