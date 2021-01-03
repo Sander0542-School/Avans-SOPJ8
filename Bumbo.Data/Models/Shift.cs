@@ -19,7 +19,6 @@ namespace Bumbo.Data.Models
 
         public bool Offered { get; set; }
 
-
         public User User { get; set; }
 
         public BranchSchedule Schedule { get; set; }

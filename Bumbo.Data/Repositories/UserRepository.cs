@@ -38,6 +38,12 @@ namespace Bumbo.Data.Repositories
                     .Where(shift => shift.Date < startTime.AddDays(7))
                 )
                 .ThenInclude(shift => shift.Schedule)
+                .Include(user => user.Shifts
+                    .Where(shift => shift.Schedule.BranchId == branch.Id)
+                    .Where(shift => shift.Date >= startTime)
+                    .Where(shift => shift.Date < startTime.AddDays(7))
+                )
+                .ThenInclude(shift => shift.WorkedShift)
                 .Include(user => user.Contracts
                     .Where(contract => contract.StartDate < startTime)
                     .Where(contract => contract.EndDate >= startTime)
