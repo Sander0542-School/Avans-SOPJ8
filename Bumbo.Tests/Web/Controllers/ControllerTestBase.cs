@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Tests.Utils;
@@ -26,7 +26,7 @@ namespace Bumbo.Tests.Web.Controllers
 
         private IStringLocalizer<TController> CreateStringLocalizer()
         {
-            var options = Options.Create(new LocalizationOptions {ResourcesPath = "Resources"});
+            var options = Options.Create(new LocalizationOptions { ResourcesPath = "Resources" });
             var factory = new ResourceManagerStringLocalizerFactory(options, NullLoggerFactory.Instance);
             return new StringLocalizer<TController>(factory);
         }

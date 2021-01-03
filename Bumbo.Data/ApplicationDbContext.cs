@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,17 +13,17 @@ namespace Bumbo.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        
+
         public DbSet<Branch> Branches { get; set; }
-        
+
         public DbSet<ClockSystemTag> ClockSystemTags { get; set; }
 
         public DbSet<WorkedShift> WorkedShifts { get; set; }
-        
+
         public DbSet<Shift> Shifts { get; set; }
-        
+
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
-        
+
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -34,7 +31,7 @@ namespace Bumbo.Data
             base.OnModelCreating(builder);
 
             #region Identity
-            
+
             builder.Entity<User>(b =>
             {
                 b.ToTable("Users");
@@ -69,7 +66,7 @@ namespace Bumbo.Data
             {
                 b.ToTable("UserRoles");
             });
-            
+
             #endregion
 
             #region Users
@@ -81,17 +78,17 @@ namespace Bumbo.Data
 
             builder.Entity<UserAdditionalWork>(b =>
             {
-                b.HasKey(additionalWork => new {additionalWork.UserId, additionalWork.Day});
+                b.HasKey(additionalWork => new { additionalWork.UserId, additionalWork.Day });
             });
-            
+
             builder.Entity<UserAvailability>(b =>
             {
-                b.HasKey(availability => new {availability.UserId, availability.Day});
+                b.HasKey(availability => new { availability.UserId, availability.Day });
             });
-            
+
             builder.Entity<UserBranch>(b =>
             {
-                b.HasKey(userBranch => new {userBranch.UserId, userBranch.BranchId, userBranch.Department});
+                b.HasKey(userBranch => new { userBranch.UserId, userBranch.BranchId, userBranch.Department });
             });
 
             #endregion
@@ -100,20 +97,20 @@ namespace Bumbo.Data
 
             builder.Entity<Branch>(b =>
             {
-                
+
             });
 
             builder.Entity<BranchManager>(b =>
             {
-                b.HasKey(branchManager => new {branchManager.UserId, branchManager.BranchId});
-                
+                b.HasKey(branchManager => new { branchManager.UserId, branchManager.BranchId });
+
                 b.ToTable("BranchManagers");
             });
 
             builder.Entity<BranchSchedule>(b =>
             {
-                b.HasIndex(branchSchedule => new {branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department}).IsUnique();
-                
+                b.HasIndex(branchSchedule => new { branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department }).IsUnique();
+
                 b.ToTable("BranchSchedules");
             });
 
@@ -123,7 +120,7 @@ namespace Bumbo.Data
 
             builder.Entity<Shift>(b =>
             {
-                b.HasIndex(shift => new {shift.UserId, shift.ScheduleId, shift.Date}).IsUnique();
+                b.HasIndex(shift => new { shift.UserId, shift.ScheduleId, shift.Date }).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
@@ -134,20 +131,20 @@ namespace Bumbo.Data
             #endregion
 
             #region Forecast
-            
+
             builder.Entity<Forecast>(b =>
             {
-                b.HasKey(forecast => new {forecast.BranchId, forecast.Date, forecast.Department});
+                b.HasKey(forecast => new { forecast.BranchId, forecast.Date, forecast.Department });
             });
 
             builder.Entity<ForecastStandard>(b =>
             {
-                
+
             });
 
             builder.Entity<BranchForecastStandard>(b =>
             {
-                b.HasKey(branchForecastStandard => new {branchForecastStandard.BranchId, branchForecastStandard.Activity});
+                b.HasKey(branchForecastStandard => new { branchForecastStandard.BranchId, branchForecastStandard.Activity });
 
                 b.HasOne(branchForecastStandard => branchForecastStandard.ForecastStandard)
                     .WithMany(forecastStandard => forecastStandard.BranchForecastStandards)

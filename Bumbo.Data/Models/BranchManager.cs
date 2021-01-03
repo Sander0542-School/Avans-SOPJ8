@@ -1,4 +1,4 @@
-using Bumbo.Data.Models.Common;
+﻿using Bumbo.Data.Models.Common;
 
 namespace Bumbo.Data.Models
 {
