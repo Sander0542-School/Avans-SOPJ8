@@ -1,4 +1,5 @@
 ﻿@model Bumbo.Web.Models.Users.EditViewModel
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Edit";
@@ -65,7 +66,7 @@
 
 
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
@@ -77,7 +78,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="p-2">Contracts</div>
+                        <div class="p-2">@Localizer["Contracts"] </div>
                         <div class="ml-auto p-2"><a asp-action="CreateContract" asp-route-id="@Model.Id"><i class="fa fa-plus"></i></a></div>
                     </div>
 
@@ -87,27 +88,27 @@
                     {
                         <dl class="row">
                             <dt class="col-sm-5">
-                                @Html.DisplayNameFor(modelItem => contract.StartDate)
+                                @Localizer["StartDate"]
                             </dt>
                             <dd class="col-sm-7">
                                 @contract.StartDate.ToShortDateString()
                             </dd>
                             <dt class="col-sm-5">
-                                @Html.DisplayNameFor(modelItem => contract.EndDate)
+                                @Localizer["EndDate"]
                             </dt>
                             <dd class="col-sm-7">
                                 @contract.EndDate.ToShortDateString()
                             </dd>
 
                             <dt class="col-sm-5">
-                                @Html.DisplayNameFor(modelItem => contract.Scale)
+                                @Localizer["Scale"]
                             </dt>
                             <dd class="col-sm-7">
                                 @contract.Scale
                             </dd>
 
                             <dt class="col-sm-5">
-                                @Html.DisplayNameFor(modelItem => contract.Function)
+                                @Localizer["Function"]
                             </dt>
                             <dd class="col-sm-7">
                                 @contract.Function
@@ -123,7 +124,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="p-2">Departments</div>
+                        <div class="p-2">@Localizer["Departments"]</div>
 
                     </div>
 
@@ -161,7 +162,7 @@
 
                                             <td>
 
-                                                <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">Delete</a>
+                                                <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">@Localizer["Delete"]</a>
                                             </td>
                                         </tr>
                                     }
@@ -171,19 +172,19 @@
                             <div class="form-group">
                                 <label asp-for="InputBranchDepartment.Department" class="control-label"></label>
                                 <select asp-for="InputBranchDepartment.Department" asp-items="Html.GetEnumSelectList<Bumbo.Data.Models.Enums.Department>()" class="form-control">
-                                    <option selected="selected" value="">Select Department</option>
+                                    <option selected="selected" value="">@Localizer["Select"] @Localizer["Department"]</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label asp-for="InputBranchDepartment.BranchId" class="control-label"></label>
                                 <select asp-for="InputBranchDepartment.BranchId" asp-items="Model.Branches" class="form-control">
-                                    <option selected="selected" value="">Select branch</option>
+                                    <option selected="selected" value="">@Localizer["Select"] @Localizer["Branch"]</option>
                                 </select>
                             </div>
                             <input type="hidden" asp-for="Id" />
                             <div class="col-md-12">
-                                <button class="btn btn-primary" type="submit">Save</button>
+                                <button class="btn btn-primary" type="submit">@Localizer["Save"]</button>
                             </div>
                         </div>
                     </form>
@@ -196,7 +197,7 @@
 
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
 </div>
 
 @section Scripts {

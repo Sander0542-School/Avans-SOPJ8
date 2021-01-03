@@ -307,7 +307,7 @@ namespace Bumbo.Web.Controllers
                 return RedirectToAction("Edit", new { user.Id });
             }
 
-            return View();
+            return View(model);
         }
 
         private async Task<List<SelectListItem>> GetBranchList()
