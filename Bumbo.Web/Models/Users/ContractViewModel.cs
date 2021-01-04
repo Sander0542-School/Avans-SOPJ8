@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
-using Bumbo.Web.Controllers;
 using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Models.Users
