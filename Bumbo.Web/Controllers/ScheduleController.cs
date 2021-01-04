@@ -163,7 +163,7 @@ namespace Bumbo.Web.Controllers
                         shift.WorkedShift.Sick = shiftModel.Sick;
                         if (shift.Date > DateTime.Today)
                         {
-                            var temp = await _wrapper.WorkedShift.Remove(shift.WorkedShift);
+                            await _wrapper.WorkedShift.Remove(shift.WorkedShift);
                             shift.WorkedShift = null;
                         }
                     }
