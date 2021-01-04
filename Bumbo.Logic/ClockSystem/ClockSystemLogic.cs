@@ -15,34 +15,32 @@ namespace Bumbo.Logic.ClockSystem
             _wrapper = wrapper;
         }
 
-        // method die een user krijgt en op basis hiervan kijkt of er al een worked shift bestaat voor die datum
-        // zo ja zet de eind tijd en zo nee maak een nieuwe worked shift aan
         public async Task HandleTagScan(User user)
         {
             DateTime scannedDateTime = GetRoundedTimeFromDateTimeNow();
 
-            var shift = user.Shifts.Where(myShift => myShift.Date == scannedDateTime.Date).ToList().FirstOrDefault();
+            var shift = user.Shifts.FirstOrDefault(shift1 => shift1.Date == scannedDateTime.Date);
 
             if (shift != null)
             {
-                var workedShift = await _wrapper.WorkedShift.Get(myWorkedShift => myWorkedShift.ShiftId == shift.Id);
-
-                if (workedShift.EndTime == null)
+                if (shift.WorkedShift == null)
                 {
-                    workedShift.EndTime = scannedDateTime.TimeOfDay;
-                    await _wrapper.WorkedShift.Update(workedShift);
-                    return;
+                    shift.WorkedShift = new WorkedShift
+                    {
+                        StartTime = scannedDateTime.TimeOfDay,
+                        Sick = false,
+                        IsApprovedForPaycheck = false,
+                    };
+                }
+                else if (shift.WorkedShift.EndTime == null)
+                {
+                    shift.WorkedShift.EndTime = scannedDateTime.TimeOfDay;
                 }
 
-                await _wrapper.WorkedShift.Add(new WorkedShift
+                if (await _wrapper.Shift.Update(shift) != null)
                 {
-                    StartTime = scannedDateTime.TimeOfDay,
-                    ShiftId = shift.Id,
-                    Shift = shift,
-                    Sick = false,
-                    IsApprovedForPaycheck = false,
-                });
-                return;
+                    return;
+                }
             }
 
             // if there is no shift then we throw an error.
