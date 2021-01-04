@@ -1,13 +1,14 @@
-﻿@model CrossBranchViewModel.Shift
+﻿@inject IViewLocalizer Localizer
+@model CrossBranchViewModel.Shift
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Submit shift offer for other branches</h1>
+<h1>@Localizer["Submit shift offer for other branches"]</h1>
 
 <div>
-    <h4>Shift</h4>
+    <h4>@Localizer["Shift"]</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -35,7 +36,7 @@
             @Html.DisplayFor(model => model.TotalTime)
         </dd>
         <dt class = "col-sm-2">
-            Name
+            @Localizer["Name"]
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.MiddleName) @Html.DisplayFor(model => model.User.LastName)
@@ -43,5 +44,5 @@
     </dl>
 </div>
 <form asp-action="ConfirmCreateCrossBranchOffer" asp-route-shiftId="@Model.Id">
-    <button type="submit" class="btn btn-primary">Confirm</button>
+    <button type="submit" class="btn btn-primary">@Localizer["Confirm"]</button>
 </form>
