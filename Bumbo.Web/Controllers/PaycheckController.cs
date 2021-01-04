@@ -164,7 +164,11 @@ namespace Bumbo.Web.Controllers
         [Route("{year}/{month}")]
         public async Task<IActionResult> SalaryBenefit(int branchId, int year, int month)
         {
-            var viewModel = new SalaryBenefitViewModel();
+            var viewModel = new SalaryBenefitViewModel
+            {
+                PayChecks = new Dictionary<User, PayCheck>()
+            };
+            
             var pcl = new PayCheckLogic();
 
             var workedShifts = await GetWorkedShifts(branchId, year, month);
