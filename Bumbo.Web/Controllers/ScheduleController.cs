@@ -423,8 +423,8 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> CrossBranchOffers(int branchId)
         {
             var shifts = await ConvertShifts(await _wrapper.Shift.GetAll(
-                s => s.OfferedCrossBranch
-                //s => s.Schedule.BranchId != branchId // Do not list requests from own branch
+                s => s.OfferedCrossBranch,
+                s => s.Schedule.BranchId != branchId // Do not list requests from own branch
             ));
             return View(shifts);
         }
@@ -460,7 +460,7 @@ namespace Bumbo.Web.Controllers
         private async Task<List<CrossBranchViewModel.Shift>> ConvertShifts(List<Shift> shifts)
         {
             var convertedShifts = new List<CrossBranchViewModel.Shift>();
-            shifts.ForEach(async shift => await ConvertShift(shift));
+            shifts.ForEach(async shift => convertedShifts.Add(await ConvertShift(shift)));
             return convertedShifts;
         }
 
