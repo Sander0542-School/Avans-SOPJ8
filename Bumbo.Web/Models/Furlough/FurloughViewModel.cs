@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Localization;
+
 
 namespace Bumbo.Web.Models.Furlough
 {
     public class FurloughViewModel
     {
+        private static readonly IStringLocalizer<FurloughViewModel> _localizer;
         public List<Data.Models.Furlough> Furloughs { get; set; }
 
         public InputModel Input { get; set; }
@@ -41,7 +45,7 @@ namespace Bumbo.Web.Models.Furlough
             IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
             {
                 if (EndDate < StartDate || EndDate < DateTime.Now || StartDate < DateTime.Now)
-                    yield return new ValidationResult("EndDate must be greater than StartDate", new[]
+                    yield return new ValidationResult(_localizer["EndDateGreaterThanStartDate"], new[]
                     {
                         "EndDate"
                     });

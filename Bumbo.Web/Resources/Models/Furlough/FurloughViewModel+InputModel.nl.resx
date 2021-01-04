@@ -135,4 +135,7 @@
   <data name="StartTime" xml:space="preserve">
     <value>Starttijd</value>
   </data>
+  <data name="EndDateGreaterThanStartDate" xml:space="preserve">
+      <value>De einddatum moet recenter zijn dan de startdatum</value>
+  </data>
 </root>

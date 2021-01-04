@@ -56,7 +56,7 @@ namespace Bumbo.Web.Controllers
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
                 if (shifts.Count != 0)
-                    TempData["alertMessage"] = $"{_localizer["Danger"]}:{_localizer["NotAllowed"]}";
+                    TempData["alertMessage"] = $"danger:{_localizer["NotAllowed"]}";
                 else
                 {
                     var presentFurlough = await _wrapper.Furlough.Get(f => f.Id == id);
@@ -74,7 +74,7 @@ namespace Bumbo.Web.Controllers
                         };
 
                         if (await _wrapper.Furlough.Add(furlough) != null)
-                            TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughSaved"]}";
+                            TempData["alertMessage"] = $"Success:{_localizer["FurloughSaved"]}";
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace Bumbo.Web.Controllers
                         presentFurlough.IsAllDay = furloughModel.IsAllDay;
 
                         if (await _wrapper.Furlough.Update(presentFurlough) != null)
-                            TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughUpdated"]}";
+                            TempData["alertMessage"] = $"Success:{_localizer["FurloughUpdated"]}";
                     }
                 }
             }
@@ -152,7 +152,7 @@ namespace Bumbo.Web.Controllers
                 furlough.Status = status;
 
                 if (await _wrapper.Furlough.Update(furlough) != null)
-                    TempData["alertMessage"] = $"{_localizer["Success"]}:{_localizer["FurloughUpdated"]}";
+                    TempData["alertMessage"] = $"Success:{_localizer["FurloughUpdated"]}";
             }
 
             return RedirectToAction(nameof(Overview));
