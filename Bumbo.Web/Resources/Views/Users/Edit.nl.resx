@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,16 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Shift" xml:space="preserve">
-    <value>Dienst</value>
+  <data name="Back to List" xml:space="preserve">
+    <value>Terug naar overzicht</value>
+    <comment>Back to List</comment>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Sluit</value>
+  <data name="Branch" xml:space="preserve">
+    <value>Filiaal</value>
+  </data>
+  <data name="Contracts" xml:space="preserve">
+    <value>Contracten</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Afdeling</value>
+  </data>
+  <data name="Departments" xml:space="preserve">
+    <value>Afdelingen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Aanpassen</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Einddatum</value>
+  </data>
+  <data name="Function" xml:space="preserve">
+    <value>Functie</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Opslaan</value>
   </data>
-  <data name="Is sick this day" xml:space="preserve">
-    <value>Is vandaag ziek</value>
+  <data name="Scale" xml:space="preserve">
+    <value>Schaal</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Selecteer</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Startdatum</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Gebruiker</value>
   </data>
 </root>

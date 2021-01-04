@@ -28,6 +28,15 @@
                     @Localizer["Home"]
                 </a>
             </li>
+            @if (User.Claims.Any(claim => claim.Type == "Manager"))
+            {
+            <li class="@Html.IsActive("Users", "Index")">
+                <a asp-controller="Users" asp-action="Index">
+                    <i class="fa fa-users mr-3"></i>
+                    @Localizer["Users"]
+                </a>
+            </li>
+            }
 
             @if (SignInManager.IsSignedIn(User))
             {
@@ -37,6 +46,7 @@
                         @Localizer["Availability"]
                     </a>
                 </li>
+
                 @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
                 {
                     <li class="@Html.IsActive("AdditionalWork", "Index")">
@@ -88,6 +98,12 @@
                             </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
                             {
+                                <li class="@Html.IsActive("Schedule", "CrossBranchOffers")">
+                                    <a asp-controller="Schedule" asp-action="CrossBranchOffers" asp-route-branchId="@branch.Id">
+                                        <i class="fa fa-calendar mr-3"></i>
+                                        @Localizer["Cross Branch Shifts"]
+                                    </a>
+                                </li>
                                 <li class="@Html.IsActive("Forecast", "Index")">
                                     <a asp-controller="Forecast" asp-action="Index" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-line-chart mr-3"></i>

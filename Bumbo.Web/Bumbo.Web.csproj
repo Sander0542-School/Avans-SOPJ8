@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -82,6 +82,22 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CrossBranchViewModel+Shift.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\AdoptCrossBranchOffer.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AdoptCrossBranchOffer.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\CreateCrossBranchOffer.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CreateCrossBranchOffer.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\CrossBranchOffers.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -101,6 +117,14 @@
       <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Create.nl.resx">
+        <LastGenOutput>Create.nl+Delete.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Index.nl.resx">
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
       <Compile Update="Resources\Views\Branches\Details.nl.Designer.cs">
         <AutoGen>True</AutoGen>
@@ -137,6 +161,21 @@
         <DependentUpon>ChangeNorms.en.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
+      <Compile Update="Resources\Views\Schedule\AdoptCrossBranchOffer.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AdoptCrossBranchOffer.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\CreateCrossBranchOffer.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CreateCrossBranchOffer.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\CrossBranchOffers.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -150,5 +189,11 @@
         <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Edit.cshtml" />
     </ItemGroup>
 </Project>
