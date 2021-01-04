@@ -20,10 +20,11 @@
     </resheader>
     <data name="Adopt shift" xml:space="preserve">
         <value>Neem dienst over</value>
-        <comment>Adopt shift</comment>
     </data>
     <data name="List cross branch shift offers" xml:space="preserve">
         <value>Overzicht van diensten van andere filialen</value>
-        <comment>List cross branch shift offers</comment>
+    </data>
+    <data name="There are no shifts with offers at this moment." xml:space="preserve">
+        <value>Er zijn geen diesnt die aangeboden worden op dit moment.</value>
     </data>
 </root>

@@ -77,5 +77,14 @@ namespace Bumbo.Web.Resources.Views.Schedule {
                 return ResourceManager.GetString("List cross branch shift offers", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er zijn geen diesnt die aangeboden worden op dit moment..
+        /// </summary>
+        internal static string There_are_no_shifts_with_offers_at_this_moment_ {
+            get {
+                return ResourceManager.GetString("There are no shifts with offers at this moment.", resourceCulture);
+            }
+        }
     }
 }
