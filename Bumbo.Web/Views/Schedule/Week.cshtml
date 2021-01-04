@@ -202,13 +202,16 @@
     </tbody>
 </table>
 
-<partial name="_ShiftModal" model="Model.InputShift"/>
-
-<partial name="_CopyWeekModal" model="Model.InputCopyWeek"/>
-
-@if (!Model.ScheduleApproved)
+@if (canEdit)
 {
-    <partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+    <partial name="_ShiftModal" model="Model.InputShift"/>
+
+    <partial name="_CopyWeekModal" model="Model.InputCopyWeek"/>
+
+    @if (!Model.ScheduleApproved)
+    {
+        <partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+    }
 }
 
 @section Scripts {
