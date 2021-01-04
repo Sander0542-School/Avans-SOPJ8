@@ -1,42 +1,43 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Bumbo</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/0160e90698.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
-<div class="wrapper">
+    <div class="wrapper">
 
-    <partial name="_SideNav"/>
+        <partial name="_SideNav" />
 
-    <div class="content">
-        <partial name="_CookieConsentPartial"/>
-        @if (ViewData["AlertMessage"] != null)
-        {
-            <div class="container">
-                <partial name="_AlertPartial" model='ViewData["AlertMessage"]'/>
+        <div class="content">
+            <partial name="_CookieConsentPartial" />
+            @if (ViewData["AlertMessage"] != null)
+            {
+                <div class="container">
+                    <partial name="_AlertPartial" model='ViewData["AlertMessage"]' />
+                </div>
+            }
+
+            <div class="@(ViewData["ContainerType"] ?? "container")">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             </div>
-        }
-
-        <div class="@(ViewData["ContainerType"] ?? "container")">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
         </div>
+
+        <partial name="_Culture" />
+
     </div>
-
-    <partial name="_Culture"/>
-
-</div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
 @await RenderSectionAsync("Scripts", false)
 </body>
 </html>
