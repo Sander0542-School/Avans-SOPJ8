@@ -120,7 +120,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"Danger:{_localizer["MessageShiftNotSaved"]}";
+            var alertMessage = $"danger:{_localizer["MessageShiftNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -173,7 +173,7 @@ namespace Bumbo.Web.Controllers
 
                 if (success)
                 {
-                    alertMessage = $"Success:{_localizer["MessageShiftSaved"]}";
+                    alertMessage = $"success:{_localizer["MessageShiftSaved"]}";
                 }
             }
 
@@ -194,7 +194,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotSaved"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -219,19 +219,19 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
+                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
                             return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.TargetYear, week = copyWeekModel.TargetWeek, department = copyWeekModel.Department});
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotEmpty"]}";
+                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
@@ -247,7 +247,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotApproved"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -262,17 +262,17 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.BranchSchedule.Update(schedule) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleApproved"]}";
+                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleEmpty"]}";
+                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
@@ -321,7 +321,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageShiftNotOffered"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageShiftNotOffered"]}";
 
             if (ModelState.IsValid)
             {
@@ -331,7 +331,7 @@ namespace Bumbo.Web.Controllers
 
                 if (await _wrapper.Shift.Update(shift) != null)
                 {
-                    TempData["alertMessage"] = $"Success:{_localizer["MessageShiftOffered"]}";
+                    TempData["alertMessage"] = $"success:{_localizer["MessageShiftOffered"]}";
                 }
             }
 
@@ -382,7 +382,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"Danger:{_localizer["MessageOfferNotAdopted"]}";
+            var alertMessage = $"danger:{_localizer["MessageOfferNotAdopted"]}";
 
             if (ModelState.IsValid)
             {
@@ -402,7 +402,7 @@ namespace Bumbo.Web.Controllers
 
                     if (await _wrapper.Shift.Update(shift) != null)
                     {
-                        alertMessage = shift.UserId == userId ? $"Success:{_localizer["MessageOfferCanceled"]}" : $"Success:{_localizer["MessageOfferAdopted"]}";
+                        alertMessage = shift.UserId == userId ? $"success:{_localizer["MessageOfferCanceled"]}" : $"success:{_localizer["MessageOfferAdopted"]}";
                     }
                 }
             }
