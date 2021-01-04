@@ -436,7 +436,7 @@ namespace Bumbo.Web.Controllers
             var shift = await ConvertShift(await _wrapper.Shift.Get(s => s.Id == shiftId));
             var availableEmployees = await _wrapper.User.GetFreeEmployees(branchId, shift.Date, shift.Department);
 
-            var vm = new CrossBranchViewModel.AdoptShift {Shift = shift, AvailableEmployees = availableEmployees};
+            var vm = new CrossBranchViewModel.AdoptShift { Shift = shift, AvailableEmployees = availableEmployees };
 
             return View(vm);
         }

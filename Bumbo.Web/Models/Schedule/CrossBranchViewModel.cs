@@ -12,7 +12,7 @@ namespace Bumbo.Web.Models.Schedule
         public class Shift
         {
             public int Id { get; set; }
-            
+
             [DisplayName("Date")]
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
             public DateTime Date { get; set; }
@@ -29,7 +29,7 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
 
-            [DisplayName("Department")] 
+            [DisplayName("Department")]
             public Department Department { get; set; }
 
             public User User;
