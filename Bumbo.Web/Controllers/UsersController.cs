@@ -274,6 +274,16 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction("Edit", new { userModel.Id });
         }
 
+        public IActionResult CreateContract(int id)
+        {
+            ContractViewModel contractModel = new ContractViewModel
+            {
+                UserId = id
+            };
+
+            return View(contractModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateContract(ContractViewModel model)
@@ -297,7 +307,7 @@ namespace Bumbo.Web.Controllers
                 return RedirectToAction("Edit", new { user.Id });
             }
 
-            return View();
+            return View(model);
         }
 
         private async Task<List<SelectListItem>> GetBranchList()

@@ -14,7 +14,7 @@ namespace Bumbo.Web.Models.Schedule
         public String End { get; set; }
 
         public bool AllDay { get; set; }
-        
+
         public Dictionary<string, object> ExtendedProps { get; set; }
     }
 }
