@@ -44,4 +44,10 @@
     <data name="MessageOfferAdopted" xml:space="preserve">
         <value>De geselecteerde dienst is succesvol overgenomen.</value>
     </data>
+    <data name="MessageShiftNotOffered" xml:space="preserve">
+        <value>De dienst kon niet worden gemarkeerd als aangeboden</value>
+    </data>
+    <data name="MessageShiftOffered" xml:space="preserve">
+        <value>De diesnt is successvol gemarkeerd als aangeboden</value>
+    </data>
 </root>
