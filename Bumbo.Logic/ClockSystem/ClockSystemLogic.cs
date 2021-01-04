@@ -59,11 +59,11 @@ namespace Bumbo.Logic.ClockSystem
 
         public DateTime GetRoundedTimeFromDateTimeNow()
         {
-            DateTime rawTime = DateTime.Now;
+            var rawTime = DateTime.Now;
 
             var remainder = rawTime.Minute % 15;
 
-            return remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, 0)) : rawTime.Add(new TimeSpan(0, 15 - remainder, 0));
+            return remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, rawTime.Second)) : rawTime.Add(new TimeSpan(0, 15 - remainder, rawTime.Second));
         }
     }
 }
