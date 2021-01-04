@@ -388,6 +388,95 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction(nameof(Offers));
         }
 
+        [Route("{shiftId}")]
+        [HttpGet]
+        public async Task<IActionResult> CreateCrossBranchOffer(int shiftId)
+        {
+            var shift = await _wrapper.Shift.Get(
+                s => s.Id == shiftId
+            );
+
+            var vmShift = new CrossBranchViewModel.Shift
+            {
+                Date = shift.Date,
+                EndTime = shift.EndTime,
+                StartTime = shift.StartTime,
+                Id = shift.Id,
+                User = shift.User,
+            };
+
+            return View(vmShift);
+        }
+
+        [HttpPost]
+        [Route("{shiftId}")]
+        public async Task<IActionResult> ConfirmCreateCrossBranchOffer(int shiftId)
+        {
+            var shift = await _wrapper.Shift.Get(s => s.Id == shiftId);
+            shift.OfferedCrossBranch = true;
+            await _wrapper.Shift.Update(shift);
+
+            return RedirectToAction("Week");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CrossBranchOffers(int branchId)
+        {
+            var shifts = await ConvertShifts(await _wrapper.Shift.GetAll(
+                s => s.OfferedCrossBranch,
+                s => s.Schedule.BranchId != branchId // Do not list requests from own branch
+            ));
+            return View(shifts);
+        }
+
+        [HttpGet]
+        [Route("adopt/{shiftId}")]
+        public async Task<IActionResult> AdoptCrossBranchOffer(int shiftId, int branchId)
+        {
+            var shift = await ConvertShift(await _wrapper.Shift.Get(s => s.Id == shiftId));
+            var availableEmployees = await _wrapper.User.GetFreeEmployees(branchId, shift.Date, shift.Department);
+
+            var vm = new CrossBranchViewModel.AdoptShift { Shift = shift, AvailableEmployees = availableEmployees };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmAdoptCrossBranchOffer(CrossBranchViewModel.AdoptShift viewModel)
+        {
+            var shift = await _wrapper.Shift.Get(s => s.Id == viewModel.ShiftId);
+            var user = await _wrapper.User.Get(u => u.Id == viewModel.SelectedUserId);
+
+            shift.User = user;
+            shift.OfferedCrossBranch = false;
+
+            await _wrapper.Shift.Update(shift);
+
+            return RedirectToAction("CrossBranchOffers");
+        }
+
         private Department[] GetUserDepartments(ClaimsPrincipal user, int branchId) => User.HasClaim("Manager", branchId.ToString()) ? Enum.GetValues<Department>() : Enum.GetValues<Department>().Where(department => user.HasClaim("BranchDepartment", $"{branchId}.{department}")).ToArray();
+
+        private async Task<List<CrossBranchViewModel.Shift>> ConvertShifts(List<Shift> shifts)
+        {
+            var convertedShifts = new List<CrossBranchViewModel.Shift>();
+            shifts.ForEach(async shift => convertedShifts.Add(await ConvertShift(shift)));
+            return convertedShifts;
+        }
+
+        private async Task<CrossBranchViewModel.Shift> ConvertShift(Shift shift)
+        {
+            var branch = await _wrapper.Branch.Get(b => b.Id == shift.Schedule.BranchId);
+            return new CrossBranchViewModel.Shift
+            {
+                Date = shift.Date,
+                EndTime = shift.EndTime,
+                StartTime = shift.StartTime,
+                User = shift.User,
+                Id = shift.Id,
+                Department = shift.Schedule.Department,
+                Branch = branch,
+            };
+        }
     }
 }

@@ -47,6 +47,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="#" id="schedule_cbsr">@Localizer["Request shift from external branch"]</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
                     <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </div>
@@ -64,6 +65,8 @@
         $('#InputShift_StartTime').val(startTime);
         $('#InputShift_EndTime').val(endTime);
         $('#InputShift_Sick').prop("checked", sick);
+
+        $('#schedule_cbsr').attr('href', `/Branches/1/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
         $('#shiftEditModal').modal('show');
     }
