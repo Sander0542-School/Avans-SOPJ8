@@ -28,15 +28,6 @@
                     @Localizer["Home"]
                 </a>
             </li>
-            @if (User.Claims.Any(claim => claim.Type == "Manager"))
-            {
-            <li class="@Html.IsActive("Users", "Index")">
-                <a asp-controller="Users" asp-action="Index">
-                    <i class="fa fa-users mr-3"></i>
-                    @Localizer["Users"]
-                </a>
-            </li>
-            }
 
             @if (SignInManager.IsSignedIn(User))
             {
@@ -149,7 +140,7 @@
                     <li class="@Html.IsActive("users")">
                         <a asp-controller="Users" asp-action="Index">
                             <i class="fa fa-user mr-3"></i>
-                            @Localizer["Users"]
+                            @Localizer["Employees"]
                         </a>
                     </li>
                 }

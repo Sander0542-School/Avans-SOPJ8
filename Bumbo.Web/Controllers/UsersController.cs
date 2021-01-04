@@ -16,7 +16,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "Manager")]
+    [Authorize(Policy = "SuperUser")]
     public class UsersController : Controller
     {
         private readonly RepositoryWrapper _wrapper;

@@ -208,8 +208,8 @@
   <data name="School schedule" xml:space="preserve">
       <value>Schoolrooster</value>
   </data>
-  <data name="Users" xml:space="preserve">
-      <value>Gebruikers</value>
+  <data name="Employees" xml:space="preserve">
+      <value>Medewerkers</value>
   </data>
   <data name="Cross Branch Shifts" xml:space="preserve">
       <value>Extrene diensten</value>
