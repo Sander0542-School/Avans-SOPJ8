@@ -1,12 +1,13 @@
 ﻿@model Bumbo.Web.Models.Users.ContractViewModel
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>@Localizer["Create"]</h1>
 
-<h4>User</h4>
+<h4>@Localizer["Contract"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -34,14 +35,14 @@
             </div>
             <input type="hidden" asp-for="UserId" />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.UserId">Back to User</a>
+    <a asp-action="Edit" asp-route-id="@Model.UserId">@Localizer["Back to User"]</a>
 </div>
 
 @section Scripts {

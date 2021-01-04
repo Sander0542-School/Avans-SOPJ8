@@ -131,7 +131,7 @@
                             }
                             firstRow = false;
 
-                            <div class="@(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", Model.Department.HasValue && canEdit)>
+                            <div class="@(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}', {(shift.Sick ? "true" : "false")})", Model.Department.HasValue && canEdit)>
                                 @if (!Model.Department.HasValue)
                                 {
                                     <div>
@@ -179,7 +179,7 @@
                 {
                     var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
-                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','')", clickable)>
+                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','', false)", clickable)>
 
                     </td>
                 }

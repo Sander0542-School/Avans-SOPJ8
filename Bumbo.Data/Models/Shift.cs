@@ -18,7 +18,7 @@ namespace Bumbo.Data.Models
         public TimeSpan EndTime { get; set; }
 
         public bool Offered { get; set; }
-
+        public bool OfferedCrossBranch { get; set; }
 
         public User User { get; set; }
 

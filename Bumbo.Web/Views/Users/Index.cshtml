@@ -1,66 +1,68 @@
 ﻿@model IEnumerable<Bumbo.Data.Models.User>
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = @Localizer["Users"];
 }
 
-<h1>Users</h1>
+<h1>@Localizer["Users"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Localizer["Create new"]</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Localizer["FirstName"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiddleName)
+                @Localizer["MiddleName"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Localizer["LastName"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Birthday)
+                @Localizer["Birthday"]
             </th>
-           
+
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Localizer["Email"]
             </th>
-          
-      
+
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthday)
-            </td>
-           
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-          
-          
-   
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
