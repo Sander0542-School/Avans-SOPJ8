@@ -1,4 +1,5 @@
 ﻿@inject IViewLocalizer Localizer
+@using Bumbo.Logic.Utils
 @model CrossBranchViewModel.AdoptShift
 
 @{
@@ -36,7 +37,7 @@
             <select asp-for="SelectedUserId">
                 @foreach (var u in Model.AvailableEmployees)
                 {
-                    <option value="@u.Id">@u.FirstName @u.MiddleName @u.LastName</option>
+                    <option value="@u.Id">@UserUtil.GetFullName(u)</option>
                 }
             </select>
         </dd>
