@@ -231,10 +231,7 @@ namespace Bumbo.Web.Controllers
 
         private async Task<List<IForecastStandard>> GetForecastStandardsForBranch(int branchId)
         {
-            var forecastStandards =
-                _wrapper.ForecastStandard.GetAll(
-                    f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
-                ).Result.ToList<IForecastStandard>();
+            var forecastStandards = (await _wrapper.ForecastStandard.GetAll(f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId))).ToList<IForecastStandard>();
 
             forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
                 bf => bf.BranchId == branchId

@@ -47,8 +47,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            var managersForBranch = _wrapper.BranchManager.GetAll(bm => bm.BranchId == branchId).Result
-                .Select(bm => bm.User).ToList();
+            var managersForBranch = (await _wrapper.BranchManager.GetAll(bm => bm.BranchId == branchId)).Select(bm => bm.User).ToList();
 
             return View(new DetailsViewModel
             {
@@ -140,8 +139,8 @@ namespace Bumbo.Web.Controllers
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
-            var allBranchUsers = _wrapper.UserBranch.GetAll(ub => ub.BranchId == branch.Id).Result.Select(ub => ub.User).ToList();
-            allBranchUsers.AddRange(_wrapper.BranchManager.GetAll(bm => bm.BranchId == branch.Id).Result.Select(bm => bm.User));
+            var allBranchUsers = (await _wrapper.UserBranch.GetAll(ub => ub.BranchId == branch.Id)).Select(ub => ub.User).ToList();
+            allBranchUsers.AddRange((await _wrapper.BranchManager.GetAll(bm => bm.BranchId == branch.Id)).Select(bm => bm.User));
 
             await _wrapper.Branch.Remove(branch);
             foreach (var user in allBranchUsers) await _signInManager.RefreshSignInAsync(user);
