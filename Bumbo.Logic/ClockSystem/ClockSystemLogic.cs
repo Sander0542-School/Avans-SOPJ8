@@ -25,19 +25,26 @@ namespace Bumbo.Logic.ClockSystem
             {
                 if (shift.WorkedShift == null)
                 {
-                    shift.WorkedShift = new WorkedShift
+                    var workedShift = new WorkedShift
                     {
-                        StartTime = scannedDateTime.TimeOfDay,
-                        Sick = false,
-                        IsApprovedForPaycheck = false,
+                        ShiftId = shift.Id, StartTime = scannedDateTime.TimeOfDay, Sick = false, IsApprovedForPaycheck = false,
                     };
+
+                    if (await _wrapper.WorkedShift.Add(workedShift) != null)
+                    {
+                        return;
+                    }
                 }
                 else if (shift.WorkedShift.EndTime == null)
                 {
                     shift.WorkedShift.EndTime = scannedDateTime.TimeOfDay;
-                }
 
-                if (await _wrapper.Shift.Update(shift) != null)
+                    if (await _wrapper.WorkedShift.Update(shift.WorkedShift) != null)
+                    {
+                        return;
+                    }
+                }
+                else
                 {
                     return;
                 }
@@ -49,11 +56,13 @@ namespace Bumbo.Logic.ClockSystem
 
         public DateTime GetRoundedTimeFromDateTimeNow()
         {
-            DateTime rawTime = DateTime.Now;
+            var rawTime = DateTime.Now;
 
             var remainder = rawTime.Minute % 15;
 
-            return remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, 0)) : rawTime.Add(new TimeSpan(0, 15 - remainder, 0));
+            var time = remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, 0)) : rawTime.Add(new TimeSpan(0, 15 - remainder, 0));
+
+            return new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0);
         }
     }
 }
