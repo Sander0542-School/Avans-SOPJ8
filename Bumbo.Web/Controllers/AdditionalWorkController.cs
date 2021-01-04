@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Bumbo.Web.Models.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Bumbo.Web.Controllers
 {
@@ -37,7 +37,8 @@ namespace Bumbo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UserAdditionalWorkViewModel model)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 int userId = int.Parse(_userManager.GetUserId(User));
 
                 var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>

@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Bumbo.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace Bumbo.Web.Controllers
 {
@@ -27,7 +23,7 @@ namespace Bumbo.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpPost]
@@ -35,7 +31,7 @@ namespace Bumbo.Web.Controllers
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions() {Expires = DateTimeOffset.Now.AddDays(999)});
+                new CookieOptions() { Expires = DateTimeOffset.Now.AddDays(999) });
 
             return LocalRedirect(returnUrl);
         }

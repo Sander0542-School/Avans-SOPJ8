@@ -1,4 +1,4 @@
-using Bumbo.Data.Models.Common;
+﻿using Bumbo.Data.Models.Common;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bumbo.Data.Models

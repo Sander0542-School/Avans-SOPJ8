@@ -42,7 +42,7 @@ namespace Bumbo.Web
             {
                 options.AddPolicy("SuperUser", policy => policy.RequireRole("SuperUser"));
                 options.AddPolicy("YoungerThan18", policy => policy.Requirements.Add(new YoungerThan18Requirement()));
-              
+
                 options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
 
                 options.AddPolicy("BranchManager", policy => policy.Requirements.Add(new BranchManagerRequirement()));

@@ -1,5 +1,7 @@
-﻿using Bumbo.Data.Models;
+﻿using System.Linq;
+using Bumbo.Data.Models;
 using Bumbo.Data.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bumbo.Data.Repositories
 {
@@ -7,6 +9,13 @@ namespace Bumbo.Data.Repositories
     {
         public ShiftRepository(ApplicationDbContext context) : base(context)
         {
+        }
+        protected override IQueryable<Shift> GetQueryBase()
+        {
+            return base.GetQueryBase()
+                .Include(shift => shift.Schedule)
+                .Include(shift => shift.WorkedShift)
+                .Include(shift => shift.User);
         }
     }
 }

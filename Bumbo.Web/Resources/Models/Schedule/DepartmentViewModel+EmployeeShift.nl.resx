@@ -20,10 +20,10 @@
     <data name="Contract" xml:space="preserve">
         <value>Contract</value>
     </data>
-    <data name="MaxHours" xml:space="preserve">
+    <data name="Maximum Hours" xml:space="preserve">
         <value>Maximale uren</value>
     </data>
-    <data name="PlannedTime" xml:space="preserve">
+    <data name="Planned Time" xml:space="preserve">
         <value>Ingeplande tijd</value>
     </data>
 </root>
