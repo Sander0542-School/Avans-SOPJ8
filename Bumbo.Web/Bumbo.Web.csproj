@@ -165,4 +165,10 @@
         <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Edit.cshtml" />
+    </ItemGroup>
 </Project>
