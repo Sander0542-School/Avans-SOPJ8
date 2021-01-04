@@ -60,7 +60,9 @@ namespace Bumbo.Logic.ClockSystem
 
             var remainder = rawTime.Minute % 15;
 
-            return remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, rawTime.Second)) : rawTime.Add(new TimeSpan(0, 15 - remainder, rawTime.Second));
+            var time = remainder < 10 ? rawTime.Subtract(new TimeSpan(0, remainder, 0)) : rawTime.Add(new TimeSpan(0, 15 - remainder, 0));
+
+            return new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0);
         }
     }
 }

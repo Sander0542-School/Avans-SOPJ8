@@ -10,11 +10,13 @@ namespace Bumbo.Data.Repositories
         public ClockSystemTagRepository(ApplicationDbContext context) : base(context)
         {
         }
+
         protected override IQueryable<ClockSystemTag> GetQueryBase()
         {
             return base.GetQueryBase()
                 .Include(tag => tag.User)
-                .ThenInclude(user => user.Shifts);
+                .ThenInclude(user => user.Shifts)
+                .ThenInclude(shift => shift.WorkedShift);
         }
     }
 }
