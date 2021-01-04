@@ -79,7 +79,7 @@ namespace Bumbo.Web.Resources.Views.Schedule {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn geen diesnt die aangeboden worden op dit moment..
+        ///   Looks up a localized string similar to Er zijn geen dienst die aangeboden worden op dit moment..
         /// </summary>
         internal static string There_are_no_shifts_with_offers_at_this_moment_ {
             get {

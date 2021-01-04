@@ -48,6 +48,6 @@
         <value>De dienst kon niet worden gemarkeerd als aangeboden</value>
     </data>
     <data name="MessageShiftOffered" xml:space="preserve">
-        <value>De diesnt is successvol gemarkeerd als aangeboden</value>
+        <value>De dienst is successvol gemarkeerd als aangeboden</value>
     </data>
 </root>
