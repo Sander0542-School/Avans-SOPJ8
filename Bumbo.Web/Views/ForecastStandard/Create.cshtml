@@ -1,13 +1,14 @@
-﻿@using Bumbo.Data.Models.Enums
+﻿@inject IViewLocalizer Localizer
+@using Bumbo.Data.Models.Enums
 @model Bumbo.Data.Models.ForecastStandard
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>@Localizer["Create"]</h1>
 
-<h4>ForecastStandard</h4>
+<h4>@Localizer["Forecast standard values"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,14 +25,14 @@
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
 </div>
 
 @section Scripts {

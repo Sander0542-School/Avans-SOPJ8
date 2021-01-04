@@ -211,4 +211,8 @@
   <data name="Users" xml:space="preserve">
       <value>Gebruikers</value>
   </data>
+  <data name="Global forecast norms" xml:space="preserve">
+      <value>Standaard prognose waardes</value>
+      <comment>Global forecast norms</comment>
+  </data>
 </root>

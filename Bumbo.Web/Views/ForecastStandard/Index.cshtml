@@ -1,27 +1,28 @@
-﻿@using Bumbo.Data.Models.Enums
+﻿@inject IViewLocalizer Localizer
+@using Bumbo.Data.Models.Enums
 @model IEnumerable<Bumbo.Data.Models.ForecastStandard>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Manage Global Forecast Norms</h1>
-<p>Here you can manage the forecast norms for <strong>all branches</strong>.</p>
+<h1>@Localizer["Manage Global Forecast Norms"]</h1>
+<p>@Localizer["Here you can manage the forecast norms for all branches"].</p>
 
 @if (Model.Count() != Enum.GetValues<ForecastActivity>().Length)
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create">@Localizer["Create New"]</a>
     </p>
 }
 <table class="table">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Activity)
+            @Localizer["Activity"]
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Value)
+        @Localizer["Value"]
         </th>
         <th></th>
     </tr>
@@ -36,7 +37,7 @@
             @Html.DisplayFor(modelItem => item.Value)
         </td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.Activity">Edit</a>
+            <a asp-action="Edit" asp-route-id="@item.Activity">@Localizer["Edit"]</a>
         </td>
     </tr>
 }
