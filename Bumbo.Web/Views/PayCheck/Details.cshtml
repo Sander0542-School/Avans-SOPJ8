@@ -19,7 +19,7 @@
             </th>
             @foreach (var day in Model.DaysOfWeek)
             {
-                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd dd-MM")</th>
             }
             <th>
                 @Localizer["Total"]
