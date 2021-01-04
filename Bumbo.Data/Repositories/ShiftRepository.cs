@@ -14,6 +14,7 @@ namespace Bumbo.Data.Repositories
         {
             return base.GetQueryBase()
                 .Include(shift => shift.Schedule)
+                .Include(shift => shift.WorkedShift)
                 .Include(shift => shift.User);
         }
     }
