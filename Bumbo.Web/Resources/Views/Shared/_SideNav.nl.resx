@@ -214,6 +214,7 @@
   <data name="Global forecast norms" xml:space="preserve">
       <value>Standaard prognose waardes</value>
       <comment>Global forecast norms</comment>
+  </data>
   <data name="Cross Branch Shifts" xml:space="preserve">
       <value>Extrene diensten</value>
       <comment>Cross Branch Shifts</comment>
