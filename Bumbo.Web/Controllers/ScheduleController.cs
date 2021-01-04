@@ -402,7 +402,7 @@ namespace Bumbo.Web.Controllers
 
                     if (await _wrapper.Shift.Update(shift) != null)
                     {
-                        alertMessage = $"Success:{_localizer["MessageOfferAdopted"]}";
+                        alertMessage = shift.UserId == userId ? $"Success:{_localizer["MessageOfferCanceled"]}" : $"Success:{_localizer["MessageOfferAdopted"]}";
                     }
                 }
             }
