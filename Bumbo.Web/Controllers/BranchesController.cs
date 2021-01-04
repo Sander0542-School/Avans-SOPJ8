@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
@@ -20,10 +21,12 @@ namespace Bumbo.Web.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly HttpContext _httpContext;
+        private readonly IStringLocalizer<BranchesController> _localizer;
 
-        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, UserManager<User> userManager)
+        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, UserManager<User> userManager, IStringLocalizer<BranchesController> localizer)
         {
             _wrapper = wrapper;
+            _localizer = localizer;
             _signInManager = signInManager;
             _userManager = userManager;
             _httpContext = httpContextAccessor.HttpContext;
@@ -169,11 +172,21 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> AddManager(string userEmail, int branchId)
         {
             var user = await _wrapper.User.Get(u => u.Email == userEmail);
+            if (user == null)
+            {
+                TempData["alertMessage"] = $"{_localizer["This user does not exist"]}";
+                return RedirectToAction("Details");
+            }
+
             // Check if manager already exists
             if (await _wrapper.BranchManager.Get(
                 bm => bm.BranchId == branchId,
                 bm => bm.UserId == user.Id
-            ) != null) return RedirectToAction("Details");
+            ) != null)
+            {
+                return RedirectToAction("Details");
+            }
+                
 
             await AddManagerToBranchAsync(branchId, user.Id);
 
