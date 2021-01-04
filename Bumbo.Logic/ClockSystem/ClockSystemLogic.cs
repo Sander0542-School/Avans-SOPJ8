@@ -27,7 +27,10 @@ namespace Bumbo.Logic.ClockSystem
                 {
                     var workedShift = new WorkedShift
                     {
-                        ShiftId = shift.Id, StartTime = scannedDateTime.TimeOfDay, Sick = false, IsApprovedForPaycheck = false,
+                        ShiftId = shift.Id,
+                        StartTime = scannedDateTime.TimeOfDay,
+                        Sick = false,
+                        IsApprovedForPaycheck = false,
                     };
 
                     if (await _wrapper.WorkedShift.Add(workedShift) != null)

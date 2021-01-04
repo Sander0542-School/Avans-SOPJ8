@@ -1,0 +1,48 @@
+﻿@inject IViewLocalizer Localizer
+@using Bumbo.Logic.Utils
+@model CrossBranchViewModel.AdoptShift
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Localizer["Assign employee to shift"]</h1>
+
+<form asp-action="ConfirmAdoptCrossBranchOffer">
+    <h4>Shift</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Shift.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Shift.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Shift.StartTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Shift.StartTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Shift.EndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Shift.EndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Localizer["Select employee"]
+        </dt>
+        <dd class="col-sm-10">
+            <select asp-for="SelectedUserId">
+                @foreach (var u in Model.AvailableEmployees)
+                {
+                    <option value="@u.Id">@UserUtil.GetFullName(u)</option>
+                }
+            </select>
+        </dd>
+    </dl>
+    <input type="hidden" asp-for="ShiftId" value="@Model.Shift.Id" />
+
+    <input type="submit" value="@Localizer["Adopt shift"]" class="btn btn-primary" />
+</form>
