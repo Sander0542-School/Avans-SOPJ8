@@ -64,10 +64,10 @@
     </div>
     <div class="col d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
-        @if (canEdit)
+        @if (canEdit && Model.Department.HasValue)
         {
             <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["Copy Schedule"]</button>
-            @if (!Model.ScheduleApproved && Model.Department.HasValue)
+            @if (!Model.ScheduleApproved)
             {
                 <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["Approve Schedule"]</button>
             }
