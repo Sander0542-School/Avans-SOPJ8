@@ -106,6 +106,12 @@
                                         @Localizer["Forecast"]
                                     </a>
                                 </li>
+                                <li class="@Html.IsActive("Furlough", "Overview")">
+                                    <a asp-controller="Furlough" asp-action="Overview">
+                                        <i class="fa fa-tree mr-3"></i>
+                                        @Localizer["Furlough"]
+                                    </a>
+                                </li>
                                 <li class="@Html.IsActive("PayCheck", "Index")">
                                     <a asp-controller="PayCheck" asp-action="Index" asp-route-branchId="@branch.Id">
                                         <i class="fa fa-money mr-3"></i>
@@ -137,15 +143,6 @@
                             <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
                                 <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
                             </li>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
-                            {
-                                <li class="@Html.IsActive("Furlough", "Overview")">
-                                    <a asp-controller="Furlough" asp-action="Overview">
-                                        <i class="fa fa-tree mr-3"></i>
-                                        @Localizer["Furloughs for"] @branch.Name
-                                    </a>
-                                </li>
-                            }
                         }
                         </ul>
                 </li>
@@ -157,7 +154,6 @@
                             @Localizer["Employees"]
                         </a>
                     </li>
-                    
                 }
                 <li class="@Html.IsActiveArea("Identity")">
                     <a href="#accountSubmenu" data-toggle="collapse" class="dropdown-toggle text-truncate">
