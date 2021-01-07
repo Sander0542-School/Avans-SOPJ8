@@ -47,8 +47,8 @@ namespace Bumbo.Web.Controllers
             {
                 if (!furloughModel.IsAllDay)
                 {
-                    furloughModel.StartDate = furloughModel.StartDate + furloughModel.StartTime.Value;
-                    furloughModel.EndDate = furloughModel.EndDate + furloughModel.EndTime.Value;
+                    furloughModel.StartDate += furloughModel.StartTime.Value;
+                    furloughModel.EndDate += furloughModel.EndTime.Value;
                 }
 
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
@@ -72,7 +72,7 @@ namespace Bumbo.Web.Controllers
                         };
 
                         if (await _wrapper.Furlough.Add(furlough) != null)
-                            TempData["alertMessage"] = $"Success:{_localizer["FurloughSaved"]}";
+                            TempData["alertMessage"] = $"success:{_localizer["FurloughSaved"]}";
                     }
                     else
                     {
@@ -82,7 +82,7 @@ namespace Bumbo.Web.Controllers
                         presentFurlough.IsAllDay = furloughModel.IsAllDay;
 
                         if (await _wrapper.Furlough.Update(presentFurlough) != null)
-                            TempData["alertMessage"] = $"Success:{_localizer["FurloughUpdated"]}";
+                            TempData["alertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
                     }
                 }
             }
