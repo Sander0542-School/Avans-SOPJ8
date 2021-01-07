@@ -46,7 +46,12 @@
                         @Localizer["Availability"]
                     </a>
                 </li>
-
+                 <li class="@Html.IsActive("Furlough", "Index")">
+                    <a asp-controller="Furlough" asp-action="Index">
+                        <i class="fa fa-plane mr-3"></i>
+                        @Localizer["Furlough"]
+                    </a>
+                </li>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
                 {
                     <li class="@Html.IsActive("AdditionalWork", "Index")">
@@ -141,8 +146,17 @@
                             <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
                                 <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
                             </li>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
+                            {
+                                <li class="@Html.IsActive("Furlough", "Overview")">
+                                    <a asp-controller="Furlough" asp-action="Overview">
+                                        <i class="fa fa-tree mr-3"></i>
+                                        @Localizer["Furloughs for"] @branch.Name
+                                    </a>
+                                </li>
+                            }
                         }
-                    </ul>
+                        </ul>
                 </li>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
                 {
@@ -152,6 +166,7 @@
                             @Localizer["Users"]
                         </a>
                     </li>
+                    
                 }
                 <li class="@Html.IsActiveArea("Identity")">
                     <a href="#accountSubmenu" data-toggle="collapse" class="dropdown-toggle text-truncate">

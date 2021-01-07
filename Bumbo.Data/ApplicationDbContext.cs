@@ -26,6 +26,8 @@ namespace Bumbo.Data
 
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
+        public DbSet<Furlough> Furloughs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
