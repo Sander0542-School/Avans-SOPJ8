@@ -229,6 +229,7 @@
             </button>
             @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
             {
+                <br/>
                 <strong>SUPER USER</strong>
             }
             <p>&copy; @DateTime.Today.Year - Bumbo</p>
