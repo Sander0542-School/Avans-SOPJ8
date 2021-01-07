@@ -414,6 +414,7 @@ namespace Bumbo.Web.Controllers
                     }
                     else if (shift.Offered)
                     {
+                        shift.Offered = false;
                         shift.UserId = userId;
                     }
 
