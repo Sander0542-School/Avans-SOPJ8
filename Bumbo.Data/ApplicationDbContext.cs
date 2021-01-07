@@ -31,6 +31,8 @@ namespace Bumbo.Data
 
         public DbSet<ForecastStandard> ForecastStandard { get; set; }
 
+        public DbSet<Furlough> Furloughs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

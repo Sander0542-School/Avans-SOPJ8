@@ -1,0 +1,104 @@
+﻿@model Bumbo.Web.Models.Furlough.FurloughViewModel.InputModel
+@inject IViewLocalizer Localizer
+
+<div class="modal fade" id="furloughCreateModal" tabindex="-1" role="dialog" aria-labelledby="furloughCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="Create">
+                <div class="modal-header">
+                    <h5>@Localizer["Furlough"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input id="Input_FurloughId" asp-for="Id" hidden />
+
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <input type="text" id="Input_Description" asp-for="Description" class="form-control">
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="Input_IsAllDay" asp-for="IsAllDay" checked>
+                            <label class="form-check-label" for="Input_IsAllDay"> All day</label>
+                            <span asp-validation-for="IsAllDay" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StartDate"></label>
+                        <input id="Input_StartDate" asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndDate"></label>
+                        <input id="Input_EndDate" asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+
+                    <div id="hiddenElement" class="d-none">
+                        <div class="form-group">
+                            <label asp-for="StartTime"></label>
+                            <input id="Input_StartTime" asp-for="StartTime" class="form-control" />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EndTime"></label>
+                            <input id="Input_EndTime" asp-for="EndTime" class="form-control" />
+                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                </div>
+                <div id="test"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let hiddenEl = document.getElementById("hiddenElement");
+    let checkbox = document.getElementById("Input_IsAllDay");
+
+    checkbox.addEventListener("change", checkChecked, false);
+
+    function checkChecked() {
+        let isChecked = checkbox.checked;
+
+        if (isChecked) {
+            hiddenEl.classList.add("d-none");
+        } else {
+            hiddenEl.classList.remove("d-none");
+        }
+    }
+
+    function furloughModal() {
+        $('#furloughCreateModal').modal('show');
+    }
+
+    function furloughModal(id, description, startDate, endDate, startTime, endTime, isAllDay)
+    {
+        if (isAllDay == "True") {
+            checkbox.checked = true;
+            hiddenEl.classList.add("d-none");
+        } else {
+            checkbox.checked = false;
+            hiddenEl.classList.remove("d-none");
+        }
+
+        $('#Input_FurloughId').val(id)
+        $('#Input_Description').val(description)
+        $('#Input_StartDate').val(startDate)
+        $('#Input_EndDate').val(endDate)
+        $('#Input_StartTime').val(startTime)
+        $('#Input_EndTime').val(endTime)
+        $('#furloughCreateModal').modal('show');
+    }
+</script>
