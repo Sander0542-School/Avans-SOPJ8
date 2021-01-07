@@ -37,7 +37,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Week), new {branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),});
+                return RedirectToAction(nameof(Week), new { branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today) });
             }
 
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -221,7 +221,13 @@ namespace Bumbo.Web.Controllers
                         {
                             TempData["alertMessage"] = $"success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.TargetYear, week = copyWeekModel.TargetWeek, department = copyWeekModel.Department});
+                            return RedirectToAction(nameof(Week), new
+                            {
+                                branchId,
+                                year = copyWeekModel.TargetYear,
+                                week = copyWeekModel.TargetWeek,
+                                department = copyWeekModel.Department
+                            });
                         }
                     }
                     else
@@ -235,7 +241,13 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Week), new {branchId, year = copyWeekModel.Year, week = copyWeekModel.Week, department = copyWeekModel.Department});
+            return RedirectToAction(nameof(Week), new
+            {
+                branchId,
+                year = copyWeekModel.Year,
+                week = copyWeekModel.Week,
+                department = copyWeekModel.Department
+            });
         }
 
         [HttpPost]
@@ -310,7 +322,12 @@ namespace Bumbo.Web.Controllers
                 Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
                 End = $"{shift.Date:yyyy-MM-dd}T{shift.EndTime}",
                 AllDay = false,
-                ExtendedProps = new Dictionary<string, object> {{"offered", shift.Offered}}
+                ExtendedProps = new Dictionary<string, object>
+                {
+                    {
+                        "offered", shift.Offered
+                    }
+                }
             }));
         }
 

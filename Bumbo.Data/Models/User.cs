@@ -53,6 +53,8 @@ namespace Bumbo.Data.Models
 
         public IList<UserAdditionalWork> UserAdditionalWorks { get; set; }
 
+        public IList<Furlough> UserFurloughs { get; set; }
+
         public IList<ClockSystemTag> ClockSystemTags { get; set; }
 
         public IList<Shift> Shifts { get; set; }

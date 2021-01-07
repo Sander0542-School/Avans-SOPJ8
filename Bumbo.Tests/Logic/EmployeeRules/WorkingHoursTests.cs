@@ -17,6 +17,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Shifts = new List<Shift>(),
                 UserAvailabilities = new List<UserAvailability>(),
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             WorkingHours.ValidateUserProperties(user);
@@ -393,7 +394,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>(),
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -423,7 +425,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(18, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -453,7 +456,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(18, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -483,7 +487,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(18, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -513,7 +518,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(19, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -543,7 +549,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(19, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -573,7 +580,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(21, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -603,7 +611,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(21, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -633,7 +642,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(19, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -663,7 +673,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(21, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -693,7 +704,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(23, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift
@@ -723,7 +735,8 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                         EndTime = new TimeSpan(23, 0, 0),
                     }
                 },
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserFurloughs = new List<Furlough>()
             };
 
             var shift = new Shift

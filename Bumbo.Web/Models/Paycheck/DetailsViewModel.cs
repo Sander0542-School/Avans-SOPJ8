@@ -66,13 +66,11 @@ namespace Bumbo.Web.Models.Paycheck
 
             [Display(Name = "Start Time")]
             [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan StartTime { get; set; }
 
             [Display(Name = "End Time")]
             [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
 
