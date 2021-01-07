@@ -123,16 +123,16 @@
                     </li>
                 }
 
-                <li>
+                <li class="@Html.IsActive("Branches", "Index")">
                     <a href="#branchesSubmenu" data-toggle="collapse" class="dropdown-toggle">
                         <i class="fa fa-building-o mr-3"></i>
                         @Localizer["Branches"]
                     </a>
-                    <ul class="collapse list-unstyled" id="branchesSubmenu">
+                    <ul class="collapse list-unstyled @Html.IsActive("Branches", "Index", "show")" id="branchesSubmenu">
                         @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
                         {
-                            <li>
-                                <a asp-controller="Branches" asp-action="Index">@Localizer["All branches"]</a>
+                            <li class="@Html.IsActive("Branches", "Index")">
+                                <a asp-controller="Branches" asp-action="Index" asp-route-branchId="@null">@Localizer["All branches"]</a>
                             </li>
                         }
 
