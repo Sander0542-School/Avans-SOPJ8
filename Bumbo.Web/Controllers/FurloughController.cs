@@ -111,7 +111,7 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        [Authorize(Policy = "BranchManager")]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Overview()
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED);
@@ -140,7 +140,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "BranchManager")]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> UpdateFurloughStatus(int id, FurloughStatus status)
         {
             if (TempData["alertMessage"] != null)
