@@ -135,4 +135,7 @@
   <data name="NotAllowed" xml:space="preserve">
     <value>Het verlof kon niet worden opgeslagen, omdat je op een dag werkt.</value>
   </data>
+  <data name="FurloughNotUpdated" xml:space="preserve">
+      <value>Het verlof kon niet worden aangepast</value>
+  </data>
 </root>

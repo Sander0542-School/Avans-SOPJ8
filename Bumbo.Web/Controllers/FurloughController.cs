@@ -32,10 +32,7 @@ namespace Bumbo.Web.Controllers
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
-            return View("Employee/Index", new FurloughViewModel
-            {
-                Furloughs = furloughs
-            });
+            return View("Employee/Index", new FurloughViewModel {Furloughs = furloughs});
         }
 
         [HttpPost]
@@ -92,10 +89,7 @@ namespace Bumbo.Web.Controllers
 
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
-            return RedirectToAction(nameof(Index), new FurloughViewModel
-            {
-                Furloughs = furloughs
-            });
+            return RedirectToAction(nameof(Index), new FurloughViewModel {Furloughs = furloughs});
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -105,25 +99,21 @@ namespace Bumbo.Web.Controllers
 
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
 
-            return RedirectToAction(nameof(Index), new FurloughViewModel
-            {
-                Furloughs = furloughs
-            });
+            return RedirectToAction(nameof(Index), new FurloughViewModel {Furloughs = furloughs});
         }
 
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Overview()
         {
+            if (TempData["alertMessage"] != null)
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+
             var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED);
             var users = furloughs.Select(f => f.User).Distinct().ToList();
 
             return View("Manager/Index", new ManagerFurloughViewModel
             {
-                UserFurloughs = users.ToDictionary(user => new ManagerFurloughViewModel.User
-                {
-                    Id = user.Id,
-                    Name = UserUtil.GetFullName(user),
-                }, user => furloughs
+                UserFurloughs = users.ToDictionary(user => new ManagerFurloughViewModel.User {Id = user.Id, Name = UserUtil.GetFullName(user),}, user => furloughs
                     .Where(f => f.User == user)
                     .Select(f => new ManagerFurloughViewModel.Furlough
                     {
@@ -135,7 +125,7 @@ namespace Bumbo.Web.Controllers
                         Status = f.Status,
                         IsAllDay = f.IsAllDay
                     })
-                .ToList())
+                    .ToList())
             });
         }
 
@@ -143,8 +133,7 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> UpdateFurloughStatus(int id, FurloughStatus status)
         {
-            if (TempData["alertMessage"] != null)
-                ViewData["AlertMessage"] = TempData["alertMessage"];
+            TempData["alertMessage"] = $"danger:{_localizer["FurloughNotUpdated"]}";
 
             if (ModelState.IsValid)
             {
@@ -153,7 +142,7 @@ namespace Bumbo.Web.Controllers
                 furlough.Status = status;
 
                 if (await _wrapper.Furlough.Update(furlough) != null)
-                    TempData["alertMessage"] = $"Success:{_localizer["FurloughUpdated"]}";
+                    TempData["alertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
             }
 
             return RedirectToAction(nameof(Overview));
