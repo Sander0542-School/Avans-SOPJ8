@@ -13,6 +13,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
+    [Authorize]
     public class FurloughController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -70,7 +71,7 @@ namespace Bumbo.Web.Controllers
                             StartDate = furloughModel.StartDate,
                             EndDate = furloughModel.EndDate,
                             IsAllDay = furloughModel.IsAllDay,
-                            Status = Data.Models.Enums.FurloughStatus.REQUESTED
+                            Status = FurloughStatus.REQUESTED
                         };
 
                         if (await _wrapper.Furlough.Add(furlough) != null)
@@ -110,11 +111,10 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        [Route("Overview")]
         [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> Overview()
         {
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == Data.Models.Enums.FurloughStatus.REQUESTED);
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED);
             var users = furloughs.Select(f => f.User).Distinct().ToList();
 
             return View("Manager/Index", new ManagerFurloughViewModel
@@ -140,6 +140,7 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "BranchManager")]
         public async Task<IActionResult> UpdateFurloughStatus(int id, FurloughStatus status)
         {
             if (TempData["alertMessage"] != null)

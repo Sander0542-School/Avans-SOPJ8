@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Bumbo.Web.Models.Forecast;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 
@@ -9,7 +11,6 @@ namespace Bumbo.Web.Models.Furlough
 {
     public class FurloughViewModel
     {
-        private static readonly IStringLocalizer<FurloughViewModel> _localizer;
         public List<Data.Models.Furlough> Furloughs { get; set; }
 
         public InputModel Input { get; set; }
@@ -40,15 +41,27 @@ namespace Bumbo.Web.Models.Furlough
             [DataType(DataType.Time)]
             public TimeSpan? EndTime { get; set; }
 
-            [Display(Name = "IsAllDay")] public bool IsAllDay { get; set; }
+            [Display(Name = "IsAllDay")]
+            public bool IsAllDay { get; set; }
 
-            IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
-                if (EndDate < StartDate || EndDate < DateTime.Now || StartDate < DateTime.Now)
-                    yield return new ValidationResult(_localizer["EndDateGreaterThanStartDate"], new[]
-                    {
-                        "EndDate"
-                    });
+                var localizer = validationContext.GetService<IStringLocalizer<ForecastViewModel>>();
+
+                if (StartDate < DateTime.Today)
+                {
+                    yield return new ValidationResult(localizer["The start date has to be in the future"], new[] {"StartDate"});
+                }
+
+                if (EndDate < StartDate)
+                {
+                    yield return new ValidationResult(localizer["The end date cannot be greater than we start date"], new[] {"StartDate", "EndDate"});
+                }
+
+                if (!IsAllDay && EndTime < StartTime)
+                {
+                    yield return new ValidationResult(localizer["The end time cannot be greater than we start time"], new[] {"StartTime", "EndTime"});
+                }
             }
         }
     }
