@@ -3,6 +3,7 @@
 @inject IViewLocalizer Localizer
 
 @{
+    ViewData["Title"] = Localizer["Personal Schedule"];
     var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
 }
 
