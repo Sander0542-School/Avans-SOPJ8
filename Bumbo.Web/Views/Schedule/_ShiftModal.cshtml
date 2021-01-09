@@ -66,6 +66,11 @@
         $('#InputShift_EndTime').val(endTime);
         $('#InputShift_Sick').prop("checked", sick);
 
+        if (shiftId == '') {
+            $('#schedule_cbsr').hide();
+        } else {
+            $('#schedule_cbsr').show();
+        }
         $('#schedule_cbsr').attr('href', `/Branches/1/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
         $('#shiftEditModal').modal('show');
