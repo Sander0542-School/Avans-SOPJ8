@@ -149,8 +149,7 @@
     <value>Tussenvoegsel</value>
     <comment>MiddleName</comment>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Gebruikers</value>
-    <comment>Users</comment>
+  <data name="Employees" xml:space="preserve">
+      <value>Medewerkers</value>
   </data>
 </root>

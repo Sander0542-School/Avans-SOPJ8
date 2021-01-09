@@ -176,6 +176,11 @@
         <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
+      <Compile Update="Resources\Views\Users\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
