@@ -51,7 +51,7 @@ namespace Bumbo.Web.Controllers
 
             return View(new DetailsViewModel
             {
-                CurrentUserId = _userManager.GetUserAsync(User).Id,
+                CurrentUserId = (await _userManager.GetUserAsync(User)).Id,
                 Branch = branch,
                 Managers = managersForBranch
             });
