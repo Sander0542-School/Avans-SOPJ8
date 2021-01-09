@@ -1,6 +1,10 @@
 @model Bumbo.Web.Models.Paycheck.PaycheckViewModel
 @inject IViewLocalizer Localizer
 
+@{
+    ViewData["Title"] = @Localizer["PayCheck"];
+}
+
 <h1>@Localizer["PayCheck"]</h1>
 <h2>@(new DateTime(Model.Year, Model.Month, 1).ToString("MMMMM"))</h2>
 
