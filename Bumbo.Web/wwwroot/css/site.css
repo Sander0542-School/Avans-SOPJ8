@@ -212,6 +212,10 @@ ul ul a {
     @page {
         size: landscape
     }
+    
+    .content {
+        width: 100% !important;
+    }
 }
 
 /* Custom navigation bar styling

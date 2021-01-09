@@ -187,42 +187,42 @@ namespace Bumbo.Web.Controllers
         [HttpPost, ActionName("ChangeNorms")]
         public async Task<IActionResult> SaveChangeNorms(int branchId, ChangeNormsViewModel viewModel)
         {
-            foreach (var (activity, value) in viewModel.Standards)
+            if (ModelState.IsValid)
             {
-                if (value < 1 || value > 30) return RedirectToAction("ChangeNorms", new { branchId });
-
-                // Check if values are the same as forecastStandard
-                var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
-                // Remove old branch forecast standard if it existed
-                if (forecastStandard.Value == value)
+                foreach (var (activity, value) in viewModel.Standards)
                 {
-                    await _wrapper.BranchForecastStandard.Remove(
-                        bfs => bfs.Activity == activity,
-                        bfs => bfs.BranchId == branchId
-                        );
-                }
-                else
-                {
-                    var currentBfs = await _wrapper.BranchForecastStandard.Get(
-                        bfs => bfs.BranchId == branchId,
-                        bfs => bfs.Activity == activity
-                    );
-
-                    if (currentBfs != null)
+                    // Check if values are the same as forecastStandard
+                    var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
+                    // Remove old branch forecast standard if it existed
+                    if (forecastStandard.Value == value)
                     {
-                        currentBfs.Value = value;
-                        await _wrapper.BranchForecastStandard.Update(currentBfs);
+                        await _wrapper.BranchForecastStandard.Remove(
+                            bfs => bfs.Activity == activity,
+                            bfs => bfs.BranchId == branchId
+                        );
                     }
                     else
                     {
-                        await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard
+                        var currentBfs = await _wrapper.BranchForecastStandard.Get(
+                            bfs => bfs.BranchId == branchId,
+                            bfs => bfs.Activity == activity
+                        );
+
+                        if (currentBfs != null)
                         {
-                            Activity = activity,
-                            BranchId = branchId,
-                            Value = value
-                        });
+                            currentBfs.Value = value;
+                            await _wrapper.BranchForecastStandard.Update(currentBfs);
+                        }
+                        else
+                        {
+                            await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard {Activity = activity, BranchId = branchId, Value = value});
+                        }
                     }
                 }
+            }
+            else
+            {
+                return await ChangeNorms(branchId);
             }
 
             return RedirectToAction("Index", new { branchId });
@@ -231,10 +231,7 @@ namespace Bumbo.Web.Controllers
 
         private async Task<List<IForecastStandard>> GetForecastStandardsForBranch(int branchId)
         {
-            var forecastStandards =
-                _wrapper.ForecastStandard.GetAll(
-                    f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId)
-                ).Result.ToList<IForecastStandard>();
+            var forecastStandards = (await _wrapper.ForecastStandard.GetAll(f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId))).ToList<IForecastStandard>();
 
             forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
                 bf => bf.BranchId == branchId

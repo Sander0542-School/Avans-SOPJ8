@@ -121,21 +121,27 @@
     <value>Description</value>
   </data>
   <data name="EndDate" xml:space="preserve">
-    <value>Enddate</value>
+      <value>End date</value>
   </data>
   <data name="EndTime" xml:space="preserve">
-    <value>Endtime</value>
+      <value>End time</value>
   </data>
   <data name="IsAllDay" xml:space="preserve">
     <value>All day</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>Startdate</value>
+      <value>Start date</value>
   </data>
   <data name="StartTime" xml:space="preserve">
-    <value>Starttime</value>
+      <value>Start time</value>
   </data>
-  <data name="EndDateGreaterThanStartDate" xml:space="preserve">
-      <value>EndDate must be greater than StartDate</value>
+  <data name="The start date has to be in the future" xml:space="preserve">
+      <value />
+  </data>
+  <data name="The end date cannot be greater than we start date" xml:space="preserve">
+      <value />
+  </data>
+  <data name="The end time cannot be greater than we start time" xml:space="preserve">
+      <value />
   </data>
 </root>

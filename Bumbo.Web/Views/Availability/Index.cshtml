@@ -1,3 +1,4 @@
+@using System.Globalization
 @model UserAvailabilityViewModel
 @inject IViewLocalizer Localizer
 @{
@@ -16,11 +17,11 @@
         <p class="mb-0 font-weight-bold">@Localizer["End Time"]</p>
     </div>
 </div>
-@foreach (DayOfWeek weekday in UserAvailabilityViewModel.DaysOfWeek)
+@foreach (var weekday in UserAvailabilityViewModel.DaysOfWeek)
 {
     <div class="row">
         <div class="col-4">
-            <p>@Localizer[@weekday.ToString()]</p>
+            <p>@ISOWeek.ToDateTime(1,1, weekday).ToString("dddd")</p>
         </div>
         <div class="col-3">
             <input asp-for="Availability.StartTime" type="time" onchange="checkTimes(this)" value="@Model.Schedule.Where(model => model.Day == weekday)?.FirstOrDefault()?.StartTime"/>

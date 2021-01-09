@@ -135,4 +135,7 @@
   <data name="NotAllowed" xml:space="preserve">
     <value>The furlough could not be saved, because you are working one day.</value>
   </data>
+  <data name="FurloughNotUpdated" xml:space="preserve">
+      <value>The furlough could not be updated</value>
+  </data>
 </root>
