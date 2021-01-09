@@ -98,6 +98,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\Offers.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Offers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -180,6 +184,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\Offers.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Offers.nl.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
