@@ -162,6 +162,8 @@ namespace Bumbo.Web.Controllers
             );
             await _wrapper.BranchManager.Remove(branchManager);
 
+            await _signInManager.RefreshSignInAsync(await _userManager.GetUserAsync(User));
+
             return RedirectToAction("Details");
         }
 
