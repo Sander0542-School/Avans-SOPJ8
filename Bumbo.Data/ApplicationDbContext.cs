@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,10 @@ namespace Bumbo.Data
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
 
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
+
+        public DbSet<ForecastStandard> ForecastStandard { get; set; }
+
+        public DbSet<Furlough> Furloughs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -139,7 +146,10 @@ namespace Bumbo.Data
 
             builder.Entity<ForecastStandard>(b =>
             {
-
+                // Loops through enum and generates a forecast standard for each item with value 10
+                b.HasData(Enum.GetValues<ForecastActivity>().Select(activity =>
+                    new ForecastStandard { Value = 10, Activity = activity })
+                );
             });
 
             builder.Entity<BranchForecastStandard>(b =>

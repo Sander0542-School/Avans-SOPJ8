@@ -134,7 +134,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessageWorkShiftsNotApproved"]}";
+            var alertMessage = $"danger:{_localizer["MessageWorkShiftsNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -147,7 +147,7 @@ namespace Bumbo.Web.Controllers
 
                 if (_wrapper.WorkedShift.Update(workedShifts) != null)
                 {
-                    alertMessage = $"{_localizer["Success"]}:{_localizer["MessageWorkShiftsApproved"]}";
+                    alertMessage = $"success:{_localizer["MessageWorkShiftsApproved"]}";
                 }
             }
 
@@ -164,7 +164,11 @@ namespace Bumbo.Web.Controllers
         [Route("{year}/{month}")]
         public async Task<IActionResult> SalaryBenefit(int branchId, int year, int month)
         {
-            var viewModel = new SalaryBenefitViewModel();
+            var viewModel = new SalaryBenefitViewModel
+            {
+                PayChecks = new Dictionary<User, PayCheck>()
+            };
+
             var pcl = new PayCheckLogic();
 
             var workedShifts = await GetWorkedShifts(branchId, year, month);
@@ -194,7 +198,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"{_localizer["Danger"]}:{_localizer["MessagePaycheckNotSaved"]}";
+            var alertMessage = $"danger:{_localizer["MessagePaycheckNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -207,7 +211,7 @@ namespace Bumbo.Web.Controllers
 
                     if ((await _wrapper.WorkedShift.Update(shift)) != null)
                     {
-                        alertMessage = $"{_localizer["Success"]}:{_localizer["MessagePaycheckSaved"]}";
+                        alertMessage = $"success:{_localizer["MessagePaycheckSaved"]}";
                     }
                 }
             }

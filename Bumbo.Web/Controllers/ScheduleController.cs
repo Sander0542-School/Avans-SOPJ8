@@ -37,7 +37,7 @@ namespace Bumbo.Web.Controllers
         {
             if (!year.HasValue || !week.HasValue)
             {
-                return RedirectToAction(nameof(Week), new { branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today), });
+                return RedirectToAction(nameof(Week), new { branchId, year = year ?? DateTime.Today.Year, week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today) });
             }
 
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -94,6 +94,7 @@ namespace Bumbo.Web.Controllers
                                     Date = shift.Date,
                                     StartTime = shift.StartTime,
                                     EndTime = shift.EndTime,
+                                    Sick = shift.WorkedShift?.Sick ?? false,
                                     Notifications = notifications.First(pair => pair.Key.Id == shift.Id).Value
                                 };
                             }).ToList()
@@ -119,13 +120,13 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"Danger:{_localizer["MessageShiftNotSaved"]}";
+            var alertMessage = $"danger:{_localizer["MessageShiftNotSaved"]}";
 
             if (ModelState.IsValid)
             {
                 var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == shiftModel.ShiftId);
 
-                bool success;
+                bool newShift = true;
 
                 if (shift == null)
                 {
@@ -139,20 +140,40 @@ namespace Bumbo.Web.Controllers
                         StartTime = shiftModel.StartTime,
                         EndTime = shiftModel.EndTime
                     };
-
-                    success = await _wrapper.Shift.Add(shift) != null;
                 }
                 else
                 {
                     shift.StartTime = shiftModel.StartTime;
                     shift.EndTime = shiftModel.EndTime;
 
-                    success = await _wrapper.Shift.Update(shift) != null;
+                    newShift = false;
                 }
+
+                if (shiftModel.Sick)
+                {
+                    shift.WorkedShift ??= new WorkedShift();
+                    shift.WorkedShift.StartTime = shiftModel.StartTime;
+                    shift.WorkedShift.EndTime = shiftModel.EndTime;
+                    shift.WorkedShift.Sick = shiftModel.Sick;
+                }
+                else
+                {
+                    if (shift.WorkedShift != null)
+                    {
+                        shift.WorkedShift.Sick = shiftModel.Sick;
+                        if (shift.Date > DateTime.Today)
+                        {
+                            await _wrapper.WorkedShift.Remove(shift.WorkedShift);
+                            shift.WorkedShift = null;
+                        }
+                    }
+                }
+
+                bool success = (newShift ? await _wrapper.Shift.Add(shift) : await _wrapper.Shift.Update(shift)) != null;
 
                 if (success)
                 {
-                    alertMessage = $"Success:{_localizer["MessageShiftSaved"]}";
+                    alertMessage = $"success:{_localizer["MessageShiftSaved"]}";
                 }
             }
 
@@ -176,7 +197,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotSaved"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -201,23 +222,35 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
+                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
-                            return RedirectToAction(nameof(Week), new { branchId, year = copyWeekModel.TargetYear, week = copyWeekModel.TargetWeek, department = copyWeekModel.Department });
+                            return RedirectToAction(nameof(Week), new
+                            {
+                                branchId,
+                                year = copyWeekModel.TargetYear,
+                                week = copyWeekModel.TargetWeek,
+                                department = copyWeekModel.Department
+                            });
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotEmpty"]}";
+                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
-            return RedirectToAction(nameof(Week), new { branchId, year = copyWeekModel.Year, week = copyWeekModel.Week, department = copyWeekModel.Department });
+            return RedirectToAction(nameof(Week), new
+            {
+                branchId,
+                year = copyWeekModel.Year,
+                week = copyWeekModel.Week,
+                department = copyWeekModel.Department
+            });
         }
 
         [HttpPost]
@@ -229,7 +262,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleNotApproved"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -244,17 +277,17 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.BranchSchedule.Update(schedule) != null)
                         {
-                            TempData["alertMessage"] = $"Success:{_localizer["MessageScheduleApproved"]}";
+                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"Danger:{_localizer["MessageScheduleEmpty"]}";
+                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"Danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
@@ -292,7 +325,12 @@ namespace Bumbo.Web.Controllers
                 Start = $"{shift.Date:yyyy-MM-dd}T{shift.StartTime}",
                 End = $"{shift.Date:yyyy-MM-dd}T{shift.EndTime}",
                 AllDay = false,
-                ExtendedProps = new Dictionary<string, object> { { "offered", shift.Offered } }
+                ExtendedProps = new Dictionary<string, object>
+                {
+                    {
+                        "offered", shift.Offered
+                    }
+                }
             }));
         }
 
@@ -303,7 +341,7 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            TempData["alertMessage"] = $"Danger:{_localizer["MessageShiftNotOffered"]}";
+            TempData["alertMessage"] = $"danger:{_localizer["MessageShiftNotOffered"]}";
 
             if (ModelState.IsValid)
             {
@@ -313,7 +351,7 @@ namespace Bumbo.Web.Controllers
 
                 if (await _wrapper.Shift.Update(shift) != null)
                 {
-                    TempData["alertMessage"] = $"Success:{_localizer["MessageShiftOffered"]}";
+                    TempData["alertMessage"] = $"success:{_localizer["MessageShiftOffered"]}";
                 }
             }
 
@@ -338,7 +376,6 @@ namespace Bumbo.Web.Controllers
             var shifts = await _wrapper.Shift.GetAll(
                 shift => shift.Offered,
                 shift => shift.Schedule.BranchId == branch.Id,
-                shift => shift.UserId != userId,
                 shift => departments.Contains(shift.Schedule.Department),
                 shift => shift.Date >= DateTime.Today,
                 shift => shift.WorkedShift == null);
@@ -349,6 +386,7 @@ namespace Bumbo.Web.Controllers
                     .ToDictionary(grouping => grouping.Key, grouping => grouping.Select(shift => new OffersViewModel.Shift
                     {
                         Id = shift.Id,
+                        OwnedShift = shift.User.Id == userId,
                         Department = shift.Schedule.Department,
                         Employee = UserUtil.GetFullName(shift.User),
                         StartTime = shift.StartTime,
@@ -364,21 +402,28 @@ namespace Bumbo.Web.Controllers
 
             if (branch == null) return NotFound();
 
-            var alertMessage = $"Danger:{_localizer["MessageOfferNotAdopted"]}";
+            var alertMessage = $"danger:{_localizer["MessageOfferNotAdopted"]}";
 
             if (ModelState.IsValid)
             {
                 var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == model.Input.ShiftId);
+                int userId = int.Parse(_userManager.GetUserId(User));
 
-                if (shift != null && shift.Offered)
+                if (shift != null)
                 {
-                    int userId = int.Parse(_userManager.GetUserId(User));
-
-                    shift.UserId = userId;
+                    if (shift.UserId == userId)
+                    {
+                        shift.Offered = false;
+                    }
+                    else if (shift.Offered)
+                    {
+                        shift.Offered = false;
+                        shift.UserId = userId;
+                    }
 
                     if (await _wrapper.Shift.Update(shift) != null)
                     {
-                        alertMessage = $"Success:{_localizer["MessageOfferAdopted"]}";
+                        alertMessage = shift.UserId == userId ? $"success:{_localizer["MessageOfferCanceled"]}" : $"success:{_localizer["MessageOfferAdopted"]}";
                     }
                 }
             }

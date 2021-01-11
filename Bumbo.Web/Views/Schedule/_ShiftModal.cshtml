@@ -65,13 +65,13 @@
         $('#InputShift_StartTime').val(startTime);
         $('#InputShift_EndTime').val(endTime);
         $('#InputShift_Sick').prop("checked", sick);
-        
-        if (shiftId > 0) {
-            $('#schedule_cbsr').show();
-            $('#schedule_cbsr').attr('href', `/Branches/${branchId}/Schedule/CreateCrossBranchOffer/${shiftId}`);
-        } else {
+
+        if (shiftId == '') {
             $('#schedule_cbsr').hide();
+        } else {
+            $('#schedule_cbsr').show();
         }
+        $('#schedule_cbsr').attr('href', `/Branches/1/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
         $('#shiftEditModal').modal('show');
     }

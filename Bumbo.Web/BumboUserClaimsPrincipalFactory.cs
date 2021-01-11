@@ -48,6 +48,8 @@ namespace Bumbo.Web
                     .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             );
 
+            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, identityUser.Birthday.Ticks.ToString()));
+
             return identity;
         }
     }

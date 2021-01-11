@@ -42,6 +42,8 @@ namespace Bumbo.Logic.PayCheck
             return hoursAlreadyInTheBonus;
         }
 
+        public TimeSpan GetTotalTime() => GetKeys().Aggregate(new TimeSpan(), (current, key) => current.Add(GetTime(key)));
+
         public void AddPayCheck(PayCheck payCheck)
         {
             foreach (var kvp in payCheck.GetPayCheck())

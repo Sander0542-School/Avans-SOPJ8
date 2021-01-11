@@ -161,7 +161,6 @@
   </data>
   <data name="All branches" xml:space="preserve">
     <value>Alle filialen</value>
-    <comment>All Branches</comment>
   </data>
   <data name="Availability" xml:space="preserve">
     <value>Beschikbaarheid</value>
@@ -211,20 +210,28 @@
   <data name="Users" xml:space="preserve">
       <value>Gebruikers</value>
   </data>
+  <data name="Global forecast norms" xml:space="preserve">
+      <value>Standaard prognose waardes</value>
+  </data>
+  <data name="Furlough for" xml:space="preserve">
+      <value>Verlof voor</value>
+  </data>
+  <data name="Employees" xml:space="preserve">
+      <value>Medewerkers</value>
+  </data>
   <data name="Cross Branch Shifts" xml:space="preserve">
       <value>Extrene diensten</value>
-      <comment>Cross Branch Shifts</comment>
   </data>
   <data name="Worked hours" xml:space="preserve">
       <value>Gewerkte uren</value>
-      <comment>Worked hours</comment>
   </data>
   <data name="Offers" xml:space="preserve">
       <value>Diensten overnemen</value>
-      <comment>Offers</comment>
   </data>
   <data name="Personal" xml:space="preserve">
       <value>Persoonlijk</value>
-      <comment>Personal</comment>
+  </data>
+  <data name="Furlough" xml:space="preserve">
+      <value>Verlof</value>
   </data>
 </root>

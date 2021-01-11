@@ -27,6 +27,7 @@ describe('Login', () => {
   it('Logout as logged in user', () => {
     cy.visit('/');
     cy.get('a[href=\'#accountSubmenu\']').click();
+    cy.wait(200);
     cy.get('a[href*=\'Logout\']').scrollIntoView().should('be.visible').click();
     cy.get('a[href=\'#accountSubmenu\']').should('not.exist');
   });
