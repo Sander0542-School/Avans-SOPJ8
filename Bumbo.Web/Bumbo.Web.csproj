@@ -46,7 +46,7 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Availability\Index.resx">
+      <EmbeddedResource Update="Resources\Views\Availability\Index.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.Designer.cs</LastGenOutput>
       </EmbeddedResource>

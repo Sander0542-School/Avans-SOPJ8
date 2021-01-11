@@ -3,10 +3,10 @@
 @model Bumbo.Web.Models.Paycheck.DetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Localizer["Details"];
 }
 
-<h1>Details</h1>
+<h1>@Localizer["Details"]</h1>
 
 <table class="table">
     <thead>
@@ -19,7 +19,7 @@
             </th>
             @foreach (var day in Model.DaysOfWeek)
             {
-                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+                <th>@ISOWeek.ToDateTime(1, 1, day).ToString("ddd dd-MM")</th>
             }
             <th>
                 @Localizer["Total"]

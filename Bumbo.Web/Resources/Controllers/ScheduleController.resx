@@ -44,4 +44,13 @@
     <data name="MessageOfferAdopted" xml:space="preserve">
         <value>The selected shift was successfully adopted.</value>
     </data>
+    <data name="MessageShiftNotOffered" xml:space="preserve">
+        <value>The state of the shift could not be set to offered.</value>
+    </data>
+    <data name="MessageShiftOffered" xml:space="preserve">
+        <value>The state of the shift was successfully set to offered.</value>
+    </data>
+    <data name="MessageOfferCanceled" xml:space="preserve">
+        <value>The selected shift is successfully removed from the offers.</value>
+    </data>
 </root>

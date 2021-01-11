@@ -56,7 +56,7 @@ namespace Bumbo.Web
                         options.UseSqlite(_sqLiteTestConnection);
                     else
                         options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
-                }
+                }, ServiceLifetime.Transient
             );
 
             services
