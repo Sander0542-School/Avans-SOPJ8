@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Logic.Services;
+using Bumbo.Logic.Services.Weather;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -91,6 +93,8 @@ namespace Bumbo.Web
                     opt.SupportedCultures = supportedCultures;
                     opt.SupportedUICultures = supportedCultures;
                 });
+
+            services.AddScoped<IOpenWeatherMapService, OpenWeatherMapService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

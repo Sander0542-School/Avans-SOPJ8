@@ -1,8 +1,133 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject IViewLocalizer Localizer
+@using System.Globalization
+@model Bumbo.Web.Models.Home.IndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["Home"];
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-sm-8 col-xs-12">
+        <div style="min-height:220px;" class="card">
+
+            <div class="card-header">
+                @Localizer["Forecast upcoming week"]
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        @foreach (var day in Model.DaysOfWeek)
+                        {
+                            <th scope="col">@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <th>@Localizer["Expected crowds"]:</th>
+                        @foreach (var day in Model.DaysOfWeek)
+                        {
+                            <td>@Localizer[(Model.Forecasts.ContainsKey(day) ? Model.Forecasts[day].ExpectedCrowd : "Unknown")]</td>
+                        }
+                    </tr>
+
+                    <tr>
+                        <th>@Localizer["Planned hours"]:</th>
+                        @foreach (var day in Model.DaysOfWeek)
+                        {
+                            <td>@(Model.Forecasts.ContainsKey(day) ? Model.Forecasts[day].PlannedHours : 0)</td>
+                        }
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+
+            <div class="card-header">
+                @Localizer["Weather forecast"]
+            </div>
+            <div class="d-flex flex-row pt-3">
+                <div class="p-2">
+                    <img alt="@Model.Weather.IconDesc" src="@Model.Weather.IconUrl"/>
+                </div>
+                <div class="p-2 h3">@Model.Weather.Temperature°C</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["Birthdays"]
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm">
+                    @if (Model.Birthdays.Any())
+                    {
+                        @foreach (var birthday in Model.Birthdays)
+                        {
+                            <tr>
+                                <td>@birthday.Date.ToString("M")</td>
+                                <th>@birthday.Name</th>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>@Localizer["There are no upcoming birthdays"]</tr>
+                    }
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["Absent due to illness"]
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm">
+                    @if (Model.Sicks.Any())
+                    {
+                        @foreach (var sick in Model.Sicks)
+                        {
+                            <tr>
+                                <td>@sick.Date.ToString("M")</td>
+                                <th>@sick.Name</th>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>@Localizer["There are no sick employees"]</tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["News"]
+            </div>
+            <div class="card-body">
+                @Localizer["There is no news yet"]
+            </div>
+        </div>
+    </div>
+
 </div>

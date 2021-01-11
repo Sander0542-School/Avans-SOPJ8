@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Bumbo.Data\Bumbo.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="OpenWeatherMap.Cache" Version="1.3.3" />
+      <PackageReference Include="PostcodeNlApi" Version="1.0.4" />
+    </ItemGroup>
+
 </Project>
