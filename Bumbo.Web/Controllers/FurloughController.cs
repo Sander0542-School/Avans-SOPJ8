@@ -32,7 +32,7 @@ namespace Bumbo.Web.Controllers
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
-            return View("Employee/Index", new FurloughViewModel {Furloughs = furloughs});
+            return View("Employee/Index", new FurloughViewModel { Furloughs = furloughs });
         }
 
         [HttpPost]
@@ -89,7 +89,7 @@ namespace Bumbo.Web.Controllers
 
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
-            return RedirectToAction(nameof(Index), new FurloughViewModel {Furloughs = furloughs});
+            return RedirectToAction(nameof(Index), new FurloughViewModel { Furloughs = furloughs });
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -99,7 +99,7 @@ namespace Bumbo.Web.Controllers
 
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
 
-            return RedirectToAction(nameof(Index), new FurloughViewModel {Furloughs = furloughs});
+            return RedirectToAction(nameof(Index), new FurloughViewModel { Furloughs = furloughs });
         }
 
         [Authorize(Policy = "Manager")]
@@ -113,19 +113,19 @@ namespace Bumbo.Web.Controllers
 
             return View("Manager/Index", new ManagerFurloughViewModel
             {
-                UserFurloughs = users.ToDictionary(user => new ManagerFurloughViewModel.User {Id = user.Id, Name = UserUtil.GetFullName(user),}, user => furloughs
-                    .Where(f => f.User == user)
-                    .Select(f => new ManagerFurloughViewModel.Furlough
-                    {
-                        Id = f.Id,
-                        UserId = f.UserId,
-                        Description = f.Description,
-                        StartDate = f.StartDate,
-                        EndDate = f.EndDate,
-                        Status = f.Status,
-                        IsAllDay = f.IsAllDay
-                    })
-                    .ToList())
+                UserFurloughs = users.ToDictionary(user => new ManagerFurloughViewModel.User { Id = user.Id, Name = UserUtil.GetFullName(user), }, user => furloughs
+                      .Where(f => f.User == user)
+                      .Select(f => new ManagerFurloughViewModel.Furlough
+                      {
+                          Id = f.Id,
+                          UserId = f.UserId,
+                          Description = f.Description,
+                          StartDate = f.StartDate,
+                          EndDate = f.EndDate,
+                          Status = f.Status,
+                          IsAllDay = f.IsAllDay
+                      })
+                      .ToList())
             });
         }
 

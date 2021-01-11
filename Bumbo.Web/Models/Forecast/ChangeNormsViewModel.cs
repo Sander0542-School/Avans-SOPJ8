@@ -12,7 +12,7 @@ namespace Bumbo.Web.Models.Forecast
         public int ForecastStandardValue;
 
         public int BranchId;
-        
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             foreach (var (key, value) in Standards)
