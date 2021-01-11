@@ -215,7 +215,7 @@ namespace Bumbo.Web.Controllers
                         }
                         else
                         {
-                            await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard {Activity = activity, BranchId = branchId, Value = value});
+                            await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard { Activity = activity, BranchId = branchId, Value = value });
                         }
                     }
                 }

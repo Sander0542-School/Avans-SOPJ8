@@ -47,7 +47,7 @@ namespace Bumbo.Web
                     .Distinct()
                     .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             );
-            
+
             identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, identityUser.Birthday.Ticks.ToString()));
 
             return identity;

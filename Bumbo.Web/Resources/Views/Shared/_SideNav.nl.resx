@@ -161,7 +161,6 @@
   </data>
   <data name="All branches" xml:space="preserve">
     <value>Alle filialen</value>
-    <comment>All Branches</comment>
   </data>
   <data name="Availability" xml:space="preserve">
     <value>Beschikbaarheid</value>
@@ -207,6 +206,15 @@
   </data>
   <data name="School schedule" xml:space="preserve">
       <value>Schoolrooster</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+      <value>Gebruikers</value>
+  </data>
+  <data name="Global forecast norms" xml:space="preserve">
+      <value>Standaard prognose waardes</value>
+  </data>
+  <data name="Furlough for" xml:space="preserve">
+      <value>Verlof voor</value>
   </data>
   <data name="Employees" xml:space="preserve">
       <value>Medewerkers</value>

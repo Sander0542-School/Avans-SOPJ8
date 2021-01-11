@@ -134,6 +134,9 @@
                             <li class="@Html.IsActive("Branches", "Index")">
                                 <a asp-controller="Branches" asp-action="Index" asp-route-branchId="@null">@Localizer["All branches"]</a>
                             </li>
+                            <li class="@Html.IsActive("ForecastStandard")">
+                                <a asp-controller="ForecastStandard">@Localizer["Global forecast norms"]</a>
+                            </li>
                         }
 
                         @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
