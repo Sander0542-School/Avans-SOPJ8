@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Models.Users
 {
     public class ContractViewModel : IValidatableObject
@@ -45,4 +44,3 @@ namespace Bumbo.Web.Models.Users
 
 
 }
-

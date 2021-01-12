@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bumbo.Web.Models.Schedule;
-
 namespace Bumbo.Web.Models.Home
 {
     public class IndexViewModel
     {
-        public Dictionary<BranchModel, BranchDataModel> Branches { get; set; }
-
-        public IEnumerable<BirthdayModel> Birthdays { get; set; }
-
-        public IEnumerable<SickModel> Sicks { get; set; }
 
         public readonly DayOfWeek[] DaysOfWeek =
         {
@@ -22,12 +15,18 @@ namespace Bumbo.Web.Models.Home
             DayOfWeek.Saturday,
             DayOfWeek.Sunday
         };
+
+        public Dictionary<BranchModel, BranchDataModel> Branches { get; set; }
+
+        public IEnumerable<BirthdayModel> Birthdays { get; set; }
+
+        public IEnumerable<SickModel> Sicks { get; set; }
     }
 
     public class BranchModel
     {
         public int Id { get; set; }
-        
+
         public string Name { get; set; }
     }
 
@@ -49,12 +48,12 @@ namespace Bumbo.Web.Models.Home
 
                 var sectionDiff = diff / sections;
 
-                if (PlannedHours > (MaxHours - sectionDiff))
+                if (PlannedHours > MaxHours - sectionDiff)
                 {
                     return "Crowded";
                 }
-                
-                if (PlannedHours > (MaxHours - sectionDiff - sectionDiff))
+
+                if (PlannedHours > MaxHours - sectionDiff - sectionDiff)
                 {
                     return "Medium";
                 }

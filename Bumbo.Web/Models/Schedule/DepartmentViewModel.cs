@@ -8,11 +8,22 @@ using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.EmployeeRules;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class DepartmentViewModel
     {
+
+        public readonly DayOfWeek[] DaysOfWeek =
+        {
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
@@ -43,17 +54,6 @@ namespace Bumbo.Web.Models.Schedule
 
         public Branch Branch { get; set; }
 
-        public readonly DayOfWeek[] DaysOfWeek =
-        {
-            DayOfWeek.Monday,
-            DayOfWeek.Tuesday,
-            DayOfWeek.Wednesday,
-            DayOfWeek.Thursday,
-            DayOfWeek.Friday,
-            DayOfWeek.Saturday,
-            DayOfWeek.Sunday
-        };
-
         public class EmployeeShift
         {
             public int UserId { get; set; }
@@ -73,7 +73,7 @@ namespace Bumbo.Web.Models.Schedule
 
             [DisplayName("Planned Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan PlannedTime => new TimeSpan(Shifts.Sum(shift => shift.WorkTime.Ticks));
+            public TimeSpan PlannedTime => new(Shifts.Sum(shift => shift.WorkTime.Ticks));
 
             public List<Shift> Shifts { get; set; }
         }

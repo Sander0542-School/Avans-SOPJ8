@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Repositories.Common
 {
     public interface IRepository<TEntity> where TEntity : class, IEntity

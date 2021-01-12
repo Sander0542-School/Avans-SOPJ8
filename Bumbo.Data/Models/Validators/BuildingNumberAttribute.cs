@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace Bumbo.Data.Models.Validators
 {
     public class BuildingNumberAttribute : RegularExpressionAttribute

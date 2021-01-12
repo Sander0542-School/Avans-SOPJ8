@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class OffersViewModel

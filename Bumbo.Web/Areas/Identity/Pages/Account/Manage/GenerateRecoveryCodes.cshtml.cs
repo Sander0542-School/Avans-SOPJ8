@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<GenerateRecoveryCodesModel> _logger;
         private readonly IStringLocalizer<GenerateRecoveryCodesModel> _localizer;
+        private readonly ILogger<GenerateRecoveryCodesModel> _logger;
+        private readonly UserManager<User> _userManager;
 
         public GenerateRecoveryCodesModel(
             UserManager<User> userManager,

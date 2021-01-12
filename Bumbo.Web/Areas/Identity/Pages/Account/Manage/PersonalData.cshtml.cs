@@ -4,13 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
+        private readonly UserManager<User> _userManager;
 
         public PersonalDataModel(
             UserManager<User> userManager,

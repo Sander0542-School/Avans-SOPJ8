@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 using Bumbo.Data.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 namespace Bumbo.Web.Models.Users
 {
     public class EditViewModel
@@ -77,9 +77,7 @@ namespace Bumbo.Web.Models.Users
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Department")]
-            public Data.Models.Enums.Department Department { get; set; }
+            public Department Department { get; set; }
         }
-
-
     }
 }

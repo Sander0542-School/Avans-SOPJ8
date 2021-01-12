@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-
 namespace Bumbo.Logic.Services.Weather.Models
 {
     public class Main

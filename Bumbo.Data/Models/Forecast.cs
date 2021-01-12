@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Data.Models
 {
     public class Forecast : IEntity

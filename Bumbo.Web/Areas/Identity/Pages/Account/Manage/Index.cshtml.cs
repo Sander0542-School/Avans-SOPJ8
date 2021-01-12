@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public class IndexModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IStringLocalizer<IndexModel> _localizer;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         public IndexModel(
             UserManager<User> userManager,
@@ -34,44 +33,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
-        {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
-
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "First name")]
-            public string FirstName { get; set; }
-
-            [DataType(DataType.Text)]
-            [Display(Name = "Middle name")]
-            public string MiddleName { get; set; }
-
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Last name")]
-            public string LastName { get; set; }
-
-            [Required]
-            [DataType(DataType.Date)]
-            [Display(Name = "Birthday")]
-            public DateTime Birthday { get; set; }
-
-            [Required]
-            [DataType(DataType.Text)]
-            [ZipCode]
-            [Display(Name = "Zip Code")]
-            public string ZipCode { get; set; }
-
-            [Required]
-            [DataType(DataType.Text)]
-            [BuildingNumber]
-            [Display(Name = "House number")]
-            public string HouseNumber { get; set; }
-        }
-
         private async Task LoadAsync(User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
@@ -87,7 +48,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                 LastName = user.LastName,
                 Birthday = user.Birthday,
                 ZipCode = user.ZipCode,
-                HouseNumber = user.HouseNumber,
+                HouseNumber = user.HouseNumber
             };
         }
 
@@ -140,6 +101,44 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _localizer["Your profile has been updated"];
             return RedirectToPage();
+        }
+
+        public class InputModel
+        {
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Middle name")]
+            public string MiddleName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [DataType(DataType.Date)]
+            [Display(Name = "Birthday")]
+            public DateTime Birthday { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [ZipCode]
+            [Display(Name = "Zip Code")]
+            public string ZipCode { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [BuildingNumber]
+            [Display(Name = "House number")]
+            public string HouseNumber { get; set; }
         }
     }
 }

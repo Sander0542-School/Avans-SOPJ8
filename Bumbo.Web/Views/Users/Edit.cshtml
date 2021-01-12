@@ -8,8 +8,8 @@
 <h1>Edit</h1>
 
 <h4>User</h4>
-<hr />
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<hr/>
+<partial name="_StatusMessage" model="Model.StatusMessage"/>
 <div class="row">
 
     <div class="col-6">
@@ -23,50 +23,48 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
+                        <input asp-for="FirstName" class="form-control"/>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="MiddleName" class="control-label"></label>
-                        <input asp-for="MiddleName" class="form-control" />
+                        <input asp-for="MiddleName" class="form-control"/>
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
+                        <input asp-for="LastName" class="form-control"/>
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ZipCode" class="control-label"></label>
-                        <input asp-for="ZipCode" class="form-control" />
+                        <input asp-for="ZipCode" class="form-control"/>
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="HouseNumber" class="control-label"></label>
-                        <input asp-for="HouseNumber" class="form-control" />
+                        <input asp-for="HouseNumber" class="form-control"/>
                         <span asp-validation-for="HouseNumber" class="text-danger"></span>
                     </div>
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Id"/>
 
 
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
 
-
                     <div class="form-group">
                         <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
+                        <input asp-for="PhoneNumber" class="form-control"/>
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
 
 
-
                     <div class="form-group">
-                        <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
+                        <input type="submit" value="@Localizer["Save"]" class="btn btn-primary"/>
                     </div>
                 </form>
             </div>
@@ -79,7 +77,11 @@
                 <div class="card-header">
                     <div class="d-flex">
                         <div class="p-2">@Localizer["Contracts"] </div>
-                        <div class="ml-auto p-2"><a asp-action="CreateContract" asp-route-id="@Model.Id"><i class="fa fa-plus"></i></a></div>
+                        <div class="ml-auto p-2">
+                            <a asp-action="CreateContract" asp-route-id="@Model.Id">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
                     </div>
 
                 </div>
@@ -114,7 +116,7 @@
                                 @contract.Function
                             </dd>
                         </dl>
-                        <hr />
+                        <hr/>
                     }
                 </div>
             </div>
@@ -136,36 +138,36 @@
 
                             <table class="table">
                                 <thead>
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.InputBranchDepartment.BranchId)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.InputBranchDepartment.Department)
-                                        </th>
-                                        <th></th>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.InputBranchDepartment.BranchId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.InputBranchDepartment.Department)
+                                    </th>
+                                    <th></th>
 
 
-                                        <th></th>
-                                    </tr>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.UserBranches)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Branch.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Department)
-                                            </td>
+                                @foreach (var item in Model.UserBranches)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Branch.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Department)
+                                        </td>
 
-                                            <td>
+                                        <td>
 
-                                                <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">@Localizer["Delete"]</a>
-                                            </td>
-                                        </tr>
-                                    }
+                                            <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">@Localizer["Delete"]</a>
+                                        </td>
+                                    </tr>
+                                }
                                 </tbody>
                             </table>
 
@@ -182,7 +184,7 @@
                                     <option selected="selected" value="">@Localizer["Select"] @Localizer["Branch"]</option>
                                 </select>
                             </div>
-                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="Id"/>
                             <div class="col-md-12">
                                 <button class="btn btn-primary" type="submit">@Localizer["Save"]</button>
                             </div>

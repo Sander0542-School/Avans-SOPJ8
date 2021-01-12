@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bumbo.Data.Models.Common;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bumbo.Data.Repositories.Common
 {
     public abstract class RepositoryBase<TEntity> : RepositoryBase<TEntity, ApplicationDbContext>
@@ -29,11 +28,6 @@ namespace Bumbo.Data.Repositories.Common
             DbSet = context.Set<TEntity>();
         }
 
-        protected virtual IQueryable<TEntity> GetQueryBase()
-        {
-            return DbSet;
-        }
-
         public async Task<TEntity> Add(TEntity entity)
         {
             await DbSet.AddAsync(entity);
@@ -42,37 +36,12 @@ namespace Bumbo.Data.Repositories.Common
             return changed > 0 ? entity : null;
         }
 
-        public async Task<List<TEntity>> AddRange(params TEntity[] entities)
-        {
-            await using var transaction = await Context.Database.BeginTransactionAsync();
-            try
-            {
-                await Context.AddRangeAsync(entities);
-                int added = await Context.SaveChangesAsync();
-
-                await transaction.CommitAsync();
-
-                if (added == entities.Length)
-                {
-                    return entities.ToList();
-                }
-
-                await transaction.RollbackAsync();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            return null;
-        }
-
         public async Task<TEntity> Get(params Expression<Func<TEntity, bool>>[] predicates)
         {
             return await predicates
                 .Aggregate(
-                    GetQueryBase(),
-                    (query, predicate) => query.Where(predicate))
+                GetQueryBase(),
+                (query, predicate) => query.Where(predicate))
                 .FirstOrDefaultAsync();
         }
 
@@ -80,8 +49,8 @@ namespace Bumbo.Data.Repositories.Common
         {
             return await predicates
                 .Aggregate(
-                    GetQueryBase(),
-                    (query, predicate) => query.Where(predicate))
+                GetQueryBase(),
+                (query, predicate) => query.Where(predicate))
                 .ToListAsync();
         }
 
@@ -99,7 +68,7 @@ namespace Bumbo.Data.Repositories.Common
             try
             {
                 Context.UpdateRange(entities);
-                int updated = await Context.SaveChangesAsync();
+                var updated = await Context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
 
@@ -126,7 +95,7 @@ namespace Bumbo.Data.Repositories.Common
             try
             {
                 Context.RemoveRange(entities);
-                int deleted = await Context.SaveChangesAsync();
+                var deleted = await Context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
 
@@ -151,6 +120,36 @@ namespace Bumbo.Data.Repositories.Common
 
             var changed = await Context.SaveChangesAsync();
             return changed > 0 ? entity : null;
+        }
+
+        protected virtual IQueryable<TEntity> GetQueryBase()
+        {
+            return DbSet;
+        }
+
+        public async Task<List<TEntity>> AddRange(params TEntity[] entities)
+        {
+            await using var transaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                await Context.AddRangeAsync(entities);
+                var added = await Context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                if (added == entities.Length)
+                {
+                    return entities.ToList();
+                }
+
+                await transaction.RollbackAsync();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return null;
         }
     }
 }

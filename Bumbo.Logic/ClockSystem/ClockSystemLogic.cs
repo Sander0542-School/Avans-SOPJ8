@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-
 namespace Bumbo.Logic.ClockSystem
 {
     public class ClockSystemLogic
@@ -17,7 +16,7 @@ namespace Bumbo.Logic.ClockSystem
 
         public async Task HandleTagScan(User user)
         {
-            DateTime scannedDateTime = GetRoundedTimeFromDateTimeNow();
+            var scannedDateTime = GetRoundedTimeFromDateTimeNow();
 
             var shift = user.Shifts.FirstOrDefault(shift1 => shift1.Date == scannedDateTime.Date);
 
@@ -30,7 +29,7 @@ namespace Bumbo.Logic.ClockSystem
                         ShiftId = shift.Id,
                         StartTime = scannedDateTime.TimeOfDay,
                         Sick = false,
-                        IsApprovedForPaycheck = false,
+                        IsApprovedForPaycheck = false
                     };
 
                     if (await _wrapper.WorkedShift.Add(workedShift) != null)

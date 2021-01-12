@@ -3,7 +3,7 @@ namespace Bumbo.Logic.Options
     public class MailOptions
     {
         public const string Mail = "Mail";
-        
+
         public string Host { get; set; }
         public int Port { get; set; } = 465;
         public string UserName { get; set; }

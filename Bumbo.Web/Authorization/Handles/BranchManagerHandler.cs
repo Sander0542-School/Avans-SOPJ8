@@ -4,7 +4,6 @@ using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-
 namespace Bumbo.Web.Authorization.Handles
 {
     public class BranchManagerHandler : AuthorizationHandler<BranchManagerRequirement>

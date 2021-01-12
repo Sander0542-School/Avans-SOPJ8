@@ -41,7 +41,7 @@
                                         <th>@Localizer["Expected crowds"]:</th>
                                         @foreach (var day in Model.DaysOfWeek)
                                         {
-                                            <td>@Localizer[(data.Forecasts.ContainsKey(day) ? data.Forecasts[day].ExpectedCrowd : "Unknown")]</td>
+                                            <td>@Localizer[data.Forecasts.ContainsKey(day) ? data.Forecasts[day].ExpectedCrowd : "Unknown"]</td>
                                         }
                                     </tr>
                                     <tr>
