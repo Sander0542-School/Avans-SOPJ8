@@ -7,7 +7,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
-using Bumbo.Web.Models.Options;
+using Bumbo.Logic.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

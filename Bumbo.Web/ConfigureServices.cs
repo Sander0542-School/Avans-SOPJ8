@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Logic.Options;
 using Bumbo.Web.Authorization.Handles;
 using Bumbo.Web.Authorization.Requirements;
-using Bumbo.Web.Models.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +19,7 @@ namespace Bumbo.Web
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
+            services.Configure<OpenWeatherMapOptions>(config.GetSection(OpenWeatherMapOptions.OpenWeatherMap));
         }
 
         public static async Task SeedRoles(IServiceProvider serviceProvider)
