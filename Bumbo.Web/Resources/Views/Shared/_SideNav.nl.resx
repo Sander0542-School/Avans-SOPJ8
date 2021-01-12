@@ -174,8 +174,8 @@
   <data name="Users" xml:space="preserve">
     <value>Gebruikers</value>
   </data>
-  <data name="Global forecast norms" xml:space="preserve">
-    <value>Standaard prognose waardes</value>
+  <data name="Forecast Norms" xml:space="preserve">
+    <value>Prognose waardes</value>
   </data>
   <data name="Furlough for" xml:space="preserve">
     <value>Verlof voor</value>

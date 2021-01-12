@@ -229,6 +229,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>_DeleteShiftModal.nl.resx</DependentUpon>
       </Compile>
+      <Compile Update="Resources\Views\ForecastStandard\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
