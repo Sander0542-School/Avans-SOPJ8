@@ -51,7 +51,7 @@ namespace Bumbo.Web.Controllers
 
             return View(new DetailsViewModel
             {
-                CurrentUserId = _userManager.GetUserAsync(User).Id,
+                CurrentUserId = (await _userManager.GetUserAsync(User)).Id,
                 Branch = branch,
                 Managers = managersForBranch
             });
@@ -161,6 +161,8 @@ namespace Bumbo.Web.Controllers
                 bm => bm.UserId == userId
             );
             await _wrapper.BranchManager.Remove(branchManager);
+
+            await _signInManager.RefreshSignInAsync(await _userManager.GetUserAsync(User));
 
             return RedirectToAction("Details");
         }

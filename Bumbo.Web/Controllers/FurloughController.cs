@@ -32,6 +32,9 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Index()
         {
+            if (TempData["alertMessage"] != null)
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
             return View("Employee/Index", new FurloughViewModel { Furloughs = furloughs });
@@ -41,9 +44,6 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Create(int branchId, int? id, FurloughViewModel.InputModel furloughModel)
         {
-            if (TempData["alertMessage"] != null)
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-
             int userId = int.Parse(_userManager.GetUserId(User));
 
             if (ModelState.IsValid)

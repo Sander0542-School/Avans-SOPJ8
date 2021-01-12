@@ -7,6 +7,7 @@ using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.EmployeeRules;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Models.Schedule
 {
@@ -115,7 +116,7 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
 
-        public class InputShiftModel : InputDateDepartmentModel
+        public class InputShiftModel : InputDateDepartmentModel, IValidatableObject
         {
             public int? ShiftId { get; set; }
 
@@ -146,6 +147,16 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<InputShiftModel>));
+
+                if (StartTime > EndTime)
+                {
+                    yield return new ValidationResult(localizer["The start date cannot be after the end date"]);
+                }
+            }
         }
 
         public class DeleteShiftModel : InputDateDepartmentModel

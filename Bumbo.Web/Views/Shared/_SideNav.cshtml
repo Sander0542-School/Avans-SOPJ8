@@ -135,27 +135,33 @@
                             <li class="@Html.IsActive("Branches", "Index")">
                                 <a asp-controller="Branches" asp-action="Index" asp-route-branchId="@null">@Localizer["All branches"]</a>
                             </li>
-                            <li class="@Html.IsActive("ForecastStandard")">
-                                <a asp-controller="ForecastStandard">@Localizer["Global forecast norms"]</a>
-                            </li>
                         }
 
                         @foreach (var id in User.Claims.Where(claim => claim.Type == "Branch").Select(claim => int.Parse(claim.Value)))
                         {
                             var branch = await Wrapper.Branch.Get(branch1 => branch1.Id == id);
 
-                            <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
-                                <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
-                            </li>
+                            if (branch != null)
+                            {
+                                <li class="@(hasCurrentBranch && currentBranchId == branch.Id ? "active" : "")">
+                                    <a asp-controller="Branches" asp-action="Details" asp-route-branchId="@branch.Id">@branch.Name</a>
+                                </li>
+                            }
                         }
                         </ul>
                 </li>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
                 {
-                    <li class="@Html.IsActive("users")">
+                    <li class="@Html.IsActive("Users")">
                         <a asp-controller="Users" asp-action="Index">
                             <i class="fa fa-user mr-3"></i>
                             @Localizer["Employees"]
+                        </a>
+                    </li>
+                    <li class="@Html.IsActive("ForecastStandard")">
+                        <a asp-controller="ForecastStandard" asp-action="Index">
+                            <i class="fa fa-line-chart mr-3"></i>
+                            @Localizer["Forecast Norms"]
                         </a>
                     </li>
                 }
