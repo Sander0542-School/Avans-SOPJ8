@@ -1,4 +1,4 @@
-namespace Bumbo.Web.Models.Options
+namespace Bumbo.Logic.Options
 {
     public class MailOptions
     {

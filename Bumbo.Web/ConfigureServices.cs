@@ -7,7 +7,6 @@ using Bumbo.Web.Authorization.Handles;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,15 +19,19 @@ namespace Bumbo.Web
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
-            services.Configure<MailOptions>(config.GetSection(MailOptions.Mail));
 
+            services.Configure<MailOptions>(config.GetSection(MailOptions.Mail));
             // services.AddTransient<IEmailSender, EmailSender>(); // Disable for now
+
             services.Configure<OpenWeatherMapOptions>(config.GetSection(OpenWeatherMapOptions.OpenWeatherMap));
         }
 
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {
-            var roles = new[] { "SuperUser" };
+            var roles = new[]
+            {
+                "SuperUser"
+            };
             using var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
@@ -58,7 +61,7 @@ namespace Bumbo.Web
             services.AddSingleton<IAuthorizationHandler, BranchManagerHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchEmployeeHandler>();
             services.AddSingleton<IAuthorizationHandler, BranchDepartmentEmployeeHandler>();
-            services.AddScoped<IAuthorizationHandler, YoungerThan18Handler>(); // This service is scoped because it relies on a scoped repository wrapper
+            services.AddScoped<IAuthorizationHandler, YoungerThan18Handler>();// This service is scoped because it relies on a scoped repository wrapper
         }
     }
 }
