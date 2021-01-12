@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bumbo.Web.Models.Schedule;
 
 namespace Bumbo.Web.Models.Home
 {
     public class IndexViewModel
     {
-        public Dictionary<DayOfWeek, ForecastModel> Forecasts { get; set; }
-
-        public WeatherModel Weather { get; set; }
+        public Dictionary<BranchModel, BranchDataModel> Branches { get; set; }
 
         public IEnumerable<BirthdayModel> Birthdays { get; set; }
 
@@ -23,6 +22,20 @@ namespace Bumbo.Web.Models.Home
             DayOfWeek.Saturday,
             DayOfWeek.Sunday
         };
+    }
+
+    public class BranchModel
+    {
+        public int Id { get; set; }
+        
+        public string Name { get; set; }
+    }
+
+    public class BranchDataModel
+    {
+        public Dictionary<DayOfWeek, ForecastModel> Forecasts { get; set; }
+
+        public WeatherModel Weather { get; set; }
     }
 
     public class ForecastModel
@@ -63,7 +76,7 @@ namespace Bumbo.Web.Models.Home
 
         public string Icon { get; set; }
 
-        public string IconUrl => $"http://openweathermap.org/img/wn/{Icon}@2x.png";
+        public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png";
 
         public string IconDesc { get; set; }
     }

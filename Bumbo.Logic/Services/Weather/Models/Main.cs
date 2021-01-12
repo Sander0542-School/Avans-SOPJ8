@@ -14,7 +14,7 @@ namespace Bumbo.Logic.Services.Weather.Models
         public double TempMin { get; set; }
 
         [JsonPropertyName("temp_max")]
-        public int TempMax { get; set; }
+        public double TempMax { get; set; }
 
         [JsonPropertyName("pressure")]
         public int Pressure { get; set; }

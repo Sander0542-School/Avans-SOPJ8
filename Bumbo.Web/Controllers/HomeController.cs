@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Logic.Services;
 using Bumbo.Logic.Services.Weather;
 using Bumbo.Logic.Utils;
 using Bumbo.Web.Models;
@@ -15,8 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using OpenWeatherMap.Cache;
-using OpenWeatherMap.Cache.Models;
 
 namespace Bumbo.Web.Controllers
 {
@@ -48,21 +45,6 @@ namespace Bumbo.Web.Controllers
                 }
             };
 
-            var weather = await _weatherService.GetWeather(await _wrapper.Branch.Get(branch => branch.Id == branches.First()));
-
-            var nextWeek = DateTime.Today.AddDays(7);
-            var weekNumber = ISOWeek.GetWeekOfYear(nextWeek);
-            var nextMonday = ISOWeek.ToDateTime(nextWeek.Year, weekNumber, DayOfWeek.Monday);
-            var nextNextMonday = nextMonday.AddDays(7);
-
-            var forecasts = (await _wrapper.Forecast.GetAll(
-            forecast => forecast.BranchId == branches.First(),
-            forecast => forecast.Date >= nextMonday,
-            forecast => forecast.Date < nextNextMonday)).GroupBy(forecast => forecast.Date).ToList();
-
-            var minHours = (int)forecasts.Min(grouping => grouping.Sum(forecast => forecast.WorkingHours));
-            var maxHours = (int)forecasts.Max(grouping => grouping.Sum(forecast => forecast.WorkingHours));
-
             var model = new IndexViewModel
             {
                 Birthdays = upcomingBirthdays.Select(user => new BirthdayModel
@@ -73,20 +55,52 @@ namespace Bumbo.Web.Controllers
                 {
                     Name = UserUtil.GetFullName(user), Date = pair.Key
                 })),
-                Weather = new WeatherModel
-                {
-                    Temperature = (int)weather.Main.Temp,
-                    Icon = weather.Weather.FirstOrDefault()?.Icon ?? "01d",
-                    IconDesc = weather.Weather.FirstOrDefault()?.Description ?? "clear sky"
-                },
-                Forecasts = forecasts.ToDictionary(grouping => grouping.Key.DayOfWeek, grouping => new ForecastModel
-                {
-                    PlannedHours = (int)grouping.Sum(forecast => forecast.WorkingHours),
-                    MaxHours = maxHours,
-                    MinHours = minHours
-
-                })
+                Branches = new Dictionary<BranchModel, BranchDataModel>()
             };
+
+            foreach (var branchId in branches)
+            {
+                var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+                var weather = await _weatherService.GetWeather(await _wrapper.Branch.Get(branch1 => branch1.Id == branch.Id));
+
+                var nextWeek = DateTime.Today.AddDays(7);
+                var weekNumber = ISOWeek.GetWeekOfYear(nextWeek);
+                var nextMonday = ISOWeek.ToDateTime(nextWeek.Year, weekNumber, DayOfWeek.Monday);
+                var nextNextMonday = nextMonday.AddDays(7);
+
+                var forecasts = (await _wrapper.Forecast.GetAll(
+                forecast => forecast.BranchId == branch.Id,
+                forecast => forecast.Date >= nextMonday,
+                forecast => forecast.Date < nextNextMonday)).GroupBy(forecast => forecast.Date).ToList();
+
+                var minHours = forecasts.Any() ? (int)forecasts.Min(grouping => grouping.Sum(forecast => forecast.WorkingHours)) : 0;
+                var maxHours = forecasts.Any() ? (int)forecasts.Max(grouping => grouping.Sum(forecast => forecast.WorkingHours)) : 0;
+
+                var branchModel = new BranchModel
+                {
+                    Id = branch.Id,
+                    Name = branch.Name
+                };
+
+                var branchDataModel = new BranchDataModel
+                {
+                    Weather = new WeatherModel
+                    {
+                        Temperature = (int)(weather?.Main.Temp ?? 0),
+                        Icon = weather?.Weather.FirstOrDefault()?.Icon ?? "01d",
+                        IconDesc = weather?.Weather.FirstOrDefault()?.Description ?? "clear sky"
+                    },
+                    Forecasts = forecasts.ToDictionary(grouping => grouping.Key.DayOfWeek, grouping => new ForecastModel
+                    {
+                        PlannedHours = (int)grouping.Sum(forecast => forecast.WorkingHours),
+                        MaxHours = maxHours,
+                        MinHours = minHours
+                    })
+                };
+
+                model.Branches.Add(branchModel, branchDataModel);
+            }
 
             return View(model);
         }
