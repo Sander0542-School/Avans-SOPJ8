@@ -58,7 +58,7 @@
 </div>
 
 <script type="text/javascript">
-    function shiftModal(shiftId, userId, userName, date, startTime, endTime, sick) {
+    function shiftModal(shiftId, userId, userName, date, startTime, endTime, sick, branchId) {
         $('#InputShift_ShiftId').val(shiftId);
         $('#DeleteShift_ShiftId').val(shiftId);
         $('#InputShift_UserId').val(userId);
@@ -75,7 +75,7 @@
             $('#schedule_cbsr').show();
             $('#deleteShiftButton').show();
         }
-        $('#schedule_cbsr').attr('href', `/Branches/1/Schedule/CreateCrossBranchOffer/${shiftId}`);
+        $('#schedule_cbsr').attr('href', `/Branches/${branchId}/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
         $('#shiftEditModal').modal('show');
     }
