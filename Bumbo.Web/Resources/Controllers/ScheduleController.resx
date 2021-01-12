@@ -53,4 +53,13 @@
     <data name="MessageOfferCanceled" xml:space="preserve">
         <value>The selected shift is successfully removed from the offers.</value>
     </data>
+    <data name="MessageShiftNotDeleted" xml:space="preserve">
+        <value>The selected shift could not be deleted.</value>
+    </data>
+    <data name="MessageShiftContainsWorkedShift" xml:space="preserve">
+        <value>The selected shift could not be deleted because the employee already worked this shift.</value>
+    </data>
+    <data name="MessageShiftDeleted" xml:space="preserve">
+        <value>The selected shift was successfully deleted.</value>
+    </data>
 </root>
