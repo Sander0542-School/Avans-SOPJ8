@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 
 <div class="modal fade" id="shiftEditModal" tabindex="-1" role="dialog" aria-labelledby="shiftEditModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form asp-action="SaveShift">
                 <div class="modal-header">
@@ -47,7 +47,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" id="schedule_cbsr">@Localizer["Request shift from external branch"]</a>
+                    <a href="#" class="mr-auto" id="schedule_cbsr">@Localizer["Request shift from external branch"]</a>
+                    <button type="button" class="btn btn-danger" id="deleteShiftButton" data-toggle="modal" data-target="#shiftDeleteModal">@Localizer["Delete"]</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
                     <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </div>
@@ -59,6 +60,7 @@
 <script type="text/javascript">
     function shiftModal(shiftId, userId, userName, date, startTime, endTime, sick) {
         $('#InputShift_ShiftId').val(shiftId);
+        $('#DeleteShift_ShiftId').val(shiftId);
         $('#InputShift_UserId').val(userId);
         $('#InputShift_UserName').val(userName);
         $('#InputShift_Date').val(date);
@@ -68,8 +70,10 @@
 
         if (shiftId == '') {
             $('#schedule_cbsr').hide();
+            $('#deleteShiftButton').hide();
         } else {
             $('#schedule_cbsr').show();
+            $('#deleteShiftButton').show();
         }
         $('#schedule_cbsr').attr('href', `/Branches/1/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
