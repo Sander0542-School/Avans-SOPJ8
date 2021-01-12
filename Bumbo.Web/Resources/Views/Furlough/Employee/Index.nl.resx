@@ -126,8 +126,8 @@
   <data name="Edit" xml:space="preserve">
     <value>Aanpassen</value>
   </data>
-  <data name="Furlough" xml:space="preserve">
-    <value>Verlof</value>
+  <data name="Furlough request" xml:space="preserve">
+    <value>Verlof aanvraag</value>
   </data>
   <data name="NewRequest" xml:space="preserve">
     <value>Nieuwe aanvraag</value>
