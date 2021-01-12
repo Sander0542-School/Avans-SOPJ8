@@ -1,4 +1,9 @@
-﻿using Bumbo.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -8,15 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "Manager")]
+    [Authorize(Policy = "SuperUser")]
     public class UsersController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -62,9 +62,9 @@ namespace Bumbo.Web.Controllers
                     HouseNumber = model.HouseNumber,
                     UserName = model.Email
                 };
-                
+
                 var result = await _userManager.CreateAsync(user);
-                
+
                 if (result.Succeeded)
                 {
                     var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -83,7 +83,7 @@ namespace Bumbo.Web.Controllers
                     var callbackUrl = Url.Page(
                         "/Account/ResetPassword",
                         pageHandler: null,
-                        values: new {area = "Identity", code},
+                        values: new { area = "Identity", code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(
@@ -105,12 +105,17 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Edit(int? id, string status)
         {
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _wrapper.User.Get(user => user.Id == id);
+            var user = await _wrapper.User.Get(user1 => user1.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
@@ -131,11 +136,13 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditViewModel model)
         {
-            var user = await _wrapper.User.Get(user => user.Id == id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
             var branchesList = await GetBranchList();
             model.UserBranches = user.Branches;
             model.Contracts = user.Contracts;
             model.Branches = branchesList;
+
+            TempData["alertMessage"] = $"danger:{_localizer["The userdata could not be saved"]}";
 
             if (ModelState.IsValid)
             {
@@ -169,7 +176,7 @@ namespace Bumbo.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    return View(CreateUserModel(user, branchesList));
+                    TempData["alertMessage"] = $"success:{_localizer["The userdata was successfully saved"]}";
                 }
 
                 foreach (var error in result.Errors)
@@ -178,7 +185,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -229,7 +236,7 @@ namespace Bumbo.Web.Controllers
             var branchesList = await GetBranchList();
 
             var userModel = CreateUserModel(user, branchesList);
-            var userBranch2 = user.Branches.Where(b => b.BranchId == branch).Where(b => b.Department == department).FirstOrDefault();
+            var userBranch2 = user.Branches.Where(b => b.BranchId == branch).FirstOrDefault(b => b.Department == department);
 
             if (userBranch2 != null)
             {
@@ -238,21 +245,16 @@ namespace Bumbo.Web.Controllers
                     string statusMessage = "Error employee of this branch already works in this department";
 
 
-                    return RedirectToAction("Edit", new {id = userModel.Id, status = statusMessage});
+                    return RedirectToAction("Edit", new { id = userModel.Id, status = statusMessage });
                 }
             }
 
-            var userBranch = new UserBranch
-            {
-                BranchId = branch,
-                UserId = user.Id,
-                Department = department,
-            };
+            var userBranch = new UserBranch { BranchId = branch, UserId = user.Id, Department = department, };
 
             user.Branches.Add(userBranch);
             await _wrapper.User.Update(user);
 
-            return RedirectToAction("Edit", new {userModel.Id});
+            return RedirectToAction("Edit", new { userModel.Id });
         }
 
         public async Task<IActionResult> DeleteBranchUser(int? id, int? branchId)
@@ -263,31 +265,22 @@ namespace Bumbo.Web.Controllers
             }
 
             var user = await _wrapper.User.Get(m => m.Id == id);
-            var userBranch = user.Branches.Where(b => b.BranchId == branchId).FirstOrDefault();
+            var userBranch = user.Branches.FirstOrDefault(b => b.BranchId == branchId);
 
             user.Branches.Remove(userBranch);
             await _wrapper.User.Update(user);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
-            return RedirectToAction("Edit", new {userModel.Id});
+            return RedirectToAction("Edit", new { userModel.Id });
         }
 
-        public async Task<IActionResult> CreateContractAsync(int id)
+        public IActionResult CreateContract(int id)
         {
-            User user = await _wrapper.User.Get(u => u.Id == id);
-            var viewModel = new ContractViewModel
-            {
-                UserId = user.Id,
-            };
+            ContractViewModel contractModel = new ContractViewModel { UserId = id };
 
-            return View(viewModel);
+            return View(contractModel);
         }
 
         [HttpPost]
@@ -310,21 +303,17 @@ namespace Bumbo.Web.Controllers
                 user.Contracts.Add(contract);
                 var result = await _wrapper.User.Update(user);
 
-                return RedirectToAction("Edit", new {user.Id});
+                return RedirectToAction("Edit", new { user.Id });
             }
 
-            return View();
+            return View(model);
         }
 
         private async Task<List<SelectListItem>> GetBranchList()
         {
             var branches = await _wrapper.Branch.GetAll();
             var branchesList = branches.Select(a =>
-                new SelectListItem
-                {
-                    Value = a.Id.ToString(),
-                    Text = a.Name
-                }).ToList();
+                new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList();
             return branchesList;
         }
 
@@ -341,7 +330,6 @@ namespace Bumbo.Web.Controllers
                 ZipCode = user.ZipCode,
                 HouseNumber = user.HouseNumber,
                 Email = user.Email,
-
                 UserBranches = user.Branches,
                 Contracts = user.Contracts,
                 Branches = branchesList

@@ -14,7 +14,7 @@ namespace Bumbo.Web
 {
     public static class ConfigureServices
     {
-        public static void ConfigureRepositoryWrapper(this IServiceCollection services) => services.AddScoped<RepositoryWrapper>();
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services) => services.AddTransient<RepositoryWrapper>();
 
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {
@@ -42,7 +42,7 @@ namespace Bumbo.Web
             {
                 options.AddPolicy("SuperUser", policy => policy.RequireRole("SuperUser"));
                 options.AddPolicy("YoungerThan18", policy => policy.Requirements.Add(new YoungerThan18Requirement()));
-              
+
                 options.AddPolicy("Manager", policy => policy.RequireClaim("Manager"));
 
                 options.AddPolicy("BranchManager", policy => policy.Requirements.Add(new BranchManagerRequirement()));

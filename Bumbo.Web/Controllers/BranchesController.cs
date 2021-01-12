@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Bumbo.Data;
 using Bumbo.Data.Models;
 using Bumbo.Web.Models.Branches;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
@@ -20,10 +21,12 @@ namespace Bumbo.Web.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly HttpContext _httpContext;
+        private readonly IStringLocalizer<BranchesController> _localizer;
 
-        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, UserManager<User> userManager)
+        public BranchesController(RepositoryWrapper wrapper, IHttpContextAccessor httpContextAccessor, SignInManager<User> signInManager, UserManager<User> userManager, IStringLocalizer<BranchesController> localizer)
         {
             _wrapper = wrapper;
+            _localizer = localizer;
             _signInManager = signInManager;
             _userManager = userManager;
             _httpContext = httpContextAccessor.HttpContext;
@@ -44,8 +47,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            var managersForBranch = _wrapper.BranchManager.GetAll(bm => bm.BranchId == branchId).Result
-                .Select(bm => bm.User).ToList();
+            var managersForBranch = (await _wrapper.BranchManager.GetAll(bm => bm.BranchId == branchId)).Select(bm => bm.User).ToList();
 
             return View(new DetailsViewModel
             {
@@ -60,7 +62,7 @@ namespace Bumbo.Web.Controllers
         {
             return View();
         }
-        
+
         [Authorize(Policy = "SuperUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,10 +77,11 @@ namespace Bumbo.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             await AddManagerToBranchAsync(branch.Id, user.Id);
             await _signInManager.RefreshSignInAsync(user); // Updates user claims so it immediately has access to branch
-            
+
             return RedirectToAction(
                 "Details",
-                new {
+                new
+                {
                     branchId = branch.Id
                 });
         }
@@ -92,7 +95,7 @@ namespace Bumbo.Web.Controllers
             if (branch == null) return NotFound();
             return View(branch);
         }
-        
+
         [Authorize(Policy = "BranchManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,7 +103,7 @@ namespace Bumbo.Web.Controllers
         {
             if (branchId != branch.Id) return NotFound();
             if (!ModelState.IsValid) return View(branch);
-            
+
             try
             {
                 branch = await _wrapper.Branch.Update(branch);
@@ -112,7 +115,8 @@ namespace Bumbo.Web.Controllers
             }
             return RedirectToAction(
                 "Details",
-                new {
+                new
+                {
                     branchId = branch.Id
                 });
         }
@@ -135,13 +139,13 @@ namespace Bumbo.Web.Controllers
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
-            var allBranchUsers = _wrapper.UserBranch.GetAll(ub => ub.BranchId == branch.Id).Result.Select(ub => ub.User).ToList();
-            allBranchUsers.AddRange(_wrapper.BranchManager.GetAll(bm => bm.BranchId == branch.Id).Result.Select(bm => bm.User));
-            
+            var allBranchUsers = (await _wrapper.UserBranch.GetAll(ub => ub.BranchId == branch.Id)).Select(ub => ub.User).ToList();
+            allBranchUsers.AddRange((await _wrapper.BranchManager.GetAll(bm => bm.BranchId == branch.Id)).Select(bm => bm.User));
+
             await _wrapper.Branch.Remove(branch);
             foreach (var user in allBranchUsers) await _signInManager.RefreshSignInAsync(user);
-            
-            return RedirectToAction("Index", new { branchId = ""});
+
+            return RedirectToAction("Index", new { branchId = "" });
         }
 
         [Authorize(Policy = "BranchManager")]
@@ -167,11 +171,21 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> AddManager(string userEmail, int branchId)
         {
             var user = await _wrapper.User.Get(u => u.Email == userEmail);
+            if (user == null)
+            {
+                TempData["alertMessage"] = $"{_localizer["This user does not exist"]}";
+                return RedirectToAction("Details");
+            }
+
             // Check if manager already exists
             if (await _wrapper.BranchManager.Get(
                 bm => bm.BranchId == branchId,
                 bm => bm.UserId == user.Id
-            ) != null) return RedirectToAction("Details");
+            ) != null)
+            {
+                return RedirectToAction("Details");
+            }
+
 
             await AddManagerToBranchAsync(branchId, user.Id);
 

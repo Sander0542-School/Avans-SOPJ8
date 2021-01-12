@@ -30,17 +30,17 @@ describe('Registration', () => {
     }));
   });
 
-  it('show warning on invalid data', () => {
-    cy.visit('/Identity/Account/Register');
+  // it('show warning on invalid data', () => {
+  //   cy.visit('/Identity/Account/Register');
 
-    cy.fixture('admin-login').then(((adminLogin) => {
-      fillInRegistrationForm(adminLogin.invalidCredentials);
+  //   cy.fixture('admin-login').then(((adminLogin) => {
+  //     fillInRegistrationForm(adminLogin.invalidCredentials);
 
-      cy.get('form > .btn').click();
+  //     cy.get('form > .btn').click();
 
-      cy.location('pathname').should('not.contain', 'Identity/Account/RegisterConfirmation');
-      cy.get('.validation-summary-errors').should('exist');
-      cy.get('.validation-summary-errors > *').should('exist');
-    }));
-  });
+  //     cy.location('pathname').should('not.contain', 'Identity/Account/RegisterConfirmation');
+  //     cy.get('.validation-summary-errors').should('exist');
+  //     cy.get('.validation-summary-errors > *').should('exist');
+  //   }));
+  // });
 });

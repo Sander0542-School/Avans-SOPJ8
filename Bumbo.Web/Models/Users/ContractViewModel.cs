@@ -1,41 +1,46 @@
-﻿using Bumbo.Data.Models;
-using Bumbo.Data.Models.Validators;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
+using Bumbo.Data.Models;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Models.Users
 {
-    public class ContractViewModel
+    public class ContractViewModel : IValidatableObject
     {
-            [Required]
-            [Display(Name = "User Id")]
-            public int UserId { get; set; }
+        [Required]
+        [Display(Name = "User Id")]
+        public int UserId { get; set; }
 
-            [Required]
-            [DataType(DataType.Date)]
-            [Display(Name = "StartDate")]
-            public DateTime StartDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
 
-            [Required]
-            [DataType(DataType.Date)]
-            [Display(Name = "EndDate")]
-            public DateTime EndDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "End Date")]
+        public DateTime EndDate { get; set; }
 
-            [Required]
-            [Display(Name = "Function")]
-            public string Function { get; set; }
+        [Required]
+        [Display(Name = "Function")]
+        public string Function { get; set; }
 
-            [Required]
-            [Display(Name = "Scale")]
-            public int Scale { get; set; }
+        [Required]
+        [Display(Name = "Scale")]
+        public int Scale { get; set; }
 
+        public User User { get; set; }
 
-            public User User { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<ContractViewModel>));
+
+            if (StartDate > EndDate)
+            {
+                yield return new ValidationResult(localizer["The start date cannot be after the end date"]);
+            }
+        }
     }
 
 

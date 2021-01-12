@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -60,6 +60,8 @@ namespace Bumbo.Logic.EmployeeRules
 
             var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.Date.DayOfWeek);
 
+            var furlough = user.UserFurloughs.FirstOrDefault(furlough => furlough.StartDate <= shift.Date && shift.Date >= furlough.EndDate);
+
             if (age < 16 && shift.EndTime > new TimeSpan(19, 0, 0))
                 notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken.");
 
@@ -70,6 +72,9 @@ namespace Bumbo.Logic.EmployeeRules
                 notifications.Add("Deze medewerker wil deze dag niet werken.");
             else if (!ShiftBetweenAvailableTime(shift, availability))
                 notifications.Add($"Deze medewerker wil deze dag tussen {availability.StartTime:hh\\:mm} en {availability.EndTime:hh\\:mm} werken.");
+
+            if (furlough != null)
+                notifications.Add("Deze medewerker heeft verlof tijdens deze dienst.");
 
             return notifications;
         }
@@ -131,6 +136,9 @@ namespace Bumbo.Logic.EmployeeRules
 
             if (user.UserAdditionalWorks == null)
                 throw new ArgumentException("The user does not contain a list of additional working hours");
+
+            if (user.UserFurloughs == null)
+                throw new ArgumentException("The user does not contain a list of furloughs");
         }
     }
 }

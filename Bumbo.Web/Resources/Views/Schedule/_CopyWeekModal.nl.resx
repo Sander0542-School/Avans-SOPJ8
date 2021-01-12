@@ -11,7 +11,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="CopySchedule" xml:space="preserve">
+    <data name="Copy Schedule" xml:space="preserve">
         <value>Rooster kopiëren</value>
     </data>
     <data name="Close" xml:space="preserve">
@@ -20,10 +20,10 @@
     <data name="Copy" xml:space="preserve">
         <value>Kopiëren</value>
     </data>
-    <data name="CopyFrom" xml:space="preserve">
+    <data name="Copy From" xml:space="preserve">
         <value>Kopiëren van</value>
     </data>
-    <data name="CopyTo" xml:space="preserve">
+    <data name="Copy To" xml:space="preserve">
         <value>Kopiëren naar</value>
     </data>
 </root>

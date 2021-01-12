@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +29,8 @@ namespace Bumbo.Web.Models.Schedule
         public Department? Department { get; set; }
 
         public InputShiftModel InputShift { get; set; }
+
+        public DeleteShiftModel DeleteShift { get; set; }
 
         public InputCopyWeekModel InputCopyWeek { get; set; }
 
@@ -64,11 +66,11 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayName("Scale")]
             public int Scale { get; set; }
 
-            [DisplayName("MaxHours")]
+            [DisplayName("Maximum Hours")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan MaxHours { get; set; }
 
-            [DisplayName("PlannedTime")]
+            [DisplayName("Planned Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan PlannedTime => new TimeSpan(Shifts.Sum(shift => shift.WorkTime.Ticks));
 
@@ -86,26 +88,29 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
             public DateTime Date { get; set; }
 
-            [DisplayName("StartTime")]
+            [DisplayName("Start Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan StartTime { get; set; }
 
-            [DisplayName("EndTime")]
+            [DisplayName("End Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan EndTime { get; set; }
+
+            [DisplayName("Sick")]
+            public bool Sick { get; set; }
 
             [DisplayName("Notifications")]
             public IEnumerable<string> Notifications { get; set; }
 
-            [DisplayName("BreakTime")]
+            [DisplayName("Break Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan BreakTime => BreakDuration.GetDuration(TotalTime);
 
-            [DisplayName("WorkTime")]
+            [DisplayName("Work Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan WorkTime => TotalTime.Subtract(BreakTime);
 
-            [DisplayName("TotalTime")]
+            [DisplayName("Total Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
@@ -126,17 +131,26 @@ namespace Bumbo.Web.Models.Schedule
             [Required]
             public DateTime Date { get; set; }
 
-            [DisplayName("StartTime")]
+            [DisplayName("Sick")]
+            [Required]
+            public Boolean Sick { get; set; }
+
+            [DisplayName("Start Time")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan StartTime { get; set; }
 
-            [DisplayName("EndTime")]
+            [DisplayName("End Time")]
             [DataType(DataType.Time)]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
+        }
+
+        public class DeleteShiftModel : InputDateDepartmentModel
+        {
+            public int ShiftId { get; set; }
         }
 
         public class InputCopyWeekModel : InputDateDepartmentModel

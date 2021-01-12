@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Bumbo.Data.Models;
 
 namespace Bumbo.Logic.EmployeeRules

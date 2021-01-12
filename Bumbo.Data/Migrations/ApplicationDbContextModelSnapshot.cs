@@ -17,7 +17,7 @@ namespace Bumbo.Data.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Bumbo.Data.Models.Branch", b =>
                 {
@@ -154,6 +154,72 @@ namespace Bumbo.Data.Migrations
                     b.HasKey("Activity");
 
                     b.ToTable("ForecastStandard");
+
+                    b.HasData(
+                        new
+                        {
+                            Activity = 0,
+                            Value = 10
+                        },
+                        new
+                        {
+                            Activity = 1,
+                            Value = 10
+                        },
+                        new
+                        {
+                            Activity = 2,
+                            Value = 10
+                        },
+                        new
+                        {
+                            Activity = 3,
+                            Value = 10
+                        },
+                        new
+                        {
+                            Activity = 4,
+                            Value = 10
+                        });
+                });
+
+            modelBuilder.Entity("Bumbo.Data.Models.Furlough", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Furloughs");
                 });
 
             modelBuilder.Entity("Bumbo.Data.Models.Role", b =>
@@ -197,6 +263,12 @@ namespace Bumbo.Data.Migrations
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
+
+                    b.Property<bool>("Offered")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OfferedCrossBranch")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
@@ -397,6 +469,9 @@ namespace Bumbo.Data.Migrations
                     b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsApprovedForPaycheck")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Sick")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -582,6 +657,17 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("Bumbo.Data.Models.Furlough", b =>
+                {
+                    b.HasOne("Bumbo.Data.Models.User", "User")
+                        .WithMany("UserFurloughs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Bumbo.Data.Models.Shift", b =>
                 {
                     b.HasOne("Bumbo.Data.Models.BranchSchedule", "Schedule")
@@ -758,6 +844,8 @@ namespace Bumbo.Data.Migrations
                     b.Navigation("UserAdditionalWorks");
 
                     b.Navigation("UserAvailabilities");
+
+                    b.Navigation("UserFurloughs");
                 });
 #pragma warning restore 612, 618
         }

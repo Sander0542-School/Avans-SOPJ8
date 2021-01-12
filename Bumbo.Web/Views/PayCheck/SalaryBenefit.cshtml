@@ -1,0 +1,45 @@
+﻿@using Bumbo.Logic.Utils
+@inject IViewLocalizer Localizer
+@model Bumbo.Web.Models.Paycheck.SalaryBenefitViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Localizer["Employee Name"]
+        </th>
+        <th>
+            @Localizer["Hours"]
+        </th>
+        <th>
+            @Localizer["Benefit"]
+        </th>
+    </tr>
+    </thead>
+    @foreach (var (user, payCheck) in Model.PayChecks)
+    {
+        var elemId = $"paycheck-user-{user.Id}";
+
+        <tr data-toggle="collapse" data-target="#@elemId" class="c-pointer">
+            <td>@UserUtil.GetFullName(user)</td>
+            <td colspan="2">@payCheck.GetTotalTime().TotalHours:@($"{payCheck.GetTotalTime().Minutes:00}")</td>
+        </tr>
+        <tbody id="@elemId" class="collapse">
+        @foreach (var key in payCheck.GetKeys())
+        {
+            <tr>
+                <td></td>
+                <td>@payCheck.GetTime(key).TotalHours:@($"{payCheck.GetTime(key).Minutes:00}")</td>
+                <td>@($"{key:C}")</td>
+            </tr>
+        }
+        </tbody>
+    }
+</table>

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Bumbo.Data;
@@ -47,6 +47,8 @@ namespace Bumbo.Web
                     .Distinct()
                     .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             );
+
+            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, identityUser.Birthday.Ticks.ToString()));
 
             return identity;
         }

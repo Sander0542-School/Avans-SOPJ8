@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,8 +18,8 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
         private readonly IStringLocalizer<LoginWithRecoveryCodeModel> _localizer;
 
-        public LoginWithRecoveryCodeModel(SignInManager<User> signInManager, 
-            ILogger<LoginWithRecoveryCodeModel> logger, 
+        public LoginWithRecoveryCodeModel(SignInManager<User> signInManager,
+            ILogger<LoginWithRecoveryCodeModel> logger,
             IStringLocalizer<LoginWithRecoveryCodeModel> localizer)
         {
             _signInManager = signInManager;

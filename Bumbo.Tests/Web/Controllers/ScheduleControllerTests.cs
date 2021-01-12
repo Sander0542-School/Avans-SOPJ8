@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -26,9 +26,9 @@ namespace Bumbo.Tests.Web.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new ScheduleController(Wrapper, Localizer)
+            _controller = new ScheduleController(Wrapper, Localizer, UserManager)
             {
-                TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+                TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>()),
             };
         }
 
@@ -88,7 +88,7 @@ namespace Bumbo.Tests.Web.Controllers
 
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -132,7 +132,7 @@ namespace Bumbo.Tests.Web.Controllers
 
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -170,7 +170,7 @@ namespace Bumbo.Tests.Web.Controllers
 
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -207,7 +207,7 @@ namespace Bumbo.Tests.Web.Controllers
 
             Assert.IsNotNull(redirectResult);
             Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("Success") ?? false);
+            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {

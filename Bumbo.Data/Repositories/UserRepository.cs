@@ -38,13 +38,31 @@ namespace Bumbo.Data.Repositories
                     .Where(shift => shift.Date < startTime.AddDays(7))
                 )
                 .ThenInclude(shift => shift.Schedule)
+                .Include(user => user.Shifts
+                    .Where(shift => shift.Schedule.BranchId == branch.Id)
+                    .Where(shift => shift.Date >= startTime)
+                    .Where(shift => shift.Date < startTime.AddDays(7))
+                )
+                .ThenInclude(shift => shift.WorkedShift)
                 .Include(user => user.Contracts
                     .Where(contract => contract.StartDate < startTime)
                     .Where(contract => contract.EndDate >= startTime)
                 )
                 .Include(user => user.UserAvailabilities)
                 .Include(user => user.UserAdditionalWorks)
+                .Include(user => user.UserFurloughs)
                 .AsSplitQuery()
+                .ToListAsync();
+        }
+
+        public async Task<List<User>> GetFreeEmployees(int branchId, DateTime date, Department department)
+        {
+
+            return await Context.Users
+                .Where(user => user.Branches.Any(b => b.BranchId == branchId && b.Department == department)) // Check if user works at branch and department
+                .Where(user => user.Contracts.Any(contract => contract.StartDate < date)) // Check for active contract
+                .Where(user => user.Contracts.Any(contract => contract.EndDate >= date))
+                .Where(user => user.Shifts.All(s => s.Date != date)) // Get users who do not have any shifts on that day
                 .ToListAsync();
         }
     }

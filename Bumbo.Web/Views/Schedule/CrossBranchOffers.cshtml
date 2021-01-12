@@ -1,0 +1,55 @@
+﻿@inject IViewLocalizer Localizer
+@model IEnumerable<CrossBranchViewModel.Shift>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@Localizer["List cross branch shift offers"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Branch.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.Name)
+            </td>
+            <td>
+                <a asp-action="AdoptCrossBranchOffer" asp-route-shiftId="@item.Id">@Localizer["Adopt shift"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

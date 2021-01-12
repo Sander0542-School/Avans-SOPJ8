@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Bumbo.Web.Models.Forecast
 {
