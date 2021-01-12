@@ -7,7 +7,6 @@ using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bumbo.Data.Repositories
 {
     public class UserRepository : RepositoryBase<User>
@@ -72,16 +71,19 @@ namespace Bumbo.Data.Repositories
                 return await Context.Users
                     .Where(user => user.Birthday != null)
                     .Where(user => user.Branches.Any(branch => branches.Contains(branch.BranchId)))
-                    .OrderBy(user => EF.Functions.DateDiffDay(DateTime.Today, user.Birthday.AddYears(EF.Functions.DateDiffYear(user.Birthday, DateTime.Today) + ((user.Birthday.Month < DateTime.Today.Month || (user.Birthday.Day <= DateTime.Today.Day && user.Birthday.Month == DateTime.Today.Month)) ? 1 : 0))))
+                    .OrderBy(user => EF.Functions.DateDiffDay(DateTime.Today, user.Birthday.AddYears(EF.Functions.DateDiffYear(user.Birthday, DateTime.Today) + (user.Birthday.Month < DateTime.Today.Month || (user.Birthday.Day <= DateTime.Today.Day && user.Birthday.Month == DateTime.Today.Month) ? 1 : 0))))
                     .Take(limit)
                     .AsSplitQuery()
                     .ToListAsync();
             }
             catch (InvalidOperationException)
             {
-                if (!Context.Database.IsSqlite()) throw;
+                if (!Context.Database.IsSqlite())
+                {
+                    throw;
+                }
             }
-            
+
             return new List<User>();
         }
 

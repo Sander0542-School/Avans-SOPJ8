@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Data.Models
 {
     public class BranchSchedule : BaseEntity

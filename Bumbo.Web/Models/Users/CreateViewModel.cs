@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Validators;
 using Microsoft.AspNetCore.Mvc;
-
-
 namespace Bumbo.Web.Models.Users
 {
     public class CreateViewModel
@@ -55,7 +53,5 @@ namespace Bumbo.Web.Models.Users
         public IList<UserContract> Contracts { get; set; }
 
         public IList<UserBranch> Branches { get; set; }
-
-
     }
 }

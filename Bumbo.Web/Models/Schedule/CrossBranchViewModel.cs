@@ -4,13 +4,16 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class CrossBranchViewModel
     {
         public class Shift
         {
+
+            public Branch Branch;
+
+            public User User;
             public int Id { get; set; }
 
             [DisplayName("Date")]
@@ -31,10 +34,6 @@ namespace Bumbo.Web.Models.Schedule
 
             [DisplayName("Department")]
             public Department Department { get; set; }
-
-            public User User;
-
-            public Branch Branch;
         }
 
         public class AdoptShift

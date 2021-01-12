@@ -12,16 +12,15 @@ using Bumbo.Web.Models.Paycheck;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "BranchManager")]
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class PayCheckController : Controller
     {
-        private readonly RepositoryWrapper _wrapper;
 
         private readonly IStringLocalizer<PayCheckController> _localizer;
+        private readonly RepositoryWrapper _wrapper;
 
         public PayCheckController(RepositoryWrapper wrapper, IStringLocalizer<PayCheckController> localizer)
         {
@@ -38,13 +37,16 @@ namespace Bumbo.Web.Controllers
                 {
                     branchId,
                     year = year ?? DateTime.Today.Year,
-                    month = month ?? DateTime.Today.Month,
+                    month = month ?? DateTime.Today.Month
                 });
             }
 
             var branch = await _wrapper.Branch.Get(branch => branch.Id == branchId);
 
-            if (branch == null) return NotFound();
+            if (branch == null)
+            {
+                return NotFound();
+            }
 
             var firstDay = new DateTime(year.Value, month.Value, 1);
             var lastDay = new DateTime(year.Value, month.Value, DateTime.DaysInMonth(year.Value, month.Value));
@@ -66,7 +68,7 @@ namespace Bumbo.Web.Controllers
                     Id = user.Id,
                     Name = UserUtil.GetFullName(user),
                     Scale = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Scale ?? 0,
-                    Function = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Function ?? "",
+                    Function = user.Contracts?.Where(c => c.StartDate < firstDay).FirstOrDefault(c => c.EndDate >= firstDay)?.Function ?? ""
                 }, user => workedShifts
                     .Where(ws => ws.Shift.User == user)
                     .Select(ws => new PaycheckViewModel.Shift
@@ -87,10 +89,10 @@ namespace Bumbo.Web.Controllers
             var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
             var allWorkedShifts = await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.Schedule.BranchId == branchId,
-                ws => ws.Shift.Date >= firstDay,
-                ws => ws.Shift.Date < lastDay.AddDays(1),
-                ws => ws.Shift.UserId == userId);
+            ws => ws.Shift.Schedule.BranchId == branchId,
+            ws => ws.Shift.Date >= firstDay,
+            ws => ws.Shift.Date < lastDay.AddDays(1),
+            ws => ws.Shift.UserId == userId);
 
             var weeknumbers = WeekNumberBetweenDates(firstDay, lastDay);
 
@@ -127,12 +129,15 @@ namespace Bumbo.Web.Controllers
             });
         }
 
-        [HttpPost, ActionName("Approve")]
+        [HttpPost] [ActionName("Approve")]
         public async Task<IActionResult> ApproveMonth(int branchId, PaycheckViewModel model)
         {
             var branch = await _wrapper.Branch.Get(b => b.Id == branchId);
 
-            if (branch == null) return NotFound();
+            if (branch == null)
+            {
+                return NotFound();
+            }
 
             var alertMessage = $"danger:{_localizer["MessageWorkShiftsNotApproved"]}";
 
@@ -196,7 +201,10 @@ namespace Bumbo.Web.Controllers
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
 
-            if (branch == null) return NotFound();
+            if (branch == null)
+            {
+                return NotFound();
+            }
 
             var alertMessage = $"danger:{_localizer["MessagePaycheckNotSaved"]}";
 
@@ -209,7 +217,7 @@ namespace Bumbo.Web.Controllers
                     shift.StartTime = paycheckModel.StartTime;
                     shift.EndTime = paycheckModel.EndTime;
 
-                    if ((await _wrapper.WorkedShift.Update(shift)) != null)
+                    if (await _wrapper.WorkedShift.Update(shift) != null)
                     {
                         alertMessage = $"success:{_localizer["MessagePaycheckSaved"]}";
                     }
@@ -238,9 +246,9 @@ namespace Bumbo.Web.Controllers
         private async Task<List<WorkedShift>> GetWorkedShifts(int branchId, DateTime firstDay, DateTime lastDay)
         {
             return await _wrapper.WorkedShift.GetAll(
-                ws => ws.Shift.Schedule.BranchId == branchId,
-                ws => ws.Shift.Date >= firstDay,
-                ws => ws.Shift.Date < lastDay.AddDays(1));
+            ws => ws.Shift.Schedule.BranchId == branchId,
+            ws => ws.Shift.Date >= firstDay,
+            ws => ws.Shift.Date < lastDay.AddDays(1));
         }
 
         private static List<int> WeekNumberBetweenDates(DateTime startDate, DateTime endDate)

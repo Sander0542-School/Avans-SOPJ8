@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Bumbo.Data.Models.User>
+﻿@model IEnumerable<User>
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = @Localizer["Employees"];
+    ViewData["Title"] = Localizer["Employees"];
 }
 
 <h1>@Localizer["Employees"]</h1>

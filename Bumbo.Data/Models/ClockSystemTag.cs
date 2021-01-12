@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Models
 {
     public class ClockSystemTag : IEntity

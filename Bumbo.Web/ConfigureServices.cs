@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace Bumbo.Web
 {
     public static class ConfigureServices
     {
-        public static void ConfigureRepositoryWrapper(this IServiceCollection services) => services.AddTransient<RepositoryWrapper>();
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+        {
+            services.AddTransient<RepositoryWrapper>();
+        }
 
         public static void AddConfig(this IServiceCollection services, IConfiguration config)
         {

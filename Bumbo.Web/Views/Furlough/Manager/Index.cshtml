@@ -13,7 +13,9 @@
     <div class="col">
         @if (Model.UserFurloughs.Count == 0)
         {
-            <p class="my-1 font-weight-bold"><i class="alert-info"></i>@Localizer["NoRequests"]</p>
+            <p class="my-1 font-weight-bold">
+                <i class="alert-info"></i>@Localizer["NoRequests"]
+            </p>
         }
         else
         {
@@ -84,7 +86,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }
-
-

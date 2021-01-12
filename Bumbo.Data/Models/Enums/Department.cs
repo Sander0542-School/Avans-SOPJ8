@@ -4,6 +4,6 @@
     {
         KAS,
         VER,
-        VAK,
+        VAK
     }
 }

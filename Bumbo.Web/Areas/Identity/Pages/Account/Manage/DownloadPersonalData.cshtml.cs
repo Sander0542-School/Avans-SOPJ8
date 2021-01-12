@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
+        private readonly UserManager<User> _userManager;
 
         public DownloadPersonalDataModel(
             UserManager<User> userManager,
@@ -37,7 +36,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
             var personalDataProps = typeof(User).GetProperties().Where(
-                            prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+            prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {
                 personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
