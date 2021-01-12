@@ -120,8 +120,8 @@
   <data name="Close" xml:space="preserve">
     <value>Sluit</value>
   </data>
-  <data name="Furlough" xml:space="preserve">
-    <value>Verlof</value>
+  <data name="Furlough request" xml:space="preserve">
+    <value>Verlof aanvraag</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Opslaan</value>
