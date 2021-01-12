@@ -31,6 +31,8 @@ namespace Bumbo.Web.Models.Schedule
 
         public InputShiftModel InputShift { get; set; }
 
+        public DeleteShiftModel DeleteShift { get; set; }
+
         public InputCopyWeekModel InputCopyWeek { get; set; }
 
         public InputApproveScheduleModel InputApproveSchedule { get; set; }
@@ -155,6 +157,11 @@ namespace Bumbo.Web.Models.Schedule
                     yield return new ValidationResult(localizer["The start date cannot be after the end date"]);
                 }
             }
+        }
+
+        public class DeleteShiftModel : InputDateDepartmentModel
+        {
+            public int ShiftId { get; set; }
         }
 
         public class InputCopyWeekModel : InputDateDepartmentModel
