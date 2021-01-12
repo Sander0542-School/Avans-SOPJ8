@@ -114,6 +114,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Home\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Schedule\_DeleteShiftModal.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>_DeleteShiftModal.nl.Designer.cs</LastGenOutput>
@@ -195,6 +199,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Home\Index.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
       </Compile>
       <Compile Update="Resources\Views\Schedule\_DeleteShiftModal.nl.Designer.cs">
         <DesignTime>True</DesignTime>
