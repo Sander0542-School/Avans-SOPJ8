@@ -16,7 +16,6 @@ namespace Bumbo.Web.Controllers
     [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class FurloughController : Controller
     {
-
         private readonly IStringLocalizer<FurloughController> _localizer;
         private readonly UserManager<User> _userManager;
         private readonly RepositoryWrapper _wrapper;
@@ -109,8 +108,8 @@ namespace Bumbo.Web.Controllers
         {
             TempData["alertMessage"] = $"danger:{_localizer[""]}";
 
-            int userId = int.Parse(_userManager.GetUserId(User));
-            if (await _wrapper.Furlough.Remove(f => f.Id == id & f.UserId == userId) != null)
+            var userId = int.Parse(_userManager.GetUserId(User));
+            if (await _wrapper.Furlough.Remove(f => (f.Id == id) & (f.UserId == userId)) != null)
             {
                 TempData["alertMessage"] = $"success:{_localizer[""]}";
             }
