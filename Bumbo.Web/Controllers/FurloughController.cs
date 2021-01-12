@@ -107,12 +107,12 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Delete(int id)
         {
-            TempData["alertMessage"] = $"danger:{_localizer[""]}";
+            TempData["alertMessage"] = $"danger:{_localizer["SomethingWentWrong"]}";
             
             var userId = int.Parse(_userManager.GetUserId(User));
             if (await _wrapper.Furlough.Remove(f => (f.Id == id) & (f.UserId == userId)) != null)
             {
-                TempData["alertMessage"] = $"success:{_localizer[""]}";
+                TempData["alertMessage"] = $"success:{_localizer["FurloughDeleted"]}";
             }
             
             return RedirectToAction(nameof(Index));
