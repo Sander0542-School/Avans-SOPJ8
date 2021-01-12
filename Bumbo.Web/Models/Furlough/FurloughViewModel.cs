@@ -50,17 +50,17 @@ namespace Bumbo.Web.Models.Furlough
 
                 if (StartDate < DateTime.Today)
                 {
-                    yield return new ValidationResult(localizer["The start date has to be in the future"], new[] {"StartDate"});
+                    yield return new ValidationResult(localizer["The start date has to be in the future"], new[] { "StartDate" });
                 }
 
                 if (EndDate < StartDate)
                 {
-                    yield return new ValidationResult(localizer["The end date cannot be greater than we start date"], new[] {"StartDate", "EndDate"});
+                    yield return new ValidationResult(localizer["The end date cannot be greater than we start date"], new[] { "StartDate", "EndDate" });
                 }
 
                 if (!IsAllDay && EndTime < StartTime)
                 {
-                    yield return new ValidationResult(localizer["The end time cannot be greater than we start time"], new[] {"StartTime", "EndTime"});
+                    yield return new ValidationResult(localizer["The end time cannot be greater than we start time"], new[] { "StartTime", "EndTime" });
                 }
             }
         }

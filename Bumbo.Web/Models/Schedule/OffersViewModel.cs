@@ -14,7 +14,7 @@ namespace Bumbo.Web.Models.Schedule
         public class Shift
         {
             public int Id { get; set; }
-            
+
             public bool OwnedShift { get; set; }
 
             [Display(Name = "Employee")]

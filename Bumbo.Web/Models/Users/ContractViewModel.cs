@@ -35,7 +35,7 @@ namespace Bumbo.Web.Models.Users
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<ContractViewModel>));
-            
+
             if (StartDate > EndDate)
             {
                 yield return new ValidationResult(localizer["The start date cannot be after the end date"]);

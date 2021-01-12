@@ -168,7 +168,7 @@ namespace Bumbo.Web.Controllers
             {
                 PayChecks = new Dictionary<User, PayCheck>()
             };
-            
+
             var pcl = new PayCheckLogic();
 
             var workedShifts = await GetWorkedShifts(branchId, year, month);

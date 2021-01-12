@@ -77,7 +77,7 @@ namespace Bumbo.Web.Models.Paycheck
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
                 var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<InputModel>));
-                
+
                 if (StartTime > EndTime)
                 {
                     yield return new ValidationResult(localizer["The start time cannot be after the end time"]);

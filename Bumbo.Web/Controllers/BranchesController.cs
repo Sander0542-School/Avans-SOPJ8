@@ -187,7 +187,7 @@ namespace Bumbo.Web.Controllers
             {
                 return RedirectToAction("Details");
             }
-                
+
 
             await AddManagerToBranchAsync(branchId, user.Id);
 

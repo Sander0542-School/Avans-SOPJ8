@@ -82,7 +82,19 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Create.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Edit.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Edit.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchViewModel+Shift.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
