@@ -14,6 +14,7 @@ using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Controllers
 {
     [Authorize]
+    [Route("Branches/{branchId}/{controller}/{action=Index}")]
     public class FurloughController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -28,6 +29,7 @@ namespace Bumbo.Web.Controllers
             _localizer = localizer;
         }
 
+        [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Index()
         {
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
@@ -36,7 +38,8 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int? id, FurloughViewModel.InputModel furloughModel)
+        [Authorize(Policy = "BranchEmployee")]
+        public async Task<IActionResult> Create(int branchId, int? id, FurloughViewModel.InputModel furloughModel)
         {
             if (TempData["alertMessage"] != null)
                 ViewData["AlertMessage"] = TempData["alertMessage"];
@@ -52,7 +55,7 @@ namespace Bumbo.Web.Controllers
                 }
 
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
-
+                
                 if (shifts.Count != 0)
                     TempData["alertMessage"] = $"danger:{_localizer["NotAllowed"]}";
                 else
@@ -64,6 +67,7 @@ namespace Bumbo.Web.Controllers
                         var furlough = new Furlough
                         {
                             UserId = userId,
+                            BranchId = branchId,
                             Description = furloughModel.Description,
                             StartDate = furloughModel.StartDate,
                             EndDate = furloughModel.EndDate,
@@ -92,6 +96,7 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction(nameof(Index), new FurloughViewModel { Furloughs = furloughs });
         }
 
+        [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Delete(int id)
         {
             int userId = int.Parse(_userManager.GetUserId(User));
@@ -103,12 +108,12 @@ namespace Bumbo.Web.Controllers
         }
 
         [Authorize(Policy = "Manager")]
-        public async Task<IActionResult> Overview()
+        public async Task<IActionResult> Overview(int branchId)
         {
             if (TempData["alertMessage"] != null)
                 ViewData["AlertMessage"] = TempData["alertMessage"];
 
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED);
+            var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED && f.BranchId == branchId);
             var users = furloughs.Select(f => f.User).Distinct().ToList();
 
             return View("Manager/Index", new ManagerFurloughViewModel
@@ -119,6 +124,7 @@ namespace Bumbo.Web.Controllers
                       {
                           Id = f.Id,
                           UserId = f.UserId,
+                          BranchId = branchId,
                           Description = f.Description,
                           StartDate = f.StartDate,
                           EndDate = f.EndDate,

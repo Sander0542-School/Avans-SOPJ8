@@ -8,6 +8,7 @@ namespace Bumbo.Data.Models
     public class Furlough : BaseEntity
     {
         public int UserId { get; set; }
+        public int BranchId { get; set; }
 
         [StringLength(60, MinimumLength = 5)]
         public string Description { get; set; }

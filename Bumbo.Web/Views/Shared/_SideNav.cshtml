@@ -37,12 +37,6 @@
                         @Localizer["Availability"]
                     </a>
                 </li>
-                 <li class="@Html.IsActive("Furlough", "Index")">
-                    <a asp-controller="Furlough" asp-action="Index">
-                        <i class="fa fa-plane mr-3"></i>
-                        @Localizer["Furlough"]
-                    </a>
-                </li>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
                 {
                     <li class="@Html.IsActive("AdditionalWork", "Index")">
@@ -86,6 +80,12 @@
                                     @Localizer["Offers"]
                                 </a>
                             </li>
+                            <li class="@Html.IsActive("Furlough", "Index")">
+                                <a asp-controller="Furlough" asp-action="Index" asp-route-branchId="@branch.Id">
+                                    <i class="fa fa-plane mr-3"></i>
+                                    @Localizer["Furlough request"]
+                                </a>
+                            </li>
                             @if (User.HasClaim("Manager", branch.Id.ToString()))
                             {
                                 <li class="@Html.IsActive("WorkedShift")">
@@ -109,7 +109,7 @@
                                 <li class="@Html.IsActive("Furlough", "Overview")">
                                     <a asp-controller="Furlough" asp-action="Overview">
                                         <i class="fa fa-plane mr-3"></i>
-                                        @Localizer["Furlough"]
+                                        @Localizer["Furlough approval"]
                                     </a>
                                 </li>
                                 <li class="@Html.IsActive("PayCheck", "Index")">

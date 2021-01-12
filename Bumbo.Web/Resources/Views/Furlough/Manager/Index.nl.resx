@@ -120,8 +120,8 @@
   <data name="Approved" xml:space="preserve">
     <value>Goedgekeurd</value>
   </data>
-  <data name="Furlough" xml:space="preserve">
-    <value>Verlof</value>
+  <data name="Furlough approval" xml:space="preserve">
+    <value>Verlof goedkeuring</value>
   </data>
   <data name="NewRequest" xml:space="preserve">
     <value>Nieuwe aanvraag</value>

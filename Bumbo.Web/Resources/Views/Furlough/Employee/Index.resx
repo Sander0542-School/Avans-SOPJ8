@@ -123,9 +123,6 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="Furlough" xml:space="preserve">
-    <value>Furlough</value>
-  </data>
   <data name="NewRequest" xml:space="preserve">
     <value>New request</value>
   </data>
