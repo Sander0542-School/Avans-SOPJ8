@@ -12,8 +12,8 @@ namespace Bumbo.Web.Controllers
 {
     public class AvailabilityController : Controller
     {
-        private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
+        private readonly RepositoryWrapper _wrapper;
 
         public AvailabilityController(RepositoryWrapper wrapper, UserManager<User> userManager)
         {
@@ -36,10 +36,10 @@ namespace Bumbo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                int userId = int.Parse(_userManager.GetUserId(User));
+                var userId = int.Parse(_userManager.GetUserId(User));
 
                 var presentUserAvailability = await _wrapper.UserAvailability.Get(workday =>
-                workday.Day == model.Availability.Day, workday => workday.UserId == userId);
+                    workday.Day == model.Availability.Day, workday => workday.UserId == userId);
 
                 if (presentUserAvailability == null)
                 {
@@ -48,7 +48,7 @@ namespace Bumbo.Web.Controllers
                         Day = model.Availability.Day,
                         UserId = userId,
                         StartTime = model.Availability.StartTime,
-                        EndTime = model.Availability.EndTime,
+                        EndTime = model.Availability.EndTime
                     });
                 }
                 else
@@ -65,7 +65,7 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Delete(DayOfWeek day)
         {
-            int userId = int.Parse(_userManager.GetUserId(User));
+            var userId = int.Parse(_userManager.GetUserId(User));
             await _wrapper.UserAvailability.Remove(work => work.Day == day, work => work.UserId == userId);
 
             return RedirectToAction("Index");

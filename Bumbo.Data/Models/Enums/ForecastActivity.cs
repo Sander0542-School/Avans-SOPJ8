@@ -6,6 +6,6 @@
         STOCK_SHELVES,
         CASHIER,
         PRODUCE_DEPARTMENT,
-        FACE_SHELVES,
+        FACE_SHELVES
     }
 }

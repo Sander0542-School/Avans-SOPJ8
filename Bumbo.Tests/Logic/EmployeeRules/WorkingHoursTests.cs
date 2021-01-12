@@ -4,7 +4,6 @@ using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Logic.EmployeeRules;
 using NUnit.Framework;
-
 namespace Bumbo.Tests.Logic.EmployeeRules
 {
     public class WorkingHoursTests
@@ -28,8 +27,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                UserAvailabilities = new List<UserAvailability>(),
-                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                UserAvailabilities = new List<UserAvailability>(), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.Catch<ArgumentException>(() => WorkingHours.ValidateUserProperties(user));
@@ -40,8 +38,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                Shifts = new List<Shift>(),
-                UserAdditionalWorks = new List<UserAdditionalWork>(),
+                Shifts = new List<Shift>(), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.Catch<ArgumentException>(() => WorkingHours.ValidateUserProperties(user));
@@ -52,8 +49,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                Shifts = new List<Shift>(),
-                UserAvailabilities = new List<UserAvailability>(),
+                Shifts = new List<Shift>(), UserAvailabilities = new List<UserAvailability>()
             };
 
             Assert.Catch<ArgumentException>(() => WorkingHours.ValidateUserProperties(user));
@@ -192,7 +188,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = dateTime.AddYears(-15).AddMonths(-3)
             };
 
-            Assert.AreEqual(WorkingHours.MaxHoursPerWeek(user, year, week), new TimeSpan(40, 0, 0)); //TODO Check for School week: return 12;
+            Assert.AreEqual(WorkingHours.MaxHoursPerWeek(user, year, week), new TimeSpan(40, 0, 0));//TODO Check for School week: return 12;
         }
 
         [Test]
@@ -253,11 +249,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
                 UserAdditionalWorks = new List<UserAdditionalWork>
                 {
-                    new UserAdditionalWork
+                    new()
                     {
                         Day = day,
                         StartTime = new TimeSpan(9, 0, 0),
-                        EndTime = new TimeSpan(12, 0, 0),
+                        EndTime = new TimeSpan(12, 0, 0)
                     }
                 }
             };
@@ -272,8 +268,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                Birthday = DateTime.Today.AddYears(-15).AddMonths(-3), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.AreEqual(WorkingHours.MaxHoursPerDay(user, day), new TimeSpan(8, 0, 0));
@@ -289,11 +284,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
                 UserAdditionalWorks = new List<UserAdditionalWork>
                 {
-                    new UserAdditionalWork
+                    new()
                     {
                         Day = day,
                         StartTime = new TimeSpan(9, 0, 0),
-                        EndTime = new TimeSpan(14, 0, 0),
+                        EndTime = new TimeSpan(14, 0, 0)
                     }
                 }
             };
@@ -308,8 +303,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                Birthday = DateTime.Today.AddYears(-17).AddMonths(-3), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.AreEqual(WorkingHours.MaxHoursPerDay(user, day), new TimeSpan(9, 0, 0));
@@ -325,11 +319,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAdditionalWorks = new List<UserAdditionalWork>
                 {
-                    new UserAdditionalWork
+                    new()
                     {
                         Day = day,
                         StartTime = new TimeSpan(8, 0, 0),
-                        EndTime = new TimeSpan(16, 0, 0),
+                        EndTime = new TimeSpan(16, 0, 0)
                     }
                 }
             };
@@ -344,8 +338,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
 
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                Birthday = DateTime.Today.AddYears(-30).AddMonths(-3), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.AreEqual(WorkingHours.MaxHoursPerDay(user, day), new TimeSpan(12, 0, 0));
@@ -356,8 +349,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
-                UserAdditionalWorks = new List<UserAdditionalWork>()
+                Birthday = DateTime.Today.AddYears(-15).AddMonths(-3), UserAdditionalWorks = new List<UserAdditionalWork>()
             };
 
             Assert.AreEqual(WorkingHours.MaxDayPerAWeek(user), 5);
@@ -368,7 +360,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
+                Birthday = DateTime.Today.AddYears(-17).AddMonths(-3)
             };
 
             Assert.AreEqual(WorkingHours.MaxDayPerAWeek(user), 7);
@@ -379,7 +371,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
         {
             var user = new User
             {
-                Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
+                Birthday = DateTime.Today.AddYears(-30).AddMonths(-3)
             };
 
             Assert.AreEqual(WorkingHours.MaxDayPerAWeek(user), 7);
@@ -402,7 +394,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(16, 0, 0),
-                EndTime = new TimeSpan(18, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -418,11 +410,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(18, 0, 0),
+                        EndTime = new TimeSpan(18, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -433,7 +425,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(13, 0, 0),
-                EndTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(16, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -449,11 +441,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(18, 0, 0),
+                        EndTime = new TimeSpan(18, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -464,7 +456,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(16, 0, 0),
-                EndTime = new TimeSpan(19, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -480,11 +472,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(18, 0, 0),
+                        EndTime = new TimeSpan(18, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -495,7 +487,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(13, 0, 0),
-                EndTime = new TimeSpan(19, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -511,11 +503,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(19, 0, 0),
+                        EndTime = new TimeSpan(19, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -526,7 +518,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(16, 0, 0),
-                EndTime = new TimeSpan(19, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0)
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -542,11 +534,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
-                        EndTime = new TimeSpan(19, 0, 0),
+                        EndTime = new TimeSpan(19, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -557,7 +549,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(9, 0, 0),
-                EndTime = new TimeSpan(18, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -573,11 +565,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(21, 0, 0),
+                        EndTime = new TimeSpan(21, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -588,7 +580,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(18, 0, 0),
-                EndTime = new TimeSpan(20, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -604,11 +596,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-15).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
-                        EndTime = new TimeSpan(21, 0, 0),
+                        EndTime = new TimeSpan(21, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -619,7 +611,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(10, 0, 0),
-                EndTime = new TimeSpan(20, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(2));
@@ -635,11 +627,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(14, 0, 0),
-                        EndTime = new TimeSpan(19, 0, 0),
+                        EndTime = new TimeSpan(19, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -650,7 +642,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(16, 0, 0),
-                EndTime = new TimeSpan(19, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0)
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -666,11 +658,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(8, 0, 0),
-                        EndTime = new TimeSpan(21, 0, 0),
+                        EndTime = new TimeSpan(21, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -681,7 +673,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(8, 0, 0),
-                EndTime = new TimeSpan(21, 0, 0),
+                EndTime = new TimeSpan(21, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));
@@ -697,11 +689,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-30).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(7, 0, 0),
-                        EndTime = new TimeSpan(23, 0, 0),
+                        EndTime = new TimeSpan(23, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -712,7 +704,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(12, 0, 0),
-                EndTime = new TimeSpan(18, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0)
             };
 
             Assert.IsEmpty(WorkingHours.ValidateShift(user, shift));
@@ -728,11 +720,11 @@ namespace Bumbo.Tests.Logic.EmployeeRules
                 Birthday = DateTime.Today.AddYears(-17).AddMonths(-3),
                 UserAvailabilities = new List<UserAvailability>
                 {
-                    new UserAvailability
+                    new()
                     {
                         Day = date.DayOfWeek,
                         StartTime = new TimeSpan(7, 0, 0),
-                        EndTime = new TimeSpan(23, 0, 0),
+                        EndTime = new TimeSpan(23, 0, 0)
                     }
                 },
                 UserAdditionalWorks = new List<UserAdditionalWork>(),
@@ -743,7 +735,7 @@ namespace Bumbo.Tests.Logic.EmployeeRules
             {
                 Date = date,
                 StartTime = new TimeSpan(8, 0, 0),
-                EndTime = new TimeSpan(22, 0, 0),
+                EndTime = new TimeSpan(22, 0, 0)
             };
 
             Assert.That(WorkingHours.ValidateShift(user, shift), Has.Count.EqualTo(1));

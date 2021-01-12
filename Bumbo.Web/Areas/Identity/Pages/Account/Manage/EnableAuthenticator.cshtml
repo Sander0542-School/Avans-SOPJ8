@@ -13,17 +13,13 @@
     <ol class="list">
         <li>
             <p>
-                @Localizer["MessageDownloadApp",
-                    new HtmlString("<a href=\"https://go.microsoft.com/fwlink/?Linkid=825072\">Android</a>"),
-                    new HtmlString("<a href=\"https://go.microsoft.com/fwlink/?Linkid=825073\">iOS</a>"),
-                    new HtmlString("<a href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\">Android</a>"),
-                    new HtmlString("<a href=\"https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8\">iOS</a>")]
+                @Localizer["MessageDownloadApp", new HtmlString("<a href=\"https://go.microsoft.com/fwlink/?Linkid=825072\">Android</a>"), new HtmlString("<a href=\"https://go.microsoft.com/fwlink/?Linkid=825073\">iOS</a>"), new HtmlString("<a href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\">Android</a>"), new HtmlString("<a href=\"https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8\">iOS</a>")]
             </p>
         </li>
         <li>
             <p>@Localizer["MessageScanOrKey", Model.SharedKey]</p>
             <div id="qrCode"></div>
-            <div id="qrCodeData" data-url="@Html.Raw(@Model.AuthenticatorUri)"></div>
+            <div id="qrCodeData" data-url="@Html.Raw(Model.AuthenticatorUri)"></div>
         </li>
         <li>
             <p>@Localizer["MessageAfterScan"]</p>

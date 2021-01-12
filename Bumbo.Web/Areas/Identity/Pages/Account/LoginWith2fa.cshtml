@@ -34,9 +34,7 @@
     </div>
 </div>
 <p>
-    @Localizer["MessageNoDeviceAccess", 
-        new HtmlString($"<a id=\"recovery-code-login\" asp-page=\"./LoginWithRecoveryCode\" asp-route-returnUrl=\"{Model.ReturnUrl}\">"), 
-        new HtmlString("</a>")]
+    @Localizer["MessageNoDeviceAccess", new HtmlString($"<a id=\"recovery-code-login\" asp-page=\"./LoginWithRecoveryCode\" asp-route-returnUrl=\"{Model.ReturnUrl}\">"), new HtmlString("</a>")]
 </p>
 
 @section Scripts {

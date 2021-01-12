@@ -8,15 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
         private readonly IStringLocalizer<LoginWithRecoveryCodeModel> _localizer;
+        private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
+        private readonly SignInManager<User> _signInManager;
 
         public LoginWithRecoveryCodeModel(SignInManager<User> signInManager,
             ILogger<LoginWithRecoveryCodeModel> logger,
@@ -32,22 +31,13 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public class InputModel
-        {
-            [BindProperty]
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Recovery Code")]
-            public string RecoveryCode { get; set; }
-        }
-
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException("Unable to load two-factor authentication user.");
             }
 
             ReturnUrl = returnUrl;
@@ -65,7 +55,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException("Unable to load two-factor authentication user.");
             }
 
             var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
@@ -82,12 +72,18 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account
                 _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
                 return RedirectToPage("./Lockout");
             }
-            else
-            {
-                _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
-                ModelState.AddModelError(string.Empty, _localizer["Invalid recovery code entered."]);
-                return Page();
-            }
+            _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
+            ModelState.AddModelError(string.Empty, _localizer["Invalid recovery code entered."]);
+            return Page();
+        }
+
+        public class InputModel
+        {
+            [BindProperty]
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Recovery Code")]
+            public string RecoveryCode { get; set; }
         }
     }
 }

@@ -6,7 +6,6 @@ using Bumbo.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-
 namespace Bumbo.Web
 {
     public class BumboUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
@@ -33,19 +32,19 @@ namespace Bumbo.Web
                 .ToListAsync();
 
             identity.AddClaims(
-                userBranches.Select(branch => new Claim("BranchDepartment", $"{branch.BranchId}.{branch.Department}"))
+            userBranches.Select(branch => new Claim("BranchDepartment", $"{branch.BranchId}.{branch.Department}"))
             );
 
             identity.AddClaims(
-                managerBranches.Select(branchId => new Claim("Manager", branchId.ToString(), ClaimValueTypes.Integer))
+            managerBranches.Select(branchId => new Claim("Manager", branchId.ToString(), ClaimValueTypes.Integer))
             );
 
             identity.AddClaims(
-                userBranches
-                    .Select(branch => branch.BranchId)
-                    .Concat(managerBranches)
-                    .Distinct()
-                    .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
+            userBranches
+                .Select(branch => branch.BranchId)
+                .Concat(managerBranches)
+                .Distinct()
+                .Select(branchId => new Claim("Branch", branchId.ToString(), ClaimValueTypes.Integer))
             );
 
             identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, identityUser.Birthday.Ticks.ToString()));

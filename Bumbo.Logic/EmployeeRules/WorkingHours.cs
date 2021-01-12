@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Logic.Utils;
-
 namespace Bumbo.Logic.EmployeeRules
 {
     public static class WorkingHours
@@ -37,10 +36,14 @@ namespace Bumbo.Logic.EmployeeRules
                 var notifications = new List<string>();
 
                 if (tooManyHours)
+                {
                     notifications.Add($"Deze medewerker mag niet meer dan {maxWeekHours.TotalHours:00}:{maxWeekHours:mm} uur per week werken.");
+                }
 
                 if (tooManyDays)
+                {
                     notifications.Add($"Deze medewerker mag niet meer dan {maxDays} dagen per week werken.");
+                }
 
                 notifications.AddRange(ValidateShift(user, shift));
 
@@ -63,18 +66,28 @@ namespace Bumbo.Logic.EmployeeRules
             var furlough = user.UserFurloughs.FirstOrDefault(furlough => furlough.StartDate <= shift.Date && shift.Date >= furlough.EndDate);
 
             if (age < 16 && shift.EndTime > new TimeSpan(19, 0, 0))
+            {
                 notifications.Add("Deze medewerker mag niet later dan 19:00 uur werken.");
+            }
 
             if (shiftDuration > maxHours)
+            {
                 notifications.Add($"Deze medewerker mag deze dag niet meer dan {maxHours:hh\\:mm} uur werken.");
+            }
 
             if (availability == null)
+            {
                 notifications.Add("Deze medewerker wil deze dag niet werken.");
+            }
             else if (!ShiftBetweenAvailableTime(shift, availability))
+            {
                 notifications.Add($"Deze medewerker wil deze dag tussen {availability.StartTime:hh\\:mm} en {availability.EndTime:hh\\:mm} werken.");
+            }
 
             if (furlough != null)
+            {
                 notifications.Add("Deze medewerker heeft verlof tijdens deze dienst.");
+            }
 
             return notifications;
         }
@@ -82,9 +95,13 @@ namespace Bumbo.Logic.EmployeeRules
         public static bool ShiftBetweenAvailableTime(Shift shift, UserAvailability availability)
         {
             if (shift.StartTime < availability.StartTime)
+            {
                 return false;
+            }
             if (shift.EndTime > availability.EndTime)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -102,7 +119,10 @@ namespace Bumbo.Logic.EmployeeRules
                 maxHours = 40;
             }
 
-            if (age < 18) maxHours = 40;
+            if (age < 18)
+            {
+                maxHours = 40;
+            }
 
             return new TimeSpan(maxHours, 0, 0);
         }
@@ -116,7 +136,10 @@ namespace Bumbo.Logic.EmployeeRules
                 var otherWorkMinutes = user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.EndTime.TotalMinutes - user.UserAdditionalWorks.FirstOrDefault(work => work.Day == day)?.StartTime.TotalMinutes ?? 0;
                 var maxMinutes = 540;
 
-                if (age < 16) maxMinutes = 480;
+                if (age < 16)
+                {
+                    maxMinutes = 480;
+                }
 
                 return TimeSpan.FromMinutes(otherWorkMinutes > maxMinutes ? 0 : maxMinutes - otherWorkMinutes);
             }
@@ -124,21 +147,32 @@ namespace Bumbo.Logic.EmployeeRules
             return new TimeSpan(12, 0, 0);
         }
 
-        public static int MaxDayPerAWeek(User user) => UserUtil.GetAge(user) < 16 ? 5 : 7;
+        public static int MaxDayPerAWeek(User user)
+        {
+            return UserUtil.GetAge(user) < 16 ? 5 : 7;
+        }
 
         public static void ValidateUserProperties(User user)
         {
             if (user.Shifts == null)
+            {
                 throw new ArgumentException("The user does not contain a list of shifts");
+            }
 
             if (user.UserAvailabilities == null)
+            {
                 throw new ArgumentException("The user does not contain a list of availabilities");
+            }
 
             if (user.UserAdditionalWorks == null)
+            {
                 throw new ArgumentException("The user does not contain a list of additional working hours");
+            }
 
             if (user.UserFurloughs == null)
+            {
                 throw new ArgumentException("The user does not contain a list of furloughs");
+            }
         }
     }
 }

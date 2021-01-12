@@ -6,7 +6,7 @@
     ViewData["Title"] = Localizer["Disable two-factor authentication (2FA)"];
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_StatusMessage" for="StatusMessage"/>
 <h2>@ViewData["Title"]</h2>
 
 <div class="alert alert-warning" role="alert">
@@ -14,9 +14,7 @@
         <strong>@Localizer["This action only disables 2FA."]</strong>
     </p>
     <p>
-        @Localizer["MessageDisable2FA",
-            new HtmlString("<a asp-page=\"./ResetAuthenticator\">"),
-            new HtmlString("</a>")]
+        @Localizer["MessageDisable2FA", new HtmlString("<a asp-page=\"./ResetAuthenticator\">"), new HtmlString("</a>")]
     </p>
 </div>
 

@@ -2,7 +2,6 @@
 using Bumbo.Data.Models;
 using Bumbo.Logic.PayCheck;
 using NUnit.Framework;
-
 namespace Bumbo.Tests.Logic.PayCheckRules
 {
     public class PayCheckLogicTests
@@ -116,7 +115,10 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             var data = new WorkedShift();
             data.Sick = false;
             // deze datum is een maandag
-            data.Shift = new Shift { Date = new DateTime(2020, 12, 7) };
+            data.Shift = new Shift
+            {
+                Date = new DateTime(2020, 12, 7)
+            };
             data.StartTime = new TimeSpan(5, 0, 0);
             data.EndTime = new TimeSpan(22, 0, 0);
 
@@ -139,7 +141,10 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             var data = new WorkedShift();
             data.Sick = false;
             // deze datum is een zondag
-            data.Shift = new Shift { Date = new DateTime(2020, 12, 6) };
+            data.Shift = new Shift
+            {
+                Date = new DateTime(2020, 12, 6)
+            };
             data.StartTime = new TimeSpan(12, 0, 0);
             data.EndTime = new TimeSpan(18, 0, 0);
 
@@ -157,7 +162,10 @@ namespace Bumbo.Tests.Logic.PayCheckRules
             var data = new WorkedShift();
             data.Sick = true;
             // deze datum is een zondag
-            data.Shift = new Shift { Date = new DateTime(2020, 12, 6) };
+            data.Shift = new Shift
+            {
+                Date = new DateTime(2020, 12, 6)
+            };
             data.StartTime = new TimeSpan(12, 0, 0);
             data.EndTime = new TimeSpan(18, 0, 0);
 
@@ -168,7 +176,5 @@ namespace Bumbo.Tests.Logic.PayCheckRules
 
             Assert.AreEqual(result.GetTime(0.7).TotalMinutes, checkResult.GetTime(0.7).TotalMinutes);
         }
-
-
     }
 }

@@ -5,11 +5,25 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Web.Models.Forecast
 {
     public class ForecastViewModel
     {
+
+        public readonly DayOfWeek[] DaysOfWeek =
+        {
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
+        public EditForecastViewModel EditForecast;
+
+        public IEnumerable<Data.Models.Forecast> Forecasts;
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
@@ -28,21 +42,6 @@ namespace Bumbo.Web.Models.Forecast
 
         [Display(Name = "Branch")]
         public Branch Branch { get; set; }
-
-        public readonly DayOfWeek[] DaysOfWeek =
-        {
-            DayOfWeek.Monday,
-            DayOfWeek.Tuesday,
-            DayOfWeek.Wednesday,
-            DayOfWeek.Thursday,
-            DayOfWeek.Friday,
-            DayOfWeek.Saturday,
-            DayOfWeek.Sunday
-        };
-
-        public IEnumerable<Data.Models.Forecast> Forecasts;
-
-        public EditForecastViewModel EditForecast;
 
 
         public class EditForecastViewModel

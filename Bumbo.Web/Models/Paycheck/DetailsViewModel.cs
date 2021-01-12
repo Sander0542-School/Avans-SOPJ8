@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Logic.EmployeeRules;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Models.Paycheck
 {
     public class DetailsViewModel
     {
-        public Dictionary<int, List<Shift>> WeekShifts { get; set; }
-
-        public InputModel Input { get; set; }
 
         public readonly DayOfWeek[] DaysOfWeek =
         {
@@ -22,6 +18,10 @@ namespace Bumbo.Web.Models.Paycheck
             DayOfWeek.Saturday,
             DayOfWeek.Sunday
         };
+
+        public Dictionary<int, List<Shift>> WeekShifts { get; set; }
+
+        public InputModel Input { get; set; }
 
         public class Shift
         {
