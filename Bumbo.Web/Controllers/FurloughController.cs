@@ -56,7 +56,7 @@ namespace Bumbo.Web.Controllers
 
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
                 
-                if (shifts.Count != 0)
+                if (!shifts.Any())
                     TempData["alertMessage"] = $"danger:{_localizer["NotAllowed"]}";
                 else
                 {
@@ -91,20 +91,21 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
-
-            return RedirectToAction(nameof(Index), new FurloughViewModel { Furloughs = furloughs });
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Delete(int id)
         {
+            TempData["alertMessage"] = $"danger:{_localizer[""]}";
+            
             int userId = int.Parse(_userManager.GetUserId(User));
-            await _wrapper.Furlough.Remove(f => f.Id == id & f.UserId == userId);
+            if (await _wrapper.Furlough.Remove(f => f.Id == id & f.UserId == userId) != null)
+            {
+                TempData["alertMessage"] = $"success:{_localizer[""]}";
+            }
 
-            var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)));
-
-            return RedirectToAction(nameof(Index), new FurloughViewModel { Furloughs = furloughs });
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Policy = "Manager")]
