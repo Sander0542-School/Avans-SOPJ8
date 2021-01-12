@@ -101,6 +101,7 @@ namespace Bumbo.Web.Controllers
                         };
                     }).ToList(),
                     InputShift = new DepartmentViewModel.InputShiftModel { Year = year.Value, Week = week.Value, Department = department },
+                    DeleteShift = new DepartmentViewModel.DeleteShiftModel { Year = year.Value, Week = week.Value, Department = department },
                     InputCopyWeek = new DepartmentViewModel.InputCopyWeekModel { Year = year.Value, Week = week.Value, Department = department },
                     InputApproveSchedule = new DepartmentViewModel.InputApproveScheduleModel { Year = year.Value, Week = week.Value, Department = department }
                 });
@@ -185,6 +186,48 @@ namespace Bumbo.Web.Controllers
                 year = shiftModel.Year,
                 week = shiftModel.Week,
                 department = shiftModel.Department,
+            });
+        }
+
+        [HttpPost]
+        [Route("DeleteShift")]
+        [Authorize(Policy = "BranchManager")]
+        public async Task<IActionResult> DeleteShift(int branchId, DepartmentViewModel.DeleteShiftModel deleteModel)
+        {
+            var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
+
+            if (branch == null) return NotFound();
+
+            var alertMessage = $"danger:{_localizer["MessageShiftNotDeleted"]}";
+
+            if (ModelState.IsValid)
+            {
+                var shift = await _wrapper.Shift.Get(shift1 => shift1.Id == deleteModel.ShiftId);
+
+                if (shift != null)
+                {
+                    if (shift.WorkedShift == null)
+                    {
+                        if (await _wrapper.Shift.Remove(shift) != null)
+                        {
+                            alertMessage = $"success:{_localizer["MessageShiftDeleted"]}";
+                        }
+                    }
+                    else
+                    {
+                        alertMessage = $"danger:{_localizer["MessageShiftContainsWorkedShift"]}";
+                    }
+                }
+            }
+
+            TempData["alertMessage"] = alertMessage;
+
+            return RedirectToAction(nameof(Week), new
+            {
+                branchId,
+                year = deleteModel.Year,
+                week = deleteModel.Week,
+                department = deleteModel.Department,
             });
         }
 

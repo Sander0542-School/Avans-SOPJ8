@@ -53,4 +53,13 @@
     <data name="MessageOfferCanceled" xml:space="preserve">
         <value>De geselecteerde dienst is successvol weggehaald van de aanbiedingen.</value>
     </data>
+    <data name="MessageShiftNotDeleted" xml:space="preserve">
+        <value>De geselecteerde dienst kon niet verwijderd worden.</value>
+    </data>
+    <data name="MessageShiftContainsWorkedShift" xml:space="preserve">
+        <value>De geselecteerde dienst kon niet verwijderd worden, omdat de medewerker al gewerkt heeft.</value>
+    </data>
+    <data name="MessageShiftDeleted" xml:space="preserve">
+        <value>De geselecteerde dienst is succesvol verwijderd.</value>
+    </data>
 </root>

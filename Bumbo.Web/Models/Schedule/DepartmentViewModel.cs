@@ -30,6 +30,8 @@ namespace Bumbo.Web.Models.Schedule
 
         public InputShiftModel InputShift { get; set; }
 
+        public DeleteShiftModel DeleteShift { get; set; }
+
         public InputCopyWeekModel InputCopyWeek { get; set; }
 
         public InputApproveScheduleModel InputApproveSchedule { get; set; }
@@ -144,6 +146,11 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
+        }
+
+        public class DeleteShiftModel : InputDateDepartmentModel
+        {
+            public int ShiftId { get; set; }
         }
 
         public class InputCopyWeekModel : InputDateDepartmentModel
