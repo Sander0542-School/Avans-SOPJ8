@@ -161,7 +161,6 @@
   </data>
   <data name="All branches" xml:space="preserve">
     <value>Alle filialen</value>
-    <comment>All Branches</comment>
   </data>
   <data name="Availability" xml:space="preserve">
     <value>Beschikbaarheid</value>
@@ -169,62 +168,37 @@
   <data name="Paycheck" xml:space="preserve">
     <value>Loonstroken</value>
   </data>
-  <data name="Schedule" xml:space="preserve">
-      <value>Rooster</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-      <value>Profiel</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-      <value>Email</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-      <value>Wachtwoord</value>
-  </data>
-  <data name="Two-factor authentication" xml:space="preserve">
-      <value>Tweestapsverificatie</value>
-  </data>
-  <data name="Personal Data" xml:space="preserve">
-      <value>Persoonlijke gegevens</value>
-  </data>
-  <data name="Logout" xml:space="preserve">
-      <value>Uitloggen</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-      <value>Inloggen</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-      <value>Registreren</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-      <value>Details</value>
-  </data>
-  <data name="Forecast" xml:space="preserve">
-      <value>Prognose</value>
-  </data>
-  <data name="Change Language" xml:space="preserve">
-      <value>Verander taal</value>
-  </data>
   <data name="School schedule" xml:space="preserve">
-      <value>Schoolrooster</value>
+    <value>Schoolrooster</value>
   </data>
   <data name="Users" xml:space="preserve">
-      <value>Gebruikers</value>
+    <value>Gebruikers</value>
+  </data>
+  <data name="Global forecast norms" xml:space="preserve">
+    <value>Standaard prognose waardes</value>
+  </data>
+  <data name="Furlough for" xml:space="preserve">
+    <value>Verlof voor</value>
+  </data>
+  <data name="Employees" xml:space="preserve">
+    <value>Medewerkers</value>
   </data>
   <data name="Cross Branch Shifts" xml:space="preserve">
-      <value>Extrene diensten</value>
-      <comment>Cross Branch Shifts</comment>
+    <value>Extrene diensten</value>
   </data>
   <data name="Worked hours" xml:space="preserve">
-      <value>Gewerkte uren</value>
-      <comment>Worked hours</comment>
+    <value>Gewerkte uren</value>
   </data>
   <data name="Offers" xml:space="preserve">
-      <value>Diensten overnemen</value>
-      <comment>Offers</comment>
+    <value>Diensten overnemen</value>
   </data>
   <data name="Personal" xml:space="preserve">
-      <value>Persoonlijk</value>
-      <comment>Personal</comment>
+    <value>Persoonlijk</value>
+  </data>
+  <data name="Furlough request" xml:space="preserve">
+    <value>Verlof aanvraag</value>
+  </data>
+  <data name="Furlough approval" xml:space="preserve">
+    <value>Verlof goedkeuring</value>
   </data>
 </root>

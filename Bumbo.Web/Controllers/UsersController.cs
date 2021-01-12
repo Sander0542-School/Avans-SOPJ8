@@ -16,7 +16,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
-    [Authorize(Policy = "Manager")]
+    [Authorize(Policy = "SuperUser")]
     public class UsersController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -105,12 +105,17 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Edit(int? id, string status)
         {
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _wrapper.User.Get(user => user.Id == id);
+            var user = await _wrapper.User.Get(user1 => user1.Id == id);
             List<SelectListItem> branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
@@ -131,11 +136,13 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditViewModel model)
         {
-            var user = await _wrapper.User.Get(user => user.Id == id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
             var branchesList = await GetBranchList();
             model.UserBranches = user.Branches;
             model.Contracts = user.Contracts;
             model.Branches = branchesList;
+
+            TempData["alertMessage"] = $"danger:{_localizer["The userdata could not be saved"]}";
 
             if (ModelState.IsValid)
             {
@@ -169,7 +176,7 @@ namespace Bumbo.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    return View(CreateUserModel(user, branchesList));
+                    TempData["alertMessage"] = $"success:{_localizer["The userdata was successfully saved"]}";
                 }
 
                 foreach (var error in result.Errors)
@@ -178,7 +185,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -242,12 +249,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            var userBranch = new UserBranch
-            {
-                BranchId = branch,
-                UserId = user.Id,
-                Department = department,
-            };
+            var userBranch = new UserBranch { BranchId = branch, UserId = user.Id, Department = department, };
 
             user.Branches.Add(userBranch);
             await _wrapper.User.Update(user);
@@ -276,10 +278,7 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult CreateContract(int id)
         {
-            ContractViewModel contractModel = new ContractViewModel
-            {
-                UserId = id
-            };
+            ContractViewModel contractModel = new ContractViewModel { UserId = id };
 
             return View(contractModel);
         }
@@ -314,11 +313,7 @@ namespace Bumbo.Web.Controllers
         {
             var branches = await _wrapper.Branch.GetAll();
             var branchesList = branches.Select(a =>
-                new SelectListItem
-                {
-                    Value = a.Id.ToString(),
-                    Text = a.Name
-                }).ToList();
+                new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList();
             return branchesList;
         }
 
@@ -335,7 +330,6 @@ namespace Bumbo.Web.Controllers
                 ZipCode = user.ZipCode,
                 HouseNumber = user.HouseNumber,
                 Email = user.Email,
-
                 UserBranches = user.Branches,
                 Contracts = user.Contracts,
                 Branches = branchesList

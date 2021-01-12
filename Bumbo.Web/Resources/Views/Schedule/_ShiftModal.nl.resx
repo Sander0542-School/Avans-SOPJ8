@@ -129,4 +129,10 @@
   <data name="Is sick this day" xml:space="preserve">
     <value>Is vandaag ziek</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+      <value>Verwijder</value>
+  </data>
+  <data name="Request shift from external branch" xml:space="preserve">
+      <value>Vraag diesnt van extern filiaal aan</value>
+  </data>
 </root>

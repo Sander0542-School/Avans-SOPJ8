@@ -50,7 +50,7 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Availability\Index.resx">
+      <EmbeddedResource Update="Resources\Views\Availability\Index.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.Designer.cs</LastGenOutput>
       </EmbeddedResource>
@@ -86,7 +86,19 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Create.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Edit.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Edit.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchViewModel+Shift.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
@@ -101,6 +113,10 @@
       <EmbeddedResource Update="Resources\Views\Schedule\CrossBranchOffers.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\_DeleteShiftModal.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_DeleteShiftModal.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -179,6 +195,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\_DeleteShiftModal.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_DeleteShiftModal.nl.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
