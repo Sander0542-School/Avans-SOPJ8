@@ -14,7 +14,4 @@
     <data name="MessageContainsPersonalData" xml:space="preserve">
         <value>Your account contains personal data that you have given us. This page allows you to download that data.</value>
     </data>
-    <data name="Download" xml:space="preserve">
-        <value />
-    </data>
 </root>
