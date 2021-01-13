@@ -1,4 +1,4 @@
-describe('Create Shift', () => {
+describe('Approve Schedule', () => {
   beforeEach(() => {
     // Keeps session alive through this "describe" method
     Cypress.Cookies.preserveOnce('.AspNetCore.Identity.Application');
@@ -15,15 +15,12 @@ describe('Create Shift', () => {
     cy.get('div[aria-labelledby="departmentGroup"] > a[href*="VAK"]').should('exist').click();
   });
 
-  it('Create the new Shift', () => {
-    cy.get('table tbody tr:first [onclick*="shiftModal"]:first').should('exist').click();
-    cy.get('#shiftEditModal').should('be.visible');
+  it('Approve the schedule', () => {
+    cy.get('button[data-target="#approveScheduleModal"]').should('exist').click();
 
-    cy.get('#InputShift_StartTime').type('16:00');
-    cy.wait(100);
-    cy.get('#InputShift_EndTime').type('21:00');
+    cy.get('#approveScheduleModal').should('be.visible');
 
-    cy.get('#shiftEditModal button[type="submit"]').should('be.visible').click();
+    cy.get('#approveScheduleModal button[type="submit"]').should('be.visible').click();
 
     cy.get('.alert.alert-success').should('exist');
   });
