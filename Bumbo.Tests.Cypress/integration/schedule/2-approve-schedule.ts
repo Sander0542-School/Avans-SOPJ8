@@ -9,10 +9,12 @@ describe('Approve Schedule', () => {
   });
 
   it('Navigate to branch schedule', () => {
-    cy.visit('Branches/1/Schedule');
+    cy.visit('Branches/1/Schedule/Week');
 
     cy.get('#departmentGroup').should('exist').click();
     cy.get('div[aria-labelledby="departmentGroup"] > a[href*="VAK"]').should('exist').click();
+
+    cy.get('#dateNextWeek').should('be.visible').click();
   });
 
   it('Approve the schedule', () => {
