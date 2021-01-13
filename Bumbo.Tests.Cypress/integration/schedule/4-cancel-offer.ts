@@ -16,5 +16,5 @@ describe('Approve Schedule', () => {
     cy.get('table tr input[type="submit"]:first').should('be.visible').click();
 
     cy.get('.alert.alert-success').should('exist');
-  })
+  });
 });

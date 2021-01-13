@@ -24,5 +24,5 @@ describe('Approve Schedule', () => {
     cy.get('#offerShiftModal button[type="submit"]').should('be.visible').click();
 
     cy.get('.alert.alert-success').should('exist');
-  })
+  });
 });
