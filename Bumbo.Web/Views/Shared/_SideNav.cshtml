@@ -236,6 +236,17 @@ else
         <i class="fa fa-language" aria-hidden="true"></i>
         @Localizer["Change Language"]
     </button>
+    <br/>
+    <button onclick="toggleDarkMode()" type="button" class="btn btn-secondary btn-sm m-2">
+        <div id="darkThemeText">
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+            @Localizer["Dark Theme"]
+        </div>
+        <div id="lightThemeText">
+            <i class="fa fa-sun-o" aria-hidden="true"></i>
+            @Localizer["Light Theme"]
+        </div>
+    </button>
     @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
     {
         <br/>
