@@ -16,7 +16,7 @@ describe('Approve Schedule', () => {
     cy.get('#calendar').should('be.visible');
 
     cy.get('#calendar .fc-event-container').should('be.visible').click();
-  })
+  });
 
   it('Offer shift', () => {
     cy.get('#offerShiftModal').should('be.visible');
