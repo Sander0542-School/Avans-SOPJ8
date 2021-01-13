@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 
 namespace Bumbo.Data.Seeder.Data
 {
@@ -29,6 +30,47 @@ namespace Bumbo.Data.Seeder.Data
                     Name = "Test Groningen",
                     ZipCode = "3456 CD",
                     HouseNumber = "184c"
+                }
+            };
+        }
+        public List<BranchManager> GetManagers()
+        {
+            return new List<BranchManager>
+            {
+                new()
+                {
+                    UserId = TestDataSeeder.SuperId, BranchId = 1
+                },
+                new()
+                {
+                    UserId = TestDataSeeder.SuperId, BranchId = 3
+                },
+                new()
+                {
+                    UserId = TestDataSeeder.ManagerId, BranchId = 1
+                },
+                new()
+                {
+                    UserId = TestDataSeeder.ManagerId, BranchId = 2
+                },
+            };
+        }
+
+        public List<UserBranch> GetEmployees()
+        {
+            return new List<UserBranch>
+            {
+                new()
+                {
+                    UserId = TestDataSeeder.EmployeeId,
+                    Department = Department.VAK,
+                    BranchId = 1
+                },
+                new()
+                {
+                    UserId = TestDataSeeder.EmployeeId,
+                    Department = Department.KAS,
+                    BranchId = 1
                 }
             };
         }

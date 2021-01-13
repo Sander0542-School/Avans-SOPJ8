@@ -8,6 +8,7 @@ using Bumbo.Logic.Services.Weather;
 using Bumbo.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -58,7 +59,8 @@ namespace Bumbo.Web
             {
                 if (_isTestEnv)
                 {
-                    options.UseSqlite(_sqLiteTestConnection);
+                    options.UseSqlite(_sqLiteTestConnection)
+                        .EnableSensitiveDataLogging();
                 }
                 else
                 {
@@ -123,16 +125,45 @@ namespace Bumbo.Web
             if (env.IsTesting())
             {
                 context.Database.EnsureCreated();
-                
-                var seeder = new TestDataSeeder();
-                
-                context.Branches.AddRange(seeder.Branches);
-                context.Users.AddRange(seeder.Users);
-                context.UserRoles.AddRange(seeder.UserRoles);
-                context.Set<BranchSchedule>().AddRange(seeder.Shifts);
             }
 
             Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
+
+            if (env.IsTesting())
+            {
+                context.Database.EnsureCreated();
+
+                var seeder = new TestDataSeeder();
+
+                #region UserData
+
+                var userManager = app.ApplicationServices.GetService<UserManager<User>>();
+                foreach (var user in seeder.Users)
+                {
+                    userManager.CreateAsync(user, "Pass1234!").Wait();
+
+                    if (user.Id == TestDataSeeder.SuperId)
+                    {
+                        userManager.AddToRoleAsync(user, "SuperUser");
+                    }
+                }
+
+                context.UserAvailabilities.AddRange(seeder.UserAvailabilities);
+                context.Set<UserContract>().AddRange(seeder.UserContracts);
+                context.ClockSystemTags.AddRange(seeder.ClockSystemTags);
+
+                #endregion
+
+                #region BranchData
+
+                context.Branches.AddRange(seeder.Branches);
+                context.Set<BranchManager>().AddRange(seeder.BranchManagers);
+                context.Set<UserBranch>().AddRange(seeder.BranchEmployees);
+
+                context.Set<BranchSchedule>().AddRange(seeder.Shifts);
+
+                #endregion
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
