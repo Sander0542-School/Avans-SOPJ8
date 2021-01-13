@@ -163,6 +163,8 @@ namespace Bumbo.Web
                 context.Set<BranchSchedule>().AddRange(seeder.Shifts);
 
                 #endregion
+
+                context.SaveChanges();
             }
 
             app.UseHttpsRedirection();
