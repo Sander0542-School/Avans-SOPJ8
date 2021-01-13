@@ -43,7 +43,7 @@ namespace Bumbo.Web.Controllers
                 Furloughs = furloughs
             });
         }
-
+       
         [HttpPost]
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Create(int branchId, int? id, FurloughViewModel.InputModel furloughModel)
@@ -60,7 +60,7 @@ namespace Bumbo.Web.Controllers
 
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
-                if (!shifts.Any())
+                if (shifts.Any())
                 {
                     TempData["alertMessage"] = $"danger:{_localizer["NotAllowed"]}";
                 }
@@ -100,7 +100,7 @@ namespace Bumbo.Web.Controllers
                     }
                 }
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -108,13 +108,13 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             TempData["alertMessage"] = $"danger:{_localizer["SomethingWentWrong"]}";
-            
+
             var userId = int.Parse(_userManager.GetUserId(User));
             if (await _wrapper.Furlough.Remove(f => (f.Id == id) & (f.UserId == userId)) != null)
             {
                 TempData["alertMessage"] = $"success:{_localizer["FurloughDeleted"]}";
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
