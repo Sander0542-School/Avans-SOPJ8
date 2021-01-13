@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using Bumbo.Data;
 using Bumbo.Data.Models;
+using Bumbo.Data.Seeder;
 using Bumbo.Logic.Services.Weather;
+using Bumbo.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Data.Sqlite;
@@ -23,7 +26,7 @@ namespace Bumbo.Web
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
-            _isTestEnv = env.IsEnvironment("Testing");
+            _isTestEnv = env.IsTesting();
 
             if (_isTestEnv)
             {
@@ -56,7 +59,8 @@ namespace Bumbo.Web
             {
                 if (_isTestEnv)
                 {
-                    options.UseSqlite(_sqLiteTestConnection);
+                    options.UseSqlite(_sqLiteTestConnection)
+                        .EnableSensitiveDataLogging();
                 }
                 else
                 {
@@ -106,7 +110,7 @@ namespace Bumbo.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
-            if (env.IsDevelopment() || _isTestEnv)
+            if (env.IsDevelopment() || env.IsTesting())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
@@ -118,13 +122,50 @@ namespace Bumbo.Web
                 app.UseHsts();
             }
 
-            if (_isTestEnv)
+            if (env.IsTesting())
             {
                 context.Database.EnsureCreated();
-                // Todo: Add database seeder method
             }
 
             Web.ConfigureServices.SeedRoles(app.ApplicationServices).Wait();
+
+            if (env.IsTesting())
+            {
+                context.Database.EnsureCreated();
+
+                var seeder = new TestDataSeeder();
+
+                #region UserData
+
+                var userManager = app.ApplicationServices.GetService<UserManager<User>>();
+                foreach (var user in seeder.Users)
+                {
+                    userManager.CreateAsync(user, "Pass1234!").Wait();
+
+                    if (user.Id == TestDataSeeder.SuperId)
+                    {
+                        userManager.AddToRoleAsync(user, "SuperUser");
+                    }
+                }
+
+                context.UserAvailabilities.AddRange(seeder.UserAvailabilities);
+                context.Set<UserContract>().AddRange(seeder.UserContracts);
+                context.ClockSystemTags.AddRange(seeder.ClockSystemTags);
+
+                #endregion
+
+                #region BranchData
+
+                context.Branches.AddRange(seeder.Branches);
+                context.Set<BranchManager>().AddRange(seeder.BranchManagers);
+                context.Set<UserBranch>().AddRange(seeder.BranchEmployees);
+
+                context.Set<BranchSchedule>().AddRange(seeder.Shifts);
+
+                #endregion
+
+                context.SaveChanges();
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

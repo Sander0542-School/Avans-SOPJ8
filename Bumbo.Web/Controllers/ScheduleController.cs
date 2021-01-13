@@ -88,6 +88,7 @@ namespace Bumbo.Web.Controllers
                     Week = week.Value,
                     Department = department,
                     Branch = branch,
+
                     ScheduleApproved = department.HasValue && users.Any(user => user.Shifts.Any(shift => shift.Schedule.Department == department.Value && shift.Schedule.Confirmed)),
                     EmployeeShifts = users.Select(user =>
                     {
