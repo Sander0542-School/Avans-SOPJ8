@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Bumbo.Data;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
-
 namespace Bumbo.Web.Authorization.Handles
 {
     public class YoungerThan18Handler : AuthorizationHandler<YoungerThan18Requirement>

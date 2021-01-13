@@ -4,7 +4,6 @@ using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bumbo.Data.Repositories
 {
     public class BranchScheduleRepository : RepositoryBase<BranchSchedule>
@@ -22,11 +21,11 @@ namespace Bumbo.Data.Repositories
         public async Task<BranchSchedule> GetOrCreate(int branchId, int year, int week, Department department)
         {
             var schedule = await Context.Set<BranchSchedule>()
-                    .Where(branchSchedule => branchSchedule.BranchId == branchId)
-                    .Where(branchSchedule => branchSchedule.Year == year)
-                    .Where(branchSchedule => branchSchedule.Week == week)
-                    .Where(branchSchedule => branchSchedule.Department == department)
-                    .FirstOrDefaultAsync();
+                .Where(branchSchedule => branchSchedule.BranchId == branchId)
+                .Where(branchSchedule => branchSchedule.Year == year)
+                .Where(branchSchedule => branchSchedule.Week == week)
+                .Where(branchSchedule => branchSchedule.Department == department)
+                .FirstOrDefaultAsync();
 
             if (schedule != null)
             {
@@ -38,7 +37,7 @@ namespace Bumbo.Data.Repositories
                 BranchId = branchId,
                 Year = year,
                 Week = week,
-                Department = department,
+                Department = department
             };
 
             Context.Add(schedule);

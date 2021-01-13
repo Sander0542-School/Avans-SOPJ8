@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Models
 {
     public class Shift : BaseEntity

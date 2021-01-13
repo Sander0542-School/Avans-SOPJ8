@@ -1,5 +1,4 @@
 ﻿using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Models
 {
     public class BranchManager : IEntity

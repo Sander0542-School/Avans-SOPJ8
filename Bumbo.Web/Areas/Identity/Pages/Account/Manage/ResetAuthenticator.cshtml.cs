@@ -5,15 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<ResetAuthenticatorModel> _logger;
         private readonly IStringLocalizer<ResetAuthenticatorModel> _localizer;
+        private readonly ILogger<ResetAuthenticatorModel> _logger;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         public ResetAuthenticatorModel(
             UserManager<User> userManager,

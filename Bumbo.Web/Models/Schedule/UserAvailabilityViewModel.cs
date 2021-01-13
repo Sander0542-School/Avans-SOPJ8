@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class UserAvailabilityViewModel : ValidationAttribute
     {
+
+        public static readonly DayOfWeek[] DaysOfWeek =
+        {
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
         public List<UserAvailability> Schedule { get; set; }
         public UserAvailability Availability { get; set; }
 
@@ -21,16 +32,5 @@ namespace Bumbo.Web.Models.Schedule
 
             return ValidationResult.Success;
         }
-
-        public static readonly DayOfWeek[] DaysOfWeek =
-        {
-            DayOfWeek.Monday,
-            DayOfWeek.Tuesday,
-            DayOfWeek.Wednesday,
-            DayOfWeek.Thursday,
-            DayOfWeek.Friday,
-            DayOfWeek.Saturday,
-            DayOfWeek.Sunday
-        };
     }
 }

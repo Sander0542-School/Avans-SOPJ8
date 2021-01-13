@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Bumbo.Web.Models.Forecast
 {
     public class StockclerkViewModel
     {
-        public DateTime FirstDayOfWeek;
         public int BranchId;
         public int DaysInForecast;
+        public DateTime FirstDayOfWeek;
 
         // This is not ideal, but binding data to a list of objects in .NET Core seems to be pretty finicky.
         // As this works in our current implementation it should be kept like this for now

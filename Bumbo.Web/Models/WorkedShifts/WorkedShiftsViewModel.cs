@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Bumbo.Data.Models;
-
 namespace Bumbo.Web.Models.WorkedShifts
 {
     public class WorkedShiftsViewModel
     {
+
+        public readonly DayOfWeek[] DaysOfWeek =
+        {
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
@@ -24,16 +35,5 @@ namespace Bumbo.Web.Models.WorkedShifts
         public List<WorkedShift> WorkedShifts { get; set; }
 
         public Branch Branch { get; set; }
-
-        public readonly DayOfWeek[] DaysOfWeek =
-        {
-            DayOfWeek.Monday,
-            DayOfWeek.Tuesday,
-            DayOfWeek.Wednesday,
-            DayOfWeek.Thursday,
-            DayOfWeek.Friday,
-            DayOfWeek.Saturday,
-            DayOfWeek.Sunday
-        };
     }
 }

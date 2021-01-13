@@ -4,6 +4,6 @@
     {
         REQUESTED,
         APPROVED,
-        REJECTED,
+        REJECTED
     }
 }

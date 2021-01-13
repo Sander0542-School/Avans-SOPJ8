@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class EventViewModel

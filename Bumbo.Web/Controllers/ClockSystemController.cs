@@ -4,7 +4,6 @@ using Bumbo.Logic.ClockSystem;
 using Bumbo.Logic.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Controllers
 {
     [Route("Api/{controller}/{action}")]
@@ -28,7 +27,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            ClockSystemLogic rules = new ClockSystemLogic(_wrapper);
+            var rules = new ClockSystemLogic(_wrapper);
 
             await rules.HandleTagScan(tag.User);
 

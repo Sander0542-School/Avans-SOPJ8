@@ -13,16 +13,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "SuperUser")]
     public class UsersController : Controller
     {
-        private readonly RepositoryWrapper _wrapper;
-        private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<UsersController> _localizer;
+        private readonly UserManager<User> _userManager;
+        private readonly RepositoryWrapper _wrapper;
 
         public UsersController(RepositoryWrapper wrapper, UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<UsersController> localizer)
         {
@@ -40,7 +39,7 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Create()
         {
-            CreateViewModel usermodel = new CreateViewModel { };
+            var usermodel = new CreateViewModel();
 
             return View(usermodel);
         }
@@ -81,15 +80,18 @@ namespace Bumbo.Web.Controllers
                     var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
-                        "/Account/ResetPassword",
-                        pageHandler: null,
-                        values: new { area = "Identity", code },
-                        protocol: Request.Scheme);
+                    "/Account/ResetPassword",
+                    null,
+                    new
+                    {
+                        area = "Identity", code
+                    },
+                    Request.Scheme);
 
                     await _emailSender.SendEmailAsync(
-                        model.Email,
-                        "Reset Password",
-                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    model.Email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     return RedirectToAction("Index");
                 }
@@ -116,7 +118,7 @@ namespace Bumbo.Web.Controllers
             }
 
             var user = await _wrapper.User.Get(user1 => user1.Id == id);
-            List<SelectListItem> branchesList = await GetBranchList();
+            var branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
             if (status != null)
@@ -185,7 +187,10 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Edit), new { id });
+            return RedirectToAction(nameof(Edit), new
+            {
+                id
+            });
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -204,7 +209,7 @@ namespace Bumbo.Web.Controllers
             return View(user);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost] [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -242,19 +247,30 @@ namespace Bumbo.Web.Controllers
             {
                 if (userBranch2.Department == department)
                 {
-                    string statusMessage = "Error employee of this branch already works in this department";
+                    var statusMessage = "Error employee of this branch already works in this department";
 
 
-                    return RedirectToAction("Edit", new { id = userModel.Id, status = statusMessage });
+                    return RedirectToAction("Edit", new
+                    {
+                        id = userModel.Id, status = statusMessage
+                    });
                 }
             }
 
-            var userBranch = new UserBranch { BranchId = branch, UserId = user.Id, Department = department, };
+            var userBranch = new UserBranch
+            {
+                BranchId = branch,
+                UserId = user.Id,
+                Department = department
+            };
 
             user.Branches.Add(userBranch);
             await _wrapper.User.Update(user);
 
-            return RedirectToAction("Edit", new { userModel.Id });
+            return RedirectToAction("Edit", new
+            {
+                userModel.Id
+            });
         }
 
         public async Task<IActionResult> DeleteBranchUser(int? id, int? branchId)
@@ -273,12 +289,18 @@ namespace Bumbo.Web.Controllers
             var branchesList = await GetBranchList();
             var userModel = CreateUserModel(user, branchesList);
 
-            return RedirectToAction("Edit", new { userModel.Id });
+            return RedirectToAction("Edit", new
+            {
+                userModel.Id
+            });
         }
 
         public IActionResult CreateContract(int id)
         {
-            ContractViewModel contractModel = new ContractViewModel { UserId = id };
+            var contractModel = new ContractViewModel
+            {
+                UserId = id
+            };
 
             return View(contractModel);
         }
@@ -303,7 +325,10 @@ namespace Bumbo.Web.Controllers
                 user.Contracts.Add(contract);
                 var result = await _wrapper.User.Update(user);
 
-                return RedirectToAction("Edit", new { user.Id });
+                return RedirectToAction("Edit", new
+                {
+                    user.Id
+                });
             }
 
             return View(model);
@@ -313,13 +338,16 @@ namespace Bumbo.Web.Controllers
         {
             var branches = await _wrapper.Branch.GetAll();
             var branchesList = branches.Select(a =>
-                new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList();
+                new SelectListItem
+                {
+                    Value = a.Id.ToString(), Text = a.Name
+                }).ToList();
             return branchesList;
         }
 
         private static EditViewModel CreateUserModel(User user, List<SelectListItem> branchesList)
         {
-            return new EditViewModel
+            return new()
             {
                 PhoneNumber = user.PhoneNumber,
                 Id = user.Id,

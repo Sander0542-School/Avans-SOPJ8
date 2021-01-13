@@ -1,16 +1,18 @@
-﻿@model PersonalViewModel
+﻿@using Microsoft.AspNetCore.Localization
+@model PersonalViewModel
 
 @inject IViewLocalizer Localizer
 
 @{
-    var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    ViewData["Title"] = Localizer["Personal Schedule"];
+    var culture = Context.Features.Get<IRequestCultureFeature>();
 }
 
 <div class="row">
     <section class="col-md-12 col-md-push-0">
         <partial name="_CalendarPartial"/>
     </section>
-    
+
     <partial name="_OfferShiftModal" model="Model.InputOfferShift"/>
 </div>
 
@@ -46,7 +48,11 @@
             },
             eventSources: [
                 {
-                    url: '@Url.RouteUrl(new {action = "GetCalendarEvents", controller = "Schedule"})',
+                    url: '@Url.RouteUrl(new
+                          {
+                              action = "GetCalendarEvents",
+                              controller = "Schedule"
+                          })',
                     type: 'Get',
                     headers: {
                         RequestVerificationToken:

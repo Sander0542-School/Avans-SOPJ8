@@ -174,8 +174,8 @@
   <data name="Users" xml:space="preserve">
     <value>Gebruikers</value>
   </data>
-  <data name="Global forecast norms" xml:space="preserve">
-    <value>Standaard prognose waardes</value>
+  <data name="Forecast Norms" xml:space="preserve">
+    <value>Prognose waardes</value>
   </data>
   <data name="Furlough for" xml:space="preserve">
     <value>Verlof voor</value>
@@ -200,5 +200,11 @@
   </data>
   <data name="Furlough approval" xml:space="preserve">
     <value>Verlof goedkeuring</value>
+  </data>
+  <data name="Dark Theme" xml:space="preserve">
+      <value>Donker thema</value>
+  </data>
+  <data name="Light Theme" xml:space="preserve">
+      <value>Licht thema</value>
   </data>
 </root>

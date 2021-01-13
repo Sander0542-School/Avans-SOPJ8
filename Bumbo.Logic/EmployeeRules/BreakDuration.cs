@@ -1,6 +1,5 @@
 ﻿using System;
 using Bumbo.Data.Models;
-
 namespace Bumbo.Logic.EmployeeRules
 {
     public static class BreakDuration
@@ -9,12 +8,12 @@ namespace Bumbo.Logic.EmployeeRules
         {
             var minutes = 0;
 
-            if (shiftDuration.TotalMinutes >= 270) // 4.5 hours
+            if (shiftDuration.TotalMinutes >= 270)// 4.5 hours
             {
                 minutes = 30;
             }
 
-            if (shiftDuration.TotalMinutes >= 480) // 8 hours
+            if (shiftDuration.TotalMinutes >= 480)// 8 hours
             {
                 minutes = 60;
             }
@@ -22,10 +21,19 @@ namespace Bumbo.Logic.EmployeeRules
             return new TimeSpan(0, minutes, 0);
         }
 
-        public static TimeSpan GetDuration(DateTime startTime, DateTime endTime) => GetDuration(endTime - startTime);
+        public static TimeSpan GetDuration(DateTime startTime, DateTime endTime)
+        {
+            return GetDuration(endTime - startTime);
+        }
 
-        public static TimeSpan GetDuration(TimeSpan startTime, TimeSpan endTime) => GetDuration(endTime - startTime);
+        public static TimeSpan GetDuration(TimeSpan startTime, TimeSpan endTime)
+        {
+            return GetDuration(endTime - startTime);
+        }
 
-        public static TimeSpan GetDuration(Shift shift) => GetDuration(shift.EndTime - shift.StartTime);
+        public static TimeSpan GetDuration(Shift shift)
+        {
+            return GetDuration(shift.EndTime - shift.StartTime);
+        }
     }
 }

@@ -9,7 +9,7 @@
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bumbo.Testing' " />
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.2" />
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
       <PackageReference Include="Sentry.AspNetCore" Version="2.1.8" />
@@ -110,6 +110,18 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\Offers.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Offers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\Personal.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Personal.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Home\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\Schedule\_DeleteShiftModal.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>_DeleteShiftModal.nl.Designer.cs</LastGenOutput>
@@ -192,10 +204,35 @@
         <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
+      <Compile Update="Resources\Views\Users\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\Offers.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Offers.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\Personal.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Personal.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Home\Index.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+      </Compile>
       <Compile Update="Resources\Views\Schedule\_DeleteShiftModal.nl.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>_DeleteShiftModal.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\ForecastStandard\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
       </Compile>
     </ItemGroup>
 

@@ -13,7 +13,7 @@
                 </div>
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input id="Input_FurloughId" asp-for="Id" hidden />
+                    <input id="Input_FurloughId" asp-for="Id" hidden/>
 
                     <div class="form-group">
                         <label asp-for="Description"></label>
@@ -31,24 +31,24 @@
 
                     <div class="form-group">
                         <label asp-for="StartDate"></label>
-                        <input id="Input_StartDate" asp-for="StartDate" class="form-control" />
+                        <input id="Input_StartDate" asp-for="StartDate" class="form-control"/>
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EndDate"></label>
-                        <input id="Input_EndDate" asp-for="EndDate" class="form-control" />
+                        <input id="Input_EndDate" asp-for="EndDate" class="form-control"/>
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
 
                     <div id="hiddenElement" class="d-none">
                         <div class="form-group">
                             <label asp-for="StartTime"></label>
-                            <input id="Input_StartTime" asp-for="StartTime" class="form-control" />
+                            <input id="Input_StartTime" asp-for="StartTime" class="form-control"/>
                             <span asp-validation-for="StartTime" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="EndTime"></label>
-                            <input id="Input_EndTime" asp-for="EndTime" class="form-control" />
+                            <input id="Input_EndTime" asp-for="EndTime" class="form-control"/>
                             <span asp-validation-for="EndTime" class="text-danger"></span>
                         </div>
                     </div>
