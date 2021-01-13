@@ -85,6 +85,11 @@ namespace Bumbo.Web.Controllers
         [Route("{year}/{month}/{userId}")]
         public async Task<IActionResult> Details(int branchId, int year, int month, int userId)
         {
+            if (TempData["alertMessage"] != null)
+            {
+                ViewData["AlertMessage"] = TempData["alertMessage"];
+            }
+            
             var firstDay = new DateTime(year, month, 1);
             var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
@@ -196,7 +201,6 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        [Route("SavePaycheck")]
         public async Task<IActionResult> SavePaycheck(int branchId, DetailsViewModel.InputModel paycheckModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
