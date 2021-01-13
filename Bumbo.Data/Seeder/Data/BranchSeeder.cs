@@ -7,28 +7,28 @@ namespace Bumbo.Data.Seeder.Data
     {
         public List<Branch> Get()
         {
-            return new List<Branch>
+            return new()
             {
                 new Branch
                 {
                     Id = 1,
-                    Name = "Test Bumbo 1",
-                    ZipCode = "1234 AB",
-                    HouseNumber = "1",
+                    Name = "Test Geldrop",
+                    ZipCode = "5664 ex",
+                    HouseNumber = "103",
                 },
                 new Branch
                 {
                     Id = 2,
-                    Name = "Test Bumbo 2",
-                    ZipCode = "2345 BC",
-                    HouseNumber = "2a"
+                    Name = "Test Veldhoven",
+                    ZipCode = "5508vl",
+                    HouseNumber = "22a"
                 },
                 new Branch
                 {
                     Id = 3,
-                    Name = "Test Bumbo 3",
+                    Name = "Test Groningen",
                     ZipCode = "3456 CD",
-                    HouseNumber = "3b"
+                    HouseNumber = "184c"
                 }
             };
         }

@@ -125,8 +125,10 @@ namespace Bumbo.Web
                 context.Database.EnsureCreated();
                 
                 var seeder = new TestDataSeeder();
+                
                 context.Branches.AddRange(seeder.Branches);
                 context.Users.AddRange(seeder.Users);
+                context.UserRoles.AddRange(seeder.UserRoles);
                 context.Set<BranchSchedule>().AddRange(seeder.Shifts);
             }
 
