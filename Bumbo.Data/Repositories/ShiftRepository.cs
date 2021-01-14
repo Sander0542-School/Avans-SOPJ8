@@ -2,7 +2,6 @@
 using Bumbo.Data.Models;
 using Bumbo.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bumbo.Data.Repositories
 {
     public class ShiftRepository : RepositoryBase<Shift>
@@ -14,6 +13,7 @@ namespace Bumbo.Data.Repositories
         {
             return base.GetQueryBase()
                 .Include(shift => shift.Schedule)
+                .Include(shift => shift.WorkedShift)
                 .Include(shift => shift.User);
         }
     }

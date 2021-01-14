@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class OffersViewModel
     {
         public Dictionary<DateTime, List<Shift>> Shifts { get; set; }
-        
+
         public InputModel Input { get; set; }
 
         public class Shift
         {
             public int Id { get; set; }
+
+            public bool OwnedShift { get; set; }
 
             [Display(Name = "Employee")]
             public string Employee { get; set; }

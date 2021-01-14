@@ -1,0 +1,90 @@
+﻿@using Bumbo.Data.Models.Enums
+@model Bumbo.Web.Models.Furlough.ManagerFurloughViewModel
+@inject IViewLocalizer Localizer
+
+@{ ViewData["Title"] = Localizer["Furlough approval"]; }
+
+<div class="row mb-3">
+    <div class="col">
+        <h4>@ViewData["Title"]</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @if (Model.UserFurloughs.Count == 0)
+        {
+            <p class="my-1 font-weight-bold">
+                <i class="alert-info"></i>@Localizer["NoRequests"]
+            </p>
+        }
+        else
+        {
+            @foreach (var user in Model.UserFurloughs)
+            {
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-1">
+                            @Html.DisplayFor(model => user.Key.Name)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var furlough in user.Value)
+                        {
+                            <div class="furlough-item mb-3 d-flex">
+                                <div class="w-75">
+                                    <p class="font-weight-bold mb-0">
+                                        @Html.DisplayFor(model => furlough.Description)
+                                    </p>
+                                    <small>
+                                        @if (furlough.StartDate.Date == furlough.EndDate.Date)
+                                        {
+                                            @if (furlough.IsAllDay)
+                                            {
+                                                @furlough.StartDate.ToString("ddd d MMM yyyy")
+                                            }
+
+                                            else
+                                            {
+                                                @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm")
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (furlough.IsAllDay)
+                                            {
+                                                @furlough.StartDate.ToString("ddd d MMM yyyy - ")
+                                                @furlough.EndDate.ToString("ddd d MMM yyyy")
+                                            }
+
+                                            else
+                                            {
+                                                @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm - ")
+                                                @furlough.EndDate.ToString("ddd d MMM yyyy | hh:mm")
+                                            }
+                                        }
+                                    </small>
+                                </div>
+                                <div class="w-25">
+                                    <form method="post" asp-action="UpdateFurloughStatus" asp-route-id="@furlough.Id" asp-route-status="@FurloughStatus.APPROVED" class="d-inline-block">
+                                        <button type="submit" class="mr-3 text-success btn btn-link">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" asp-action="UpdateFurloughStatus" asp-route-id="@furlough.Id" asp-route-status="@FurloughStatus.REJECTED" class="d-inline-block">
+                                        <button type="submit" class="text-danger btn btn-link">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

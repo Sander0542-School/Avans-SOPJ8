@@ -31,13 +31,13 @@
     </div>
     <div class="col d-print-none">
         <div class="btn-group text-white" role="group" aria-label="Week Navigation">
-            <a asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+            <a id="datePreviousWeek" asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
-            <a asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+            <a id="dateCurrentWeek" asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
                 @Localizer["Today"]
             </a>
-            <a asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+            <a id="dateNextWeek" asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         </div>
@@ -46,7 +46,7 @@
 
             <div class="btn-group" role="group">
                 <button id="departmentGroup" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : @Localizer["All"])
+                    @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : Localizer["All"])
                 </button>
                 <div class="dropdown-menu" aria-labelledby="departmentGroup">
                     <a asp-action="Week" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
@@ -64,17 +64,20 @@
     </div>
     <div class="col d-print-none text-right">
         <button class="btn btn-secondary" onclick="window.print()">@Localizer["Print"]</button>
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["Copy Schedule"]</button>
-        @if (!Model.ScheduleApproved && Model.Department.HasValue)
+        @if (canEdit && Model.Department.HasValue)
         {
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["Approve Schedule"]</button>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#copyScheduleModal">@Localizer["Copy Schedule"]</button>
+            @if (!Model.ScheduleApproved)
+            {
+                <button class="btn btn-secondary" data-toggle="modal" data-target="#approveScheduleModal">@Localizer["Approve Schedule"]</button>
+            }
         }
     </div>
 </div>
 
 <br/>
 
-<table class="table table-bordered table-striped table-sm">
+<table class="table table-bordered table-striped table-sm table-p0">
     <thead class="text-center">
     <tr>
         <th class="text-left">@Html.DisplayNameFor(model => model.EmployeeShifts.FirstOrDefault().Name)</th>
@@ -131,7 +134,7 @@
                             }
                             firstRow = false;
 
-                            <div class="@(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}')", Model.Department.HasValue && canEdit)>
+                            <div class="@(Model.Department.HasValue && canEdit ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal({shift.Id}, {employeeShift.UserId}, '{employeeShift.Name}', '{shift.Date:yyyy-MM-dd}', '{shift.StartTime:hh\\:mm}', '{shift.EndTime:hh\\:mm}', {(shift.Sick ? "true" : "false")}, {Model.Branch.Id})", Model.Department.HasValue && canEdit)>
                                 @if (!Model.Department.HasValue)
                                 {
                                     <div>
@@ -173,14 +176,15 @@
                                 }
                             </div>
                         }
+                        <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
                     </td>
                 }
                 else
                 {
                     var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
-                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','')", clickable)>
-
+                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','', false, {Model.Branch.Id})", clickable)>
+                        <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
                     </td>
                 }
             }
@@ -199,13 +203,18 @@
     </tbody>
 </table>
 
-<partial name="_ShiftModal" model="Model.InputShift"/>
-
-<partial name="_CopyWeekModal" model="Model.InputCopyWeek"/>
-
-@if (!Model.ScheduleApproved)
+@if (canEdit)
 {
-    <partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+    <partial name="_ShiftModal" model="Model.InputShift"/>
+
+    <partial name="_DeleteShiftModal" model="Model.DeleteShift"/>
+
+    <partial name="_CopyWeekModal" model="Model.InputCopyWeek"/>
+
+    @if (!Model.ScheduleApproved)
+    {
+        <partial name="_ApproveScheduleModal" model="Model.InputApproveSchedule"/>
+    }
 }
 
 @section Scripts {

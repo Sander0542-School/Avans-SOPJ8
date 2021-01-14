@@ -9,15 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
-    public partial class EmailModel : PageModel
+    public class EmailModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<EmailModel> _localizer;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         public EmailModel(
             UserManager<User> userManager,
@@ -42,14 +41,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
-            public string NewEmail { get; set; }
-        }
-
         private async Task LoadAsync(User user)
         {
             var email = await _userManager.GetEmailAsync(user);
@@ -57,7 +48,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                NewEmail = email,
+                NewEmail = email
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -95,14 +86,19 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { userId = userId, email = Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
+                "/Account/ConfirmEmailChange",
+                null,
+                new
+                {
+                    userId,
+                    email = Input.NewEmail,
+                    code
+                },
+                Request.Scheme);
                 await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                Input.NewEmail,
+                "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 StatusMessage = _localizer["MessageConfirmationLinkSent"];
                 return RedirectToPage();
@@ -131,17 +127,30 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code },
-                protocol: Request.Scheme);
+            "/Account/ConfirmEmail",
+            null,
+            new
+            {
+                area = "Identity",
+                userId,
+                code
+            },
+            Request.Scheme);
             await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            email,
+            "Confirm your email",
+            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             StatusMessage = _localizer["MessageVerificationSent"];
             return RedirectToPage();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "New email")]
+            public string NewEmail { get; set; }
         }
     }
 }

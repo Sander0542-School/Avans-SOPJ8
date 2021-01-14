@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.Forecast;
 using NUnit.Framework;
-
 namespace Bumbo.Tests.Logic.ForecastRules
 {
     public class ForecastLogicTests
@@ -12,34 +12,41 @@ namespace Bumbo.Tests.Logic.ForecastRules
         private readonly ForecastLogic _logic;
         public ForecastLogicTests()
         {
-            _logic = new ForecastLogic(new List<IForecastStandard>()
+            var customersPerDay = new Dictionary<DayOfWeek, int>
             {
-                new ForecastStandard()
+                {DayOfWeek.Monday, 100},
+                {DayOfWeek.Tuesday, 100},
+                {DayOfWeek.Wednesday, 100},
+                {DayOfWeek.Thursday, 100},
+                {DayOfWeek.Friday, 100},
+                {DayOfWeek.Saturday, 100},
+                {DayOfWeek.Sunday, 100}
+            };
+
+
+            _logic = new ForecastLogic(new List<IForecastStandard>
+            {
+                new ForecastStandard
                 {
-                    Value = 10,
-                    Activity = ForecastActivity.STOCK_SHELVES
+                    Value = 10, Activity = ForecastActivity.STOCK_SHELVES
                 },
-                new ForecastStandard()
+                new ForecastStandard
                 {
-                    Value = 10,
-                    Activity = ForecastActivity.CASHIER
+                    Value = 10, Activity = ForecastActivity.CASHIER
                 },
-                new ForecastStandard()
+                new ForecastStandard
                 {
-                    Value = 10,
-                    Activity = ForecastActivity.FACE_SHELVES
+                    Value = 10, Activity = ForecastActivity.FACE_SHELVES
                 },
-                new ForecastStandard()
+                new ForecastStandard
                 {
-                    Value = 10,
-                    Activity = ForecastActivity.PRODUCE_DEPARTMENT
+                    Value = 10, Activity = ForecastActivity.PRODUCE_DEPARTMENT
                 },
-                new ForecastStandard()
+                new ForecastStandard
                 {
-                    Value = 10,
-                    Activity = ForecastActivity.UNLOAD_COLI
+                    Value = 10, Activity = ForecastActivity.UNLOAD_COLI
                 }
-            });
+            }, customersPerDay);
         }
 
         [Test]

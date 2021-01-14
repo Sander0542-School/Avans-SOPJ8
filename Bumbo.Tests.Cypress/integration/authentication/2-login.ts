@@ -13,19 +13,10 @@ describe('Login', () => {
   });
 
   it('Login for existing user', () => {
-    cy.fixture('admin-login').then((adminLogin) => {
-      cy.get('#Input_Email').type(adminLogin.credentials.email);
-      cy.get('#Input_Password').type(adminLogin.credentials.password);
-      cy.get('button[type=submit]').click();
-    });
-
-    cy.get('a[href=\'#accountSubmenu\']').should('exist');
+    cy.login('admin');
   });
 
   it('Logout as logged in user', () => {
-    cy.visit('/');
-    cy.get('a[href=\'#accountSubmenu\']').click();
-    cy.get('a[href*=\'Logout\']').scrollIntoView().should('be.visible').click();
-    cy.get('a[href=\'#accountSubmenu\']').should('not.exist');
+    cy.logout();
   });
 });

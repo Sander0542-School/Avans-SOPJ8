@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 
 <div class="modal fade" id="shiftEditModal" tabindex="-1" role="dialog" aria-labelledby="shiftEditModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form asp-action="SaveShift">
                 <div class="modal-header">
@@ -41,8 +41,14 @@
                         <input id="InputShift_EndTime" asp-for="EndTime" class="form-control"/>
                         <span asp-validation-for="EndTime" class="text-danger"></span>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input id="InputShift_Sick" asp-for="Sick" class="form-check-input">
+                        <label class="form-check-label" for="InputShift_Sick">@Localizer["Is sick this day"]</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="#" class="mr-auto" id="schedule_cbsr">@Localizer["Request shift from external branch"]</a>
+                    <button type="button" class="btn btn-danger" id="deleteShiftButton" data-toggle="modal" data-target="#shiftDeleteModal">@Localizer["Delete"]</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
                     <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </div>
@@ -52,13 +58,24 @@
 </div>
 
 <script type="text/javascript">
-    function shiftModal(shiftId, userId, userName, date, startTime, endTime) {
+    function shiftModal(shiftId, userId, userName, date, startTime, endTime, sick, branchId) {
         $('#InputShift_ShiftId').val(shiftId);
+        $('#DeleteShift_ShiftId').val(shiftId);
         $('#InputShift_UserId').val(userId);
         $('#InputShift_UserName').val(userName);
         $('#InputShift_Date').val(date);
         $('#InputShift_StartTime').val(startTime);
         $('#InputShift_EndTime').val(endTime);
+        $('#InputShift_Sick').prop("checked", sick);
+
+        if (shiftId == '') {
+            $('#schedule_cbsr').hide();
+            $('#deleteShiftButton').hide();
+        } else {
+            $('#schedule_cbsr').show();
+            $('#deleteShiftButton').show();
+        }
+        $('#schedule_cbsr').attr('href', `/Branches/${branchId}/Schedule/CreateCrossBranchOffer/${shiftId}`);
 
         $('#shiftEditModal').modal('show');
     }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Bumbo.Web.Resources.Views.Availability {
+namespace Bumbo.Web.Resources.Views.Users {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Bumbo.Web.Resources.Views.Availability {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Index {
+    internal class Index_nl {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Index() {
+        internal Index_nl() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Bumbo.Web.Resources.Views.Availability {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Bumbo.Web.Resources.Views.Availability.Index", typeof(Index).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Bumbo.Web.Resources.Views.Users.Index.nl", typeof(Index_nl).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,101 +61,83 @@ namespace Bumbo.Web.Resources.Views.Availability {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beschikbaarheid.
+        ///   Looks up a localized string similar to Verjaardag.
         /// </summary>
-        internal static string Availability {
+        internal static string Birthday {
             get {
-                return ResourceManager.GetString("Availability", resourceCulture);
+                return ResourceManager.GetString("Birthday", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dag.
+        ///   Looks up a localized string similar to Toevoegen.
         /// </summary>
-        internal static string Day {
+        internal static string Create_new {
             get {
-                return ResourceManager.GetString("Day", resourceCulture);
+                return ResourceManager.GetString("Create new", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eindtijd.
+        ///   Looks up a localized string similar to Verwijderen.
         /// </summary>
-        internal static string End_Time {
+        internal static string Delete {
             get {
-                return ResourceManager.GetString("End Time", resourceCulture);
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vrijdag.
+        ///   Looks up a localized string similar to Aanpassen.
         /// </summary>
-        internal static string Friday {
+        internal static string Edit {
             get {
-                return ResourceManager.GetString("Friday", resourceCulture);
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maandag.
+        ///   Looks up a localized string similar to E-mail.
         /// </summary>
-        internal static string Monday {
+        internal static string Email {
             get {
-                return ResourceManager.GetString("Monday", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zaterdag.
+        ///   Looks up a localized string similar to Medewerkers.
         /// </summary>
-        internal static string Saturday {
+        internal static string Employees {
             get {
-                return ResourceManager.GetString("Saturday", resourceCulture);
+                return ResourceManager.GetString("Employees", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starttijd.
+        ///   Looks up a localized string similar to Voornaam.
         /// </summary>
-        internal static string Start_Time {
+        internal static string FirstName {
             get {
-                return ResourceManager.GetString("Start Time", resourceCulture);
+                return ResourceManager.GetString("FirstName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zondag.
+        ///   Looks up a localized string similar to Achternaam.
         /// </summary>
-        internal static string Sunday {
+        internal static string LastName {
             get {
-                return ResourceManager.GetString("Sunday", resourceCulture);
+                return ResourceManager.GetString("LastName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Donderdag.
+        ///   Looks up a localized string similar to Tussenvoegsel.
         /// </summary>
-        internal static string Thursday {
+        internal static string MiddleName {
             get {
-                return ResourceManager.GetString("Thursday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dinsdag.
-        /// </summary>
-        internal static string Tuesday {
-            get {
-                return ResourceManager.GetString("Tuesday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Woensdag.
-        /// </summary>
-        internal static string Wednesday {
-            get {
-                return ResourceManager.GetString("Wednesday", resourceCulture);
+                return ResourceManager.GetString("MiddleName", resourceCulture);
             }
         }
     }

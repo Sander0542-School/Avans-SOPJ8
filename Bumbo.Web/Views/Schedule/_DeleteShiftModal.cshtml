@@ -1,0 +1,29 @@
+@model DepartmentViewModel.DeleteShiftModel
+@inject IViewLocalizer Localizer
+
+<div class="modal fade" id="shiftDeleteModal" tabindex="-1" role="dialog" aria-labelledby="shiftDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="DeleteShift">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shiftDeleteModalLabel">@Localizer["Delete Shift"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="DeleteShift_ShiftId" asp-for="ShiftId" hidden/>
+                    <input asp-for="Year" hidden/>
+                    <input asp-for="Week" hidden/>
+                    <input asp-for="Department" hidden/>
+
+                    <p>@Localizer["Are you sure you want to delete this shift?"]</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Delete"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

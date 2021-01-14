@@ -129,6 +129,9 @@
   <data name="Start Date" xml:space="preserve">
     <value>Startdatum</value>
   </data>
+  <data name="The start date cannot be after the end date" xml:space="preserve">
+    <value>De startdatum mag niet na de einddatum komen</value>
+  </data>
   <data name="User Id" xml:space="preserve">
     <value>User id</value>
   </data>

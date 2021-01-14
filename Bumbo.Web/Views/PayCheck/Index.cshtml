@@ -1,56 +1,60 @@
 @model Bumbo.Web.Models.Paycheck.PaycheckViewModel
 @inject IViewLocalizer Localizer
 
+@{
+    ViewData["Title"] = Localizer["PayCheck"];
+}
+
 <h1>@Localizer["PayCheck"]</h1>
 <h2>@(new DateTime(Model.Year, Model.Month, 1).ToString("MMMMM"))</h2>
 
 <table class="table">
     <thead>
-        <tr>
-            <th class="text-left">@Localizer["Name"]</th>
-            <th class="text-left">@Localizer["Scale"]</th>
+    <tr>
+        <th class="text-left">@Localizer["Name"]</th>
+        <th class="text-left">@Localizer["Scale"]</th>
 
-            @foreach (var week in Model.WeekNumbers)
-            {
-                <th>
-                    @Localizer["Week"] @week
-                </th>
-            }
+        @foreach (var week in Model.WeekNumbers)
+        {
             <th>
-                @Localizer["Total"]
+                @Localizer["Week"] @week
             </th>
-        </tr>
+        }
+        <th>
+            @Localizer["Total"]
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var pair in Model.MonthShifts)
-        {
-            var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
-            <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
-                <td>
-                    <span class="d-inline-block">
-                        @Html.DisplayFor(model => pair.Key.Name)
-                        <br />
-                        <span class="text-secondary">
-                            @Html.DisplayFor(model => pair.Key.Function)
-                        </span>
+    @foreach (var pair in Model.MonthShifts)
+    {
+        var totalWorkedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
+        <tr onclick="location.href = '@Url.Action("Details", "PayCheck", new { branchId = Model.Branch.Id, year = Model.Year, month = Model.Month, userId = pair.Key.Id })'" class="c-pointer">
+            <td>
+                <span class="d-inline-block">
+                    @Html.DisplayFor(model => pair.Key.Name)
+                    <br/>
+                    <span class="text-secondary">
+                        @Html.DisplayFor(model => pair.Key.Function)
                     </span>
-                </td>
+                </span>
+            </td>
+            <td>
+                @Html.DisplayFor(model => pair.Key.Scale)
+            </td>
+            @foreach (var week in Model.WeekNumbers)
+            {
+                var workedShifts = pair.Value.Where(ws => ws.Week == week);
+                var workedTime = new TimeSpan(workedShifts.Sum(ws => ws.WorkTime.Ticks));
                 <td>
-                    @Html.DisplayFor(model => pair.Key.Scale)
+                    @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
                 </td>
-                @foreach (var week in Model.WeekNumbers)
-                {
-                    var workedShifts = pair.Value.Where(ws => ws.Week == week);
-                    var workedTime = new TimeSpan(workedShifts.Sum(ws => ws.WorkTime.Ticks));
-                    <td>
-                        @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
-                    </td>
-                }
-                <td>
-                    @($"{totalWorkedTime.TotalHours:00}:{totalWorkedTime.Minutes:00}")
-                </td>
-            </tr>
-        }
+            }
+            <td>
+                @($"{totalWorkedTime.TotalHours:00}:{totalWorkedTime.Minutes:00}")
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 

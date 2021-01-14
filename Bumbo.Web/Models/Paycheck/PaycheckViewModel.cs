@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
 using Bumbo.Logic.EmployeeRules;
-
 namespace Bumbo.Web.Models.Paycheck
 {
     public class PaycheckViewModel

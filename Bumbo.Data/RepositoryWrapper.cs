@@ -1,5 +1,4 @@
 ﻿using Bumbo.Data.Repositories;
-
 namespace Bumbo.Data
 {
     public class RepositoryWrapper
@@ -7,18 +6,23 @@ namespace Bumbo.Data
         private readonly ApplicationDbContext _repositoryContext;
 
         private BranchRepository _branch;
+        private BranchForecastStandardRepository _branchForecastStandard;
+        private BranchManagerRepository _branchManager;
         private BranchScheduleRepository _branchSchedule;
         private ClockSystemTagRepository _clockSystemTag;
         private ForecastRepository _forecast;
-        private UserRepository _user;
+        private ForecastStandardRepository _forecastStandard;
+        private FurloughRepository _furlough;
         private ShiftRepository _shift;
+        private UserRepository _user;
         private UserAdditionalWorkRepository _userAdditionalWork;
         private UserAvailabilityRepository _userAvailability;
-        private WorkedShiftRepository _workedShift;
-        private BranchForecastStandardRepository _branchForecastStandard;
-        private ForecastStandardRepository _forecastStandard;
-        private BranchManagerRepository _branchManager;
         private UserBranchRepository _userBranch;
+        private WorkedShiftRepository _workedShift;
+        public RepositoryWrapper(ApplicationDbContext context)
+        {
+            _repositoryContext = context;
+        }
 
         public BranchRepository Branch => _branch ??= new BranchRepository(_repositoryContext);
         public BranchScheduleRepository BranchSchedule => _branchSchedule ??= new BranchScheduleRepository(_repositoryContext);
@@ -33,9 +37,6 @@ namespace Bumbo.Data
         public ForecastStandardRepository ForecastStandard => _forecastStandard ??= new ForecastStandardRepository(_repositoryContext);
         public BranchManagerRepository BranchManager => _branchManager ??= new BranchManagerRepository(_repositoryContext);
         public UserBranchRepository UserBranch => _userBranch ??= new UserBranchRepository(_repositoryContext);
-        public RepositoryWrapper(ApplicationDbContext context)
-        {
-            _repositoryContext = context;
-        }
+        public FurloughRepository Furlough => _furlough ??= new FurloughRepository(_repositoryContext);
     }
 }

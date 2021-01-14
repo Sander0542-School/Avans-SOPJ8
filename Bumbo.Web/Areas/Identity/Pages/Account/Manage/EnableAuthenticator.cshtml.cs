@@ -8,16 +8,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<EnableAuthenticatorModel> _logger;
-        private readonly UrlEncoder _urlEncoder;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+        private readonly ILogger<EnableAuthenticatorModel> _logger;
+        private readonly UrlEncoder _urlEncoder;
+        private readonly UserManager<User> _userManager;
 
         public EnableAuthenticatorModel(
             UserManager<User> userManager,
@@ -41,15 +40,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
-            public string Code { get; set; }
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -82,7 +72,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
             if (!is2faTokenValid)
             {
@@ -103,10 +93,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                 RecoveryCodes = recoveryCodes.ToArray();
                 return RedirectToPage("./ShowRecoveryCodes");
             }
-            else
-            {
-                return RedirectToPage("./TwoFactorAuthentication");
-            }
+            return RedirectToPage("./TwoFactorAuthentication");
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
@@ -128,7 +115,7 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
         private string FormatKey(string unformattedKey)
         {
             var result = new StringBuilder();
-            int currentPosition = 0;
+            var currentPosition = 0;
             while (currentPosition + 4 < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
@@ -145,10 +132,19 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
         private string GenerateQrCodeUri(string email, string unformattedKey)
         {
             return string.Format(
-                AuthenticatorUriFormat,
-                _urlEncoder.Encode("Bumbo"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
+            AuthenticatorUriFormat,
+            _urlEncoder.Encode("Bumbo"),
+            _urlEncoder.Encode(email),
+            unformattedKey);
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Verification Code")]
+            public string Code { get; set; }
         }
     }
 }

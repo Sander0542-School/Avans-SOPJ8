@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Logic.EmployeeRules;
-
+using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Models.Paycheck
 {
     public class DetailsViewModel
     {
-        public Dictionary<int, List<Shift>> WeekShifts { get; set; }
-
-        public InputModel Input { get; set; }
 
         public readonly DayOfWeek[] DaysOfWeek =
         {
@@ -21,6 +18,10 @@ namespace Bumbo.Web.Models.Paycheck
             DayOfWeek.Saturday,
             DayOfWeek.Sunday
         };
+
+        public Dictionary<int, List<Shift>> WeekShifts { get; set; }
+
+        public InputModel Input { get; set; }
 
         public class Shift
         {
@@ -54,25 +55,34 @@ namespace Bumbo.Web.Models.Paycheck
             public TimeSpan Difference { get; set; }
         }
 
-        public class InputModel
+        public class InputModel : IValidatableObject
         {
             [Required]
             public int ShiftId { get; set; }
+
             public int UserId { get; set; }
             public int Year { get; set; }
             public int Month { get; set; }
 
             [Display(Name = "Start Time")]
             [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan StartTime { get; set; }
 
             [Display(Name = "End Time")]
             [DataType(DataType.Time)]
-            [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<InputModel>));
+
+                if (StartTime > EndTime)
+                {
+                    yield return new ValidationResult(localizer["The start time cannot be after the end time"]);
+                }
+            }
         }
     }
 }

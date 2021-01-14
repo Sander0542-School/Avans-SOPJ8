@@ -1,5 +1,5 @@
-﻿@using System.Globalization
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
+@using Bumbo.Logic.Utils
 @model Bumbo.Web.Models.Paycheck.SalaryBenefitViewModel
 
 @{
@@ -11,35 +11,35 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Localizer["Employee Name"]
-            </th>
-            <th>
-                @Localizer["Hours"]
-            </th>
-            <th>
-                @Localizer["Benefit"]
-            </th>
-        </tr>
+    <tr>
+        <th>
+            @Localizer["Employee Name"]
+        </th>
+        <th>
+            @Localizer["Hours"]
+        </th>
+        <th>
+            @Localizer["Benefit"]
+        </th>
+    </tr>
     </thead>
-    <tbody>
-        @foreach (var kvp in Model.PayChecks)
+    @foreach (var (user, payCheck) in Model.PayChecks)
+    {
+        var elemId = $"paycheck-user-{user.Id}";
+
+        <tr data-toggle="collapse" data-target="#@elemId" class="c-pointer">
+            <td>@UserUtil.GetFullName(user)</td>
+            <td colspan="2">@payCheck.GetTotalTime().TotalHours:@($"{payCheck.GetTotalTime().Minutes:00}")</td>
+        </tr>
+        <tbody id="@elemId" class="collapse">
+        @foreach (var key in payCheck.GetKeys())
         {
-            foreach (var key in kvp.Value.GetKeys())
-            {
-                <tr>
-                    <td>
-                        @kvp.Key.FirstName @kvp.Key.MiddleName @kvp.Key.LastName
-                    </td>
-                    <td>
-                        @kvp.Value.GetTime(key)
-                    </td>
-                    <td>
-                        @key
-                    </td>
-                </tr>
-            }
+            <tr>
+                <td></td>
+                <td>@payCheck.GetTime(key).TotalHours:@($"{payCheck.GetTime(key).Minutes:00}")</td>
+                <td>@($"{key:C}")</td>
+            </tr>
         }
-    </tbody>
+        </tbody>
+    }
 </table>

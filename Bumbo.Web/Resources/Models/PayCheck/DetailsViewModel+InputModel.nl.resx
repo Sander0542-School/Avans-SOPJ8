@@ -123,4 +123,7 @@
   <data name="Start Time" xml:space="preserve">
     <value>Starttijd</value>
   </data>
+  <data name="The start time cannot be after the end time" xml:space="preserve">
+      <value>De starttijd kan niet later zijn dan de eindtijd</value>
+  </data>
 </root>

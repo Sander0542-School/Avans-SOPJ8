@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Bumbo.Web.Models.Schedule
 {
     public class EventViewModel
@@ -14,7 +13,7 @@ namespace Bumbo.Web.Models.Schedule
         public String End { get; set; }
 
         public bool AllDay { get; set; }
-        
+
         public Dictionary<string, object> ExtendedProps { get; set; }
     }
 }

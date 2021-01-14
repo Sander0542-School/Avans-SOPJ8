@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Models
 {
     public class Shift : BaseEntity
@@ -16,9 +15,9 @@ namespace Bumbo.Data.Models
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
-        
-        public bool Offered { get; set; }
 
+        public bool Offered { get; set; }
+        public bool OfferedCrossBranch { get; set; }
 
         public User User { get; set; }
 

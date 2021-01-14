@@ -1,8 +1,138 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject IViewLocalizer Localizer
+@using System.Globalization
+@model Bumbo.Web.Models.Home.IndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["Home"];
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    @foreach (var (branch, _) in Model.Branches)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @(Model.Branches.First().Key == branch ? "active" : "")" id="branch@(branch.Id)Label" data-toggle="tab" href="#branch@(branch.Id)" aria-selected="@(Model.Branches.First().Key == branch ? "true" : "false")">@branch.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="card-body tab-content">
+                @foreach (var (branch, data) in Model.Branches)
+                {
+                    <div class="tab-pane fade p-3 @(Model.Branches.First().Key == branch ? "show active" : "")" id="branch@(branch.Id)" role="tabpanel" aria-labelledby="branch@(branch.Id)Label">
+                        <div class="row">
+                            <div class="col-9">
+                                <h5>@Localizer["Forecast upcoming week"]</h5>
+                                <table class="table table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        @foreach (var day in Model.DaysOfWeek)
+                                        {
+                                            <th scope="col">@ISOWeek.ToDateTime(1, 1, day).ToString("ddd")</th>
+                                        }
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th>@Localizer["Expected crowds"]:</th>
+                                        @foreach (var day in Model.DaysOfWeek)
+                                        {
+                                            <td>@Localizer[data.Forecasts.ContainsKey(day) ? data.Forecasts[day].ExpectedCrowd : "Unknown"]</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Planned hours"]:</th>
+                                        @foreach (var day in Model.DaysOfWeek)
+                                        {
+                                            <td>@(data.Forecasts.ContainsKey(day) ? data.Forecasts[day].PlannedHours : 0)</td>
+                                        }
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-3">
+                                <h5>@Localizer["Weather forecast"]</h5>
+                                <div class="p-2">
+                                    <img alt="@data.Weather.IconDesc" src="@data.Weather.IconUrl"/>
+                                </div>
+                                <div class="p-2 h3">@data.Weather.Temperature°C</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["Birthdays"]
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm">
+                    @if (Model.Birthdays.Any())
+                    {
+                        @foreach (var birthday in Model.Birthdays)
+                        {
+                            <tr>
+                                <td>@birthday.Date.ToString("M")</td>
+                                <th>@birthday.Name</th>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>@Localizer["There are no upcoming birthdays"]</tr>
+                    }
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["Absent due to illness"]
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm">
+                    @if (Model.Sicks.Any())
+                    {
+                        @foreach (var sick in Model.Sicks)
+                        {
+                            <tr>
+                                <td>@sick.Date.ToString("M")</td>
+                                <th>@sick.Name</th>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>@Localizer["There are no sick employees."]</tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+        <div style="min-height:220px;" class="card">
+            <div class="card-header">
+                @Localizer["News"]
+            </div>
+            <div class="card-body">
+                @Localizer["There is no news yet."]
+            </div>
+        </div>
+    </div>
+
 </div>

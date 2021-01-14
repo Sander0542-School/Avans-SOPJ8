@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models;
-
-
+using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Models.Users
 {
-    public class ContractViewModel
+    public class ContractViewModel : IValidatableObject
     {
         [Required]
         [Display(Name = "User Id")]
@@ -29,10 +29,18 @@ namespace Bumbo.Web.Models.Users
         [Display(Name = "Scale")]
         public int Scale { get; set; }
 
-
         public User User { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<ContractViewModel>));
+
+            if (StartDate > EndDate)
+            {
+                yield return new ValidationResult(localizer["The start date cannot be after the end date"]);
+            }
+        }
     }
 
 
 }
-

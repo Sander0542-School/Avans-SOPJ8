@@ -5,17 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
 {
     public class TwoFactorAuthenticationModel : PageModel
     {
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
+        private readonly IStringLocalizer<TwoFactorAuthenticationModel> _localizer;
+        private readonly ILogger<TwoFactorAuthenticationModel> _logger;
+        private readonly SignInManager<User> _signInManager;
 
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<TwoFactorAuthenticationModel> _logger;
-        private readonly IStringLocalizer<TwoFactorAuthenticationModel> _localizer;
 
         public TwoFactorAuthenticationModel(
             UserManager<User> userManager,

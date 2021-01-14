@@ -1,6 +1,5 @@
 ﻿using System;
 using Bumbo.Data.Models.Common;
-
 namespace Bumbo.Data.Models
 {
     public class UserContract : BaseEntity

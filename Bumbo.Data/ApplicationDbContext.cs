@@ -1,11 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Bumbo.Data.Models;
+using Bumbo.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-
 namespace Bumbo.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, int>
@@ -25,6 +27,10 @@ namespace Bumbo.Data
         public DbSet<UserAvailability> UserAvailabilities { get; set; }
 
         public DbSet<UserAdditionalWork> UserAdditionalWorks { get; set; }
+
+        public DbSet<ForecastStandard> ForecastStandard { get; set; }
+
+        public DbSet<Furlough> Furloughs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -78,17 +84,28 @@ namespace Bumbo.Data
 
             builder.Entity<UserAdditionalWork>(b =>
             {
-                b.HasKey(additionalWork => new { additionalWork.UserId, additionalWork.Day });
+                b.HasKey(additionalWork => new
+                {
+                    additionalWork.UserId, additionalWork.Day
+                });
             });
 
             builder.Entity<UserAvailability>(b =>
             {
-                b.HasKey(availability => new { availability.UserId, availability.Day });
+                b.HasKey(availability => new
+                {
+                    availability.UserId, availability.Day
+                });
             });
 
             builder.Entity<UserBranch>(b =>
             {
-                b.HasKey(userBranch => new { userBranch.UserId, userBranch.BranchId, userBranch.Department });
+                b.HasKey(userBranch => new
+                {
+                    userBranch.UserId,
+                    userBranch.BranchId,
+                    userBranch.Department
+                });
             });
 
             #endregion
@@ -102,14 +119,23 @@ namespace Bumbo.Data
 
             builder.Entity<BranchManager>(b =>
             {
-                b.HasKey(branchManager => new { branchManager.UserId, branchManager.BranchId });
+                b.HasKey(branchManager => new
+                {
+                    branchManager.UserId, branchManager.BranchId
+                });
 
                 b.ToTable("BranchManagers");
             });
 
             builder.Entity<BranchSchedule>(b =>
             {
-                b.HasIndex(branchSchedule => new { branchSchedule.BranchId, branchSchedule.Year, branchSchedule.Week, branchSchedule.Department }).IsUnique();
+                b.HasIndex(branchSchedule => new
+                {
+                    branchSchedule.BranchId,
+                    branchSchedule.Year,
+                    branchSchedule.Week,
+                    branchSchedule.Department
+                }).IsUnique();
 
                 b.ToTable("BranchSchedules");
             });
@@ -120,7 +146,12 @@ namespace Bumbo.Data
 
             builder.Entity<Shift>(b =>
             {
-                b.HasIndex(shift => new { shift.UserId, shift.ScheduleId, shift.Date }).IsUnique();
+                b.HasIndex(shift => new
+                {
+                    shift.UserId,
+                    shift.ScheduleId,
+                    shift.Date
+                }).IsUnique();
             });
 
             builder.Entity<WorkedShift>(b =>
@@ -134,17 +165,31 @@ namespace Bumbo.Data
 
             builder.Entity<Forecast>(b =>
             {
-                b.HasKey(forecast => new { forecast.BranchId, forecast.Date, forecast.Department });
+                b.HasKey(forecast => new
+                {
+                    forecast.BranchId,
+                    forecast.Date,
+                    forecast.Department
+                });
             });
 
             builder.Entity<ForecastStandard>(b =>
             {
-
+                // Loops through enum and generates a forecast standard for each item with value 10
+                b.HasData(Enum.GetValues<ForecastActivity>().Select(activity =>
+                    new ForecastStandard
+                    {
+                        Value = 10, Activity = activity
+                    })
+                );
             });
 
             builder.Entity<BranchForecastStandard>(b =>
             {
-                b.HasKey(branchForecastStandard => new { branchForecastStandard.BranchId, branchForecastStandard.Activity });
+                b.HasKey(branchForecastStandard => new
+                {
+                    branchForecastStandard.BranchId, branchForecastStandard.Activity
+                });
 
                 b.HasOne(branchForecastStandard => branchForecastStandard.ForecastStandard)
                     .WithMany(forecastStandard => forecastStandard.BranchForecastStandards)
@@ -168,9 +213,9 @@ namespace Bumbo.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.Development.json")
+                .AddJsonFile(Directory.GetCurrentDirectory() + "/../Bumbo.Web/appsettings.Development.json")
                 .Build();
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DatabaseConnection");

@@ -40,13 +40,14 @@
 
         @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
         {
-            @("|") // This seems to be the only way to add the vertical line inside an if statement
+            @("|")// This seems to be the only way to add the vertical line inside an if statement
             <a asp-action="Index" asp-route-branchId="">@Localizer["Back to List"]</a>
         }
     </div>
     @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
     {
         <div class="col-md-4">
+            <strong>@TempData["alertMessage"]</strong>
             <h4>@Localizer["Add manager"]</h4>
             <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -105,10 +106,7 @@
                 <td>
                     <form asp-action="RemoveManager" asp-route-userId="@user.Id">
                         <button class="btn btn-secondary" type="submit"
-                                @if (Model.CurrentUserId == user.Id)
-                                {
-                                    @("disabled")
-                                }>
+                                @if (Model.CurrentUserId == user.Id) { @("disabled") }>
                             @Localizer["Delete"]
                         </button>
                     </form>

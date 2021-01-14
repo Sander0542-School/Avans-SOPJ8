@@ -2,7 +2,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Tests.Utils
 {
     public class TestDatabaseContextFactory
@@ -13,7 +12,10 @@ namespace Bumbo.Tests.Utils
 
             var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug().AddConsole());
 
-            var connectionStringBuilder = new SqliteConnectionStringBuilder { Mode = SqliteOpenMode.Memory };
+            var connectionStringBuilder = new SqliteConnectionStringBuilder
+            {
+                Mode = SqliteOpenMode.Memory
+            };
             var connection = new SqliteConnection(connectionStringBuilder.ConnectionString);
             connection.Open();
 
