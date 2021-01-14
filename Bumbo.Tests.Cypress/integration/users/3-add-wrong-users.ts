@@ -1,4 +1,4 @@
-describe('show users', () => {
+describe('add wrong users', () => {
   beforeEach(() => {
     // Keeps session alive through this "describe" method
     Cypress.Cookies.preserveOnce('.AspNetCore.Identity.Application');
