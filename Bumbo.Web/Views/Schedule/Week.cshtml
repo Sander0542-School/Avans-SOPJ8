@@ -125,7 +125,7 @@
                 {
                     var firstRow = true;
 
-                    <td class="align-middle">
+                    <td class="p-0 align-middle">
                         @foreach (var shift in employeeShift.Shifts.Where(shift1 => shift1.Date.DayOfWeek == day).Where(shift1 => !Model.Department.HasValue || shift1.Department == Model.Department.Value))
                         {
                             @if (!firstRow)
@@ -183,7 +183,7 @@
                 {
                     var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
-                    <td class="@(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','', false, {Model.Branch.Id})", clickable)>
+                    <td class="p-0 @(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','', false, {Model.Branch.Id})", clickable)>
                         <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
                     </td>
                 }
