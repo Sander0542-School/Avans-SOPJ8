@@ -5,7 +5,7 @@ describe('Fill in valid employee data', () => {
   });
 
   it('Login as manager', () => {
-    cy.login('super');
+    cy.login('manager');
   });
 
   it('Go to create forecast page', () => {

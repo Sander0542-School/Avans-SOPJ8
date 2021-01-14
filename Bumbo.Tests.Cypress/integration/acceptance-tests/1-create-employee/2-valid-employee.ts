@@ -15,13 +15,13 @@ describe('Fill in valid employee data', () => {
     cy.get('#Birthday').type('1990-10-10');
     cy.get('#ZipCode').type('1234 ab');
     cy.get('#HouseNumber').type('10');
-    cy.get('#Email').type('employee2@bumbo.test');
+    cy.get('#Email').type('employee99999@bumbo.test');
     cy.get('#PhoneNumber').type('0600000052');
     cy.get('input[type=submit]').click();
   });
 
   it('Check if data has been added', () => {
     cy.visit('Users');
-    cy.get('tbody').should('contain', 'employee2@bumbo.test');
+    cy.get('tbody').should('contain', 'employee99999@bumbo.test');
   });
 });
