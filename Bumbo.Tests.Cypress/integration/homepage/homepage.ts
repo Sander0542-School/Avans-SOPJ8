@@ -1,7 +1,6 @@
 describe('Homepage', () => {
   beforeEach(() => {
     cy.visit('/');
-    cy.get('.accept-policy > span').click();
   });
 
   it('Has sidebar', () => {
