@@ -23,7 +23,7 @@ namespace Bumbo.Web
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
 
             services.Configure<MailOptions>(config.GetSection(MailOptions.Mail));
-            // services.AddTransient<IEmailSender, EmailSender>(); // Disable for now
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<OpenWeatherMapOptions>(config.GetSection(OpenWeatherMapOptions.OpenWeatherMap));
         }
