@@ -45,7 +45,6 @@ Cypress.Commands.add("login", (type) => {
 Cypress.Commands.add("logout", () => {
   cy.visit('/');
   cy.get('a[href=\'#accountSubmenu\']').click();
-  cy.wait(200);
   cy.get('a[href*=\'Logout\']').scrollIntoView().should('be.visible').click();
   cy.get('a[href=\'#accountSubmenu\']').should('not.exist');
 })
