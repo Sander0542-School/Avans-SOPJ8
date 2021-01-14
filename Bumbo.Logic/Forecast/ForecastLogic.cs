@@ -133,7 +133,7 @@ namespace Bumbo.Logic.Forecast
 
         public int NumberOfCustomersExpected(DateTime date)
         {
-            return _expectedNumberOfCustomers.First(kvp => date.DayOfWeek == kvp.Key).Value;
+            return _expectedNumberOfCustomers.FirstOrDefault(kvp => date.DayOfWeek == kvp.Key).Value;
 
             /* Disabled in favour of acceptatie test scenario
             // begin met een standaard hoeveelheid
