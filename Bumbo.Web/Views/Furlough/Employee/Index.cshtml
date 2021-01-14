@@ -73,8 +73,12 @@
                             }
                         </p>
                     </div>
+                    
                     <div class="col">
-                        <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToString("yyyy-MM-dd")', '@furlough.EndDate.ToString("yyyy-MM-dd")', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
+                        @if (furlough.Status == FurloughStatus.REQUESTED)
+                        {
+                            <a class="c-pointer card-link" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToString("yyyy-MM-dd")', '@furlough.EndDate.ToString("yyyy-MM-dd")', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> <span>|</span>
+                        }
                         <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
                     </div>
                 </div>
