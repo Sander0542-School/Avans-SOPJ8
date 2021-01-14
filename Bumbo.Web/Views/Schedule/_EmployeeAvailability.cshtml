@@ -1,0 +1,14 @@
+@model DepartmentViewModel.Availability
+
+<div class="availability-progress">
+    @if (Model != null)
+    {
+        <div class="progress-bar bg-danger" role="progressbar" style="width: @Model.StartPercentage%"></div>
+        <div class="progress-bar bg-success" role="progressbar" style="width: @(Model.EndPercentage - Model.StartPercentage)%"></div>
+        <div class="progress-bar bg-danger" role="progressbar" style="width: @(100 - Model.EndPercentage)%"></div>
+    }
+    else
+    {
+        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"></div>
+    }
+</div>

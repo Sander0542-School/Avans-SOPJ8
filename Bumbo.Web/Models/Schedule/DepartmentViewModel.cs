@@ -48,11 +48,31 @@ namespace Bumbo.Web.Models.Schedule
 
         public InputApproveScheduleModel InputApproveSchedule { get; set; }
 
+        public Dictionary<int, List<Availability>> EmployeeAvailability { get; set; }
+
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
         public bool ScheduleApproved { get; set; }
 
         public Branch Branch { get; set; }
+
+        public class Availability
+        {
+            public DayOfWeek DayOfWeek { get; set; }
+
+            public TimeSpan StartTime { get; set; }
+
+            public TimeSpan EndTime { get; set; }
+
+            public int StartPercentage => GetPercentageOfDay(StartTime);
+
+            public int EndPercentage => GetPercentageOfDay(EndTime);
+
+            private int GetPercentageOfDay(TimeSpan time)
+            {
+                return (int)((time.Ticks / (double)TimeSpan.TicksPerDay) * 100);
+            }
+        }
 
         public class EmployeeShift
         {
