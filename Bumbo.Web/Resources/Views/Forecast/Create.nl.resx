@@ -145,4 +145,8 @@
     <value>Bevestig</value>
     <comment>Submit</comment>
   </data>
+  <data name="Expected number of customers" xml:space="preserve">
+    <value>Verwachte hoeveelheid klanten</value>
+    <comment>Expected number of customers</comment>
+  </data>
 </root>

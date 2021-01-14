@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 namespace Bumbo.Logic.Forecast
 {
     public class ForecastLogic
     {
-
         private static readonly int RoundingFactor = 2;
 
         /// <summary>
@@ -49,13 +49,14 @@ namespace Bumbo.Logic.Forecast
         private readonly decimal _minutesPerColiStockShelves;
         private readonly decimal _minutesPerColiUnloading;
         private readonly decimal _secondsPerMeterFacing;
+        private readonly Dictionary<DayOfWeek, int> _expectedNumberOfCustomers;
 
         /// <summary>
         ///     The number of decimals to which returned values will be rounded.
         /// </summary>
-        //private static readonly int RoundingFactor = 2;
-        public ForecastLogic(List<IForecastStandard> forecastStandards)
+        public ForecastLogic(List<IForecastStandard> forecastStandards, Dictionary<DayOfWeek, int> ExpectedNumberOfCustomers)
         {
+            _expectedNumberOfCustomers = ExpectedNumberOfCustomers;
             foreach (var f in forecastStandards)
             {
                 switch (f.Activity)
@@ -132,6 +133,9 @@ namespace Bumbo.Logic.Forecast
 
         public int NumberOfCustomersExpected(DateTime date)
         {
+            return _expectedNumberOfCustomers.First(kvp => date.DayOfWeek == kvp.Key).Value;
+
+            /* Disabled in favour of acceptatie test scenario
             // begin met een standaard hoeveelheid
             var _numberOfCustomersExpected = 1785;
 
@@ -155,6 +159,7 @@ namespace Bumbo.Logic.Forecast
             // }
 
             return _numberOfCustomersExpected;
+            */
         }
 
         /// <summary>
