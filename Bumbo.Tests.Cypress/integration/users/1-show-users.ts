@@ -13,6 +13,4 @@ describe('show users', () => {
     cy.get('#userTable').should('exist');
 
   });
-
-
 });

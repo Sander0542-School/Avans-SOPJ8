@@ -10,7 +10,6 @@ describe('show users', () => {
 
   it('Navigate users index page', () => {
     cy.visit('Users/Create');
-
     cy.get('#FirstName').type('Test');
     cy.get('#MiddleName').type('16:00');
     cy.get('#LastName').type('User');
@@ -18,11 +17,7 @@ describe('show users', () => {
     cy.get('#ZipCode').type('5500 el');
     cy.get('#Email').type('Test@user.nl');
     cy.get('#PhoneNumber').type('31677889900');
-
     cy.get('input[type="submit"]').should('be.visible').click();
-
     cy.get('#HouseNumber-error').should('be.visible');
   });
-
-
 });
