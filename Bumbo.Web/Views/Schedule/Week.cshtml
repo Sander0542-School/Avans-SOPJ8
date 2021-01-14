@@ -190,11 +190,11 @@
 
             <td class="align-middle">
                 <span class="@(employeeShift.PlannedTime > employeeShift.MaxHours ? "text-danger" : "")">
-                    @($"{employeeShift.PlannedTime.TotalHours:00}:{employeeShift.PlannedTime.Minutes:00}")
+                    @Html.FormatTimeSpan(employeeShift.PlannedTime)
                 </span>
                 <span> / </span>
                 <span>
-                    @($"{employeeShift.MaxHours.TotalHours:00}:{employeeShift.MaxHours.Minutes:00}")
+                    @Html.FormatTimeSpan(employeeShift.MaxHours)
                 </span>
             </td>
         </tr>

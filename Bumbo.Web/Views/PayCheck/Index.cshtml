@@ -47,11 +47,11 @@
                 var workedShifts = pair.Value.Where(ws => ws.Week == week);
                 var workedTime = new TimeSpan(workedShifts.Sum(ws => ws.WorkTime.Ticks));
                 <td>
-                    @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+                    @Html.FormatTimeSpan(workedTime)
                 </td>
             }
             <td>
-                @($"{totalWorkedTime.TotalHours:00}:{totalWorkedTime.Minutes:00}")
+                @Html.FormatTimeSpan(totalWorkedTime)
             </td>
         </tr>
     }
