@@ -258,7 +258,7 @@ namespace Bumbo.Web.Controllers
         {
             await _wrapper.BranchForecastStandard.Remove(forecastStandard => forecastStandard.BranchId == branchId);
 
-            TempData["AlertMessage"] = $"{_localizer["NormReset"]}";
+            TempData["AlertMessage"] = $"succes:{_localizer["NormReset"]}";
 
             return RedirectToAction("Index", new
             {
