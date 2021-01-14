@@ -57,6 +57,10 @@ namespace Bumbo.Web.Controllers
                     furloughModel.StartDate += furloughModel.StartTime.Value;
                     furloughModel.EndDate += furloughModel.EndTime.Value;
                 }
+                else
+                {
+                    furloughModel.EndDate += new TimeSpan(23, 59, 59);
+                }
 
                 var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
