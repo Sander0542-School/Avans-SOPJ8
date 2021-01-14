@@ -113,25 +113,60 @@ namespace Bumbo.Web.Controllers
                 return RedirectToAction();
             }
 
-            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId));
+            var customers = new Dictionary<DayOfWeek, int>();
+
+            for (int i = 0; i < stockclerkViewModel.ExpectedVisitorPerDay.Count; i++)
+            {
+                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                var numberOfCustomers = stockclerkViewModel.ExpectedVisitorPerDay[i];
+                customers.Add(date.DayOfWeek, numberOfCustomers);
+            }
+
+            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId), customers);
+
+            var forecasts = new List<Forecast>();
 
             for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
-                var forecast = new Forecast();
-                forecast.BranchId = branchId;
-                forecast.Date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.KAS,
+                    WorkingHours = forecastLogic.GetWorkHoursCashRegister(date)
+                });
 
-                forecast.Department = Department.KAS;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(forecast.Date);
-                await _wrapper.Forecast.Add(forecast);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.VER,
+                    WorkingHours = forecastLogic.GetWorkHoursFresh(date),
+                });
 
-                forecast.Department = Department.VER;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursFresh(forecast.Date);
-                await _wrapper.Forecast.Add(forecast);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.VAK,
+                    WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i],
+                        stockclerkViewModel.ExpectedNumberOfColi[i]),
+                });
+            }
 
-                forecast.Department = Department.VAK;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i], stockclerkViewModel.ExpectedNumberOfColi[i]);
-                await _wrapper.Forecast.Add(forecast);
+            try
+            {
+                await _wrapper.Forecast.AddRange(forecasts.ToArray());
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Create", new 
+                {
+                    branchId,
+                    year,
+                    week
+                });
             }
 
             return RedirectToAction("Index",
