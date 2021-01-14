@@ -11,6 +11,5 @@ describe('show users', () => {
   it('Navigate users index page', () => {
     cy.visit('Users');
     cy.get('#userTable').should('exist');
-
   });
 });
