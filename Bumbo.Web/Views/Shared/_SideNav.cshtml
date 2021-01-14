@@ -40,7 +40,7 @@
     @if ((await AuthorizationService.AuthorizeAsync(User, "YoungerThan18")).Succeeded)
     {
         <li class="@Html.IsActive("AdditionalWork", "Index")">
-            <a asp-controller="Availability" asp-action="Index">
+            <a asp-controller="AdditionalWork" asp-action="Index">
                 <i class="fa fa-calendar mr-3"></i>
                 @Localizer["School schedule"]
             </a>

@@ -107,11 +107,6 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Edit(int? id, string status)
         {
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -144,7 +139,7 @@ namespace Bumbo.Web.Controllers
             model.Contracts = user.Contracts;
             model.Branches = branchesList;
 
-            TempData["alertMessage"] = $"danger:{_localizer["The userdata could not be saved"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["The userdata could not be saved"]}";
 
             if (ModelState.IsValid)
             {
@@ -178,7 +173,7 @@ namespace Bumbo.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["alertMessage"] = $"success:{_localizer["The userdata was successfully saved"]}";
+                    TempData["AlertMessage"] = $"success:{_localizer["The userdata was successfully saved"]}";
                 }
 
                 foreach (var error in result.Errors)

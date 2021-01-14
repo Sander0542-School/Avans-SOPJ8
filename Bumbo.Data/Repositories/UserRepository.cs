@@ -49,7 +49,10 @@ namespace Bumbo.Data.Repositories
                 )
                 .Include(user => user.UserAvailabilities)
                 .Include(user => user.UserAdditionalWorks)
-                .Include(user => user.UserFurloughs)
+                .Include(user => user.UserFurloughs
+                    .Where(furlough => furlough.BranchId == branch.Id)
+                    .Where(furlough => furlough.Status == FurloughStatus.APPROVED)
+                )
                 .AsSplitQuery()
                 .ToListAsync();
         }
