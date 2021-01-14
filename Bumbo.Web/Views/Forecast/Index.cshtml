@@ -53,7 +53,6 @@
     <div class="col-3 float-right">
 
         <a class="btn btn-secondary" asp-action="ChangeNorms" asp-route-branchId="@Model.Branch.Id">@Localizer["Change Norms"]</a>
-        <a class="btn btn-secondary" asp-action="ResetNorms" asp-route-branchId="@Model.Branch.Id">@Localizer["Reset Norms"]</a>
 
         @if (!Model.Forecasts.Any())
         {
