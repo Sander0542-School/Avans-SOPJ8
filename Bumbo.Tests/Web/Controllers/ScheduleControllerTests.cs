@@ -85,8 +85,8 @@ namespace Bumbo.Tests.Web.Controllers
             var redirectResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
+            Assert.IsNotNull(_controller.TempData["AlertMessage"]);
+            Assert.IsTrue(_controller.TempData["AlertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -137,8 +137,8 @@ namespace Bumbo.Tests.Web.Controllers
             var redirectResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
+            Assert.IsNotNull(_controller.TempData["AlertMessage"]);
+            Assert.IsTrue(_controller.TempData["AlertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -183,8 +183,8 @@ namespace Bumbo.Tests.Web.Controllers
             var redirectResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
+            Assert.IsNotNull(_controller.TempData["AlertMessage"]);
+            Assert.IsTrue(_controller.TempData["AlertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {
@@ -228,8 +228,8 @@ namespace Bumbo.Tests.Web.Controllers
             var redirectResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.IsNotNull(_controller.TempData["alertMessage"]);
-            Assert.IsTrue(_controller.TempData["alertMessage"].ToString()?.StartsWith("success") ?? false);
+            Assert.IsNotNull(_controller.TempData["AlertMessage"]);
+            Assert.IsTrue(_controller.TempData["AlertMessage"].ToString()?.StartsWith("success") ?? false);
 
             var expectedRedirectValues = new RouteValueDictionary
             {

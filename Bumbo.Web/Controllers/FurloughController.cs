@@ -31,11 +31,6 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Index()
         {
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
             var furloughs = await _wrapper.Furlough.GetAll(f => f.UserId == int.Parse(_userManager.GetUserId(User)) && f.EndDate >= DateTime.Now);
 
             return View("Employee/Index", new FurloughViewModel
@@ -66,7 +61,7 @@ namespace Bumbo.Web.Controllers
 
                 if (shifts.Any())
                 {
-                    TempData["alertMessage"] = $"danger:{_localizer["NotAllowed"]}";
+                    TempData["AlertMessage"] = $"danger:{_localizer["NotAllowed"]}";
                 }
                 else
                 {
@@ -87,7 +82,7 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Furlough.Add(furlough) != null)
                         {
-                            TempData["alertMessage"] = $"success:{_localizer["FurloughSaved"]}";
+                            TempData["AlertMessage"] = $"success:{_localizer["FurloughSaved"]}";
                         }
                     }
                     else
@@ -99,7 +94,7 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Furlough.Update(presentFurlough) != null)
                         {
-                            TempData["alertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
+                            TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
                         }
                     }
                 }
@@ -111,12 +106,12 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "BranchEmployee")]
         public async Task<IActionResult> Delete(int id)
         {
-            TempData["alertMessage"] = $"danger:{_localizer["SomethingWentWrong"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["SomethingWentWrong"]}";
 
             var userId = int.Parse(_userManager.GetUserId(User));
             if (await _wrapper.Furlough.Remove(f => (f.Id == id) & (f.UserId == userId)) != null)
             {
-                TempData["alertMessage"] = $"success:{_localizer["FurloughDeleted"]}";
+                TempData["AlertMessage"] = $"success:{_localizer["FurloughDeleted"]}";
             }
 
             return RedirectToAction(nameof(Index));
@@ -125,11 +120,6 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Overview(int branchId)
         {
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
             var furloughs = await _wrapper.Furlough.GetAll(f => f.EndDate >= DateTime.Now && f.Status == FurloughStatus.REQUESTED && f.BranchId == branchId);
             var users = furloughs.Select(f => f.User).Distinct().ToList();
 
@@ -159,7 +149,7 @@ namespace Bumbo.Web.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> UpdateFurloughStatus(int id, FurloughStatus status)
         {
-            TempData["alertMessage"] = $"danger:{_localizer["FurloughNotUpdated"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["FurloughNotUpdated"]}";
 
             if (ModelState.IsValid)
             {
@@ -169,7 +159,7 @@ namespace Bumbo.Web.Controllers
 
                 if (await _wrapper.Furlough.Update(furlough) != null)
                 {
-                    TempData["alertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
+                    TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
                 }
             }
 

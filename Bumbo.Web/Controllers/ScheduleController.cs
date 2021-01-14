@@ -51,11 +51,6 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
             try
             {
                 var departments = GetUserDepartments(User, branchId);
@@ -217,7 +212,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            TempData["alertMessage"] = alertMessage;
+            TempData["AlertMessage"] = alertMessage;
 
             return RedirectToAction(nameof(Week), new
             {
@@ -262,7 +257,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            TempData["alertMessage"] = alertMessage;
+            TempData["AlertMessage"] = alertMessage;
 
             return RedirectToAction(nameof(Week), new
             {
@@ -285,7 +280,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotSaved"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["MessageScheduleNotSaved"]}";
 
             if (ModelState.IsValid)
             {
@@ -310,7 +305,7 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.Shift.AddRange(newShifts) != null)
                         {
-                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
+                            TempData["AlertMessage"] = $"success:{_localizer["MessageScheduleCopied", copyWeekModel.TargetWeek, copyWeekModel.TargetYear]}";
 
                             return RedirectToAction(nameof(Week), new
                             {
@@ -323,12 +318,12 @@ namespace Bumbo.Web.Controllers
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotEmpty"]}";
+                        TempData["AlertMessage"] = $"danger:{_localizer["MessageScheduleNotEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["AlertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
@@ -353,7 +348,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleNotApproved"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["MessageScheduleNotApproved"]}";
 
             if (ModelState.IsValid)
             {
@@ -368,17 +363,17 @@ namespace Bumbo.Web.Controllers
 
                         if (await _wrapper.BranchSchedule.Update(schedule) != null)
                         {
-                            TempData["alertMessage"] = $"success:{_localizer["MessageScheduleApproved"]}";
+                            TempData["AlertMessage"] = $"success:{_localizer["MessageScheduleApproved"]}";
                         }
                     }
                     else
                     {
-                        TempData["alertMessage"] = $"danger:{_localizer["MessageScheduleEmpty"]}";
+                        TempData["AlertMessage"] = $"danger:{_localizer["MessageScheduleEmpty"]}";
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    TempData["alertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
+                    TempData["AlertMessage"] = $"danger:{_localizer["MessageWeekNotExists"]}";
                 }
             }
 
@@ -394,11 +389,6 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Personal()
         {
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
-            }
-
             return View(new PersonalViewModel
             {
                 InputOfferShift = new PersonalViewModel.InputOfferShiftModel()
@@ -444,7 +434,7 @@ namespace Bumbo.Web.Controllers
                 return NotFound();
             }
 
-            TempData["alertMessage"] = $"danger:{_localizer["MessageShiftNotOffered"]}";
+            TempData["AlertMessage"] = $"danger:{_localizer["MessageShiftNotOffered"]}";
 
             if (ModelState.IsValid)
             {
@@ -454,7 +444,7 @@ namespace Bumbo.Web.Controllers
 
                 if (await _wrapper.Shift.Update(shift) != null)
                 {
-                    TempData["alertMessage"] = $"success:{_localizer["MessageShiftOffered"]}";
+                    TempData["AlertMessage"] = $"success:{_localizer["MessageShiftOffered"]}";
                 }
             }
 
@@ -468,11 +458,6 @@ namespace Bumbo.Web.Controllers
             if (branch == null)
             {
                 return NotFound();
-            }
-
-            if (TempData["alertMessage"] != null)
-            {
-                ViewData["AlertMessage"] = TempData["alertMessage"];
             }
 
             var userId = int.Parse(_userManager.GetUserId(User));
@@ -537,7 +522,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            TempData["alertMessage"] = alertMessage;
+            TempData["AlertMessage"] = alertMessage;
 
             return RedirectToAction(nameof(Offers));
         }

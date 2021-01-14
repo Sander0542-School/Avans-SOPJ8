@@ -20,10 +20,10 @@
 
     <div class="content">
         <partial name="_CookieConsentPartial"/>
-        @if (ViewData["AlertMessage"] != null)
+        @if (TempData["AlertMessage"] != null)
         {
             <div class="container">
-                <partial name="_AlertPartial" model='ViewData["AlertMessage"]'/>
+                <partial name="_AlertPartial" model='TempData["AlertMessage"]'/>
             </div>
         }
 
