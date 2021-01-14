@@ -138,4 +138,10 @@
   <data name="FurloughNotUpdated" xml:space="preserve">
       <value>The furlough could not be updated</value>
   </data>
+  <data name="FurloughDeleted" xml:space="preserve">
+      <value>The furlough was successfully deleted</value>
+  </data>
+  <data name="SomethingWentWrong" xml:space="preserve">
+      <value>Something went wrong, please try again later</value>
+  </data>
 </root>
