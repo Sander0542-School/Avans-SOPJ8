@@ -47,7 +47,7 @@
     @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
     {
         <div class="col-md-4">
-            <strong>@TempData["alertMessage"]</strong>
+            <strong>@TempData["AlertMessage"]</strong>
             <h4>@Localizer["Add manager"]</h4>
             <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

@@ -70,7 +70,7 @@
                 var workedTime = new TimeSpan(pair.Value.Sum(ws => ws.WorkTime.Ticks));
             }
             <td>
-                @($"{workedTime.TotalHours:00}:{workedTime.Minutes:00}")
+                @Html.FormatTimeSpan(workedTime)
             </td>
         </tr>
     }

@@ -62,8 +62,11 @@ namespace Bumbo.Logic.EmployeeRules
             var maxHours = MaxHoursPerDay(user, shift.Date.DayOfWeek);
 
             var availability = user.UserAvailabilities.FirstOrDefault(userAvailability => userAvailability.Day == shift.Date.DayOfWeek);
+            
+            var shiftStart = shift.Date.Add(shift.StartTime);
+            var shiftEnd = shift.Date.Add(shift.EndTime);
 
-            var furlough = user.UserFurloughs.FirstOrDefault(furlough => furlough.StartDate <= shift.Date && shift.Date >= furlough.EndDate);
+            var furlough = user.UserFurloughs.FirstOrDefault(furlough1 => shiftStart < furlough1.EndDate && furlough1.StartDate < shiftEnd);
 
             if (age < 16 && shift.EndTime > new TimeSpan(19, 0, 0))
             {
