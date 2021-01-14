@@ -111,6 +111,12 @@ namespace Bumbo.Web.Controllers
                             }).ToList()
                         };
                     }).ToList(),
+                    EmployeeAvailability = users.ToDictionary(user => user.Id, user => user.UserAvailabilities.Select(availability => new DepartmentViewModel.Availability
+                    {
+                        DayOfWeek = availability.Day,
+                        StartTime = availability.StartTime,
+                        EndTime = availability.EndTime
+                    }).ToList()),
                     InputShift = new DepartmentViewModel.InputShiftModel
                     {
                         Year = year.Value,

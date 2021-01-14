@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
@@ -11,6 +12,18 @@ namespace Bumbo.Tests.Logic.ForecastRules
         private readonly ForecastLogic _logic;
         public ForecastLogicTests()
         {
+            var customersPerDay = new Dictionary<DayOfWeek, int>
+            {
+                {DayOfWeek.Monday, 100},
+                {DayOfWeek.Tuesday, 100},
+                {DayOfWeek.Wednesday, 100},
+                {DayOfWeek.Thursday, 100},
+                {DayOfWeek.Friday, 100},
+                {DayOfWeek.Saturday, 100},
+                {DayOfWeek.Sunday, 100}
+            };
+
+
             _logic = new ForecastLogic(new List<IForecastStandard>
             {
                 new ForecastStandard
@@ -33,7 +46,7 @@ namespace Bumbo.Tests.Logic.ForecastRules
                 {
                     Value = 10, Activity = ForecastActivity.UNLOAD_COLI
                 }
-            });
+            }, customersPerDay);
         }
 
         [Test]

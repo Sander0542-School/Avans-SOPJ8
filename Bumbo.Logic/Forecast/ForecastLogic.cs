@@ -1,61 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
 namespace Bumbo.Logic.Forecast
 {
     public class ForecastLogic
     {
-
         private static readonly int RoundingFactor = 2;
-
-        /// <summary>
-        ///     All the holiday dates
-        /// </summary>
-        private static IEnumerable<DateTime> holidays = new List<DateTime>
-        {
-            // Todo: dynamically generate holidays
-            new(2021, 01, 01),// New Year's Day
-            new(2021, 01, 06),// Three Kings
-            new(2021, 02, 14),// Valentine
-            new(2021, 02, 23),// Carnival
-            new(2021, 03, 10),// Good Friday
-            new(2021, 04, 12),// Easter 1st Day
-            new(2021, 04, 13),// Easter 2nd Day
-            new(2021, 04, 24),// Ramadan
-            new(2021, 04, 27),// King Day
-            new(2021, 05, 01),// Day Of Labor
-            new(2021, 05, 04),// Remembrance Day
-            new(2021, 05, 05),// Liberty Day
-            new(2021, 05, 10),// Mother Day
-            new(2021, 05, 21),// Ascension Day
-            new(2021, 05, 23),// Sugar Party 
-            new(2021, 05, 31),// Pink Stars 1st Day
-            new(2021, 06, 01),// Pink Stars 2st Day
-            new(2021, 06, 21),// Daddy Day
-            new(2021, 06, 30),// Sacrifice feast
-            new(2021, 09, 15),// Prince Day
-            new(2021, 10, 04),// Day Of The Animal
-            new(2021, 10, 31),// Halloween
-            new(2021, 11, 11),// Sint Martin
-            new(2021, 12, 05),// Sint Klaas
-            new(2021, 12, 25),// Christmas 1st Day
-            new(2021, 12, 26),// Christmas 2st Day
-            new(2020, 12, 31)// New Year's Day
-        };
-
+        
         private readonly decimal _customersPerHourCashRegister;
         private readonly decimal _customersPerHourProduceDepartment;
         private readonly decimal _minutesPerColiStockShelves;
         private readonly decimal _minutesPerColiUnloading;
         private readonly decimal _secondsPerMeterFacing;
+        private readonly Dictionary<DayOfWeek, int> _expectedNumberOfCustomers;
 
         /// <summary>
         ///     The number of decimals to which returned values will be rounded.
         /// </summary>
-        //private static readonly int RoundingFactor = 2;
-        public ForecastLogic(List<IForecastStandard> forecastStandards)
+        public ForecastLogic(List<IForecastStandard> forecastStandards, Dictionary<DayOfWeek, int> expectedNumberOfCustomers)
         {
+            _expectedNumberOfCustomers = expectedNumberOfCustomers;
             foreach (var f in forecastStandards)
             {
                 switch (f.Activity)
@@ -132,6 +98,9 @@ namespace Bumbo.Logic.Forecast
 
         public int NumberOfCustomersExpected(DateTime date)
         {
+            return _expectedNumberOfCustomers.FirstOrDefault(kvp => date.DayOfWeek == kvp.Key).Value;
+
+            /* Disabled in favour of acceptatie test scenario
             // begin met een standaard hoeveelheid
             var _numberOfCustomersExpected = 1785;
 
@@ -155,6 +124,7 @@ namespace Bumbo.Logic.Forecast
             // }
 
             return _numberOfCustomersExpected;
+            */
         }
 
         /// <summary>
