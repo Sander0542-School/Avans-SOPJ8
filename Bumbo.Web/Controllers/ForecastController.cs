@@ -12,6 +12,8 @@ using Bumbo.Web.Models.Forecast;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "BranchManager")]
@@ -19,10 +21,12 @@ namespace Bumbo.Web.Controllers
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
+        private readonly IStringLocalizer _localizer;
 
-        public ForecastController(RepositoryWrapper wrapper)
+        public ForecastController(RepositoryWrapper wrapper, IStringLocalizer<ForecastController> localizer)
         {
             _wrapper = wrapper;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -249,6 +253,18 @@ namespace Bumbo.Web.Controllers
             });
         }
 
+        [ActionName("ResetNorms")]
+        public async Task<IActionResult> ResetNorms(int branchId)
+        {
+            await _wrapper.BranchForecastStandard.Remove(forecastStandard => forecastStandard.BranchId == branchId);
+
+            TempData["alertMessage"] = $"{_localizer["NormReset"]}";
+
+            return RedirectToAction("Index", new
+            {
+                branchId
+            });
+        }
 
         private async Task<List<IForecastStandard>> GetForecastStandardsForBranch(int branchId)
         {
