@@ -39,8 +39,9 @@ describe('Registration', () => {
       cy.location('pathname').should('contain', '/Identity/Account/Register');
 
       // Check for warning tooltips
-      cy.get('.validation-summary-errors').should('exist');
-      cy.get('.validation-summary-errors > *').should('exist');
+      cy.get('#Input_Email-error').should('exist');
+      cy.get('#Input_Password-error').should('exist');
+      cy.get('#Input_ConfirmPassword-error').should('exist');
     }));
   });
 });
