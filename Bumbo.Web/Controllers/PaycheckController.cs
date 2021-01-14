@@ -196,7 +196,6 @@ namespace Bumbo.Web.Controllers
         }
 
         [HttpPost]
-        [Route("SavePaycheck")]
         public async Task<IActionResult> SavePaycheck(int branchId, DetailsViewModel.InputModel paycheckModel)
         {
             var branch = await _wrapper.Branch.Get(branch1 => branch1.Id == branchId);
@@ -224,7 +223,7 @@ namespace Bumbo.Web.Controllers
                 }
             }
 
-            TempData["alertMessage"] = alertMessage;
+            TempData["AlertMessage"] = alertMessage;
 
             return RedirectToAction(nameof(Details), new
             {

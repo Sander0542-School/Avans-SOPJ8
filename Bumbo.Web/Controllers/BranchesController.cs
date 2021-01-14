@@ -207,7 +207,7 @@ namespace Bumbo.Web.Controllers
             var user = await _wrapper.User.Get(u => u.Email == userEmail);
             if (user == null)
             {
-                TempData["alertMessage"] = $"{_localizer["This user does not exist"]}";
+                TempData["AlertMessage"] = $"{_localizer["This user does not exist"]}";
                 return RedirectToAction("Details");
             }
 

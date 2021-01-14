@@ -49,5 +49,10 @@ namespace Bumbo.Web.Extensions
 
             return condition?.Invoke() ?? false ? new HtmlString($"{name}=\"{HttpUtility.HtmlAttributeEncode(value)}\"") : new HtmlString(string.Empty);
         }
+
+        public static HtmlString FormatTimeSpan(this IHtmlHelper helper, TimeSpan timeSpan)
+        {
+            return new($"{Convert.ToInt32(Math.Floor(timeSpan.TotalHours)):00}:{timeSpan.Minutes:00}");
+        }
     }
 }
