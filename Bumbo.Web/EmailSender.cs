@@ -19,10 +19,10 @@ namespace Bumbo.Web
         {
             var client = new SmtpClient(_options.Host, _options.Port)
             {
-                Credentials = new NetworkCredential(_options.UserName, _options.Password), EnableSsl = _options.UseTls
+                Credentials = new NetworkCredential(_options.UserName, _options.Password), EnableSsl = true
             };
 
-            await client.SendMailAsync($"{_options.FromName} <{_options.FromEmail}>", email, subject, htmlMessage);
+            await client.SendMailAsync(_options.FromEmail, email, subject, htmlMessage);
         }
     }
 }
