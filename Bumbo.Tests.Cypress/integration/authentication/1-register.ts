@@ -13,7 +13,6 @@ describe('Registration', () => {
   });
 
   it('Check for basic elements', () => {
-    cy.logout();
     cy.get('input').should('exist');
     cy.get('#logoutForm').should('not.exist');
   });
