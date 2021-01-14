@@ -1,0 +1,14 @@
+{
+  "profileUrl": "/Identity/Account/Manage",
+  "passwordUrl": "/Identity/Account/Manage/ChangePassword",
+  "credentials": {
+    "email": "employee@bumbo.test",
+    "password": "Pass1234!"
+  },
+  "newProfile": {
+    "birthday": "1997-08-11",
+    "phoneNumber": "0638673053",
+    "zipCode": "2619hj",
+    "houseNumber": "18a"
+  }
+}
