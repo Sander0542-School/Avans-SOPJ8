@@ -19,9 +19,9 @@ namespace Bumbo.Logic.Forecast
         /// <summary>
         ///     The number of decimals to which returned values will be rounded.
         /// </summary>
-        public ForecastLogic(List<IForecastStandard> forecastStandards, Dictionary<DayOfWeek, int> ExpectedNumberOfCustomers)
+        public ForecastLogic(List<IForecastStandard> forecastStandards, Dictionary<DayOfWeek, int> expectedNumberOfCustomers)
         {
-            _expectedNumberOfCustomers = ExpectedNumberOfCustomers;
+            _expectedNumberOfCustomers = expectedNumberOfCustomers;
             foreach (var f in forecastStandards)
             {
                 switch (f.Activity)
