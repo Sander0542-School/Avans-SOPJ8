@@ -4,7 +4,7 @@ describe('Fill in valid employee data', () => {
     Cypress.Cookies.preserveOnce('.AspNetCore.Identity.Application');
   });
 
-  it('Login for manager user', () => {
+  it('Login as super user', () => {
     cy.login('super');
   });
 

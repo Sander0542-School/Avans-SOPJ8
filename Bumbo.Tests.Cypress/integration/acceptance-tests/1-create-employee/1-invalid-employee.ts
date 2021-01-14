@@ -5,7 +5,7 @@ describe('Fill in invalid employee data', () => {
     cy.visit('Users/Create');
   });
 
-  it('Login for manager user', () => {
+  it('Login as super user', () => {
     cy.login('super');
   });
 
