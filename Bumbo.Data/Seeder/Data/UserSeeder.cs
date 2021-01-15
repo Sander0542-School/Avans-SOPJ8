@@ -50,6 +50,50 @@ namespace Bumbo.Data.Seeder.Data
                     Birthday = DateTime.Today.AddYears(-30),
                     ZipCode = "7452 ng",
                     HouseNumber = "4"
+                },
+                
+                // Acceptance tests
+                new()
+                {
+                    Id = AcceptanceTestData.StijnId,
+                    FirstName = "Stijn",
+                    LastName = "Smulders",
+                    UserName = "stijn.avans@bumbo.test",
+                    Email = "stijn.avans@bumbo.test",
+                    EmailConfirmed = true,
+                    Birthday = DateTime.Today.AddYears(-15).AddDays(-40)
+                },
+                new()
+                {
+                    Id = AcceptanceTestData.JosId,
+                    FirstName = "Jos",
+                    MiddleName = "van",
+                    LastName = "Weert",
+                    UserName = "jos.avans@bumbo.test",
+                    Email = "jos.avans@bumbo.test",
+                    EmailConfirmed = true,
+                    Birthday = DateTime.Today.AddYears(-16).AddDays(-125)
+                },
+                new()
+                {
+                    Id = AcceptanceTestData.StefanId,
+                    FirstName = "Stefan",
+                    MiddleName = "van",
+                    LastName = "Doccum",
+                    UserName = "stefan.avans@bumbo.test",
+                    Email = "stefan.avans@bumbo.test",
+                    EmailConfirmed = true,
+                    Birthday = DateTime.Today.AddYears(-17).AddDays(-184)
+                },
+                new()
+                {
+                    Id = AcceptanceTestData.EricId,
+                    FirstName = "Eric",
+                    LastName = "Kuijpers",
+                    UserName = "eric.avans@bumbo.test",
+                    Email = "eric.avans@bumbo.test",
+                    EmailConfirmed = true,
+                    Birthday = DateTime.Today.AddYears(-15).AddDays(-40)
                 }
             };
         }
@@ -141,7 +185,41 @@ namespace Bumbo.Data.Seeder.Data
                     Scale = 6,
                     StartDate = DateTime.Today.AddMonths(-5),
                     EndDate = DateTime.Today.AddMonths(3)
-                }
+                },
+                
+                
+                new()
+                {
+                    UserId = AcceptanceTestData.StijnId,
+                    Function = "Vakkenvuller",
+                    Scale = 6,
+                    StartDate = DateTime.Today.AddMonths(-5),
+                    EndDate = DateTime.Today.AddMonths(3)
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.JosId,
+                    Function = "Vakkenvuller",
+                    Scale = 6,
+                    StartDate = DateTime.Today.AddMonths(-2),
+                    EndDate = DateTime.Today.AddMonths(23)
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.StefanId,
+                    Function = "Kassa",
+                    Scale = 6,
+                    StartDate = DateTime.Today.AddMonths(-10),
+                    EndDate = DateTime.Today.AddMonths(8)
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.EricId,
+                    Function = "Kassa",
+                    Scale = 6,
+                    StartDate = DateTime.Today.AddMonths(-15),
+                    EndDate = DateTime.Today.AddMonths(4)
+                },
             };
         }
     }
