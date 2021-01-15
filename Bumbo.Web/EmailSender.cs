@@ -22,7 +22,9 @@ namespace Bumbo.Web
                 Credentials = new NetworkCredential(_options.UserName, _options.Password), EnableSsl = _options.UseTls
             };
 
-            await client.SendMailAsync($"{_options.FromName} <{_options.FromEmail}>", email, subject, htmlMessage);
+            var from = new MailAddress(_options.FromEmail, _options.FromName);
+            
+            await client.SendMailAsync(from.ToString(), email, subject, htmlMessage);
         }
     }
 }

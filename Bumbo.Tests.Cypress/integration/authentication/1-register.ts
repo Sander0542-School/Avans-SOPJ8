@@ -22,11 +22,9 @@ describe('Registration', () => {
     cy.fixture('admin-login').then(((adminLogin) => {
       fillInRegistrationForm(adminLogin.credentials);
 
-      cy.get('form > .btn').click();
+      cy.get('form > button[type="submit"]').click();
 
-      cy.location('pathname').should('contain', 'Identity/Account/RegisterConfirmation');
-
-      cy.get('#confirm-link').click();
+      cy.get('a[href=\'#accountSubmenu\']').should('exist');
     }));
   });
 

@@ -72,7 +72,7 @@ namespace Bumbo.Web
             services
                 .AddDefaultIdentity<User>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedAccount = !_isTestEnv;
                     options.User.RequireUniqueEmail = true;
                 })
                 .AddRoles<Role>()
