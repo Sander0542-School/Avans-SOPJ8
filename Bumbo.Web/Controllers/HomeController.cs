@@ -14,13 +14,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Bumbo.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly RepositoryWrapper _wrapper;
         private readonly IOpenWeatherMapService _weatherService;
+        private readonly RepositoryWrapper _wrapper;
 
         public HomeController(RepositoryWrapper wrapper, IOpenWeatherMapService weatherService)
         {
@@ -79,8 +78,7 @@ namespace Bumbo.Web.Controllers
 
                 var branchModel = new BranchModel
                 {
-                    Id = branch.Id,
-                    Name = branch.Name
+                    Id = branch.Id, Name = branch.Name
                 };
 
                 var branchDataModel = new BranchDataModel
@@ -124,7 +122,7 @@ namespace Bumbo.Web.Controllers
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-            new CookieOptions()
+            new CookieOptions
             {
                 Expires = DateTimeOffset.Now.AddDays(999)
             });

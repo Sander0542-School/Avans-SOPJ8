@@ -1,6 +1,6 @@
 ﻿@inject IViewLocalizer Localizer
 @using Bumbo.Data.Models.Enums
-@model IEnumerable<Bumbo.Data.Models.ForecastStandard>
+@model IEnumerable<ForecastStandard>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,24 +22,25 @@
             @Localizer["Activity"]
         </th>
         <th>
-        @Localizer["Value"]
+            @Localizer["Value"]
         </th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Value)
-        </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Activity">@Localizer["Edit"]</a>
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Activity">@Localizer["Edit"]</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

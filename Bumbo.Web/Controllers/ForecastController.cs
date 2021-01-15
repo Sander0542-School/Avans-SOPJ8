@@ -12,6 +12,7 @@ using Bumbo.Web.Models.Forecast;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Bumbo.Web.Controllers
 {
@@ -20,20 +21,22 @@ namespace Bumbo.Web.Controllers
     public class ForecastController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
+        private readonly IStringLocalizer _localizer;
 
-        public ForecastController(RepositoryWrapper wrapper)
+        public ForecastController(RepositoryWrapper wrapper, IStringLocalizer<ForecastController> localizer)
         {
             _wrapper = wrapper;
+            _localizer = localizer;
         }
 
         /// <summary>
-        /// Creates the default view for viewing forecasts for 1 week
+        ///     Creates the default view for viewing forecasts for 1 week
         /// </summary>
         /// <param name="branchId">Id of the branch</param>
         /// <param name="year">The year of the forecast</param>
         /// <param name="week">The year's week for the forecast</param>
         /// <param name="department">Filter on department</param>
-        /// <returns>View with <see cref="ForecastViewModel"/> as parameter</returns>
+        /// <returns>View with <see cref="ForecastViewModel" /> as parameter</returns>
         [Route("{year?}/{week?}/{department?}")]
         public async Task<IActionResult> Index(int branchId, int? year, int? week, Department? department)
         {
@@ -46,7 +49,7 @@ namespace Bumbo.Web.Controllers
                 {
                     branchId,
                     year = year ?? DateTime.Today.Year,
-                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today),
+                    week = week ?? ISOWeek.GetWeekOfYear(DateTime.Today)
                 });
             }
 
@@ -63,18 +66,21 @@ namespace Bumbo.Web.Controllers
 
             // Define viewmodel variables
             viewModel.Branch = await _wrapper.Branch.Get(b => b.Id == branchId);
-            if (viewModel.Branch == null) return NotFound();
+            if (viewModel.Branch == null)
+            {
+                return NotFound();
+            }
 
             viewModel.Department = department;
 
             var firstDayOfWeek = ISOWeek.ToDateTime(year.Value, week.Value, DayOfWeek.Monday);
 
             viewModel.Forecasts = await _wrapper.Forecast.GetAll(
-                f => f.BranchId == branchId,
-                f => f.Department == department || department == null,
-                // Week filter
-                f => f.Date >= firstDayOfWeek,
-                f => f.Date < firstDayOfWeek.AddDays(7)
+            f => f.BranchId == branchId,
+            f => f.Department == department || department == null,
+            // Week filter
+            f => f.Date >= firstDayOfWeek,
+            f => f.Date < firstDayOfWeek.AddDays(7)
             );
 
             viewModel.Week = week.Value;
@@ -88,7 +94,7 @@ namespace Bumbo.Web.Controllers
         [Route("{year}/{week}")]
         public async Task<IActionResult> Create(int branchId, int year, int week)
         {
-            var data = new StockclerkViewModel()
+            var data = new StockclerkViewModel
             {
                 FirstDayOfWeek = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday),
                 BranchId = branchId,
@@ -106,27 +112,65 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm] StockclerkViewModel stockclerkViewModel)
         {
-            if (!ModelState.IsValid) return RedirectToAction();
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction();
+            }
 
-            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId));
+            var customers = new Dictionary<DayOfWeek, int>();
+
+            for (int i = 0; i < stockclerkViewModel.ExpectedVisitorPerDay.Count; i++)
+            {
+                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                var numberOfCustomers = stockclerkViewModel.ExpectedVisitorPerDay[i];
+                customers.Add(date.DayOfWeek, numberOfCustomers);
+            }
+
+            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId), customers);
+
+            var forecasts = new List<Forecast>();
 
             for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
             {
-                var forecast = new Forecast();
-                forecast.BranchId = branchId;
-                forecast.Date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.KAS,
+                    WorkingHours = forecastLogic.GetWorkHoursCashRegister(date)
+                });
 
-                forecast.Department = Department.KAS;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursCashRegister(forecast.Date);
-                await _wrapper.Forecast.Add(forecast);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.VER,
+                    WorkingHours = forecastLogic.GetWorkHoursFresh(date),
+                });
 
-                forecast.Department = Department.VER;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursFresh(forecast.Date);
-                await _wrapper.Forecast.Add(forecast);
+                forecasts.Add(new Forecast
+                {
+                    BranchId = branchId,
+                    Date = date,
+                    Department = Department.VAK,
+                    WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i],
+                        stockclerkViewModel.ExpectedNumberOfColi[i]),
+                });
+            }
 
-                forecast.Department = Department.VAK;
-                forecast.WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i], stockclerkViewModel.ExpectedNumberOfColi[i]);
-                await _wrapper.Forecast.Add(forecast);
+            try
+            {
+                await _wrapper.Forecast.AddRange(forecasts.ToArray());
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Create", new 
+                {
+                    branchId,
+                    year,
+                    week
+                });
             }
 
             return RedirectToAction("Index",
@@ -143,7 +187,7 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> Edit(int branchId, int year, int week, [FromForm] DateTime date, Department department, int hours, int minutes)
         {
-            var workingHours = hours + (decimal)minutes / 60;
+            var workingHours = hours + ((decimal)minutes / 60);
             var model = new Forecast
             {
                 BranchId = branchId,
@@ -158,7 +202,10 @@ namespace Bumbo.Web.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _wrapper.Forecast.Get(f => f.Equals(model)) == null) return NotFound();
+                if (await _wrapper.Forecast.Get(f => f.Equals(model)) == null)
+                {
+                    return NotFound();
+                }
 
                 throw;
             }
@@ -175,16 +222,21 @@ namespace Bumbo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangeNorms(int branchId)
         {
-            var viewModel = new ChangeNormsViewModel { Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId };
+            var viewModel = new ChangeNormsViewModel
+            {
+                Standards = new SortedDictionary<ForecastActivity, int>(), BranchId = branchId
+            };
             var standards = await GetForecastStandardsForBranch(branchId);
 
             foreach (var standard in standards)
+            {
                 viewModel.Standards.Add(standard.Activity, standard.Value);
+            }
 
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("ChangeNorms")]
+        [HttpPost] [ActionName("ChangeNorms")]
         public async Task<IActionResult> SaveChangeNorms(int branchId, ChangeNormsViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -197,15 +249,15 @@ namespace Bumbo.Web.Controllers
                     if (forecastStandard.Value == value)
                     {
                         await _wrapper.BranchForecastStandard.Remove(
-                            bfs => bfs.Activity == activity,
-                            bfs => bfs.BranchId == branchId
+                        bfs => bfs.Activity == activity,
+                        bfs => bfs.BranchId == branchId
                         );
                     }
                     else
                     {
                         var currentBfs = await _wrapper.BranchForecastStandard.Get(
-                            bfs => bfs.BranchId == branchId,
-                            bfs => bfs.Activity == activity
+                        bfs => bfs.BranchId == branchId,
+                        bfs => bfs.Activity == activity
                         );
 
                         if (currentBfs != null)
@@ -215,7 +267,12 @@ namespace Bumbo.Web.Controllers
                         }
                         else
                         {
-                            await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard { Activity = activity, BranchId = branchId, Value = value });
+                            await _wrapper.BranchForecastStandard.Add(new BranchForecastStandard
+                            {
+                                Activity = activity,
+                                BranchId = branchId,
+                                Value = value
+                            });
                         }
                     }
                 }
@@ -225,16 +282,31 @@ namespace Bumbo.Web.Controllers
                 return await ChangeNorms(branchId);
             }
 
-            return RedirectToAction("Index", new { branchId });
+            return RedirectToAction("Index", new
+            {
+                branchId
+            });
         }
 
+        [ActionName("ResetNorms")]
+        public async Task<IActionResult> ResetNorms(int branchId)
+        {
+            await _wrapper.BranchForecastStandard.Remove(forecastStandard => forecastStandard.BranchId == branchId);
+
+            TempData["AlertMessage"] = $"succes:{_localizer["NormReset"]}";
+
+            return RedirectToAction("Index", new
+            {
+                branchId
+            });
+        }
 
         private async Task<List<IForecastStandard>> GetForecastStandardsForBranch(int branchId)
         {
             var forecastStandards = (await _wrapper.ForecastStandard.GetAll(f => f.BranchForecastStandards.All(bf => bf.BranchId != branchId))).ToList<IForecastStandard>();
 
             forecastStandards.AddRange(await _wrapper.BranchForecastStandard.GetAll(
-                bf => bf.BranchId == branchId
+            bf => bf.BranchId == branchId
             ));
 
             return forecastStandards;

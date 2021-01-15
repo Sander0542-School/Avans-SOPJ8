@@ -5,7 +5,6 @@ using Bumbo.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "SuperUser")]
@@ -13,17 +12,29 @@ namespace Bumbo.Web.Controllers
     {
         private readonly RepositoryWrapper _wrapper;
 
-        public ForecastStandardController(RepositoryWrapper wrapper) => _wrapper = wrapper;
+        public ForecastStandardController(RepositoryWrapper wrapper)
+        {
+            _wrapper = wrapper;
+        }
 
-        public async Task<IActionResult> Index() => View(await _wrapper.ForecastStandard.GetAll());
+        public async Task<IActionResult> Index()
+        {
+            return View(await _wrapper.ForecastStandard.GetAll());
+        }
 
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Activity,Value")] ForecastStandard forecastStandard)
         {
-            if (!ModelState.IsValid) return View(forecastStandard);
+            if (!ModelState.IsValid)
+            {
+                return View(forecastStandard);
+            }
             await _wrapper.ForecastStandard.Add(forecastStandard);
             return RedirectToAction(nameof(Index));
         }
@@ -31,7 +42,10 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Edit(ForecastActivity activity)
         {
             var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
-            if (forecastStandard == null) return NotFound();
+            if (forecastStandard == null)
+            {
+                return NotFound();
+            }
             return View(forecastStandard);
         }
 
@@ -39,8 +53,14 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ForecastActivity id, [Bind("Activity,Value")] ForecastStandard forecastStandard)
         {
-            if (id != forecastStandard.Activity) return NotFound();
-            if (!ModelState.IsValid) return View(forecastStandard);
+            if (id != forecastStandard.Activity)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(forecastStandard);
+            }
 
             try
             {
@@ -49,8 +69,8 @@ namespace Bumbo.Web.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (await _wrapper.ForecastStandard.Get(
-                    fs => fs.Activity == forecastStandard.Activity,
-                    fs => fs.Value == forecastStandard.Value) == null)
+                fs => fs.Activity == forecastStandard.Activity,
+                fs => fs.Value == forecastStandard.Value) == null)
                 {
                     return NotFound();
                 }

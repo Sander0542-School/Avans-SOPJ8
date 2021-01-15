@@ -10,7 +10,7 @@
 
 <form asp-action="ConfirmAdoptCrossBranchOffer">
     <h4>Shift</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Shift.Date)
@@ -42,7 +42,7 @@
             </select>
         </dd>
     </dl>
-    <input type="hidden" asp-for="ShiftId" value="@Model.Shift.Id" />
+    <input type="hidden" asp-for="ShiftId" value="@Model.Shift.Id"/>
 
-    <input type="submit" value="@Localizer["Adopt shift"]" class="btn btn-primary" />
+    <input type="submit" value="@Localizer["Adopt shift"]" class="btn btn-primary"/>
 </form>

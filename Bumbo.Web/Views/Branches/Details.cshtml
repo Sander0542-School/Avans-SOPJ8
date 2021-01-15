@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-6">
         <h4>@Localizer["Branch"]</h4>
-        <hr />
+        <hr/>
         <dl class="row">
             <dt class="col-sm-6">
                 @Localizer["Name"]
@@ -40,79 +40,79 @@
 
         @if ((await AuthorizationService.AuthorizeAsync(User, "SuperUser")).Succeeded)
         {
-            @("|") // This seems to be the only way to add the vertical line inside an if statement
+            @("|")// This seems to be the only way to add the vertical line inside an if statement
             <a asp-action="Index" asp-route-branchId="">@Localizer["Back to List"]</a>
         }
     </div>
     @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
     {
         <div class="col-md-4">
-            <strong>@TempData["alertMessage"]</strong>
+            <strong>@TempData["AlertMessage"]</strong>
             <h4>@Localizer["Add manager"]</h4>
             <form asp-action="AddManager" asp-route-branchId="@Model.Branch.Id">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="UserEmail" class="control-label"></label>
-                    <input asp-for="UserEmail" class="form-control" />
+                    <input asp-for="UserEmail" class="form-control"/>
                     <span asp-validation-for="UserEmail" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value='@Localizer["Add manager"]' class="btn btn-primary" />
+                    <input type="submit" value='@Localizer["Add manager"]' class="btn btn-primary"/>
                 </div>
             </form>
         </div>
     }
 </div>
-<br />
-<br />
+<br/>
+<br/>
 @if ((await AuthorizationService.AuthorizeAsync(User, "BranchManager")).Succeeded)
 {
     <h4>@Localizer["Current managers"]</h4>
     <table class="table">
         <thead>
-            <tr>
-                <th>
-                    @Localizer["First name"]
-                </th>
-                <th>
-                    @Localizer["Middle name"]
-                </th>
-                <th>
-                    @Localizer["Last name"]
-                </th>
-                <th>
-                    @Localizer["Email address"]
-                </th>
-                <th />
-            </tr>
+        <tr>
+            <th>
+                @Localizer["First name"]
+            </th>
+            <th>
+                @Localizer["Middle name"]
+            </th>
+            <th>
+                @Localizer["Last name"]
+            </th>
+            <th>
+                @Localizer["Email address"]
+            </th>
+            <th/>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model.Managers)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => user.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => user.MiddleName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => user.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => user.Email)
-                    </td>
-                    <td>
-                        <form asp-action="RemoveManager" asp-route-userId="@user.Id">
-                            <button class="btn btn-secondary" type="submit"
-                                    @if (Model.CurrentUserId == user.Id) { @("disabled")  }>
-                                @Localizer["Delete"]
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
+        @foreach (var user in Model.Managers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    <form asp-action="RemoveManager" asp-route-userId="@user.Id">
+                        <button class="btn btn-secondary" type="submit"
+                                @if (Model.CurrentUserId == user.Id) { @("disabled") }>
+                            @Localizer["Delete"]
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 }

@@ -18,7 +18,9 @@
     <div class="col">
         @if (Model.Furloughs.Count == 0)
         {
-            <p class="my-1 font-weight-bold mb-3"><i class="alert-info"></i>@Localizer["NoRequests"]</p>
+            <p class="my-1 font-weight-bold mb-3">
+                <i class="alert-info"></i>@Localizer["NoRequests"]
+            </p>
         }
         @foreach (var furlough in Model.Furloughs)
         {
@@ -33,7 +35,7 @@
                         {
                             @furlough.StartDate.ToString("ddd d MMM yyyy")
                         }
-        
+
                         else
                         {
                             @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm")
@@ -46,7 +48,7 @@
                             @furlough.StartDate.ToString("ddd d MMM yyyy - ")
                             @furlough.EndDate.ToString("ddd d MMM yyyy")
                         }
-        
+
                         else
                         {
                             @furlough.StartDate.ToString("ddd d MMM yyyy | hh:mm - ")
@@ -71,19 +73,22 @@
                             }
                         </p>
                     </div>
+                    
                     <div class="col">
-                        <a class="c-pointer" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToString("yyyy-MM-dd")', '@furlough.EndDate.ToString("yyyy-MM-dd")', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> |
+                        @if (furlough.Status == FurloughStatus.REQUESTED)
+                        {
+                            <a class="c-pointer card-link" onclick="furloughModal('@furlough.Id','@furlough.Description', '@furlough.StartDate.ToString("yyyy-MM-dd")', '@furlough.EndDate.ToString("yyyy-MM-dd")', '@furlough.StartDate.TimeOfDay',  '@furlough.EndDate.TimeOfDay', '@furlough.IsAllDay');">@Localizer["Edit"]</a> <span>|</span>
+                        }
                         <a asp-action="Delete" asp-route-id="@furlough.Id">@Localizer["Delete"]</a>
                     </div>
                 </div>
-            </div>}
+            </div>
+        }
     </div>
 </div>
 
-<partial name="Employee/_FurloughModal" model="@Model.Input" />
+<partial name="Employee/_FurloughModal" model="@Model.Input"/>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }
-
-

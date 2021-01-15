@@ -7,11 +7,23 @@ using System.Linq;
 using Bumbo.Data.Models;
 using Bumbo.Data.Models.Enums;
 using Bumbo.Logic.EmployeeRules;
-
+using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Models.Schedule
 {
     public class DepartmentViewModel
     {
+
+        public readonly DayOfWeek[] DaysOfWeek =
+        {
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday,
+            DayOfWeek.Sunday
+        };
+
         private DateTime _mondayOfWeek => ISOWeek.ToDateTime(Year, Week, DayOfWeek.Monday);
 
         public int NextWeek => ISOWeek.GetWeekOfYear(_mondayOfWeek.AddDays(7));
@@ -36,22 +48,31 @@ namespace Bumbo.Web.Models.Schedule
 
         public InputApproveScheduleModel InputApproveSchedule { get; set; }
 
+        public Dictionary<int, List<Availability>> EmployeeAvailability { get; set; }
+
         public List<EmployeeShift> EmployeeShifts { get; set; }
 
         public bool ScheduleApproved { get; set; }
 
         public Branch Branch { get; set; }
 
-        public readonly DayOfWeek[] DaysOfWeek =
+        public class Availability
         {
-            DayOfWeek.Monday,
-            DayOfWeek.Tuesday,
-            DayOfWeek.Wednesday,
-            DayOfWeek.Thursday,
-            DayOfWeek.Friday,
-            DayOfWeek.Saturday,
-            DayOfWeek.Sunday
-        };
+            public DayOfWeek DayOfWeek { get; set; }
+
+            public TimeSpan StartTime { get; set; }
+
+            public TimeSpan EndTime { get; set; }
+
+            public int StartPercentage => GetPercentageOfDay(StartTime);
+
+            public int EndPercentage => GetPercentageOfDay(EndTime);
+
+            private int GetPercentageOfDay(TimeSpan time)
+            {
+                return (int)((time.Ticks / (double)TimeSpan.TicksPerDay) * 100);
+            }
+        }
 
         public class EmployeeShift
         {
@@ -72,7 +93,7 @@ namespace Bumbo.Web.Models.Schedule
 
             [DisplayName("Planned Time")]
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
-            public TimeSpan PlannedTime => new TimeSpan(Shifts.Sum(shift => shift.WorkTime.Ticks));
+            public TimeSpan PlannedTime => new(Shifts.Sum(shift => shift.WorkTime.Ticks));
 
             public List<Shift> Shifts { get; set; }
         }
@@ -115,7 +136,7 @@ namespace Bumbo.Web.Models.Schedule
             public TimeSpan TotalTime => EndTime.Subtract(StartTime);
         }
 
-        public class InputShiftModel : InputDateDepartmentModel
+        public class InputShiftModel : InputDateDepartmentModel, IValidatableObject
         {
             public int? ShiftId { get; set; }
 
@@ -146,6 +167,16 @@ namespace Bumbo.Web.Models.Schedule
             [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
             [Required]
             public TimeSpan EndTime { get; set; }
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var localizer = (IStringLocalizer)validationContext.GetService(typeof(IStringLocalizer<InputShiftModel>));
+
+                if (StartTime > EndTime)
+                {
+                    yield return new ValidationResult(localizer["The start date cannot be after the end date"]);
+                }
+            }
         }
 
         public class DeleteShiftModel : InputDateDepartmentModel

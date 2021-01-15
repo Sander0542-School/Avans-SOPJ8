@@ -135,4 +135,7 @@
   <data name="Change Norms" xml:space="preserve">
     <value>Verander normeringen</value>
   </data>
+  <data name="Reset Norms" xml:space="preserve">
+    <value>Reset normeringen</value>
+  </data>
 </root>

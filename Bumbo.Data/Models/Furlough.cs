@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bumbo.Data.Models.Common;
 using Bumbo.Data.Models.Enums;
-
 namespace Bumbo.Data.Models
 {
     public class Furlough : BaseEntity

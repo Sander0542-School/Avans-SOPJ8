@@ -6,7 +6,6 @@ using Bumbo.Data.Models;
 using Bumbo.Logic.Options;
 using Bumbo.Logic.Services.Weather.Models;
 using Microsoft.Extensions.Options;
-
 namespace Bumbo.Logic.Services.Weather
 {
     public class OpenWeatherMapService : IOpenWeatherMapService

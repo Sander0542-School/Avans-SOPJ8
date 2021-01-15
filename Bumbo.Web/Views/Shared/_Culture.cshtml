@@ -1,6 +1,7 @@
-﻿@using System.Globalization
+﻿@using Microsoft.AspNetCore.Builder
+@using System.Globalization
 @inject IViewLocalizer Localizer
-@inject IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> LocOptions
+@inject IOptions<RequestLocalizationOptions> LocOptions
 
 @{
     var regionCultures = LocOptions.Value.SupportedUICultures.GroupBy(cultureInfo => new RegionInfo(cultureInfo.LCID)).OrderBy(infos => infos.Key.DisplayName);
@@ -36,7 +37,8 @@
                                         {
                                             <a asp-controller="Home" asp-action="CultureManagement" asp-route-culture="@culture.Name" onclick="event.preventDefault();changeCulture('@culture.Name')">
                                                 @culture.Parent.NativeName
-                                            </a><br/>
+                                            </a>
+                                            <br/>
                                         }
                                     </div>
                                     <br/>

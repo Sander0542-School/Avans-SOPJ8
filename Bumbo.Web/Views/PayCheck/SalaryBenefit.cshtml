@@ -1,5 +1,5 @@
-﻿@using Bumbo.Logic.Utils
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
+@using Bumbo.Logic.Utils
 @model Bumbo.Web.Models.Paycheck.SalaryBenefitViewModel
 
 @{
@@ -29,14 +29,16 @@
 
         <tr data-toggle="collapse" data-target="#@elemId" class="c-pointer">
             <td>@UserUtil.GetFullName(user)</td>
-            <td colspan="2">@payCheck.GetTotalTime().TotalHours:@($"{payCheck.GetTotalTime().Minutes:00}")</td>
+            <td colspan="2">
+                @Html.FormatTimeSpan(payCheck.GetTotalTime())
+            </td>
         </tr>
         <tbody id="@elemId" class="collapse">
         @foreach (var key in payCheck.GetKeys())
         {
             <tr>
                 <td></td>
-                <td>@payCheck.GetTime(key).TotalHours:@($"{payCheck.GetTime(key).Minutes:00}")</td>
+                <td>@Html.FormatTimeSpan(payCheck.GetTime(key))</td>
                 <td>@($"{key:C}")</td>
             </tr>
         }

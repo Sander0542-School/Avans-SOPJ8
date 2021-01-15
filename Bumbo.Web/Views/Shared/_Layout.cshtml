@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.26/darkreader.min.js"></script>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
@@ -17,10 +20,10 @@
 
     <div class="content">
         <partial name="_CookieConsentPartial"/>
-        @if (ViewData["AlertMessage"] != null)
+        @if (TempData["AlertMessage"] != null)
         {
             <div class="container">
-                <partial name="_AlertPartial" model='ViewData["AlertMessage"]'/>
+                <partial name="_AlertPartial" model='TempData["AlertMessage"]'/>
             </div>
         }
 

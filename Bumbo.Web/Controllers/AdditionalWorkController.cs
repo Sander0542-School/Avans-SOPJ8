@@ -7,15 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "YoungerThan18")]
     public class AdditionalWorkController : Controller
     {
         private readonly ILogger<AdditionalWorkController> _logger;
-        private readonly RepositoryWrapper _wrapper;
         private readonly UserManager<User> _userManager;
+        private readonly RepositoryWrapper _wrapper;
 
         public AdditionalWorkController(ILogger<AdditionalWorkController> logger, RepositoryWrapper wrapper, UserManager<User> userManager)
         {
@@ -28,7 +27,7 @@ namespace Bumbo.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(entity => entity.UserId == int.Parse(_userManager.GetUserId(User)));
-            return View(new UserAdditionalWorkViewModel()
+            return View(new UserAdditionalWorkViewModel
             {
                 Schedule = additionalWorks
             });
@@ -39,10 +38,10 @@ namespace Bumbo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                int userId = int.Parse(_userManager.GetUserId(User));
+                var userId = int.Parse(_userManager.GetUserId(User));
 
                 var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-                workday.Day == model.Work.Day, workday => workday.UserId == userId);
+                    workday.Day == model.Work.Day, workday => workday.UserId == userId);
 
                 if (presentUserWork == null)
                 {
@@ -51,7 +50,7 @@ namespace Bumbo.Web.Controllers
                         Day = model.Work.Day,
                         UserId = userId,
                         StartTime = model.Work.StartTime,
-                        EndTime = model.Work.EndTime,
+                        EndTime = model.Work.EndTime
                     });
                 }
                 else
@@ -68,7 +67,7 @@ namespace Bumbo.Web.Controllers
 
         public async Task<IActionResult> Delete(DayOfWeek day)
         {
-            int userId = int.Parse(_userManager.GetUserId(User));
+            var userId = int.Parse(_userManager.GetUserId(User));
             await _wrapper.UserAdditionalWork.Remove(work => work.Day == day, work => work.UserId == userId);
 
             return RedirectToAction("Index");
