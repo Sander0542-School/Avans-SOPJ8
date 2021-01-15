@@ -8,7 +8,7 @@ namespace Bumbo.Web.Models.Forecast
 
         public int BranchId;
 
-        [Range(1, 30)]
+        [Range(1, 1000)]
         public int ForecastStandardValue;
 
         public SortedDictionary<ForecastActivity, int> Standards { get; set; }
@@ -17,7 +17,7 @@ namespace Bumbo.Web.Models.Forecast
         {
             foreach (var (key, value) in Standards)
             {
-                if (value < 1 || value > 30)
+                if (value < 1 || value > 1000)
                 {
                     yield return new ValidationResult($"{key} needs to be between 1 and 30");
                 }
