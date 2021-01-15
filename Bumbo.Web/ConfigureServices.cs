@@ -7,6 +7,7 @@ using Bumbo.Web.Authorization.Handles;
 using Bumbo.Web.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 namespace Bumbo.Web
@@ -23,7 +24,7 @@ namespace Bumbo.Web
             services.Configure<BumboOptions>(config.GetSection(BumboOptions.Bumbo));
 
             services.Configure<MailOptions>(config.GetSection(MailOptions.Mail));
-            // services.AddTransient<IEmailSender, EmailSender>(); // Disable for now
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<OpenWeatherMapOptions>(config.GetSection(OpenWeatherMapOptions.OpenWeatherMap));
         }

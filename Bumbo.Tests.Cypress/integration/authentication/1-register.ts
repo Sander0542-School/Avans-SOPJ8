@@ -21,11 +21,10 @@ describe('Registration', () => {
     cy.fixture('admin-login').then(((adminLogin) => {
       // Fill in form and submit
       fillInRegistrationForm(adminLogin.credentials);
-      cy.get('form > .btn').click();
-      // Validate if you're on email confirm page
-      cy.location('pathname').should('contain', 'Identity/Account/RegisterConfirmation');
-      // Confirm email
-      cy.get('#confirm-link').click();
+
+      cy.get('form > button[type="submit"]').click();
+
+      cy.get('a[href=\'#accountSubmenu\']').should('exist');
     }));
   });
 
