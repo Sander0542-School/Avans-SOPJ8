@@ -46,7 +46,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
                 FirstName = user.FirstName,
                 MiddleName = user.MiddleName,
                 LastName = user.LastName,
-                Birthday = user.Birthday,
                 ZipCode = user.ZipCode,
                 HouseNumber = user.HouseNumber
             };
@@ -92,7 +91,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             user.FirstName = Input.FirstName;
             user.MiddleName = Input.MiddleName;
             user.LastName = Input.LastName;
-            user.Birthday = Input.Birthday;
             user.ZipCode = Input.ZipCode;
             user.HouseNumber = Input.HouseNumber;
 
@@ -122,11 +120,6 @@ namespace Bumbo.Web.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
-
-            [Required]
-            [DataType(DataType.Date)]
-            [Display(Name = "Birthday")]
-            public DateTime Birthday { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
