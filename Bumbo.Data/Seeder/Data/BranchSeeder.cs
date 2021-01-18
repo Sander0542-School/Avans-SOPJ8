@@ -30,6 +30,15 @@ namespace Bumbo.Data.Seeder.Data
                     Name = "Test Groningen",
                     ZipCode = "3456 CD",
                     HouseNumber = "184c"
+                },
+                
+                
+                new Branch
+                {
+                    Id = AcceptanceTestData.HinthamId,
+                    Name = "Hintham",
+                    ZipCode = "5246br",
+                    HouseNumber = "16"
                 }
             };
         }
@@ -71,6 +80,50 @@ namespace Bumbo.Data.Seeder.Data
                     UserId = TestDataSeeder.EmployeeId,
                     Department = Department.KAS,
                     BranchId = 1
+                },
+                
+                
+                new()
+                {
+                    UserId = AcceptanceTestData.StijnId,
+                    Department = Department.VAK,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.JosId,
+                    Department = Department.VAK,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.JosId,
+                    Department = Department.VER,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.StefanId,
+                    Department = Department.KAS,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.StefanId,
+                    Department = Department.VER,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.EricId,
+                    Department = Department.KAS,
+                    BranchId = AcceptanceTestData.HinthamId
+                },
+                new()
+                {
+                    UserId = AcceptanceTestData.EricId,
+                    Department = Department.VER,
+                    BranchId = AcceptanceTestData.HinthamId
                 }
             };
         }
