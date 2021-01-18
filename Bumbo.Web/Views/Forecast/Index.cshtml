@@ -97,7 +97,7 @@
                     // This is the only way to show hours that are greater than 24
                     var hoursRounded = Math.Floor(whTimeSpan.TotalHours);
                     var minutesFormatted = whTimeSpan.Minutes.ToString("00");
-                    <td onclick="forecastModal(@($"'{forecast.Date:yyyy-MM-dd}', '{forecast.Department}', '{hoursRounded}', '{minutesFormatted}'"))">
+                    <td class="c-pointer" onclick="forecastModal(@($"'{forecast.Date:yyyy-MM-dd}', '{forecast.Department}', '{hoursRounded}', '{minutesFormatted}'"))">
                         @hoursRounded:@minutesFormatted
                     </td>
                 }

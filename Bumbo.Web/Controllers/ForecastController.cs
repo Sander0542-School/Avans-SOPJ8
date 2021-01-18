@@ -112,68 +112,67 @@ namespace Bumbo.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int branchId, int year, int week, [FromForm] StockclerkViewModel stockclerkViewModel)
         {
-            if (!ModelState.IsValid)
+            TempData["alertMessage"] = $"danger:{_localizer["The forecast was could not be generated"]}";
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction();
-            }
+                var customers = new Dictionary<DayOfWeek, int>();
 
-            var customers = new Dictionary<DayOfWeek, int>();
-
-            for (int i = 0; i < stockclerkViewModel.ExpectedVisitorPerDay.Count; i++)
-            {
-                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
-                var numberOfCustomers = stockclerkViewModel.ExpectedVisitorPerDay[i];
-                customers.Add(date.DayOfWeek, numberOfCustomers);
-            }
-
-            var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId), customers);
-
-            var forecasts = new List<Forecast>();
-
-            for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
-            {
-                var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
-                forecasts.Add(new Forecast
+                for (int i = 0; i < stockclerkViewModel.ExpectedVisitorPerDay.Count; i++)
                 {
-                    BranchId = branchId,
-                    Date = date,
-                    Department = Department.KAS,
-                    WorkingHours = forecastLogic.GetWorkHoursCashRegister(date)
-                });
+                    var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                    var numberOfCustomers = stockclerkViewModel.ExpectedVisitorPerDay[i];
+                    customers.Add(date.DayOfWeek, numberOfCustomers);
+                }
 
-                forecasts.Add(new Forecast
-                {
-                    BranchId = branchId,
-                    Date = date,
-                    Department = Department.VER,
-                    WorkingHours = forecastLogic.GetWorkHoursFresh(date),
-                });
+                var forecastLogic = new ForecastLogic(await GetForecastStandardsForBranch(branchId), customers);
 
-                forecasts.Add(new Forecast
+                var forecasts = new List<Forecast>();
+
+                for (var i = 0; i < stockclerkViewModel.ExpectedNumberOfColi.Count; i++)
                 {
-                    BranchId = branchId,
-                    Date = date,
-                    Department = Department.VAK,
-                    WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i],
+                    var date = ISOWeek.ToDateTime(year, week, DayOfWeek.Monday).AddDays(i);
+                    forecasts.Add(new Forecast
+                    {
+                        BranchId = branchId,
+                        Date = date,
+                        Department = Department.KAS,
+                        WorkingHours = forecastLogic.GetWorkHoursCashRegister(date)
+                    });
+
+                    forecasts.Add(new Forecast
+                    {
+                        BranchId = branchId,
+                        Date = date,
+                        Department = Department.VER,
+                        WorkingHours = forecastLogic.GetWorkHoursFresh(date),
+                    });
+
+                    forecasts.Add(new Forecast
+                    {
+                        BranchId = branchId,
+                        Date = date,
+                        Department = Department.VAK,
+                        WorkingHours = forecastLogic.GetWorkHoursStockClerk(stockclerkViewModel.MetersOfShelves[i],
                         stockclerkViewModel.ExpectedNumberOfColi[i]),
-                });
-            }
+                    });
+                }
 
-            try
-            {
-                await _wrapper.Forecast.AddRange(forecasts.ToArray());
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Create", new 
+                if (await _wrapper.Forecast.AddRange(forecasts.ToArray()) != null)
                 {
-                    branchId,
-                    year,
-                    week
-                });
+                    TempData["alertMessage"] = $"success:{_localizer["The forecast was successfully generated"]}";
+
+                    return RedirectToAction(nameof(Index),
+                    new
+                    {
+                        branchId,
+                        year,
+                        week
+                    });
+                }
             }
 
-            return RedirectToAction("Index",
+            return RedirectToAction(nameof(Create),
             new
             {
                 branchId,

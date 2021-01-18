@@ -173,7 +173,10 @@
                                 }
                             </div>
                         }
-                        <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
+                        @if (canEdit)
+                        {
+                            <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
+                        }
                     </td>
                 }
                 else
@@ -181,7 +184,10 @@
                     var clickable = Model.Department.HasValue && User.HasClaim("Manager", Model.Branch.Id.ToString());
 
                     <td class="p-0 @(clickable ? "c-pointer" : "")" @Html.ConditionalAttr("onclick", $"shiftModal('', {employeeShift.UserId}, '{employeeShift.Name}', '{ISOWeek.ToDateTime(Model.Year, Model.Week, day):yyyy-MM-dd}','','', false, {Model.Branch.Id})", clickable)>
-                        <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
+                        @if (canEdit)
+                        {
+                            <partial name="_EmployeeAvailability" model="@(Model.EmployeeAvailability[employeeShift.UserId].FirstOrDefault(availability => availability.DayOfWeek == day))"/>
+                        }
                     </td>
                 }
             }

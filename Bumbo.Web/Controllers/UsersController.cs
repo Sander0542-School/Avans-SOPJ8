@@ -167,6 +167,7 @@ namespace Bumbo.Web.Controllers
                 user.ZipCode = model.ZipCode;
                 user.Email = model.Email;
                 user.HouseNumber = model.HouseNumber;
+                user.Birthday = model.Birthday;
 
                 // Apply the changes if any to the db
                 var result = await _userManager.UpdateAsync(user);

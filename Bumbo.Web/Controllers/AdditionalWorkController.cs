@@ -1,76 +1,75 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Web.Models.Schedule;
+using Bumbo.Web.Models.AdditionalWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "YoungerThan18")]
     public class AdditionalWorkController : Controller
     {
-        private readonly ILogger<AdditionalWorkController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly RepositoryWrapper _wrapper;
+        private readonly IStringLocalizer<AdditionalWorkController> _localizer;
 
-        public AdditionalWorkController(ILogger<AdditionalWorkController> logger, RepositoryWrapper wrapper, UserManager<User> userManager)
+        public AdditionalWorkController(RepositoryWrapper wrapper, UserManager<User> userManager, IStringLocalizer<AdditionalWorkController> localizer)
         {
-            _logger = logger;
             _wrapper = wrapper;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(entity => entity.UserId == int.Parse(_userManager.GetUserId(User)));
-            return View(new UserAdditionalWorkViewModel
+            var additionalWorks = await _wrapper.UserAdditionalWork.GetAll(a => a.UserId == int.Parse(_userManager.GetUserId(User)));
+
+            return View(new IndexViewModel
             {
-                Schedule = additionalWorks
+                Schedule = IndexViewModel.DaysOfWeek.Select(day => new IndexViewModel.AdditionalWork
+                {
+                    Day = day,
+                    StartTime = additionalWorks.FirstOrDefault(availability => availability.Day == day)?.StartTime,
+                    EndTime = additionalWorks.FirstOrDefault(availability => availability.Day == day)?.EndTime
+                }).ToList()
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserAdditionalWorkViewModel model)
+        public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userId = int.Parse(_userManager.GetUserId(User));
 
-                var presentUserWork = await _wrapper.UserAdditionalWork.Get(workday =>
-                    workday.Day == model.Work.Day, workday => workday.UserId == userId);
-
-                if (presentUserWork == null)
+                if (await _wrapper.UserAdditionalWork.Remove(availability => availability.UserId == userId) != null)
                 {
-                    await _wrapper.UserAdditionalWork.Add(new UserAdditionalWork
+                    var additionalWorks = model.Schedule
+                        .Where(availability => availability.StartTime.HasValue && availability.EndTime.HasValue)
+                        .Select(availability => new UserAdditionalWork
+                        {
+                            Day = availability.Day,
+                            UserId = userId,
+                            StartTime = availability.StartTime.Value,
+                            EndTime = availability.EndTime.Value
+                        }).ToArray();
+
+                    if (await _wrapper.UserAdditionalWork.AddRange(additionalWorks) != null)
                     {
-                        Day = model.Work.Day,
-                        UserId = userId,
-                        StartTime = model.Work.StartTime,
-                        EndTime = model.Work.EndTime
-                    });
-                }
-                else
-                {
-                    presentUserWork.StartTime = model.Work.StartTime;
-                    presentUserWork.EndTime = model.Work.EndTime;
+                        TempData["alertMessage"] = $"success:{_localizer["The new additional work was successfully saved."]}";
 
-                    await _wrapper.UserAdditionalWork.Update(presentUserWork);
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
+
+                TempData["alertMessage"] = $"danger:{_localizer["Could not save your additional work, please try again."]}";
             }
 
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> Delete(DayOfWeek day)
-        {
-            var userId = int.Parse(_userManager.GetUserId(User));
-            await _wrapper.UserAdditionalWork.Remove(work => work.Day == day, work => work.UserId == userId);
-
-            return RedirectToAction("Index");
+            return View(model);
         }
     }
 }
