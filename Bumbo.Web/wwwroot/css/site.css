@@ -197,8 +197,16 @@ ul ul a {
         height: 1.5em;
     }
 }
-
-
+/* Bootstrap Container overrides 
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .container-fluid {
+        width: max-content !important;
+    }
+    .container {
+        width: fit-content !important;
+    }
+}
 
 /* Content
 -------------------------------------------------- */
