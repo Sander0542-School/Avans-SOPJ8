@@ -18,19 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Day" xml:space="preserve">
-        <value>Dag</value>
+    <data name="The new availability was successfully saved." xml:space="preserve">
+        <value>De nieuwe beschikbaarheid is succesvol opgeslagen.</value>
     </data>
-    <data name="Start Time" xml:space="preserve">
-        <value>Starttijd</value>
-    </data>
-    <data name="End Time" xml:space="preserve">
-        <value>Eindtijd</value>
-    </data>
-    <data name="Availability" xml:space="preserve">
-        <value>Beschikbaarheid</value>
-    </data>
-    <data name="Save" xml:space="preserve">
-        <value>Opslaan</value>
+    <data name="Could not save your availability, please try again." xml:space="preserve">
+        <value>De beschikbaarheid kon niet worden opgeslagen, probeer het opnieuw.</value>
     </data>
 </root>
