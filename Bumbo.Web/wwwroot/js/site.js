@@ -4,5 +4,9 @@
 // Write your JavaScript code.
 
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    $('#nav_trigger_button').click(() => {
+        $('nav').toggleClass('active');
+    });
 })
