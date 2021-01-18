@@ -13,7 +13,7 @@ namespace Bumbo.Web.Models.Users
         [TempData]
         public string StatusMessage { get; set; }
 
-        [Phone]
+        [PhoneNumber]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
