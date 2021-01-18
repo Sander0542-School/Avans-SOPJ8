@@ -187,7 +187,7 @@ namespace Bumbo.Web.Resources.Views.Home {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weervoorspelling.
+        ///   Looks up a localized string similar to Weersvoorspelling.
         /// </summary>
         internal static string Weather_forecast {
             get {
