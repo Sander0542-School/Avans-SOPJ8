@@ -12,7 +12,6 @@ describe('Update Profile', () => {
     cy.fixture('employee-login').then((employee) => {
       cy.visit(employee.profileUrl);
 
-      cy.get('#Input_Birthday').clear().type(employee.newProfile.birthday);
       cy.get('#Input_PhoneNumber').clear().type(employee.newProfile.phoneNumber);
       cy.get('#Input_ZipCode').clear().type(employee.newProfile.zipCode);
       cy.get('#Input_HouseNumber').clear().type(employee.newProfile.houseNumber);

@@ -66,7 +66,7 @@ namespace Bumbo.Web.Models.Forecast
 
             [Display(Name = "Minutes")]
             [Required]
-            [Range(1, 60)]
+            [Range(0, 59)]
             public int Minutes { get; set; }
         }
     }

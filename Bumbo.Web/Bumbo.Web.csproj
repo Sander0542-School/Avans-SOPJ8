@@ -126,6 +126,22 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>_DeleteShiftModal.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Availability\IndexViewModel+Availability.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>IndexViewModel+Availability.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Controllers\AvailabilityController.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AvailabilityController.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Controllers\AdditionalWorkController.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AdditionalWorkController.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\AdditionalWork\IndexViewModel+AdditionalWork.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>IndexViewModel+AdditionalWork.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -134,10 +150,6 @@
         <DependentUpon>ForecastViewModel+EditForecastViewModel.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
-      <EmbeddedResource Update="Resources\Models\Schedule\UserAdditionalWorkViewModel.nl.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>UserAdditionalWorkViewModel.nl.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.en.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
@@ -233,6 +245,36 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Index.nl.resx</DependentUpon>
         <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Models\Availability\IndexViewModel+Availability.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>IndexViewModel+Availability.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Controllers\AvailabilityController.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AvailabilityController.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Availability\Index.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Controllers\AdditionalWorkController.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AdditionalWorkController.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Models\AdditionalWork\IndexViewModel+AdditionalWork.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>IndexViewModel+AdditionalWork.nl.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

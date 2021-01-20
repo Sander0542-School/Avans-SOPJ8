@@ -1,4 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -11,19 +18,16 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="School Timetable" xml:space="preserve">
-        <value>Schoolrooster</value>
-    </data>
-    <data name="Day" xml:space="preserve">
-        <value>Dag</value>
-    </data>
     <data name="Start Time" xml:space="preserve">
         <value>Starttijd</value>
     </data>
     <data name="End Time" xml:space="preserve">
         <value>Eindtijd</value>
     </data>
-    <data name="Save" xml:space="preserve">
-        <value>Opslaan</value>
+    <data name="The start time cannot be after the end time on {0}." xml:space="preserve">
+        <value>De starttijd kan niet na de eindtijd zijn op {0}.</value>
+    </data>
+    <data name="The start and end time both need to be filled in on {0}." xml:space="preserve">
+        <value>De starttijd en de eindtijd moeten allebei zijn ingevuld op {0}.</value>
     </data>
 </root>

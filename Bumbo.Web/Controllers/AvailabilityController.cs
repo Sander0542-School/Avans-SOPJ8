@@ -1,10 +1,11 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Bumbo.Data;
 using Bumbo.Data.Models;
-using Bumbo.Web.Models.Schedule;
+using Bumbo.Web.Models.Availability;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,61 +15,62 @@ namespace Bumbo.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RepositoryWrapper _wrapper;
+        private readonly IStringLocalizer<AvailabilityController> _localizer;
 
-        public AvailabilityController(RepositoryWrapper wrapper, UserManager<User> userManager)
+        public AvailabilityController(RepositoryWrapper wrapper, UserManager<User> userManager, IStringLocalizer<AvailabilityController> localizer)
         {
             _wrapper = wrapper;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var availabilities = await _wrapper.UserAvailability.GetAll(a => a.UserId == int.Parse(_userManager.GetUserId(User)));
-            return View(new UserAvailabilityViewModel
+
+            return View(new IndexViewModel
             {
-                Schedule = availabilities
+                Schedule = IndexViewModel.DaysOfWeek.Select(day => new IndexViewModel.Availability
+                {
+                    Day = day,
+                    StartTime = availabilities.FirstOrDefault(availability => availability.Day == day)?.StartTime,
+                    EndTime = availabilities.FirstOrDefault(availability => availability.Day == day)?.EndTime
+                }).ToList()
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserAvailabilityViewModel model)
+        public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userId = int.Parse(_userManager.GetUserId(User));
 
-                var presentUserAvailability = await _wrapper.UserAvailability.Get(workday =>
-                    workday.Day == model.Availability.Day, workday => workday.UserId == userId);
-
-                if (presentUserAvailability == null)
+                if (await _wrapper.UserAvailability.Remove(availability => availability.UserId == userId) != null)
                 {
-                    await _wrapper.UserAvailability.Add(new UserAvailability
+                    var availabilities = model.Schedule
+                        .Where(availability => availability.StartTime.HasValue && availability.EndTime.HasValue)
+                        .Select(availability => new UserAvailability
+                        {
+                            Day = availability.Day,
+                            UserId = userId,
+                            StartTime = availability.StartTime.Value,
+                            EndTime = availability.EndTime.Value
+                        }).ToArray();
+
+                    if (await _wrapper.UserAvailability.AddRange(availabilities) != null)
                     {
-                        Day = model.Availability.Day,
-                        UserId = userId,
-                        StartTime = model.Availability.StartTime,
-                        EndTime = model.Availability.EndTime
-                    });
-                }
-                else
-                {
-                    presentUserAvailability.StartTime = model.Availability.StartTime;
-                    presentUserAvailability.EndTime = model.Availability.EndTime;
+                        TempData["alertMessage"] = $"success:{_localizer["The new availability was successfully saved."]}";
 
-                    await _wrapper.UserAvailability.Update(presentUserAvailability);
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
+
+                TempData["alertMessage"] = $"danger:{_localizer["Could not save your availability, please try again."]}";
             }
 
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> Delete(DayOfWeek day)
-        {
-            var userId = int.Parse(_userManager.GetUserId(User));
-            await _wrapper.UserAvailability.Remove(work => work.Day == day, work => work.UserId == userId);
-
-            return RedirectToAction("Index");
+            return View(model);
         }
     }
 }
