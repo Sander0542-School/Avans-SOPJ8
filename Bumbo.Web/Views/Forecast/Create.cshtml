@@ -52,13 +52,11 @@
                     <h5>@Model.FirstDayOfWeek.AddDays(i).ToString("dddd")</h5>
                 </div>
                 <div class="form-group">
-                    @* <label asp-for="ExpectedNumberOfColi" class="control-label">Aantal coli verwacht op @day</label> *@
                     <input asp-for="ExpectedNumberOfColi" class="form-control" type="number"/>
                     <span asp-validation-for="ExpectedNumberOfColi" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    @* <label asp-for="MetersOfShelves" class="control-label">Meters die gespiegeld moeten worden op @day</label> *@
                     <input asp-for="MetersOfShelves" class="form-control" type="number"/>
                     <span asp-validation-for="MetersOfShelves" class="text-danger"></span>
                 </div>
