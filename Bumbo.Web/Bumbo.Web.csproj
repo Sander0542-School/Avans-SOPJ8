@@ -92,7 +92,6 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Views\ForecastStandard\Index.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
       </EmbeddedResource>
         <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
         <Generator>ResXFileCodeGenerator</Generator>
@@ -191,11 +190,6 @@
         <DependentUpon>Index.resx</DependentUpon>
         <DesignTime>True</DesignTime>
       </Compile>
-      <Compile Update="Resources\Views\Forecast\ChangeNorms.nl.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ChangeNorms.nl.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
       <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
         <AutoGen>True</AutoGen>
         <DependentUpon>ChangeNorms.en.resx</DependentUpon>
@@ -240,11 +234,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>_DeleteShiftModal.nl.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Views\ForecastStandard\Index.nl.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Index.nl.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
       </Compile>
       <Compile Update="Resources\Models\Availability\IndexViewModel+Availability.nl.Designer.cs">
         <DesignTime>True</DesignTime>

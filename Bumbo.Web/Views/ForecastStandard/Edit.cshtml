@@ -1,4 +1,5 @@
 ﻿@inject IViewLocalizer Localizer
+@using Bumbo.Data.Models.Enums
 @model Bumbo.Data.Models.ForecastStandard
 
 @{
@@ -14,12 +15,13 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Activity" class="control-label"></label>
-                <input asp-for="Activity" class="form-control" disabled/>
-                <span asp-validation-for="Activity" class="text-danger"></span>
+                <label asp-for="Activity" class="control-label">@Localizer["Activity"]</label>
+                <select asp-for="Activity" class="form-control" disabled>
+                    <option value="@Model.Activity">@Localizer[Model.Activity.ToString()] </option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
+                <label asp-for="Value" class="control-label">@Localizer["Value"]</label>
                 <input asp-for="Value" class="form-control"/>
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>

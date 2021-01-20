@@ -16,7 +16,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Activity" class="control-label"></label>
-                <select asp-for="Activity" asp-items="@Html.GetEnumSelectList<ForecastActivity>()" class="form-control"></select>
+                <select asp-for="Activity" class="form-control">
+                    @foreach (var activity in Enum.GetValues<ForecastActivity>())
+                    {
+                        <option value="@activity">@Localizer[activity.ToString()] </option>
+                    }
+                </select>
                 <span asp-validation-for="Activity" class="text-danger"></span>
             </div>
             <div class="form-group">
