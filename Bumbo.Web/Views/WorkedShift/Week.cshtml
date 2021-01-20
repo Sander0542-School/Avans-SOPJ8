@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewBag.Title = Localizer["DepartmentSchedule"];
+    ViewBag.Title = Localizer["Worked Shift"];
     ViewBag.ContainerType = "container-fluid";
 }
 
@@ -32,75 +32,85 @@
     </div>
 </div>
 
-<br/>
+<br />
 
-<table class="table table-bordered table-striped table-sm">
-    <thead class="text-center">
-    <tr>
-        @foreach (var day in Model.DaysOfWeek)
-        {
-            <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
-        }
+@if (Model.WorkedShifts.Count == 0)
+{
+    <h2>
+        @Localizer["No worked hours found"]
+    </h2>
+}
+else
+{
 
-        <th>@Localizer["Total"]</th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (Model.WorkedShifts.Any())
-    {
-        <tr>
-            @foreach (var day in Model.DaysOfWeek)
-            {
-                @if (Model.WorkedShifts.Any(shift => shift.Shift?.Date.DayOfWeek == day))
+    <table class="table table-bordered table-striped table-sm">
+        <thead class="text-center">
+            <tr>
+                @foreach (var day in Model.DaysOfWeek)
                 {
-                    <td class="align-middle">
-                        @foreach (var shift in Model.WorkedShifts.Where(shift => shift?.Shift?.Date.DayOfWeek == day))
+                    <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
+                }
+
+                <th>@Localizer["Total"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.WorkedShifts.Any())
+            {
+                <tr>
+                    @foreach (var day in Model.DaysOfWeek)
+                    {
+                        @if (Model.WorkedShifts.Any(shift => shift.Shift?.Date.DayOfWeek == day))
                         {
-                            <div>
-                                <div>
-                                    <span class="fa-stack fa-sm">
-                                        <i class="fa fa-stack-2x fa-square"></i>
-                                        <i class="fa fa-stack-1x fa-building text-white"></i>
-                                    </span>
-                                    @Html.DisplayFor(model => shift.Shift.Schedule.Department)
-                                </div>
-                                <div>
-                                    <span class="fa-stack fa-sm">
-                                        <i class="fa fa-stack-2x fa-square"></i>
-                                        <i class="fa fa-stack-1x fa-briefcase text-white"></i>
-                                    </span>
-                                    @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
-                                </div>
-                                @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)).Ticks > 0)
+                            <td class="align-middle">
+                                @foreach (var shift in Model.WorkedShifts.Where(shift => shift?.Shift?.Date.DayOfWeek == day))
                                 {
-                                    var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)));
                                     <div>
-                                        <span class="fa-stack fa-sm">
-                                            <i class="fa fa-stack-2x fa-square"></i>
-                                            <i class="fa fa-stack-1x fa-coffee text-white"></i>
-                                        </span>
-                                        @Html.DisplayFor(model => timespan)
+                                        <div>
+                                            <span class="fa-stack fa-sm">
+                                                <i class="fa fa-stack-2x fa-square"></i>
+                                                <i class="fa fa-stack-1x fa-building text-white"></i>
+                                            </span>
+                                            @Html.DisplayFor(model => shift.Shift.Schedule.Department)
+                                        </div>
+                                        <div>
+                                            <span class="fa-stack fa-sm">
+                                                <i class="fa fa-stack-2x fa-square"></i>
+                                                <i class="fa fa-stack-1x fa-briefcase text-white"></i>
+                                            </span>
+                                            @Html.DisplayFor(model => shift.StartTime)-@Html.DisplayFor(model => shift.EndTime)
+                                        </div>
+                                        @if (new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)).Ticks > 0)
+                                        {
+                                            var timespan = BreakDuration.GetDuration(new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks)));
+                                            <div>
+                                                <span class="fa-stack fa-sm">
+                                                    <i class="fa fa-stack-2x fa-square"></i>
+                                                    <i class="fa fa-stack-1x fa-coffee text-white"></i>
+                                                </span>
+                                                @Html.DisplayFor(model => timespan)
+                                            </div>
+                                        }
                                     </div>
                                 }
-                            </div>
+                            </td>
                         }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+                    <td class="align-middle">
+                        <span>
+                            @($"{new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
+                        </span>
                     </td>
-                }
-                else
-                {
-                    <td></td>
-                }
+                </tr>
             }
-            <td class="align-middle">
-                <span>
-                    @($"{new TimeSpan(Model.WorkedShifts.Sum(s => s.EndTime.Value.Subtract(s.StartTime).Ticks))}")
-                </span>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
 }
