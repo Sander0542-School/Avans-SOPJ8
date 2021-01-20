@@ -154,16 +154,19 @@ namespace Bumbo.Web.Controllers
         {
             TempData["AlertMessage"] = $"danger:{_localizer["FurloughNotUpdated"]}";
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var furlough = await _wrapper.Furlough.Get(f => f.Id == id);
+                TempData["AlertMessage"] = $"danger:{_localizer["InvalidData"]}";
+                return RedirectToAction(nameof(Overview));
+            }
 
-                furlough.Status = status;
+            var furlough = await _wrapper.Furlough.Get(f => f.Id == id);
 
-                if (await _wrapper.Furlough.Update(furlough) != null)
-                {
-                    TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
-                }
+            furlough.Status = status;
+
+            if (await _wrapper.Furlough.Update(furlough) != null)
+            {
+                TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
             }
 
             return RedirectToAction(nameof(Overview));
