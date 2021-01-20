@@ -150,4 +150,8 @@
   <data name="The forecast was successfully generated" xml:space="preserve">
     <value>De prognose was succesvol gegenereerd</value>
   </data>
+  <data name="InvalidData" xml:space="preserve">
+      <value>De ingevoerde gegevens waren niet valide</value>
+      <comment>InvalidData</comment>
+  </data>
 </root>
