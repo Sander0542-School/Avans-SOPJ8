@@ -19,7 +19,7 @@ namespace Bumbo.Web.Models.Forecast
             {
                 if (value < 1 || value > 1000)
                 {
-                    yield return new ValidationResult($"{key} needs to be between 1 and 30");
+                    yield return new ValidationResult($"{key} needs to be between 1 and 1000");
                 }
             }
         }
