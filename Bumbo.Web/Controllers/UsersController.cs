@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -39,7 +40,7 @@ namespace Bumbo.Web.Controllers
 
         public IActionResult Create()
         {
-            var usermodel = new CreateViewModel();
+            var usermodel = new CreateViewModel {Birthday = DateTime.Today.AddYears(-20)};
 
             return View(usermodel);
         }
