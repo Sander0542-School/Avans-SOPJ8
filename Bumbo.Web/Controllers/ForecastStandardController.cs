@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bumbo.Web.Controllers
 {
     [Authorize(Policy = "SuperUser")]
+    [Route("{controller}/{action=Index}")]
     public class ForecastStandardController : Controller
     {
         private readonly RepositoryWrapper _wrapper;
@@ -39,6 +40,7 @@ namespace Bumbo.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("{activity}")]
         public async Task<IActionResult> Edit(ForecastActivity activity)
         {
             var forecastStandard = await _wrapper.ForecastStandard.Get(fs => fs.Activity == activity);
@@ -51,9 +53,10 @@ namespace Bumbo.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ForecastActivity id, [Bind("Activity,Value")] ForecastStandard forecastStandard)
+        [Route("{activity}")]
+        public async Task<IActionResult> Edit(ForecastActivity activity, [Bind("Activity,Value")] ForecastStandard forecastStandard)
         {
-            if (id != forecastStandard.Activity)
+            if (activity != forecastStandard.Activity)
             {
                 return NotFound();
             }

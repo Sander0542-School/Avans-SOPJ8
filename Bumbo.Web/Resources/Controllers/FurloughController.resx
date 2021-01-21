@@ -144,4 +144,8 @@
   <data name="SomethingWentWrong" xml:space="preserve">
       <value>Something went wrong, please try again later</value>
   </data>
+  <data name="InvalidData" xml:space="preserve">
+      <value>The data you entered was invalid</value>
+      <comment>InvalidData</comment>
+  </data>
 </root>

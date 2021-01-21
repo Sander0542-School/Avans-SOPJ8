@@ -45,57 +45,60 @@ namespace Bumbo.Web.Controllers
         {
             var userId = int.Parse(_userManager.GetUserId(User));
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (!furloughModel.IsAllDay)
-                {
-                    furloughModel.StartDate += furloughModel.StartTime.Value;
-                    furloughModel.EndDate += furloughModel.EndTime.Value;
-                }
-                else
-                {
-                    furloughModel.EndDate += new TimeSpan(23, 59, 59);
-                }
+                TempData["AlertMessage"] = $"danger:{_localizer["InvalidData"]}";
+                return RedirectToAction(nameof(Index));
+            }
 
-                var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
+            if (!furloughModel.IsAllDay)
+            {
+                furloughModel.StartDate += furloughModel.StartTime.Value;
+                furloughModel.EndDate += furloughModel.EndTime.Value;
+            }
+            else
+            {
+                furloughModel.EndDate += new TimeSpan(23, 59, 59);
+            }
 
-                if (shifts.Any())
-                {
-                    TempData["AlertMessage"] = $"danger:{_localizer["NotAllowed"]}";
-                }
-                else
-                {
-                    var presentFurlough = await _wrapper.Furlough.Get(f => f.Id == id);
+            var shifts = await _wrapper.Shift.GetAll(shift => shift.UserId == userId && shift.Date > furloughModel.StartDate && shift.Date < furloughModel.EndDate);
 
-                    if (presentFurlough == null)
+            if (shifts.Any())
+            {
+                TempData["AlertMessage"] = $"danger:{_localizer["NotAllowed"]}";
+            }
+            else
+            {
+                var presentFurlough = await _wrapper.Furlough.Get(f => f.Id == id);
+
+                if (presentFurlough == null)
+                {
+                    var furlough = new Furlough
                     {
-                        var furlough = new Furlough
-                        {
-                            UserId = userId,
-                            BranchId = branchId,
-                            Description = furloughModel.Description,
-                            StartDate = furloughModel.StartDate,
-                            EndDate = furloughModel.EndDate,
-                            IsAllDay = furloughModel.IsAllDay,
-                            Status = FurloughStatus.REQUESTED
-                        };
+                        UserId = userId,
+                        BranchId = branchId,
+                        Description = furloughModel.Description,
+                        StartDate = furloughModel.StartDate,
+                        EndDate = furloughModel.EndDate,
+                        IsAllDay = furloughModel.IsAllDay,
+                        Status = FurloughStatus.REQUESTED
+                    };
 
-                        if (await _wrapper.Furlough.Add(furlough) != null)
-                        {
-                            TempData["AlertMessage"] = $"success:{_localizer["FurloughSaved"]}";
-                        }
+                    if (await _wrapper.Furlough.Add(furlough) != null)
+                    {
+                        TempData["AlertMessage"] = $"success:{_localizer["FurloughSaved"]}";
                     }
-                    else
-                    {
-                        presentFurlough.Description = furloughModel.Description;
-                        presentFurlough.StartDate = furloughModel.StartDate;
-                        presentFurlough.EndDate = furloughModel.EndDate;
-                        presentFurlough.IsAllDay = furloughModel.IsAllDay;
+                }
+                else
+                {
+                    presentFurlough.Description = furloughModel.Description;
+                    presentFurlough.StartDate = furloughModel.StartDate;
+                    presentFurlough.EndDate = furloughModel.EndDate;
+                    presentFurlough.IsAllDay = furloughModel.IsAllDay;
 
-                        if (await _wrapper.Furlough.Update(presentFurlough) != null)
-                        {
-                            TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
-                        }
+                    if (await _wrapper.Furlough.Update(presentFurlough) != null)
+                    {
+                        TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
                     }
                 }
             }
@@ -151,16 +154,19 @@ namespace Bumbo.Web.Controllers
         {
             TempData["AlertMessage"] = $"danger:{_localizer["FurloughNotUpdated"]}";
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var furlough = await _wrapper.Furlough.Get(f => f.Id == id);
+                TempData["AlertMessage"] = $"danger:{_localizer["InvalidData"]}";
+                return RedirectToAction(nameof(Overview));
+            }
 
-                furlough.Status = status;
+            var furlough = await _wrapper.Furlough.Get(f => f.Id == id);
 
-                if (await _wrapper.Furlough.Update(furlough) != null)
-                {
-                    TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
-                }
+            furlough.Status = status;
+
+            if (await _wrapper.Furlough.Update(furlough) != null)
+            {
+                TempData["AlertMessage"] = $"success:{_localizer["FurloughUpdated"]}";
             }
 
             return RedirectToAction(nameof(Overview));
