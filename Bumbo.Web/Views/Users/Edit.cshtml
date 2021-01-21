@@ -1,0 +1,210 @@
+﻿@model Bumbo.Web.Models.Users.EditViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr/>
+<partial name="_StatusMessage" model="Model.StatusMessage"/>
+<div class="row">
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                Medewerker @Model.FirstName
+            </div>
+
+            <div class="card-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control"/>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MiddleName" class="control-label"></label>
+                        <input asp-for="MiddleName" class="form-control"/>
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control"/>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ZipCode" class="control-label"></label>
+                        <input asp-for="ZipCode" class="form-control"/>
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="HouseNumber" class="control-label"></label>
+                        <input asp-for="HouseNumber" class="form-control"/>
+                        <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Birthday" class="control-label"></label>
+                        <input asp-for="Birthday" class="form-control"/>
+                        <span asp-validation-for="Birthday" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="@Localizer["Save"]" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="col-12 pb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <div class="p-2">@Localizer["Contracts"] </div>
+                        <div class="ml-auto p-2">
+                            <a asp-action="CreateContract" asp-route-id="@Model.Id">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    @foreach (var contract in Model.Contracts)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-5">
+                                @Localizer["StartDate"]
+                            </dt>
+                            <dd class="col-sm-7">
+                                @contract.StartDate.ToShortDateString()
+                            </dd>
+                            <dt class="col-sm-5">
+                                @Localizer["EndDate"]
+                            </dt>
+                            <dd class="col-sm-7">
+                                @contract.EndDate.ToShortDateString()
+                            </dd>
+
+                            <dt class="col-sm-5">
+                                @Localizer["Scale"]
+                            </dt>
+                            <dd class="col-sm-7">
+                                @contract.Scale
+                            </dd>
+
+                            <dt class="col-sm-5">
+                                @Localizer["Function"]
+                            </dt>
+                            <dd class="col-sm-7">
+                                @contract.Function
+                            </dd>
+                        </dl>
+                        <hr/>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <div class="p-2">@Localizer["Departments"]</div>
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditDepartment" method="post">
+
+                        <div class="checkboxContainer">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.InputBranchDepartment.BranchId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.InputBranchDepartment.Department)
+                                    </th>
+                                    <th></th>
+
+
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model.UserBranches)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Branch.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Department)
+                                        </td>
+
+                                        <td>
+
+                                            <a asp-action="DeleteBranchUser" asp-route-branchId="@item.Branch.Id" asp-route-id="@item.UserId">@Localizer["Delete"]</a>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label asp-for="InputBranchDepartment.Department" class="control-label"></label>
+                                <select asp-for="InputBranchDepartment.Department" asp-items="Html.GetEnumSelectList<Bumbo.Data.Models.Enums.Department>()" class="form-control">
+                                    <option selected="selected" value="">@Localizer["Select"] @Localizer["Department"]</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="InputBranchDepartment.BranchId" class="control-label"></label>
+                                <select asp-for="InputBranchDepartment.BranchId" asp-items="Model.Branches" class="form-control">
+                                    <option selected="selected" value="">@Localizer["Select"] @Localizer["Branch"]</option>
+                                </select>
+                            </div>
+                            <input type="hidden" asp-for="Id"/>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" type="submit">@Localizer["Save"]</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Branch>
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@Localizer["All branches"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Create New"]</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Localizer["Name"]
+        </th>
+        <th>
+            @Localizer["Zip code"]
+        </th>
+        <th>
+            @Localizer["House number"]
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZipCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HouseNumber)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-branchId="@item.Id">@Localizer["Edit"]</a> |
+                <a asp-action="Details" asp-route-branchId="@item.Id">@Localizer["Details"]</a> |
+                <a asp-action="Delete" asp-route-branchId="@item.Id">@Localizer["Delete"]</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

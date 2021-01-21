@@ -1,0 +1,67 @@
+@using System.Globalization
+@using Bumbo.Web.Models.AdditionalWork
+@model IndexViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["School Timetable"];
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<form asp-action="Index" method="post">
+    <table class="table table-borderless">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <thead>
+        <tr>
+            <th>@Localizer["Day"]</th>
+            <th>@Localizer["Start Time"]</th>
+            <th>@Localizer["End Time"]</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var day in IndexViewModel.DaysOfWeek)
+        {
+            var i = Model.Schedule.FindIndex(availability => availability.Day == day);
+
+            var startId = $"Input_StartTime_{day}";
+            var endId = $"Input_EndTime_{day}";
+
+            <tr>
+                <td>
+                    @ISOWeek.ToDateTime(1, 1, IndexViewModel.DaysOfWeek[i]).ToString("dddd")
+                    <input type="hidden" asp-for="Schedule[i].Day">
+                </td>
+                <td>
+                    <input id="@startId" class="form-control" asp-for="Schedule[i].StartTime">
+                </td>
+                <td>
+                    <input id="@endId" class="form-control" asp-for="Schedule[i].EndTime">
+                </td>
+                <td>
+                    <button type="button" onclick="resetTime('@startId', '@endId');" class="btn btn-danger">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4">
+                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+
+    <script>
+        function resetTime(startId, endId) {
+            document.getElementById(startId).value = null;
+            document.getElementById(endId).value = null;
+        }
+    </script>
+}

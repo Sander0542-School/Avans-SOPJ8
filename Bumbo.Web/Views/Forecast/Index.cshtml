@@ -1,0 +1,118 @@
+﻿@using System.Globalization
+@using Bumbo.Data.Models.Enums
+@using Bumbo.Web.Models.Forecast
+@model Bumbo.Web.Models.Forecast.ForecastViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["DepartmentSchedule"];
+    ViewBag.ContainerType = "container-fluid";
+}
+
+<div class="row">
+    <div class="col-2">
+        <h4>
+            @Localizer["Week"] @Html.DisplayFor(model => model.Week)
+            <span class="font-weight-normal">
+                @Html.DisplayFor(model => model.Year)
+            </span>
+        </h4>
+    </div>
+    <div class="col">
+        <div class="d-print-none">
+            <div class="btn-group text-white" role="group" aria-label="Week Navigation">
+                <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.PreviousYear" asp-route-week="@Model.PreviousWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+                <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@DateTime.Today.Year" asp-route-week="@ISOWeek.GetWeekOfYear(DateTime.Today)" class="btn btn-secondary">
+                    @Localizer["Today"]
+                </a>
+                <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="@Model.Department" asp-route-year="@Model.NextYear" asp-route-week="@Model.NextWeek" class="btn btn-secondary">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <div class="btn-group text-white" role="group" aria-label="Select Department">
+                <a class="btn btn-secondary">@Localizer["Department"]</a>
+
+                <div class="btn-group" role="group">
+                    <button id="departmentGroup" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @(Model.Department.HasValue ? Html.DisplayFor(model => model.Department.Value) : Localizer["All"])
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="departmentGroup">
+                        <a asp-action="Index" asp-route-branchId="@Model.Branch.Id" asp-route-department="" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Localizer["All"]</a>
+                        @foreach (var department in Enum.GetValues<Department>())
+                        {
+                            <a asp-action="Index" asp-route-department="@department" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week" class="dropdown-item">@Html.DisplayFor(model => department)</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3 float-right">
+
+        <a class="btn btn-secondary" asp-action="ChangeNorms" asp-route-branchId="@Model.Branch.Id">@Localizer["Change Norms"]</a>
+
+        @if (!Model.Forecasts.Any())
+        {
+            <a class="btn btn-secondary float-right" asp-action="Create" asp-route-branchId="@Model.Branch.Id" asp-route-year="@Model.Year" asp-route-week="@Model.Week">@Localizer["Create forecast"]</a>
+        }
+    </div>
+
+</div>
+
+<br/>
+
+<table class="table table-bordered table-striped table-sm">
+    <thead class="text-center">
+    <tr>
+        <th class="text-left">@Html.DisplayNameFor(model => model.Department)</th>
+
+        @foreach (var day in Model.DaysOfWeek)
+        {
+            <th>@ISOWeek.ToDateTime(Model.Year, Model.Week, day).ToString("ddd dd-MM")</th>
+        }
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var department in Enum.GetValues<Department>())
+    {
+        if (Model.Department != null && department != Model.Department)
+        {
+            continue;
+        }
+        <tr>
+            <td>
+                @department.ToString()
+            </td>
+
+            @foreach (var day in Model.DaysOfWeek)
+            {
+                var forecast = Model.Forecasts.FirstOrDefault(f => f.Department == department && f.Date.DayOfWeek == day);
+                if (forecast != null)
+                {
+                    var whTimeSpan = TimeSpan.FromHours((double)forecast.WorkingHours);
+                    // This is the only way to show hours that are greater than 24
+                    var hoursRounded = Math.Floor(whTimeSpan.TotalHours);
+                    var minutesFormatted = whTimeSpan.Minutes.ToString("00");
+                    <td class="c-pointer" onclick="forecastModal(@($"'{forecast.Date:yyyy-MM-dd}', '{forecast.Department}', '{hoursRounded}', '{minutesFormatted}'"))">
+                        @hoursRounded:@minutesFormatted
+                    </td>
+                }
+                else
+                {
+                    <td/>
+                }
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+<partial name="_EditForecastModal" model="new ForecastViewModel.EditForecastViewModel{ BranchId = Model.Branch.Id, Year = Model.Year, Week = Model.Week}"/>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

@@ -1,0 +1,65 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="MessageShiftNotSaved" xml:space="preserve">
+        <value>De dienst kon niet worden opgeslagen.</value>
+    </data>
+    <data name="MessageShiftSaved" xml:space="preserve">
+        <value>De dienst is succesvol opgeslagen.</value>
+    </data>
+    <data name="MessageScheduleNotSaved" xml:space="preserve">
+        <value>Het rooster kon niet worden gekopieerd.</value>
+    </data>
+    <data name="MessageScheduleCopied" xml:space="preserve">
+        <value>Het rooster is succesvol gekopieerd naar week {0} van {1}.</value>
+    </data>
+    <data name="MessageScheduleNotEmpty" xml:space="preserve">
+        <value>Het rooster in de gekozen week bevat al diensten.</value>
+    </data>
+    <data name="MessageWeekNotExists" xml:space="preserve">
+        <value>De gekozen week bestaat niet.</value>
+    </data>
+    <data name="MessageScheduleNotApproved" xml:space="preserve">
+        <value>Het rooster kon niet worden goedgekeurd.</value>
+    </data>
+    <data name="MessageScheduleApproved" xml:space="preserve">
+        <value>Het rooster is succesvol goedgekeurd.</value>
+    </data>
+    <data name="MessageScheduleEmpty" xml:space="preserve">
+        <value>Het rooster bevat geen diensten.</value>
+    </data>
+    <data name="MessageOfferNotAdopted" xml:space="preserve">
+        <value>De geselecteerde dienst kan niet worden overgenomen.</value>
+    </data>
+    <data name="MessageOfferAdopted" xml:space="preserve">
+        <value>De geselecteerde dienst is succesvol overgenomen.</value>
+    </data>
+    <data name="MessageShiftNotOffered" xml:space="preserve">
+        <value>De dienst kon niet worden gemarkeerd als aangeboden.</value>
+    </data>
+    <data name="MessageShiftOffered" xml:space="preserve">
+        <value>De dienst is successvol gemarkeerd als aangeboden.</value>
+    </data>
+    <data name="MessageOfferCanceled" xml:space="preserve">
+        <value>De geselecteerde dienst is successvol weggehaald van de aanbiedingen.</value>
+    </data>
+    <data name="MessageShiftNotDeleted" xml:space="preserve">
+        <value>De geselecteerde dienst kon niet verwijderd worden.</value>
+    </data>
+    <data name="MessageShiftContainsWorkedShift" xml:space="preserve">
+        <value>De geselecteerde dienst kon niet verwijderd worden, omdat de medewerker al gewerkt heeft.</value>
+    </data>
+    <data name="MessageShiftDeleted" xml:space="preserve">
+        <value>De geselecteerde dienst is succesvol verwijderd.</value>
+    </data>
+</root>

@@ -1,0 +1,26 @@
+﻿@inject IViewLocalizer Localizer
+
+@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        // String interpolation seems to suppress this error.
+        // Given that this page does exist but is not present in the folder structure it could work as workaround for removing the warning.
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<h2>@Localizer["Manage your account"]</h2>
+
+<div>
+    <h4>@Localizer["Change your account settings"]</h4>
+    <hr/>
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @await RenderSectionAsync("Scripts", false)
+}

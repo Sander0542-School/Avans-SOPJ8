@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var regionCultures = LocOptions.Value.SupportedUICultures.GroupBy(cultureInfo => new RegionInfo(cultureInfo.LCID)).OrderBy(infos => infos.Key.DisplayName);
+    var returnUrl = string.IsNullOrWhiteSpace(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
+}
+
+<div id="cultureModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cultureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="cultureModalLabel">@Localizer["Change Language"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @foreach (var regionCulture in regionCultures)
+                    {
+                        <div class="col-sm-12 col-md-6">
+                            <div class="row m-0">
+                                <div>
+                                    <span class="flag-icon flag-icon-@regionCulture.Key.TwoLetterISORegionName.ToLower()"></span>
+                                </div>
+                                <div class="col" style="padding: 0 .5rem">
+
+                                    <h5>
+                                        @regionCulture.Key.NativeName
+                                    </h5>
+
+                                    <div>
+                                        @foreach (var culture in regionCulture)
+                                        {
+                                            <a asp-controller="Home" asp-action="CultureManagement" asp-route-culture="@culture.Name" onclick="event.preventDefault();changeCulture('@culture.Name')">
+                                                @culture.Parent.NativeName
+                                            </a>
+                                            <br/>
+                                        }
+                                    </div>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="Form_Culture" asp-controller="Home" asp-action="CultureManagement" asp-route-returnUrl="@returnUrl">
+    <input id="Form_Culture_Input" name="culture" type="hidden">
+</form>
+
+<script>
+    function changeCulture(culture) {
+        $("#Form_Culture_Input").val(culture);
+        $("#Form_Culture").trigger("submit");
+    }
+</script>

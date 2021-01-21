@@ -1,0 +1,25 @@
+﻿@page
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Html
+@model Disable2faModel
+@{
+    ViewData["Title"] = Localizer["Disable two-factor authentication (2FA)"];
+}
+
+<partial name="_StatusMessage" for="StatusMessage"/>
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>@Localizer["This action only disables 2FA."]</strong>
+    </p>
+    <p>
+        @Localizer["MessageDisable2FA", new HtmlString("<a asp-page=\"./ResetAuthenticator\">"), new HtmlString("</a>")]
+    </p>
+</div>
+
+<div>
+    <form method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">@Localizer["Disable 2FA"]</button>
+    </form>
+</div>

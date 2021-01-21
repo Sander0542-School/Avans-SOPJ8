@@ -1,17 +1,288 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>53f747b1-759f-48dc-80c2-bbf40f6dfc6e</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Bumbo.Testing' " />
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.2" />
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+      <PackageReference Include="Sentry.AspNetCore" Version="2.1.8" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Bumbo.Data\Bumbo.Data.csproj" />
+      <ProjectReference Include="..\Bumbo.Logic\Bumbo.Logic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Resources\Areas\Identity\Pages\Account\Manage\" />
+      <Folder Include="Resources\Views\AdditionalWork\" />
+      <Folder Include="Resources\Views\Availability\" />
+      <Folder Include="Views\Availability\" />
+      <Folder Include="Views\WorkedShift\" />
+      <Folder Include="Models\WorkedShifts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Models\Users\ContractViewModel.nl.resx">
+        <SubType>Designer</SubType>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel+InputBranchViewModel.nl.resx">
+        <SubType>Designer</SubType>
+        <LastGenOutput>EditViewModel.InputBranchViewModel.en.Designer.cs</LastGenOutput>
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Users\EditViewModel.nl.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Forecast\ForecastViewModel+EditForecastViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ForecastViewModel.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Availability\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Branches\Create.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.nl+Delete.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Branches\Delete.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.nl+Delete.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Branches\Details.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Details.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Branches\Edit.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Edit.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Branches\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Branches\DetailsViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>DetailsViewModel+Manager.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Branches\DetailsViewModel.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>DetailsViewModel+BranchViewModel+Manager.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Forecast\ChangeNorms.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ChangeNorms.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Create.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Edit.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Edit.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\ForecastStandard\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Models\Schedule\CrossBranchViewModel+Shift.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CrossBranchViewModel+Shift.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\AdoptCrossBranchOffer.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AdoptCrossBranchOffer.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\CreateCrossBranchOffer.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CreateCrossBranchOffer.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\CrossBranchOffers.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CrossBranchOffers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\Offers.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Offers.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\Personal.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Personal.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Home\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Schedule\_DeleteShiftModal.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_DeleteShiftModal.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\Availability\IndexViewModel+Availability.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>IndexViewModel+Availability.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Controllers\AvailabilityController.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AvailabilityController.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Controllers\AdditionalWorkController.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>AdditionalWorkController.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Models\AdditionalWork\IndexViewModel+AdditionalWork.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>IndexViewModel+AdditionalWork.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Models\Forecast\ForecastViewModel.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ForecastViewModel+EditForecastViewModel.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\AdditionalWork\Index.nl.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Create.nl.resx">
+        <LastGenOutput>Create.nl+Delete.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Users\Index.nl.resx">
+        <LastGenOutput>Index.nl.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <Compile Update="Resources\Views\Branches\Details.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Details.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Branches\Edit.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Edit.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Branches\Create.nl+Delete.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Create.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Branches\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\Index+Create+_EditModal.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Forecast\ChangeNorms.en.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ChangeNorms.en.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\AdoptCrossBranchOffer.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AdoptCrossBranchOffer.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\CreateCrossBranchOffer.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CreateCrossBranchOffer.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\CrossBranchOffers.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CrossBranchOffers.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Users\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\Offers.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Offers.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\Personal.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Personal.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Home\Index.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Schedule\_DeleteShiftModal.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_DeleteShiftModal.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Models\Availability\IndexViewModel+Availability.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>IndexViewModel+Availability.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Controllers\AvailabilityController.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AvailabilityController.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Availability\Index.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.nl.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Controllers\AdditionalWorkController.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AdditionalWorkController.nl.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Models\AdditionalWork\IndexViewModel+AdditionalWork.nl.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>IndexViewModel+AdditionalWork.nl.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Views\AdditionalWork\Index.en.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.en.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Resources\Views\AdditionalWork\Index.nl.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TempShifts\Edit.cshtml" />
+    </ItemGroup>
 </Project>
